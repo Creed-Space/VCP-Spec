@@ -1,0 +1,416 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vcp.creed.space/schema/messaging/v1.2.json",
+  "title": "VCP Inter-Agent Messaging Schema v1.2",
+  "description": "JSON Schema for VCP inter-agent message envelopes and payload types",
+  "type": "object",
+  "required": [
+    "vcp_message",
+    "type",
+    "message_id",
+    "sender",
+    "recipient",
+    "timestamp",
+    "payload"
+  ],
+  "properties": {
+    "vcp_message": {
+      "type": "string",
+      "const": "1.2",
+      "description": "VCP messaging protocol version"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["context_share", "constitution_announce", "constraint_propagate", "escalation"],
+      "description": "Message type"
+    },
+    "message_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "UUIDv7 message identifier for deduplication"
+    },
+    "sender": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Agent identifier (URI or opaque string)"
+    },
+    "recipient": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Target agent identifier or 'broadcast'"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of message creation"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Type-specific payload (validated by conditional schemas below)"
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^base64:[A-Za-z0-9+/=]+$",
+      "description": "Ed25519 signature of canonical message (excluding this field)"
+    }
+  },
+  "additionalProperties": false,
+
+  "allOf": [
+    {
+      "if": {
+        "properties": { "type": { "const": "context_share" } }
+      },
+      "then": {
+        "properties": {
+          "payload": { "$ref": "#/$defs/context_share_payload" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "type": { "const": "constitution_announce" } }
+      },
+      "then": {
+        "properties": {
+          "payload": { "$ref": "#/$defs/constitution_announce_payload" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "type": { "const": "constraint_propagate" } }
+      },
+      "then": {
+        "properties": {
+          "payload": { "$ref": "#/$defs/constraint_propagate_payload" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "type": { "const": "escalation" } }
+      },
+      "then": {
+        "properties": {
+          "payload": { "$ref": "#/$defs/escalation_payload" }
+        }
+      }
+    }
+  ],
+
+  "$defs": {
+    "context_share_payload": {
+      "type": "object",
+      "required": ["context", "constitution_ref"],
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Enneagram context string (emoji-encoded)",
+          "examples": [
+            "⏰🌅|📍🏡|👥👶",
+            "⏰🌙|📍🏢|👥👔|🔶⚖️",
+            "🎭🚨|🧠😰"
+          ]
+        },
+        "constitution_ref": {
+          "type": "string",
+          "pattern": "^creed://[a-z0-9.-]+/[a-zA-Z0-9._/@-]+$",
+          "description": "Active constitution URI (creed:// scheme)",
+          "examples": ["creed://creed.space/family.safe.guide@1.2.0"]
+        },
+        "personal_state": {
+          "$ref": "#/$defs/r_line_state",
+          "description": "R-line personal state object (OPTIONAL)"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "r_line_state": {
+      "type": "object",
+      "properties": {
+        "cognitive": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 9,
+          "description": "Cognitive load/clarity (1=overloaded, 9=clear)"
+        },
+        "emotional": {
+          "type": "object",
+          "required": ["valence", "arousal"],
+          "properties": {
+            "valence": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 9,
+              "description": "Negative (1) to positive (9)"
+            },
+            "arousal": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 9,
+              "description": "Calm (1) to activated (9)"
+            }
+          },
+          "additionalProperties": false
+        },
+        "energy": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 9,
+          "description": "Depleted (1) to energized (9)"
+        },
+        "urgency": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 9,
+          "description": "Relaxed (1) to urgent (9)"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "pain": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 9,
+              "description": "No pain (1) to severe pain (9)"
+            },
+            "comfort": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 9,
+              "description": "Uncomfortable (1) to comfortable (9)"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "constitution_announce_payload": {
+      "type": "object",
+      "required": ["constitution_ref", "manifest_hash"],
+      "properties": {
+        "constitution_ref": {
+          "type": "string",
+          "pattern": "^creed://[a-z0-9.-]+/[a-zA-Z0-9._/@-]+$",
+          "description": "Constitution URI (creed:// scheme)",
+          "examples": ["creed://creed.space/enterprise.compliance@2.0.1"]
+        },
+        "manifest_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "SHA-256 hash of the constitution manifest",
+          "examples": ["sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069"]
+        },
+        "scope": {
+          "$ref": "#/$defs/scope_object",
+          "description": "Applicability scope (OPTIONAL)"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "scope_object": {
+      "type": "object",
+      "properties": {
+        "model_families": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9*-]+$"
+          },
+          "description": "Allowed model families (glob patterns)",
+          "examples": [["gpt-*", "claude-*"]]
+        },
+        "purposes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "description": "Allowed purposes",
+          "examples": [["general-assistant", "coding-assistant"]]
+        },
+        "environments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["production", "staging", "development", "testing"]
+          },
+          "description": "Allowed environments"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "constraint_propagate_payload": {
+      "type": "object",
+      "required": ["constraints", "propagation_mode"],
+      "properties": {
+        "constraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/constraint_object"
+          },
+          "description": "Array of constraint objects"
+        },
+        "propagation_mode": {
+          "type": "string",
+          "enum": ["merge", "override"],
+          "description": "How the receiver must apply constraints"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "constraint_object": {
+      "type": "object",
+      "required": ["type", "value", "source_constitution_ref"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Constraint type identifier (e.g. 'topic_block', 'token_limit', 'audience_restrict', 'safety_floor')",
+          "examples": ["topic_block", "token_limit", "audience_restrict", "safety_floor"]
+        },
+        "value": {
+          "description": "Constraint value (type depends on constraint type)"
+        },
+        "source_constitution_ref": {
+          "type": "string",
+          "pattern": "^creed://[a-z0-9.-]+/[a-zA-Z0-9._/@-]+$",
+          "description": "Constitution URI that originated this constraint"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "escalation_payload": {
+      "type": "object",
+      "required": ["severity", "reason", "context", "requires_ack"],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["info", "warning", "critical", "emergency"],
+          "description": "Escalation severity level"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Human-readable description of the escalation cause"
+        },
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Current Enneagram context string at time of escalation",
+          "examples": [
+            "⏰☀️|📍🏡|👥👶|🧠😰",
+            "🎭🚨|🧠😡"
+          ]
+        },
+        "blocked_action": {
+          "type": "string",
+          "maxLength": 1024,
+          "description": "Description of the action blocked by this escalation (OPTIONAL)"
+        },
+        "requires_ack": {
+          "type": "boolean",
+          "description": "Whether the sender requires explicit acknowledgment"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": { "severity": { "enum": ["critical", "emergency"] } }
+          },
+          "then": {
+            "properties": { "requires_ack": { "const": true } }
+          }
+        }
+      ]
+    }
+  },
+
+  "examples": [
+    {
+      "vcp_message": "1.2",
+      "type": "context_share",
+      "message_id": "019502a4-7e5c-7000-8000-000000000001",
+      "sender": "agent://home.local/living-room-agent",
+      "recipient": "agent://home.local/kitchen-agent",
+      "timestamp": "2026-02-15T10:30:00Z",
+      "payload": {
+        "context": "⏰🌅|📍🏡|👥👶",
+        "constitution_ref": "creed://creed.space/family.safe.guide@1.2.0",
+        "personal_state": {
+          "cognitive": 6,
+          "emotional": { "valence": 7, "arousal": 4 },
+          "energy": 7,
+          "urgency": 3
+        }
+      }
+    },
+    {
+      "vcp_message": "1.2",
+      "type": "constitution_announce",
+      "message_id": "019502a4-8b3d-7000-8000-000000000002",
+      "sender": "agent://cluster.prod/safety-monitor",
+      "recipient": "broadcast",
+      "timestamp": "2026-02-15T10:31:00Z",
+      "payload": {
+        "constitution_ref": "creed://creed.space/enterprise.compliance@2.0.1",
+        "manifest_hash": "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+        "scope": {
+          "model_families": ["claude-*", "gpt-*"],
+          "purposes": ["general-assistant"],
+          "environments": ["production"]
+        }
+      }
+    },
+    {
+      "vcp_message": "1.2",
+      "type": "constraint_propagate",
+      "message_id": "019502a4-9c1e-7000-8000-000000000003",
+      "sender": "agent://orchestrator.prod/parent-001",
+      "recipient": "agent://orchestrator.prod/child-007",
+      "timestamp": "2026-02-15T10:32:00Z",
+      "payload": {
+        "constraints": [
+          {
+            "type": "topic_block",
+            "value": ["weapons", "illegal_substances"],
+            "source_constitution_ref": "creed://creed.space/family.safe.guide@1.2.0"
+          },
+          {
+            "type": "token_limit",
+            "value": 2048,
+            "source_constitution_ref": "creed://creed.space/enterprise.compliance@2.0.1"
+          }
+        ],
+        "propagation_mode": "merge"
+      }
+    },
+    {
+      "vcp_message": "1.2",
+      "type": "escalation",
+      "message_id": "019502a4-ad0f-7000-8000-000000000004",
+      "sender": "agent://orchestrator.prod/child-007",
+      "recipient": "agent://orchestrator.prod/parent-001",
+      "timestamp": "2026-02-15T10:33:00Z",
+      "payload": {
+        "severity": "critical",
+        "reason": "User requested content that conflicts with active constitution safety_floor constraint.",
+        "context": "⏰☀️|📍🏡|👥👶|🧠😰",
+        "blocked_action": "generate_response:topic=weapons_detailed",
+        "requires_ack": true
+      }
+    }
+  ]
+}

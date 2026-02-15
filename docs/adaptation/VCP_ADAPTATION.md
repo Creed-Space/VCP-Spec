@@ -1208,34 +1208,11 @@ CONSTRAINTS: ○🚧⚖️💸⏰🚨
 | `📍🏥` (medical setting) | `D3+H+P` (Mediator, health) |
 | `🎭🎪` (entertainment) | `M2` (Muse, creative) |
 
-### C. Inter-Agent Message Types (PREVIEW)
+### C. Inter-Agent Message Types
 
-> **NOTE**: This section is **PREVIEW — subject to change in v1.2**. The message types and wire format are informational. Implementations SHOULD support `context_share` and `escalation`; other types are OPTIONAL.
+This section has been formalized in [VCP Inter-Agent Messaging v1.2](../../specs/VCP_INTER_AGENT_MESSAGING_v1.2.md).
 
-| Type | Direction | Purpose | Status |
-|------|-----------|---------|--------|
-| `context_share` | Agent → Agent | Share current Enneagram state with peer agents | SHOULD implement |
-| `constitution_announce` | Agent → Agent | Announce active constitution(s) to peer agents | MAY implement |
-| `constraint_propagate` | Parent → Child | Push constraints to sub-agents | MAY implement |
-| `escalation` | Child → Parent | Escalate conflict or safety concern to parent agent | SHOULD implement |
-
-**Wire format** (informational, to be formalized in v1.2):
-
-```json
-{
-  "vcp_message": "1.0",
-  "type": "context_share",
-  "sender": "agent-id",
-  "recipient": "agent-id | broadcast",
-  "payload": {
-    "context": "⏰🌅|📍🏡|👥👶",
-    "constitution_ref": "creed://creed.space/family.safe.guide@1.2.0",
-    "timestamp": "2026-02-15T10:30:00Z"
-  }
-}
-```
-
-**Escalation semantics**: When a child agent sends an `escalation` message, the parent MUST acknowledge within 5 seconds. If the escalation is safety-related (severity `critical` or `emergency`), the parent MUST suspend the child's current task until the escalation is resolved.
+The messaging specification defines four message types (`context_share`, `constitution_announce`, `constraint_propagate`, `escalation`), a complete wire format with UUIDv7 deduplication, delivery semantics, escalation protocol, security model, and transport bindings.
 
 ---
 
