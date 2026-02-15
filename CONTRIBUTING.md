@@ -12,7 +12,7 @@ Typos, broken links, and clarifications can be submitted as pull requests direct
 
 Changes to the protocol specification follow the **VCP Enhancement Proposal (VEP)** process described in [GOVERNANCE.md](./GOVERNANCE.md):
 
-1. Open a [Spec Amendment](https://github.com/Creed-Space/vcp-spec/issues/new?template=spec_amendment.yml) issue
+1. Open a [Spec Amendment](https://github.com/Creed-Space/VCP-Spec/issues/new?template=spec_amendment.yml) issue
 2. A maintainer assigns a VEP number
 3. 7-14 day discussion period (14 days minimum for breaking changes)
 4. Decision recorded on the issue
@@ -44,4 +44,4 @@ This project adheres to the [Contributor Covenant Code of Conduct](./CODE_OF_CON
 
 ## Questions
 
-Open a [Discussion](https://github.com/Creed-Space/vcp-spec/discussions) for questions about the specification or contributing process.
+Open a [Discussion](https://github.com/Creed-Space/VCP-Spec/discussions) for questions about the specification or contributing process.

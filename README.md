@@ -113,7 +113,7 @@ Reference implementations live in the [VCP-SDK repository](https://github.com/Cr
 We welcome contributions to the specification and documentation.
 
 - **Typo / Clarification**: Open a PR directly
-- **Spec Change**: Follow the [VEP process](./GOVERNANCE.md) via a [Spec Amendment issue](https://github.com/Creed-Space/vcp-spec/issues/new?template=spec_amendment.yml)
+- **Spec Change**: Follow the [VEP process](./GOVERNANCE.md) via a [Spec Amendment issue](https://github.com/Creed-Space/VCP-Spec/issues/new?template=spec_amendment.yml)
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details and [GOVERNANCE.md](./GOVERNANCE.md) for the change approval process.
 
