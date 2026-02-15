@@ -1,10 +1,10 @@
 # Value-Context Protocol (VCP) Specification v1.0
 
-**Status**: Draft
+**Status**: Stable
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Authors**: Nell Watson, Claude (Anthropic)
-**Informed by**: Junto Mastermind Consultation (9 models, 2026-01-10)
+**Informed by**: Junto Mastermind Consultation (9 models, 2026-01-10, 2026-01-11)
 
 ---
 
@@ -22,18 +22,23 @@ VCP draws on established patterns from software supply-chain security (package s
 2. [Design Principles](#2-design-principles)
 3. [Architecture Overview](#3-architecture-overview)
 4. [Bundle Format](#4-bundle-format)
-5. [Addressing Scheme](#5-addressing-scheme)
-6. [Transport Protocol](#6-transport-protocol)
-7. [Verification Protocol](#7-verification-protocol)
-8. [Injection Format](#8-injection-format)
-9. [Audit and Logging](#9-audit-and-logging)
-10. [Trust Model](#10-trust-model)
-11. [Versioning](#11-versioning)
-12. [Error Handling](#12-error-handling)
-13. [Security Considerations](#13-security-considerations)
-14. [Interoperability](#14-interoperability)
-15. [Reference Implementation](#15-reference-implementation)
-16. [Appendices](#appendices)
+5. [Canonicalization](#5-canonicalization)
+6. [Addressing Scheme](#6-addressing-scheme)
+7. [Transport Protocol](#7-transport-protocol)
+8. [Verification Protocol](#8-verification-protocol)
+9. [Content Safety](#9-content-safety)
+10. [Composition Semantics](#10-composition-semantics)
+11. [Injection Format](#11-injection-format)
+12. [Audit and Logging](#12-audit-and-logging)
+13. [Trust Model](#13-trust-model)
+14. [Key Lifecycle](#14-key-lifecycle)
+15. [Versioning](#15-versioning)
+16. [Error Handling](#16-error-handling)
+17. [Security Considerations](#17-security-considerations)
+18. [Threat Model](#18-threat-model)
+19. [Interoperability](#19-interoperability)
+20. [Reference Implementation](#20-reference-implementation)
+21. [Appendices](#appendices)
 
 ---
 
@@ -78,6 +83,8 @@ This specification covers:
 - Bundle format and structure
 - Addressing and identification
 - Verification requirements
+- Content safety attestation
+- Composition and conflict resolution
 - Injection format for LLM consumption
 - Audit logging requirements
 - Trust model and key management
@@ -97,6 +104,7 @@ This specification does NOT cover:
 | **Content** | The actual constitutional text applied to the LLM |
 | **Orchestrator** | The system that fetches, verifies, and injects constitutions |
 | **Issuer** | The entity that signs and publishes constitutional bundles |
+| **Safety Auditor** | Entity that attests content has been reviewed for injection attacks |
 | **Trust Anchor** | A public key trusted to verify issuer signatures |
 
 ---
@@ -131,6 +139,14 @@ The protocol assumes:
 
 Verification records MUST be maintained independently of the LLM. Post-hoc audit MUST be possible without model cooperation.
 
+### 2.6 Fail-Closed by Default
+
+All verification failures MUST result in rejection. Orchestrators MUST NOT inject unverified content under any circumstances.
+
+### 2.7 Defense in Depth
+
+Signature verification proves authenticity but not safety. Content safety attestation provides a second layer ensuring the content has been reviewed for injection attacks.
+
 ---
 
 ## 3. Architecture Overview
@@ -149,6 +165,12 @@ Verification records MUST be maintained independently of the LLM. Post-hoc audit
 │         │                                                           │
 │         ▼                                                           │
 │  ┌──────────────┐                                                   │
+│  │SAFETY AUDITOR│  Reviews content for injection patterns           │
+│  │              │  Provides safety attestation signature            │
+│  └──────┬───────┘                                                   │
+│         │                                                           │
+│         ▼                                                           │
+│  ┌──────────────┐                                                   │
 │  │  REPOSITORY  │  Stores bundles (any mirror, CAS, CDN)           │
 │  │              │  Content-addressed (hash = identity)              │
 │  └──────┬───────┘                                                   │
@@ -157,7 +179,10 @@ Verification records MUST be maintained independently of the LLM. Post-hoc audit
 │  ┌──────────────┐                                                   │
 │  │ ORCHESTRATOR │  TRUST BOUNDARY                                   │
 │  │              │  - Fetches bundles                                │
-│  │              │  - Verifies signatures and hashes                 │
+│  │              │  - Verifies issuer signature                      │
+│  │              │  - Verifies safety attestation                    │
+│  │              │  - Validates temporal claims                      │
+│  │              │  - Checks token budget                            │
 │  │              │  - Checks revocation status                       │
 │  │              │  - Logs to audit trail                            │
 │  │              │  - Injects verified text to LLM                   │
@@ -174,7 +199,7 @@ Verification records MUST be maintained independently of the LLM. Post-hoc audit
 │  ┌──────────────┐                                                   │
 │  │  AUDIT LOG   │  INDEPENDENT RECORD                               │
 │  │              │  - Append-only (transparency log model)           │
-│  │              │  - Stores signed manifests                        │
+│  │              │  - Stores signed manifests (not content)          │
 │  │              │  - Enables post-hoc verification                  │
 │  └──────────────┘                                                   │
 │                                                                     │
@@ -184,36 +209,47 @@ Verification records MUST be maintained independently of the LLM. Post-hoc audit
 ### 3.2 Data Flow
 
 ```
-1. PUBLISH
+1. AUTHOR
+   Constitution author creates content
+
+2. REVIEW
+   Safety auditor reviews for injection patterns
+   Safety auditor signs attestation
+
+3. PUBLISH
    Issuer creates bundle → Signs manifest → Publishes to repository
 
-2. FETCH
+4. FETCH
    Orchestrator requests bundle by address (URI, hash, or ID)
 
-3. VERIFY
+5. VERIFY
    Orchestrator checks:
-   - Manifest signature against trusted issuer key
-   - Content hash matches manifest.content_hash
-   - Bundle is not revoked
-   - Version constraints satisfied
+   - Schema validity
+   - Issuer signature against trusted key
+   - Safety attestation signature
+   - Content hash matches manifest
+   - Temporal claims (iat, nbf, exp, jti)
+   - Token budget constraints
+   - Scope binding
+   - Revocation status
 
-4. LOG
+6. LOG
    Orchestrator records to audit log:
-   - Full signed manifest
+   - Manifest hash (not full content)
    - Timestamp
    - Session/request identifier
    - Verification result
 
-5. INJECT
+7. INJECT
    Orchestrator constructs LLM input:
    - Compact header (ID, version, hash prefix)
    - Full constitutional text
    - Structured delimiters
 
-6. INFER
+8. INFER
    LLM processes input with constitutional rules applied
 
-7. AUDIT (async)
+9. AUDIT (async)
    Auditor retrieves log entries
    Verifies signatures independently
    Correlates with inference records
@@ -256,13 +292,43 @@ vcp-bundle/
   },
 
   "timestamps": {
-    "created": "2026-01-10T12:00:00Z",
-    "expires": "2027-01-10T12:00:00Z"
+    "iat": "2026-01-10T12:00:00Z",
+    "nbf": "2026-01-10T12:00:00Z",
+    "exp": "2026-02-10T12:00:00Z",
+    "jti": "550e8400-e29b-41d4-a716-446655440000"
+  },
+
+  "budget": {
+    "token_count": 847,
+    "tokenizer": "cl100k_base",
+    "max_context_share": 0.25
+  },
+
+  "scope": {
+    "model_families": ["gpt-*", "claude-*"],
+    "purposes": ["general-assistant", "family-assistant"],
+    "environments": ["production", "staging"]
+  },
+
+  "composition": {
+    "layer": 2,
+    "mode": "extend",
+    "conflicts_with": [],
+    "requires": ["creed://creed.space/uef"]
   },
 
   "revocation": {
     "check_uri": "https://creed.space/api/v1/revoked",
-    "crl_uri": "https://creed.space/crl/2026.json"
+    "crl_uri": "https://creed.space/crl/2026.json",
+    "stapled_proof": null
+  },
+
+  "safety_attestation": {
+    "auditor": "safety-review.creed.space",
+    "auditor_key_id": "safety-2026",
+    "reviewed_at": "2026-01-10T11:00:00Z",
+    "attestation_type": "injection-safe",
+    "signature": "base64:MEUCIQDr..."
   },
 
   "metadata": {
@@ -277,78 +343,126 @@ vcp-bundle/
   "signature": {
     "algorithm": "ed25519",
     "value": "base64:MEUCIQD...",
-    "signed_fields": ["vcp_version", "bundle", "issuer", "timestamps", "revocation", "metadata"]
+    "signed_fields": ["vcp_version", "bundle", "issuer", "timestamps", "budget", "scope", "composition", "revocation", "safety_attestation", "metadata"]
   }
 }
 ```
 
-### 4.3 Manifest Fields
-
-#### Required Fields
+### 4.3 Required Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `vcp_version` | string | Protocol version (e.g., "1.0") |
+| `vcp_version` | string | Protocol version ("1.0") |
 | `bundle.id` | URI | Globally unique identifier |
 | `bundle.version` | semver | Semantic version |
-| `bundle.content_hash` | string | SHA-256 hash of content, prefixed with algorithm |
+| `bundle.content_hash` | string | SHA-256 hash of canonical content |
 | `issuer.id` | string | Issuer identifier |
 | `issuer.public_key` | string | Public key for signature verification |
-| `timestamps.created` | ISO8601 | Bundle creation timestamp |
-| `signature.algorithm` | string | Signature algorithm |
-| `signature.value` | string | Base64-encoded signature |
-| `signature.signed_fields` | array | Fields included in signature |
+| `timestamps.iat` | ISO8601 | Issued At timestamp |
+| `timestamps.nbf` | ISO8601 | Not Before timestamp |
+| `timestamps.exp` | ISO8601 | Expiration timestamp |
+| `timestamps.jti` | UUID | Unique bundle instance identifier |
+| `budget.token_count` | integer | Token count of content |
+| `safety_attestation.*` | object | Safety review attestation |
+| `signature.*` | object | Issuer signature |
 
-#### Optional Fields
+### 4.4 Size Constraints
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `bundle.content_encoding` | string | Character encoding (default: utf-8) |
-| `bundle.content_format` | string | MIME type (default: text/plain) |
-| `issuer.key_id` | string | Key identifier for rotation |
-| `timestamps.expires` | ISO8601 | Expiration timestamp |
-| `revocation.check_uri` | URI | Real-time revocation check endpoint |
-| `revocation.crl_uri` | URI | Certificate revocation list |
-| `metadata.*` | any | Implementation-specific metadata |
+| Component | Maximum | Rationale |
+|-----------|---------|-----------|
+| Manifest JSON | 64 KB | Metadata shouldn't be huge |
+| Constitution content | 256 KB | ~50K tokens maximum |
+| Total bundle | 320 KB | Manifest + content |
+| Bundle URI | 2048 chars | URL length limits |
+| Constitutions per request | 10 | Context budget |
 
-### 4.4 Content Format
+---
 
-Constitutional content MUST be in **canonical form** for hash verification:
+## 5. Canonicalization
 
-1. **Encoding**: UTF-8, no BOM
-2. **Line endings**: LF only (no CRLF)
-3. **Trailing newline**: Single trailing LF
-4. **Whitespace**: Normalized (no trailing whitespace on lines)
-5. **Format**: Plain text or Markdown (specified in `content_format`)
+### 5.1 Manifest Canonicalization (JCS)
 
-Canonicalization pseudocode:
+Manifest canonicalization follows RFC 8785 (JSON Canonicalization Scheme):
+
 ```python
-def canonicalize(text: str) -> str:
-    lines = text.replace('\r\n', '\n').replace('\r', '\n').split('\n')
-    lines = [line.rstrip() for line in lines]
-    while lines and lines[-1] == '':
-        lines.pop()
-    return '\n'.join(lines) + '\n'
+import json
+
+def canonicalize_manifest(manifest: dict) -> bytes:
+    """RFC 8785 JSON Canonicalization Scheme"""
+    # Remove signature before canonicalizing
+    to_sign = {k: v for k, v in manifest.items() if k != 'signature'}
+
+    # JCS rules:
+    # - UTF-8 encoding
+    # - No whitespace between tokens
+    # - Object keys sorted lexicographically
+    # - Numbers in shortest form
+    return json.dumps(
+        to_sign,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(',', ':')
+    ).encode('utf-8')
 ```
 
-### 4.5 Signature Computation
+### 5.2 Content Canonicalization
 
-The signature covers a canonical JSON serialization of the signed fields:
+Constitutional content MUST be canonicalized before hashing:
+
+```python
+import unicodedata
+import hashlib
+
+def canonicalize_content(text: str) -> bytes:
+    """Canonical form for constitution content."""
+
+    # 1. Unicode NFC normalization
+    text = unicodedata.normalize('NFC', text)
+
+    # 2. Line ending normalization (CRLF/CR → LF)
+    text = text.replace('\r\n', '\n').replace('\r', '\n')
+
+    # 3. Strip trailing whitespace from each line
+    lines = [line.rstrip(' \t') for line in text.split('\n')]
+
+    # 4. Remove trailing empty lines, ensure single trailing newline
+    while lines and lines[-1] == '':
+        lines.pop()
+    text = '\n'.join(lines) + '\n'
+
+    # 5. Reject control characters (except \n, \t)
+    for i, char in enumerate(text):
+        if unicodedata.category(char) == 'Cc' and char not in '\n\t':
+            raise ValueError(f"Illegal control character at position {i}")
+
+    # 6. UTF-8 encode without BOM
+    return text.encode('utf-8')
+
+def compute_content_hash(content: str) -> str:
+    canonical = canonicalize_content(content)
+    digest = hashlib.sha256(canonical).hexdigest()
+    return f"sha256:{digest}"
+```
+
+### 5.3 Signature Computation
 
 ```python
 def compute_signature(manifest: dict, private_key) -> str:
-    signed_fields = manifest['signature']['signed_fields']
-    to_sign = {k: manifest[k] for k in signed_fields}
-    canonical = json.dumps(to_sign, sort_keys=True, separators=(',', ':'))
-    signature = ed25519_sign(private_key, canonical.encode('utf-8'))
+    canonical = canonicalize_manifest(manifest)
+    signature = ed25519_sign(private_key, canonical)
     return base64.b64encode(signature).decode('ascii')
+
+def verify_signature(manifest: dict, public_key) -> bool:
+    canonical = canonicalize_manifest(manifest)
+    signature = base64.b64decode(manifest['signature']['value'])
+    return ed25519_verify(public_key, canonical, signature)
 ```
 
 ---
 
-## 5. Addressing Scheme
+## 6. Addressing Scheme
 
-### 5.1 Bundle URIs
+### 6.1 Bundle URIs
 
 Bundles are identified by URIs in the `creed://` scheme:
 
@@ -362,28 +476,15 @@ Examples:
   creed://acme-corp.example/internal/hr-policy@latest
 ```
 
-#### Components
+### 6.2 Content Addresses
 
-| Component | Description |
-|-----------|-------------|
-| `issuer` | Domain-style identifier of the signing entity |
-| `path` | Hierarchical path within issuer's namespace |
-| `version` | Optional version constraint (semver, "latest", "canary") |
-
-### 5.2 Content Addresses
-
-For content-addressed retrieval, use the hash directly:
+For content-addressed retrieval:
 
 ```
 vcp-hash://sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
 ```
 
-This enables:
-- Retrieval from any mirror without trust
-- Deduplication in caches
-- Verification without manifest
-
-### 5.3 Resolution
+### 6.3 Resolution
 
 Orchestrators MAY resolve bundle URIs through:
 
@@ -392,25 +493,19 @@ Orchestrators MAY resolve bundle URIs through:
 3. **Content-addressed fetch**: IPFS, S3, or other CAS
 4. **Local cache**: Pre-fetched bundles
 
-Resolution is implementation-defined. The protocol only specifies the bundle format and verification requirements.
-
 ---
 
-## 6. Transport Protocol
+## 7. Transport Protocol
 
-### 6.1 Bundle Retrieval
-
-Orchestrators MUST support retrieving bundles via HTTPS. Additional transports (IPFS, S3, etc.) are OPTIONAL.
-
-#### HTTPS Retrieval
+### 7.1 Bundle Retrieval
 
 ```http
 GET /.well-known/vcp/family.safe.guide.bundle HTTP/1.1
 Host: creed.space
-Accept: application/vcp-bundle+json
+Accept: application/vcp-bundle+json; version=1.0
 
 HTTP/1.1 200 OK
-Content-Type: application/vcp-bundle+json
+Content-Type: application/vcp-bundle+json; version=1.0
 Cache-Control: max-age=3600
 
 {
@@ -419,295 +514,422 @@ Cache-Control: max-age=3600
 }
 ```
 
-#### Content-Type
+### 7.2 Version Negotiation
 
-| Type | Description |
-|------|-------------|
-| `application/vcp-bundle+json` | JSON bundle (manifest + content) |
-| `application/vcp-manifest+json` | Manifest only |
-| `text/vcp-content` | Content only |
+Orchestrators MUST request specific versions:
 
-### 6.2 Bundle Caching
+```http
+Accept: application/vcp-bundle+json; version=1.0
+```
 
-Orchestrators SHOULD cache bundles with the following policy:
+Orchestrators MUST reject responses without version headers.
+
+### 7.3 Caching
 
 1. **Cache key**: Content hash (not URI)
 2. **Validation**: Re-verify signature on cache hit
-3. **Expiration**: Respect `timestamps.expires` or Cache-Control
-4. **Revocation**: Check revocation status periodically
-
-### 6.3 Multi-Bundle Transport
-
-When multiple constitutions are combined:
-
-```json
-{
-  "bundles": [
-    { "manifest": {...}, "content": "..." },
-    { "manifest": {...}, "content": "..." }
-  ],
-  "composition": {
-    "mode": "layered",
-    "precedence": ["creed://a/b", "creed://c/d"]
-  }
-}
-```
+3. **Expiration**: Respect `timestamps.exp`
+4. **Revocation**: Check status periodically
 
 ---
 
-## 7. Verification Protocol
+## 8. Verification Protocol
 
-### 7.1 Verification Steps
+### 8.1 Verification Steps
 
-Orchestrators MUST perform these checks before injection:
+Orchestrators MUST perform ALL checks before injection:
 
 ```python
-def verify_bundle(bundle: Bundle, trust_anchors: dict) -> VerificationResult:
-    # 1. Schema validation
+def verify_bundle(bundle: Bundle, context: VerificationContext) -> VerificationResult:
+    # 1. Size limits
+    if len(json.dumps(bundle.manifest)) > 65536:
+        return VerificationResult.SIZE_EXCEEDED
+    if len(bundle.content) > 262144:
+        return VerificationResult.SIZE_EXCEEDED
+
+    # 2. Schema validation
     if not validate_schema(bundle.manifest):
         return VerificationResult.INVALID_SCHEMA
 
-    # 2. Signature verification
-    issuer_key = trust_anchors.get(bundle.manifest['issuer']['id'])
+    # 3. Issuer signature verification
+    issuer_key = context.trust_anchors.get(bundle.manifest['issuer']['id'])
     if not issuer_key:
         return VerificationResult.UNTRUSTED_ISSUER
-
     if not verify_signature(bundle.manifest, issuer_key):
         return VerificationResult.INVALID_SIGNATURE
 
-    # 3. Content hash verification
-    computed_hash = sha256(canonicalize(bundle.content))
+    # 4. Safety attestation verification
+    auditor_key = context.safety_auditors.get(
+        bundle.manifest['safety_attestation']['auditor']
+    )
+    if not auditor_key:
+        return VerificationResult.UNTRUSTED_AUDITOR
+    if not verify_safety_attestation(bundle.manifest, auditor_key):
+        return VerificationResult.INVALID_ATTESTATION
+
+    # 5. Content hash verification
+    computed_hash = compute_content_hash(bundle.content)
     if computed_hash != bundle.manifest['bundle']['content_hash']:
         return VerificationResult.HASH_MISMATCH
 
-    # 4. Expiration check
-    if bundle.manifest['timestamps'].get('expires'):
-        if datetime.now() > parse_iso8601(bundle.manifest['timestamps']['expires']):
-            return VerificationResult.EXPIRED
+    # 6. Temporal claims validation
+    now = datetime.utcnow()
+    ts = bundle.manifest['timestamps']
 
-    # 5. Revocation check (optional but recommended)
-    if bundle.manifest.get('revocation', {}).get('check_uri'):
-        if is_revoked(bundle.manifest['bundle']['id'],
-                      bundle.manifest['revocation']['check_uri']):
-            return VerificationResult.REVOKED
+    if now < parse_iso8601(ts['nbf']):
+        return VerificationResult.NOT_YET_VALID
+    if now > parse_iso8601(ts['exp']):
+        return VerificationResult.EXPIRED
+    if parse_iso8601(ts['iat']) > now + timedelta(minutes=5):
+        return VerificationResult.FUTURE_TIMESTAMP
+
+    # 7. Replay prevention
+    jti = ts['jti']
+    if context.replay_cache.seen(jti):
+        return VerificationResult.REPLAY_DETECTED
+    context.replay_cache.record(jti, parse_iso8601(ts['exp']))
+
+    # 8. Token budget verification
+    budget = bundle.manifest['budget']
+    actual_tokens = count_tokens(bundle.content, budget['tokenizer'])
+    if abs(actual_tokens - budget['token_count']) > 10:
+        return VerificationResult.TOKEN_MISMATCH
+    if actual_tokens > context.model_context_limit * budget['max_context_share']:
+        return VerificationResult.BUDGET_EXCEEDED
+
+    # 9. Scope binding verification
+    if not verify_scope(bundle.manifest.get('scope', {}), context):
+        return VerificationResult.SCOPE_MISMATCH
+
+    # 10. Revocation check
+    if is_revoked(bundle, context):
+        return VerificationResult.REVOKED
 
     return VerificationResult.VALID
 ```
 
-### 7.2 Verification Results
+### 8.2 Verification Results
 
-| Result | Code | Action |
-|--------|------|--------|
-| `VALID` | 0 | Proceed with injection |
-| `INVALID_SCHEMA` | 1 | Reject, log error |
-| `UNTRUSTED_ISSUER` | 2 | Reject, log warning |
-| `INVALID_SIGNATURE` | 3 | Reject, log security alert |
-| `HASH_MISMATCH` | 4 | Reject, log security alert |
-| `EXPIRED` | 5 | Reject, attempt refresh |
-| `REVOKED` | 6 | Reject, log revocation |
-| `FETCH_FAILED` | 7 | Retry or fail-closed |
+| Result | Code | Category | Action |
+|--------|------|----------|--------|
+| `VALID` | 0 | success | Proceed |
+| `SIZE_EXCEEDED` | 1 | security | Block |
+| `INVALID_SCHEMA` | 2 | config | Block |
+| `UNTRUSTED_ISSUER` | 3 | config | Block |
+| `INVALID_SIGNATURE` | 4 | security | Block + Alert |
+| `UNTRUSTED_AUDITOR` | 5 | config | Block |
+| `INVALID_ATTESTATION` | 6 | security | Block + Alert |
+| `HASH_MISMATCH` | 7 | security | Block + Alert |
+| `NOT_YET_VALID` | 8 | temporal | Block |
+| `EXPIRED` | 9 | temporal | Refresh |
+| `FUTURE_TIMESTAMP` | 10 | security | Block |
+| `REPLAY_DETECTED` | 11 | security | Block + Alert |
+| `TOKEN_MISMATCH` | 12 | security | Block |
+| `BUDGET_EXCEEDED` | 13 | config | Block |
+| `SCOPE_MISMATCH` | 14 | config | Block |
+| `REVOKED` | 15 | security | Block |
+| `FETCH_FAILED` | 16 | transient | Retry |
 
-### 7.3 Fail-Closed Behavior
+### 8.3 Fail-Closed Mandate
 
-If verification fails, orchestrators MUST NOT inject unverified content. Behavior options:
+Orchestrators MUST implement fail-closed behavior:
 
-1. **Block**: Refuse to proceed with inference
-2. **Fallback**: Use a cached verified version
-3. **Degrade**: Apply a minimal default constitution
+```python
+class ConformantOrchestrator:
+    def inject_constitution(self, bundle: Bundle) -> str:
+        """
+        Returns: Injection text for LLM
+        Raises: VerificationError (NEVER returns on failure)
 
-The choice is implementation-defined, but unverified content MUST NOT be injected.
+        MUST NOT:
+        - Return partial/truncated content
+        - Return unverified content
+        - Swallow exceptions
+        - Fall back to "no constitution" silently
+        """
+        result = self.verify(bundle)
+        if not result.is_valid:
+            raise VerificationError(result)  # MUST raise
+        return self.format_injection(bundle)
+```
+
+**Truncation is FORBIDDEN.** If content doesn't fit in context, REJECT the entire request.
 
 ---
 
-## 8. Injection Format
+## 9. Content Safety
 
-### 8.1 LLM Input Structure
+### 9.1 The Problem
 
-The verified constitution is injected into the LLM's system prompt:
+A signed constitution containing "Ignore all previous instructions" is *verified as authentic* but is malicious. Signature proves issuer identity, not content safety.
+
+### 9.2 Safety Attestation
+
+Bundles MUST include a safety attestation from an independent auditor:
+
+```json
+{
+  "safety_attestation": {
+    "auditor": "safety-review.creed.space",
+    "auditor_key_id": "safety-2026",
+    "reviewed_at": "2026-01-10T11:00:00Z",
+    "attestation_type": "injection-safe",
+    "signature": "base64:MEUCIQDr..."
+  }
+}
+```
+
+### 9.3 Attestation Types
+
+| Type | Meaning |
+|------|---------|
+| `injection-safe` | Content reviewed for prompt injection patterns |
+| `content-safe` | Content reviewed for harmful material |
+| `full-audit` | Comprehensive safety review |
+
+### 9.4 Injection Pattern Scanning
+
+Before attestation, auditors MUST scan for:
+
+```python
+INJECTION_PATTERNS = [
+    r"ignore\s+(all\s+)?(previous|above|prior)\s+instructions",
+    r"you\s+are\s+now\s+",
+    r"disregard\s+(the\s+)?(above|previous)",
+    r"your\s+new\s+(instructions|role|purpose)",
+    r"^(user|assistant|system|human|ai):\s*",
+    r"<\|?(system|user|assistant)\|?>",
+    r"```system",
+    r"\x00",  # null bytes
+]
+
+FORBIDDEN_CHARACTERS = [
+    '\u202a', '\u202b', '\u202c', '\u202d', '\u202e',  # direction overrides
+    '\u2066', '\u2067', '\u2068', '\u2069',  # isolates
+]
+
+def scan_for_injection(content: str) -> list[str]:
+    findings = []
+    for pattern in INJECTION_PATTERNS:
+        if re.search(pattern, content, re.IGNORECASE | re.MULTILINE):
+            findings.append(f"Injection pattern: {pattern}")
+    for char in FORBIDDEN_CHARACTERS:
+        if char in content:
+            findings.append(f"Forbidden character: U+{ord(char):04X}")
+    return findings
+```
+
+### 9.5 Verification
+
+Orchestrators MUST verify BOTH signatures:
+
+1. Issuer signature (authenticity)
+2. Safety attestation signature (reviewed for injection)
+
+Both MUST pass for injection to proceed.
+
+---
+
+## 10. Composition Semantics
+
+### 10.1 The Problem
+
+Multiple constitutions with conflicting rules produce undefined behavior.
+
+### 10.2 Composition Modes
+
+| Mode | Behavior |
+|------|----------|
+| `base` | Foundation layer, can be extended but not overridden |
+| `extend` | Adds to base, conflicts are errors |
+| `override` | Later layers override earlier on conflict |
+| `strict` | Any conflict is an error |
+
+### 10.3 Layer Precedence
+
+```
+Layer 0: Platform defaults (implicit)
+Layer 1: Safety foundations (UEF, etc.) - mode: base
+Layer 2: Domain rules (professional, family) - mode: extend
+Layer 3: User customizations - mode: override
+Layer 4: Session overrides - mode: override (highest precedence)
+```
+
+### 10.4 Conflict Detection
+
+```python
+def detect_conflicts(bundles: list[Bundle]) -> list[Conflict]:
+    conflicts = []
+    for i, a in enumerate(bundles):
+        for b in bundles[i+1:]:
+            # Check explicit declarations
+            if b.id in a.manifest.get('composition', {}).get('conflicts_with', []):
+                conflicts.append(Conflict(a, b, "explicit"))
+    return conflicts
+
+def resolve_conflicts(bundles: list[Bundle], conflicts: list[Conflict]) -> list[Bundle]:
+    for conflict in conflicts:
+        a_layer = conflict.a.manifest['composition']['layer']
+        b_layer = conflict.b.manifest['composition']['layer']
+        a_mode = conflict.a.manifest['composition']['mode']
+
+        if a_mode == 'strict':
+            raise CompositionError(f"Conflict in strict mode: {conflict}")
+        elif a_mode == 'extend':
+            raise CompositionError(f"Conflict in extend mode: {conflict}")
+        # override mode: higher layer wins (handled at injection)
+
+    return bundles
+```
+
+### 10.5 Multi-Constitution Injection Format
+
+```
+[VCP:1.0]
+[COMPOSITION:layered]
+[LAYER:1:creed://creed.space/uef@1.0.0:sha256:abc...]
+[LAYER:2:creed://creed.space/family.safe.guide@1.2.0:sha256:def...]
+[PRECEDENCE:1>2]
+[VERIFIED:2026-01-10T12:00:00Z]
+---BEGIN-CONSTITUTION---
+## Layer 1: Universal Ethical Foundation (BASE)
+...
+
+## Layer 2: Family Safety (EXTEND)
+...
+---END-CONSTITUTION---
+```
+
+---
+
+## 11. Injection Format
+
+### 11.1 Single Constitution
 
 ```
 [VCP:1.0]
 [ID:creed://creed.space/family.safe.guide@1.2.0]
 [HASH:7f83b165...9069]
+[TOKENS:847]
+[ATTESTED:injection-safe:safety-review.creed.space]
 [VERIFIED:2026-01-10T12:00:00Z]
 ---BEGIN-CONSTITUTION---
 # Family Safety Constitution
 
 ## Purpose
-Ensure AI interactions are appropriate for family environments with children present.
+Ensure AI interactions are appropriate for family environments.
 
-## Article 1: Content Standards
-...
-
----END-CONSTITUTION---
-```
-
-### 8.2 Header Format
-
-```abnf
-vcp-header = vcp-line id-line hash-line verified-line
-vcp-line = "[VCP:" version "]" LF
-id-line = "[ID:" bundle-uri "]" LF
-hash-line = "[HASH:" hash-prefix "..." hash-suffix "]" LF
-verified-line = "[VERIFIED:" iso8601-timestamp "]" LF
-
-version = 1*DIGIT "." 1*DIGIT
-bundle-uri = <as defined in Section 5.1>
-hash-prefix = 8HEXDIG
-hash-suffix = 4HEXDIG
-```
-
-### 8.3 Delimiter Requirements
-
-Delimiters MUST be distinctive to prevent prompt injection:
-
-1. `---BEGIN-CONSTITUTION---` before content
-2. `---END-CONSTITUTION---` after content
-
-Implementations MAY use additional markers (XML tags, special tokens) for model-specific safety.
-
-### 8.4 Multi-Constitution Injection
-
-When multiple constitutions apply:
-
-```
-[VCP:1.0]
-[ID:creed://creed.space/family.safe.guide@1.2.0]
-[HASH:7f83b165...9069]
-[ID:creed://creed.space/professional/assistant@1.0.0]
-[HASH:a1b2c3d4...efgh]
-[PRECEDENCE:family.safe.guide>professional/assistant]
-[VERIFIED:2026-01-10T12:00:00Z]
----BEGIN-CONSTITUTION---
-[Constitution 1 of 2: family.safe.guide]
-...
-
-[Constitution 2 of 2: professional/assistant]
 ...
 ---END-CONSTITUTION---
 ```
+
+### 11.2 Header Fields
+
+| Field | Format | Description |
+|-------|--------|-------------|
+| `VCP` | version | Protocol version |
+| `ID` | URI | Bundle identifier with version |
+| `HASH` | prefix...suffix | Content hash (truncated) |
+| `TOKENS` | integer | Token count |
+| `ATTESTED` | type:auditor | Safety attestation |
+| `VERIFIED` | ISO8601 | Verification timestamp |
+| `COMPOSITION` | mode | Composition mode (multi-constitution) |
+| `LAYER` | n:id:hash | Layer entry (multi-constitution) |
+| `PRECEDENCE` | n>m | Layer precedence (multi-constitution) |
+
+### 11.3 Delimiter Requirements
+
+Delimiters MUST be distinctive:
+
+- `---BEGIN-CONSTITUTION---` before content
+- `---END-CONSTITUTION---` after content
+
+These strings MUST NOT appear in constitution content.
 
 ---
 
-## 9. Audit and Logging
+## 12. Audit and Logging
 
-### 9.1 Audit Log Requirements
+### 12.1 Privacy-Preserving Audit
 
-Orchestrators MUST maintain an audit log with:
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `timestamp` | Yes | When verification/injection occurred |
-| `session_id` | Yes | Identifier correlating to inference request |
-| `manifest` | Yes | Complete signed manifest |
-| `verification_result` | Yes | Outcome of verification |
-| `content_hash` | Yes | Hash of injected content |
-| `issuer_verified` | Yes | Boolean - signature verified |
-
-### 9.2 Log Entry Schema
+Audit logs MUST NOT contain full constitution content. Use hashes instead:
 
 ```json
 {
   "vcp_audit_version": "1.0",
+  "audit_level": "standard",
   "timestamp": "2026-01-10T12:00:00.123Z",
-  "session_id": "sess_abc123xyz",
-  "request_id": "req_def456uvw",
+  "session_id_hash": "sha256:abc123...",
 
   "verification": {
     "result": "VALID",
-    "duration_ms": 45,
-    "issuer_verified": true,
-    "hash_verified": true,
-    "revocation_checked": true
+    "checks_passed": ["signature", "attestation", "hash", "temporal", "scope", "revocation"]
   },
 
-  "bundle": {
-    "id": "creed://creed.space/family.safe.guide@1.2.0",
+  "bundle_ref": {
+    "id_hash": "sha256:def456...",
     "content_hash": "sha256:7f83b165...",
-    "issuer": "creed.space",
+    "issuer_hash": "sha256:ghi789...",
     "version": "1.2.0"
   },
 
-  "manifest_signature": "MEUCIQD...",
-
-  "injection": {
-    "token_count": 847,
-    "format": "vcp-header-delimited"
-  }
+  "manifest_signature": "MEUCIQD..."
 }
 ```
 
-### 9.3 Transparency Log (Optional)
+### 12.2 Audit Levels
 
-For high-assurance deployments, orchestrators SHOULD submit audit entries to a Certificate Transparency-style log:
+| Level | Contents |
+|-------|----------|
+| `minimal` | Bundle hash, verification result |
+| `standard` | + timestamps, issuer hash, version |
+| `full` | + complete manifest (no content) |
+| `diagnostic` | + content hash + first 100 chars |
 
-1. Log entries are append-only
-2. Log provides inclusion proofs
-3. Third parties can audit without orchestrator cooperation
+### 12.3 Retention
 
-### 9.4 Retention
-
-Audit logs SHOULD be retained for:
-- Minimum: Duration of any applicable regulatory requirement
+- Minimum: Regulatory requirement duration
 - Recommended: 1 year
-- Sensitive deployments: 7 years
+- Sensitive: 7 years
 
 ---
 
-## 10. Trust Model
+## 13. Trust Model
 
-### 10.1 Trust Anchors
-
-Orchestrators maintain a set of trusted issuer public keys:
+### 13.1 Trust Anchors
 
 ```json
 {
   "trust_anchors": {
     "creed.space": {
-      "keys": [
-        {
-          "id": "creed-space-2026",
-          "algorithm": "ed25519",
-          "public_key": "MC4CAQAwBQYDK2VwBCIEIH...",
-          "valid_from": "2026-01-01T00:00:00Z",
-          "valid_until": "2027-01-01T00:00:00Z"
-        }
-      ],
-      "revocation_uri": "https://creed.space/crl/2026.json"
+      "type": "issuer",
+      "keys": [{
+        "id": "creed-space-2026",
+        "algorithm": "ed25519",
+        "public_key": "base64:...",
+        "state": "active",
+        "valid_from": "2026-01-01T00:00:00Z",
+        "valid_until": "2027-01-01T00:00:00Z"
+      }]
+    },
+    "safety-review.creed.space": {
+      "type": "auditor",
+      "keys": [{
+        "id": "safety-2026",
+        "algorithm": "ed25519",
+        "public_key": "base64:...",
+        "state": "active",
+        "valid_from": "2026-01-01T00:00:00Z",
+        "valid_until": "2027-01-01T00:00:00Z"
+      }]
     }
   }
 }
 ```
 
-### 10.2 Key Management
+### 13.2 Threshold Signatures (Optional)
 
-#### Key Rotation
-- Issuers SHOULD rotate keys annually
-- Old keys remain valid for verification until expiry
-- New bundles MUST use current key
-
-#### Key Compromise
-- Issuer publishes revocation for compromised key
-- Orchestrators MUST check revocation before trusting
-- All bundles signed with compromised key are invalidated
-
-### 10.3 Multi-Issuer Trust
-
-Orchestrators MAY trust multiple issuers:
-
-```json
-{
-  "trust_policy": {
-    "mode": "allowlist",
-    "issuers": ["creed.space", "acme-corp.example"],
-    "require_all": false
-  }
-}
-```
-
-### 10.4 Threshold Signatures (Optional)
-
-For high-stakes constitutions, require multiple signatures:
+For high-stakes constitutions:
 
 ```json
 {
@@ -716,8 +938,7 @@ For high-stakes constitutions, require multiple signatures:
     "threshold": 2,
     "signers": [
       {"id": "creed.space", "signature": "..."},
-      {"id": "ethics-board.org", "signature": "..."},
-      {"id": "audit-firm.com", "signature": "..."}
+      {"id": "ethics-board.org", "signature": "..."}
     ]
   }
 }
@@ -725,262 +946,267 @@ For high-stakes constitutions, require multiple signatures:
 
 ---
 
-## 11. Versioning
+## 14. Key Lifecycle
 
-### 11.1 Semantic Versioning
+### 14.1 Key States
 
-Bundle versions follow semver:
+```
+PENDING → ACTIVE → ROTATING → RETIRED
+                ↘ COMPROMISED → REVOKED
+```
 
-| Change Type | Version Bump | Example |
-|-------------|--------------|---------|
-| Breaking (incompatible) | Major | 1.0.0 → 2.0.0 |
-| Feature (backward compatible) | Minor | 1.0.0 → 1.1.0 |
-| Fix (backward compatible) | Patch | 1.0.0 → 1.0.1 |
+### 14.2 Rotation Protocol
 
-### 11.2 Version Constraints
+1. **T-90 days**: Generate new key, announce `successor`
+2. **T-30 days**: New key `pending`, sign with both
+3. **T-0**: Old key `rotating`, new key `active`
+4. **T+30 days**: Old key `retired`
 
-Orchestrators MAY specify version constraints:
+### 14.3 Compromise Response
 
-| Constraint | Meaning |
-|------------|---------|
-| `@1.2.0` | Exact version |
-| `@^1.2.0` | Compatible with 1.2.0 (≥1.2.0, <2.0.0) |
-| `@~1.2.0` | Approximately 1.2.0 (≥1.2.0, <1.3.0) |
-| `@latest` | Most recent stable |
-| `@canary` | Most recent (including pre-release) |
+1. Mark key as `compromised` immediately
+2. Publish to revocation list
+3. Invalidate all bundles signed after compromise
+4. Re-sign active bundles with backup key
+5. Notify orchestrators out-of-band
 
-### 11.3 Version Discovery
+### 14.4 Emergency Key
 
-```http
-GET /.well-known/vcp/family.safe.guide/versions HTTP/1.1
-Host: creed.space
+Issuers MUST maintain offline emergency key for:
+- Revoking compromised keys
+- Signing emergency safety updates
+- Authorizing new primary keys
 
-HTTP/1.1 200 OK
-Content-Type: application/json
+---
 
-{
-  "bundle_id": "creed://creed.space/family.safe.guide",
-  "versions": [
-    {"version": "1.2.0", "released": "2026-01-10", "status": "stable"},
-    {"version": "1.1.0", "released": "2025-12-01", "status": "stable"},
-    {"version": "1.3.0-beta", "released": "2026-01-15", "status": "prerelease"}
-  ],
-  "latest": "1.2.0"
-}
+## 15. Versioning
+
+### 15.1 Bundle Versioning
+
+Semantic versioning (semver):
+
+| Change | Bump | Example |
+|--------|------|---------|
+| Breaking | Major | 1.0.0 → 2.0.0 |
+| Feature | Minor | 1.0.0 → 1.1.0 |
+| Fix | Patch | 1.0.0 → 1.0.1 |
+
+### 15.2 Expiration Policy
+
+| Type | Max `exp` from `iat` |
+|------|----------------------|
+| Safety-critical | 24 hours |
+| Standard | 7 days |
+| Stable | 30 days |
+| Maximum allowed | 90 days |
+
+### 15.3 Protocol Versioning
+
+Orchestrators MUST specify minimum version:
+
+```python
+MIN_VCP_VERSION = "1.0"
+
+def verify_version(manifest: dict) -> bool:
+    if version_compare(manifest['vcp_version'], MIN_VCP_VERSION) < 0:
+        raise VersionError("Bundle version too old")
+    return True
 ```
 
 ---
 
-## 12. Error Handling
+## 16. Error Handling
 
-### 12.1 Error Categories
+### 16.1 Error Hierarchy
 
-| Category | Severity | Recovery |
-|----------|----------|----------|
-| **Transient** | Low | Retry with backoff |
-| **Configuration** | Medium | Alert operator |
-| **Security** | High | Block and alert |
-| **Fatal** | Critical | Fail-closed, escalate |
+```python
+class VerificationFailure(Exception):
+    """All verification failures."""
+    pass
 
-### 12.2 Error Responses
+class SecurityFailure(VerificationFailure):
+    """Signature, hash, tampering. MUST block + alert."""
+    pass
 
-```json
-{
-  "error": {
-    "code": "VCP_SIGNATURE_INVALID",
-    "category": "security",
-    "message": "Bundle signature verification failed",
-    "details": {
-      "bundle_id": "creed://creed.space/family.safe.guide@1.2.0",
-      "issuer": "creed.space",
-      "expected_key": "creed-space-2026"
-    },
-    "recovery": "block"
-  }
-}
+class ConfigurationFailure(VerificationFailure):
+    """Missing trust anchor, scope. MUST block."""
+    pass
+
+class TemporalFailure(VerificationFailure):
+    """Expired, not-yet-valid. MUST block, may refresh."""
+    pass
+
+class TransientFailure(VerificationFailure):
+    """Network timeout. Retry then block."""
+    pass
 ```
 
-### 12.3 Error Codes
+### 16.2 Error Codes
 
 | Code | Category | Description |
 |------|----------|-------------|
-| `VCP_FETCH_FAILED` | transient | Could not retrieve bundle |
-| `VCP_FETCH_TIMEOUT` | transient | Retrieval timed out |
-| `VCP_SCHEMA_INVALID` | configuration | Manifest schema validation failed |
-| `VCP_ISSUER_UNKNOWN` | configuration | Issuer not in trust anchors |
 | `VCP_SIGNATURE_INVALID` | security | Signature verification failed |
-| `VCP_HASH_MISMATCH` | security | Content hash does not match |
-| `VCP_BUNDLE_EXPIRED` | configuration | Bundle past expiration |
-| `VCP_BUNDLE_REVOKED` | security | Bundle explicitly revoked |
-| `VCP_KEY_COMPROMISED` | security | Signing key was compromised |
+| `VCP_ATTESTATION_INVALID` | security | Safety attestation failed |
+| `VCP_HASH_MISMATCH` | security | Content hash mismatch |
+| `VCP_REPLAY_DETECTED` | security | JTI already seen |
+| `VCP_ISSUER_UNKNOWN` | config | Issuer not trusted |
+| `VCP_AUDITOR_UNKNOWN` | config | Auditor not trusted |
+| `VCP_SCOPE_MISMATCH` | config | Scope doesn't match context |
+| `VCP_EXPIRED` | temporal | Past expiration |
+| `VCP_NOT_YET_VALID` | temporal | Before nbf |
+| `VCP_FETCH_FAILED` | transient | Network error |
 
 ---
 
-## 13. Security Considerations
+## 17. Security Considerations
 
-### 13.1 Threat Model
+### 17.1 Mitigations Summary
 
 | Threat | Mitigation |
 |--------|------------|
-| **Bundle tampering** | Content hash verification |
-| **Issuer impersonation** | Signature verification against trust anchors |
-| **Replay attacks** | Timestamps, version tracking |
-| **Revocation bypass** | Online revocation checking |
-| **Orchestrator compromise** | Out of scope (trust boundary) |
-| **Prompt injection via constitution** | Structured delimiters, content validation |
+| Bundle tampering | Content hash verification |
+| Issuer impersonation | Signature verification |
+| Prompt injection | Safety attestation + scanning |
+| Replay attacks | Temporal claims + jti tracking |
+| Context overflow | Token budget enforcement |
+| Downgrade attacks | Version enforcement |
+| Key compromise | Rotation + revocation + emergency key |
+| Scope confusion | Scope binding |
+| Silent truncation | Fail-closed on budget exceed |
 
-### 13.2 Orchestrator Trust
+### 17.2 Orchestrator Trust
 
-The orchestrator is the trust boundary. If compromised, it can inject arbitrary content. Mitigations:
-
-1. **Hardware attestation**: Run orchestrator in TEE/SGX
-2. **Multi-party orchestration**: Multiple orchestrators must agree
-3. **Audit logging**: Enable post-hoc detection
-
-### 13.3 Prompt Injection Defense
-
-Constitutional content could contain prompt injection attempts. Defenses:
-
-1. **Issuer vetting**: Only trust vetted issuers
-2. **Content scanning**: Scan for injection patterns
-3. **Structured delimiters**: Use distinctive boundary markers
-4. **Model hardening**: Train models to respect delimiters
-
-### 13.4 Key Security
-
-| Requirement | Rationale |
-|-------------|-----------|
-| Ed25519 minimum | Modern, secure, compact |
-| Key rotation annually | Limit compromise window |
-| Offline root keys | Protect trust anchors |
-| Hardware security modules | For high-stakes deployments |
+The orchestrator is the trust boundary. Mitigations for compromise:
+- Hardware attestation (TEE/SGX)
+- Multi-party orchestration
+- Audit logging for post-hoc detection
 
 ---
 
-## 14. Interoperability
+## 18. Threat Model
 
-### 14.1 Conformance Levels
+### 18.1 Threat Actors
+
+| Actor | Capability | Goal |
+|-------|------------|------|
+| External attacker | Network access | Inject malicious constitution |
+| Malicious issuer | Signing key | Distribute harmful rules |
+| Compromised auditor | Attestation key | Approve malicious content |
+| Insider | Legitimate access | Exfiltrate/modify |
+
+### 18.2 Attack Surface
+
+```
+[Repository] ─── MITM ──→ [Orchestrator] ─── ? ──→ [LLM]
+
+Attack vectors:
+├── Malicious bundle injection
+├── Replay of revoked bundle
+├── Downgrade to old version
+├── Prompt injection in content
+├── Context overflow
+├── Key compromise
+└── Scope confusion
+```
+
+### 18.3 Out of Scope
+
+- Compromised orchestrator (trust boundary)
+- Model jailbreaks (content issue, not transport)
+- Side-channel attacks (implementation-specific)
+
+---
+
+## 19. Interoperability
+
+### 19.1 Conformance Levels
 
 | Level | Requirements |
 |-------|--------------|
-| **VCP-Core** | Bundle format, signature verification, hash verification |
-| **VCP-Full** | Core + revocation checking + audit logging |
-| **VCP-Enterprise** | Full + transparency log + multi-sig |
+| **VCP-Core** | Bundle format, signature, hash, temporal claims |
+| **VCP-Full** | Core + safety attestation + scope + audit |
+| **VCP-Enterprise** | Full + transparency log + multi-sig + HSM |
 
-### 14.2 Interoperability Requirements
+### 19.2 Algorithm Support
 
-Implementations claiming VCP conformance MUST:
-
-1. Accept bundles from any conforming issuer
-2. Produce bundles readable by any conforming orchestrator
-3. Use standard cryptographic algorithms (Ed25519, SHA-256)
-4. Follow canonical formats exactly
-
-### 14.3 Extension Points
-
-Implementations MAY extend VCP in the `metadata` field:
-
-```json
-{
-  "metadata": {
-    "vcp_standard": {
-      "csm1": "N5+F:ELEM@1.2.0"
-    },
-    "x_creed_space": {
-      "persona": "nanny",
-      "schwartz_profile": {...}
-    }
-  }
-}
-```
-
-Extensions MUST be prefixed with `x_` or namespaced.
+| Algorithm | Status |
+|-----------|--------|
+| `ed25519` | Required |
+| `ed448` | Recommended |
+| `sha256` | Required |
+| `sha384` | Optional |
+| `dilithium3` | Future (post-quantum) |
 
 ---
 
-## 15. Reference Implementation
+## 20. Reference Implementation
 
-### 15.1 Python SDK
+### 20.1 Python SDK
 
 ```python
-from vcp import Bundle, Orchestrator, TrustAnchor
+from vcp import Bundle, Orchestrator, TrustConfig
 
-# Configure trust
-trust = TrustAnchor.from_uri("https://creed.space/.well-known/vcp/trust.json")
-orchestrator = Orchestrator(trust_anchors=[trust])
+# Configure
+config = TrustConfig.from_file("trust.json")
+orchestrator = Orchestrator(config)
 
 # Fetch and verify
 bundle = orchestrator.fetch("creed://creed.space/family.safe.guide@1.2.0")
 result = orchestrator.verify(bundle)
 
 if result.is_valid:
-    # Generate injection
     injection = orchestrator.format_injection(bundle)
-    print(injection)
-
-    # Log for audit
     orchestrator.log_audit(bundle, result)
 else:
-    print(f"Verification failed: {result.error}")
+    raise result.to_exception()
 ```
 
-### 15.2 CLI Tool
+### 20.2 CLI
 
 ```bash
 # Fetch and verify
 vcp fetch creed://creed.space/family.safe.guide@1.2.0 \
-    --trust-anchor https://creed.space/.well-known/vcp/trust.json \
+    --trust trust.json --output bundle.json
+
+# Create bundle
+vcp create --content constitution.md \
+    --id creed://example.org/test@1.0.0 \
+    --issuer-key issuer.pem \
+    --auditor-key auditor.pem \
     --output bundle.json
 
-# Verify existing bundle
-vcp verify bundle.json --trust-anchor trust.json
-
-# Generate injection format
-vcp inject bundle.json --format header-delimited > injection.txt
-
-# Create new bundle (issuer side)
-vcp create \
-    --content constitution.md \
-    --id creed://example.org/my-constitution \
-    --version 1.0.0 \
-    --key private-key.pem \
-    --output bundle.json
+# Verify
+vcp verify bundle.json --trust trust.json
 ```
 
 ---
 
 ## Appendices
 
-### A. ABNF Grammar
+### A. JSON Schema
+
+See: `schemas/vcp-manifest-v1.schema.json`
+
+### B. ABNF Grammar
 
 ```abnf
-; Bundle URI
-bundle-uri = "creed://" issuer "/" path ["@" version-constraint]
+bundle-uri = "creed://" issuer "/" path ["@" version]
 issuer = domain-name
 path = segment *("/" segment)
 segment = 1*( ALPHA / DIGIT / "-" / "_" / "." )
-version-constraint = semver / "latest" / "canary"
+version = semver / "latest" / "canary"
 semver = major "." minor "." patch ["-" prerelease]
-major = 1*DIGIT
-minor = 1*DIGIT
-patch = 1*DIGIT
-prerelease = 1*( ALPHA / DIGIT / "-" / "." )
 
-; Content hash
-content-hash = algorithm ":" hash-value
-algorithm = "sha256" / "sha384" / "sha512"
-hash-value = 64*128HEXDIG
+content-hash = "sha256:" 64HEXDIG
 
-; CSM1 (compact reference)
 csm1 = persona adherence [scopes] [":" namespace] ["@" version]
 persona = "N" / "Z" / "G" / "A" / "M" / "D" / "C"
 adherence = 1*DIGIT
 scopes = 1*("+" scope-code)
 scope-code = "F" / "W" / "P" / "E" / "T" / "O" / "V" / "A"
-namespace = 1*8( ALPHA / DIGIT )
 ```
 
-### B. Example Bundle
+### C. Example Complete Bundle
 
 ```json
 {
@@ -989,56 +1215,64 @@ namespace = 1*8( ALPHA / DIGIT )
     "bundle": {
       "id": "creed://creed.space/family.safe.guide",
       "version": "1.2.0",
-      "content_hash": "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
-      "content_encoding": "utf-8",
-      "content_format": "text/markdown"
+      "content_hash": "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069"
     },
     "issuer": {
       "id": "creed.space",
-      "public_key": "ed25519:MC4CAQAwBQYDK2VwBCIEIHKhpwMdqgQwCXzLJv...",
+      "public_key": "ed25519:MC4CAQAwBQYDK2VwBCIEIH...",
       "key_id": "creed-space-2026"
     },
     "timestamps": {
-      "created": "2026-01-10T12:00:00Z",
-      "expires": "2027-01-10T12:00:00Z"
+      "iat": "2026-01-10T12:00:00Z",
+      "nbf": "2026-01-10T12:00:00Z",
+      "exp": "2026-01-17T12:00:00Z",
+      "jti": "550e8400-e29b-41d4-a716-446655440000"
     },
-    "revocation": {
-      "check_uri": "https://creed.space/api/v1/revoked",
-      "crl_uri": "https://creed.space/crl/2026.json"
+    "budget": {
+      "token_count": 847,
+      "tokenizer": "cl100k_base",
+      "max_context_share": 0.25
+    },
+    "scope": {
+      "purposes": ["general-assistant", "family-assistant"]
+    },
+    "composition": {
+      "layer": 2,
+      "mode": "extend",
+      "requires": ["creed://creed.space/uef"]
+    },
+    "safety_attestation": {
+      "auditor": "safety-review.creed.space",
+      "auditor_key_id": "safety-2026",
+      "reviewed_at": "2026-01-10T11:00:00Z",
+      "attestation_type": "injection-safe",
+      "signature": "base64:MEUCIQDr..."
     },
     "metadata": {
       "title": "Family Safety Constitution",
-      "description": "Child-safe content filtering for family environments",
-      "csm1": "N5+F:ELEM@1.2.0",
-      "tags": ["safety", "family", "children"]
+      "csm1": "N5+F:ELEM@1.2.0"
     },
     "signature": {
       "algorithm": "ed25519",
-      "value": "base64:MEUCIQD6X8kBxRiOnN...",
-      "signed_fields": ["vcp_version", "bundle", "issuer", "timestamps", "revocation", "metadata"]
+      "value": "base64:MEUCIQD...",
+      "signed_fields": ["vcp_version", "bundle", "issuer", "timestamps", "budget", "scope", "composition", "safety_attestation", "metadata"]
     }
   },
-  "content": "# Family Safety Constitution\n\n## Purpose\n\nEnsure AI interactions are appropriate for family environments with children present.\n\n## Article 1: Content Standards\n\nAt Level 5 (Maximum Protection):\n- No violence, including cartoon violence\n- No adult themes, innuendo, or suggestive content\n- No scary, disturbing, or nightmare-inducing content\n- No references to death, dying, or serious injury\n- No bullying, meanness, or social cruelty\n\n## Article 2: Language Standards\n\n- Use age-appropriate vocabulary\n- No profanity, even mild forms\n- No insults or name-calling\n- Encourage positive communication\n\n## Article 3: Topic Restrictions\n\nAvoid or age-appropriately handle:\n- Weapons and violence\n- Drugs and alcohol\n- Romantic relationships beyond friendship\n- Complex political topics\n- Religious debates\n\n## Article 4: Positive Behaviors\n\n- Encourage learning and curiosity\n- Model kindness and empathy\n- Support healthy habits\n- Promote creativity and imagination\n- Reinforce family values\n"
+  "content": "# Family Safety Constitution\n\n## Purpose\nEnsure AI interactions are appropriate for family environments.\n\n## Article 1: Content Standards\n- No violence\n- No adult themes\n- Age-appropriate language\n"
 }
 ```
-
-### C. Changelog
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2026-01-11 | Initial specification |
 
 ---
 
 ## References
 
-1. Watson, N. & Claude. (2026). "Constitutional AI for Personalized Alignment." Creed Space Technical Report.
-2. Christiano, P. et al. (2017). "Deep Reinforcement Learning from Human Preferences." NeurIPS.
-3. Bai, Y. et al. (2022). "Constitutional AI: Harmlessness from AI Feedback." Anthropic.
-4. Certificate Transparency. RFC 6962.
-5. JSON Web Signature. RFC 7515.
-6. Ed25519. RFC 8032.
+1. Watson, N. & Claude. (2026). "Constitutional AI for Personalized Alignment." Creed Space.
+2. RFC 8785. JSON Canonicalization Scheme (JCS).
+3. RFC 8032. Edwards-Curve Digital Signature Algorithm (EdDSA).
+4. RFC 6962. Certificate Transparency.
+5. RFC 7519. JSON Web Token (JWT).
+6. OWASP. Prompt Injection Prevention Cheat Sheet.
 
 ---
 
-*This specification is released under CC BY 4.0. Contributions welcome.*
+*VCP Specification v1.0 | CC BY 4.0 | Creed Space 2026*

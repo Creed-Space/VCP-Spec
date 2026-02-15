@@ -70,7 +70,7 @@ The Enneagram Protocol encodes context across 9 dimensions:
 | 1 | ⏰ | **TIME** | Temporal context | 🌅morning, 🌙night, 📅weekday |
 | 2 | 📍 | **SPACE** | Location/environment | 🏡home, 🏢office, 🏫school |
 | 3 | 👥 | **COMPANY** | Social context | 👤alone, 👶children, 👔colleagues |
-| 4 | 🌍 | **CULTURE** | Cultural/regional | 🇺🇸american, 🇯🇵japanese, 🌍global |
+| 4 | 🌍 | **CULTURE** | Communication style | 🔇high_context, 📢low_context, 🎩formal |
 | 5 | 🎭 | **OCCASION** | Event type | ➖normal, 🎂celebration, 🚨emergency |
 | 6 | 🧠 | **STATE** | Mental/emotional | 😊happy, 😰anxious, 😴tired |
 | 7 | 🌡️ | **ENVIRONMENT** | Physical conditions | ☀️comfortable, 🥵hot, 🔇quiet |
@@ -129,20 +129,18 @@ The Enneagram Protocol encodes context across 9 dimensions:
 
 #### CULTURE (🌍)
 
-| Emoji | Value | Description |
-|-------|-------|-------------|
-| 🇺🇸 | american | US cultural context |
-| 🇬🇧 | british | UK cultural context |
-| 🇯🇵 | japanese | Japanese cultural context |
-| 🇮🇳 | indian | Indian cultural context |
-| 🇨🇳 | chinese | Chinese cultural context |
-| 🇪🇺 | european | European cultural context |
-| 🌍 | global | International/multicultural |
-| 🏛️ | traditional | Conservative/traditional |
-| 🆕 | progressive | Modern/progressive |
-| 🕌 | islamic | Islamic cultural context |
-| ✡️ | jewish | Jewish cultural context |
-| ☯️ | eastern | East Asian philosophy |
+Culture values encode **communication styles**, not nationalities. This avoids stereotyping and focuses on the dimensions that affect AI behavioral adaptation.
+
+| Emoji | Value | Description | Constitutional Impact |
+|-------|-------|-------------|----------------------|
+| 🔇 | high_context | Indirect communication, implicit meaning | AI SHOULD read between the lines, use nuance |
+| 📢 | low_context | Direct, explicit communication | AI SHOULD be explicit and literal |
+| 🎩 | formal | Formal register expected | AI MUST use formal language, honorifics |
+| 👋 | informal | Casual register acceptable | AI MAY use casual tone |
+| 📊 | hierarchical | Respect for authority structures | AI SHOULD defer to authority, use titles |
+| ⚖️ | egalitarian | Flat social structure | AI SHOULD treat all participants equally |
+| 👥 | collectivist | Group harmony prioritized | AI SHOULD consider group impact of advice |
+| 👤 | individualist | Individual autonomy prioritized | AI SHOULD respect personal choice |
 
 #### OCCASION (🎭)
 
@@ -177,6 +175,8 @@ The Enneagram Protocol encodes context across 9 dimensions:
 | 🤔 | contemplative | Thoughtful/reflective |
 | 😵 | overwhelmed | Stressed/overloaded |
 | 🥺 | vulnerable | Emotionally fragile |
+
+**Relationship to CSM-1 R-line**: The STATE dimension is the adaptation layer's *view* of the R-line personal state dimensions defined in CSM-1 v1.1. The R-line defines 5 sub-dimensions (cognitive, emotional, energy, urgency, body) with intensity scales. The Enneagram STATE dimension is *derived from* R-line signals, not independent of them. When both are present, the R-line is authoritative for fine-grained state and STATE provides the coarse classification used for constitution selection. Implementations SHOULD map R-line values to STATE emoji codes using the following heuristic: emotional.valence < 3 → 😢/😡, energy < 3 → 😴, urgency > 7 → 😰, body.pain > 5 → 🤒.
 
 #### ENVIRONMENT (🌡️)
 
@@ -1189,7 +1189,7 @@ DIMENSIONS
 TIME: 🌅🌙📅🎉⏰
 SPACE: 🏡🏢🏫🏥💻🌳
 COMPANY: 👤👶👨‍👩‍👧👔👮🤝
-CULTURE: 🇺🇸🇬🇧🇯🇵🌍🏛️🆕
+CULTURE: 🔇📢🎩👋📊⚖️👥👤
 OCCASION: ➖🎂💼🚨🎪⚖️
 STATE: 😊😴😰😡😢🥺
 ENV: ☀️🥵🥶🌧️🌪️🔇🔥
@@ -1205,8 +1205,37 @@ CONSTRAINTS: ○🚧⚖️💸⏰🚨
 | `📍🏢` + `👥👔` | `A3+W+P` (Ambassador, work) |
 | `🎭🚨` (emergency) | Override to emergency mode |
 | `🧠🥺` (vulnerable state) | `G4+V` (Godparent, vulnerable) |
-| `📍🏥` (medical setting) | `R4+H+P` (Anchor, health) |
+| `📍🏥` (medical setting) | `D3+H+P` (Mediator, health) |
 | `🎭🎪` (entertainment) | `M2` (Muse, creative) |
+
+### C. Inter-Agent Message Types (PREVIEW)
+
+> **NOTE**: This section is **PREVIEW — subject to change in v1.2**. The message types and wire format are informational. Implementations SHOULD support `context_share` and `escalation`; other types are OPTIONAL.
+
+| Type | Direction | Purpose | Status |
+|------|-----------|---------|--------|
+| `context_share` | Agent → Agent | Share current Enneagram state with peer agents | SHOULD implement |
+| `constitution_announce` | Agent → Agent | Announce active constitution(s) to peer agents | MAY implement |
+| `constraint_propagate` | Parent → Child | Push constraints to sub-agents | MAY implement |
+| `escalation` | Child → Parent | Escalate conflict or safety concern to parent agent | SHOULD implement |
+
+**Wire format** (informational, to be formalized in v1.2):
+
+```json
+{
+  "vcp_message": "1.0",
+  "type": "context_share",
+  "sender": "agent-id",
+  "recipient": "agent-id | broadcast",
+  "payload": {
+    "context": "⏰🌅|📍🏡|👥👶",
+    "constitution_ref": "creed://creed.space/family.safe.guide@1.2.0",
+    "timestamp": "2026-02-15T10:30:00Z"
+  }
+}
+```
+
+**Escalation semantics**: When a child agent sends an `escalation` message, the parent MUST acknowledge within 5 seconds. If the escalation is safety-related (severity `critical` or `emergency`), the parent MUST suspend the child's current task until the escalation is resolved.
 
 ---
 
@@ -1215,6 +1244,7 @@ CONSTRAINTS: ○🚧⚖️💸⏰🚨
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | 2026-01-11 | Initial specification |
+| 1.1.0 | 2026-02-15 | Update CULTURE to communication styles, add STATE→R-line relationship, add inter-agent messaging preview |
 
 ---
 

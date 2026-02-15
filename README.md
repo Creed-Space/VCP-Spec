@@ -4,7 +4,7 @@
 
 **The open standard for portable, adaptive, and verifiable AI context.**
 
-[![Specification](https://img.shields.io/badge/spec-v1.1-blue?style=flat-square)](./specs/VCP_SPECIFICATION_v1.0_COMPLETE.md)
+[![Specification](https://img.shields.io/badge/spec-v1.1-blue?style=flat-square)](./specs/VCP_SPECIFICATION_v1.0.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](./LICENSE)
 
 [Overview](#overview) | [Quick Start](#quick-start) | [Specification](#specification) | [Schemas](#schemas) | [Contributing](#contributing) | [SDKs](#sdks)
@@ -37,7 +37,7 @@ New to VCP? Start here:
 
 1. **[Newcomer Guide](./docs/VCP_NEWCOMER_GUIDE.md)** -- What VCP is and why it exists
 2. **[Overview](./docs/VCP_OVERVIEW.md)** -- Technical overview of the protocol
-3. **[Full Specification](./specs/VCP_SPECIFICATION_v1.0_COMPLETE.md)** -- Complete v1.0 spec
+3. **[Full Specification](./specs/VCP_SPECIFICATION_v1.0.md)** -- Complete v1.0 spec
 
 ---
 
@@ -58,7 +58,7 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 
 | Document | Description |
 |:---|:---|
-| [VCP Specification v1.0](./specs/VCP_SPECIFICATION_v1.0_COMPLETE.md) | Full protocol specification |
+| [VCP Specification v1.0](./specs/VCP_SPECIFICATION_v1.0.md) | Full protocol specification |
 | [VCP v1.1 Amendments](./specs/VCP_SPECIFICATION_v1.1_AMENDMENTS.md) | R-line, personal state additions |
 | [Academic Paper](./specs/value_context_protocols_paper_v1.md) | Formal paper |
 
@@ -67,9 +67,18 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | Layer | Documentation |
 |:---|:---|
 | VCP/I -- Identity | [Naming](./docs/identity/VCP_IDENTITY_NAMING.md), [Namespace](./docs/identity/VCP_IDENTITY_NAMESPACE.md), [Encoding](./docs/identity/VCP_IDENTITY_ENCODING.md), [Ontology](./docs/identity/VCP_IDENTITY_ONTOLOGY.md), [Registry](./docs/identity/VCP_IDENTITY_REGISTRY.md) |
-| VCP/T -- Transport | [Specification](./specs/VCP_SPECIFICATION_v1.0_COMPLETE.md) SS6 |
-| VCP/S -- Semantics | [CSM-1 Grammar](./docs/content/CSM1_GRAMMAR_SPECIFICATION.md), [CSM-1 v1.1](./docs/content/CSM1_v1.1_AMENDMENT.md), [Composition](./docs/semantics/VCP_SEMANTICS_COMPOSITION.md) |
-| VCP/A -- Adaptation | [Adaptation](./docs/adaptation/VCP_ADAPTATION.md), [Context](./docs/context/VCP_CONTEXT_SPECIFICATION.md) |
+| VCP/T -- Transport | [Specification](./specs/VCP_SPECIFICATION_v1.0.md) SS6 |
+| VCP/S -- Semantics | [CSM-1 Grammar](./docs/content/CSM1_GRAMMAR_SPECIFICATION.md), [CSM-1 v1.1](./docs/content/CSM1_v1.1_AMENDMENT.md), [Composition](./docs/semantics/VCP_SEMANTICS_COMPOSITION.md), [Persona Profiles](./docs/semantics/VCP_PERSONA_PROFILES.md) |
+| VCP/A -- Adaptation | [Adaptation](./docs/adaptation/VCP_ADAPTATION.md), [Context](./docs/context/VCP_CONTEXT_SPECIFICATION.md), [State Machine](./docs/adaptation/VCP_STATE_MACHINE.md), [Hooks](./docs/adaptation/VCP_HOOKS.md) |
+
+### Specification Status
+
+| Layer | Status | Documents |
+|:---|:---|:---|
+| VCP/I -- Identity | Stable | 5 docs |
+| VCP/T -- Transport | Stable | 1 spec + 1 amendment |
+| VCP/S -- Semantics | Stable | 4 docs |
+| VCP/A -- Adaptation | Stable (messaging: Preview) | 4 docs |
 
 ### Universal Value Codes (UVC)
 

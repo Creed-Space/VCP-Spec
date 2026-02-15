@@ -123,8 +123,8 @@
 
     "culture_values": {
       "type": "string",
-      "description": "Culture dimension values",
-      "examples": ["🇺🇸", "🇬🇧", "🇯🇵", "🇮🇳", "🇨🇳", "🇪🇺", "🌍", "🏛️", "🆕"]
+      "description": "Culture dimension values (communication styles)",
+      "enum": ["🔇", "📢", "🎩", "👋", "📊", "⚖️", "👥", "👤"]
     },
 
     "occasion_values": {

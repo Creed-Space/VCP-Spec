@@ -318,7 +318,7 @@
         },
         "persona": {
           "type": "string",
-          "enum": ["nanny", "sentinel", "godparent", "ambassador", "muse", "anchor", "custom"],
+          "enum": ["nanny", "sentinel", "godparent", "ambassador", "muse", "mediator", "custom"],
           "description": "Creed Space persona"
         },
         "adherence_level": {

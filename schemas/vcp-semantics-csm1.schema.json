@@ -25,13 +25,13 @@
     "persona": {
       "type": "string",
       "description": "Persona code (single character)",
-      "enum": ["N", "Z", "G", "A", "M", "R", "H", "C"]
+      "enum": ["N", "Z", "G", "A", "M", "D", "C"]
     },
 
     "persona_name": {
       "type": "string",
       "description": "Full persona name",
-      "enum": ["nanny", "sentinel", "godparent", "ambassador", "muse", "anchor", "hotrod", "custom"]
+      "enum": ["nanny", "sentinel", "godparent", "ambassador", "muse", "mediator", "custom"]
     },
 
     "adherence": {
@@ -90,7 +90,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "enum": ["N", "Z", "G", "A", "M", "R", "H", "C"]
+          "enum": ["N", "Z", "G", "A", "M", "D", "C"]
         },
         "name": {
           "type": "string"

@@ -495,7 +495,7 @@ data/
 # data/vcp_value_ontology.json           # Curated value corpus
 ```
 
-**Note**: VCP/T transport specification is at `_papers/VCP_SPECIFICATION_v1.0_COMPLETE.md`
+**Note**: VCP/T transport specification is at `specs/VCP_SPECIFICATION_v1.0.md`
 
 ---
 

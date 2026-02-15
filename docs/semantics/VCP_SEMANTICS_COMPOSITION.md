@@ -909,7 +909,19 @@ __version__ = '1.0.0'
 | EXTEND | OVERRIDE | A + B (B wins conflicts) | No |
 | OVERRIDE | OVERRIDE | B wins conflicts | No |
 
-### B. Error Codes
+### B. Version Binding
+
+When a CSM-1 code references a constitution by version (e.g., `N5@1.2.0`), the following rules apply:
+
+1. **Exact version**: `@1.2.0` — The manifest `bundle.version` field MUST match exactly. A mismatch is a composition error.
+2. **Compatible version**: `@^1.2.0` — Any version `>=1.2.0` and `<2.0.0` is acceptable (semver compatible range).
+3. **Approximate version**: `@~1.2.0` — Any version `>=1.2.0` and `<1.3.0` is acceptable (semver approximate range).
+4. **Latest**: `@latest` — The manifest version is authoritative. The resolver MUST fetch the current latest version from the registry.
+5. **No version**: If the CSM-1 code omits a version specifier, the resolver SHOULD use the latest available version and MUST record the resolved version in the composition log.
+
+**Binding invariant**: Once a composition is resolved, all version bindings MUST be recorded as exact versions in the `merge_log`. This ensures reproducibility — the same composition can be recreated from the log.
+
+### C. Error Codes
 
 | Code | Description |
 |------|-------------|
@@ -927,6 +939,7 @@ __version__ = '1.0.0'
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | 2026-01-11 | Initial specification |
+| 1.1.0 | 2026-02-15 | Add version binding rules (Appendix B) |
 
 ---
 
