@@ -1,0 +1,78 @@
+name: Spec Amendment (VEP)
+description: Propose a change to the VCP specification
+title: "[VEP] "
+labels: ["vep", "specification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## VCP Enhancement Proposal
+
+        Use this template to propose changes to the VCP specification. See [GOVERNANCE.md](../../GOVERNANCE.md) for the VEP process.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Brief description of the proposed change (1-2 sentences)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Protocol Layer
+      description: Which VCP layer does this change affect?
+      options:
+        - VCP/I (Identity)
+        - VCP/T (Transport)
+        - VCP/S (Semantics)
+        - VCP/A (Adaptation)
+        - Cross-layer
+        - Schemas
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Change Type
+      options:
+        - Addition (new field, feature, or capability)
+        - Modification (change to existing behavior)
+        - Deprecation (mark existing feature for removal)
+        - Breaking (incompatible change)
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this change needed? What problem does it solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Detailed Proposal
+      description: Describe the change in detail. Include examples of the new behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: backward_compatibility
+    attributes:
+      label: Backward Compatibility
+      description: How does this change affect existing implementations? What migration path exists?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other approaches were considered and why were they rejected?
+    validations:
+      required: false
