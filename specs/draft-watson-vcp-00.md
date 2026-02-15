@@ -206,7 +206,7 @@ encoding format for constitutional configurations
 context (time, space, company, culture, occasion, state,
 environment, agency, constraints) used by the Adaptation Layer.
 
-**Persona**: One of seven standard behavioral archetypes (plus
+**Persona**: One of six standard behavioral archetypes (plus
 Custom) defined by VCP for categorizing constitutional profiles.
 
 **Adherence Level**: A 0--5 scale indicating the strictness of
@@ -904,7 +904,7 @@ C3:ACME+W@1.0.0  Custom, level 3, ACME namespace, Work, v1.0.0
 
 ## 6.2. Personas
 
-VCP defines seven standard personas and one extensibility slot:
+VCP defines six standard personas and one extensibility slot (Custom):
 
 | Code | Name       | Focus                          | Default Level |
 |------|------------|--------------------------------|---------------|
@@ -1163,7 +1163,7 @@ Message format:
 
 ```json
 {
-  "vcp_message_version": "1.0",
+  "vcp_message_version": "1.2",
   "sender": "agent-alpha",
   "recipient": "agent-beta",
   "context": "T:morning|S:office|C:colleagues",
@@ -1472,6 +1472,7 @@ repository.
 | `vcp-identity-token.schema.json` | Identity tokens    |
 | `vcp-semantics-csm1.schema.json` | CSM-1 compact tokens|
 | `vcp-adaptation-context.schema.json` | Adaptation context|
+| `vcp-messaging-v1.2.schema.json` | Inter-agent messages|
 
 Canonical schema URLs follow the pattern:
 
