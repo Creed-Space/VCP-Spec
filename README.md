@@ -138,7 +138,7 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ## Authors
 
-Nell Watson, Elena Ajayi, Filip Alimpic, Awwab Mahdi, Blake Wells, Claude (Anthropic)
+Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
 
 A **[Creed Space](https://creedspace.com)** project.
 
