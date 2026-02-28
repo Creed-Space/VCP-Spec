@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vcp.creedspace.org/schemas/vcp-capability-handshake.schema.json",
+  "title": "VCP Capability Negotiation Handshake",
+  "description": "JSON Schema for VCP v3.1 capability negotiation messages: vcp-hello, vcp-ack, and vcp-error.",
+
+  "$defs": {
+    "semver_minor": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "Semver major.minor version string (e.g., '3.1')."
+    },
+
+    "extension_id": {
+      "type": "string",
+      "pattern": "^VCP-X-[A-Za-z][A-Za-z0-9-]*$",
+      "description": "A VCP extension identifier (e.g., 'VCP-X-Personal')."
+    },
+
+    "vcp_hello": {
+      "type": "object",
+      "description": "Client-to-server handshake initiation.",
+      "properties": {
+        "type": {
+          "const": "vcp-hello"
+        },
+        "version": {
+          "$ref": "#/$defs/semver_minor",
+          "description": "Highest VCP version the client supports."
+        },
+        "extensions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/extension_id" },
+          "uniqueItems": true,
+          "default": [],
+          "description": "Extensions the client wishes to activate."
+        },
+        "identity": {
+          "type": ["string", "null"],
+          "description": "A VCP/I identity token, or null for anonymous access."
+        },
+        "min_version": {
+          "$ref": "#/$defs/semver_minor",
+          "default": "1.0",
+          "description": "Lowest VCP version the client can operate with."
+        },
+        "client_id": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Human-readable client identifier for diagnostics."
+        }
+      },
+      "required": ["type", "version"],
+      "additionalProperties": true
+    },
+
+    "core_features": {
+      "type": "object",
+      "description": "Server-wide core security and verification features.",
+      "properties": {
+        "encryption": {
+          "type": "boolean",
+          "description": "Context encryption at rest (Fernet symmetric)."
+        },
+        "injection_scanning": {
+          "type": "boolean",
+          "description": "Injection pattern detection (OWASP + VCP-specific)."
+        },
+        "revocation": {
+          "type": "boolean",
+          "description": "CRL and stapled proof infrastructure."
+        },
+        "audit_chain": {
+          "type": "boolean",
+          "description": "Tamper-evident SHA-256 hash chain."
+        },
+        "context_opacity": {
+          "type": "boolean",
+          "description": "Protection level abstraction layer."
+        }
+      },
+      "required": [
+        "encryption",
+        "injection_scanning",
+        "revocation",
+        "audit_chain",
+        "context_opacity"
+      ],
+      "additionalProperties": true
+    },
+
+    "extension_capabilities": {
+      "type": "object",
+      "description": "Per-extension capability advertisement. Keys are extension identifiers, values are extension-defined capability objects.",
+      "patternProperties": {
+        "^VCP-X-[A-Za-z][A-Za-z0-9-]*$": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Capability object defined by the extension's own specification."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "vcp_ack": {
+      "type": "object",
+      "description": "Server-to-client handshake confirmation.",
+      "properties": {
+        "type": {
+          "const": "vcp-ack"
+        },
+        "version": {
+          "$ref": "#/$defs/semver_minor",
+          "description": "The negotiated VCP version."
+        },
+        "supported": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/extension_id" },
+          "uniqueItems": true,
+          "description": "Extensions from the client's list that the server supports and activated."
+        },
+        "unsupported": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/extension_id" },
+          "uniqueItems": true,
+          "description": "Extensions from the client's list that the server does not support."
+        },
+        "capabilities": {
+          "$ref": "#/$defs/extension_capabilities"
+        },
+        "core_features": {
+          "$ref": "#/$defs/core_features"
+        },
+        "server_id": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Human-readable server identifier for diagnostics."
+        },
+        "session_id": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Opaque session identifier for correlation."
+        }
+      },
+      "required": [
+        "type",
+        "version",
+        "supported",
+        "unsupported",
+        "capabilities",
+        "core_features"
+      ],
+      "additionalProperties": true
+    },
+
+    "error_code": {
+      "type": "string",
+      "enum": [
+        "VERSION_UNSUPPORTED",
+        "IDENTITY_REQUIRED",
+        "IDENTITY_INVALID",
+        "EXTENSION_CONFLICT",
+        "RATE_LIMITED",
+        "INTERNAL_ERROR"
+      ],
+      "description": "Machine-readable error code for handshake failures."
+    },
+
+    "vcp_error": {
+      "type": "object",
+      "description": "Server-to-client handshake failure.",
+      "properties": {
+        "type": {
+          "const": "vcp-error"
+        },
+        "code": {
+          "$ref": "#/$defs/error_code"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1024,
+          "description": "Human-readable error description."
+        },
+        "supported_versions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/semver_minor" },
+          "uniqueItems": true,
+          "description": "Versions the server supports. MUST be present when code is VERSION_UNSUPPORTED."
+        },
+        "retry_after": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Seconds the client should wait before retrying. Null means no retry expected."
+        }
+      },
+      "required": ["type", "code", "message"],
+      "if": {
+        "properties": { "code": { "const": "VERSION_UNSUPPORTED" } }
+      },
+      "then": {
+        "required": ["type", "code", "message", "supported_versions"]
+      },
+      "additionalProperties": true
+    }
+  },
+
+  "oneOf": [
+    { "$ref": "#/$defs/vcp_hello" },
+    { "$ref": "#/$defs/vcp_ack" },
+    { "$ref": "#/$defs/vcp_error" }
+  ]
+}

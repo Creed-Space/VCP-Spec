@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creed.space/schemas/vcp/extensions/VCP-X-Intent/v0.1.0",
+  "title": "VCP-X-Intent Extension Schema",
+  "description": "EXPERIMENTAL. Heuristic intent inference from VCP context signals. Wire format may change without notice.",
+
+  "definitions": {
+    "IntentCategory": {
+      "type": "string",
+      "enum": [
+        "professional_inquiry",
+        "urgent_task",
+        "personal_exploration",
+        "emotional_processing",
+        "health_check",
+        "casual_conversation",
+        "crisis_support",
+        "creative_work",
+        "learning",
+        "routine_check"
+      ],
+      "description": "Enumeration of intent categories."
+    },
+    "IntentInterpretation": {
+      "type": "object",
+      "required": ["category", "confidence", "reasoning", "contributing_dimensions"],
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/IntentCategory"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Confidence in this classification. Higher is more confident."
+        },
+        "reasoning": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Human-readable explanation of why this intent was inferred."
+        },
+        "contributing_dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "PersonalDimension names that contributed to this inference."
+        }
+      },
+      "additionalProperties": false
+    },
+    "InterpretiveFrame": {
+      "type": "object",
+      "required": ["primary", "alternatives"],
+      "properties": {
+        "primary": {
+          "$ref": "#/definitions/IntentInterpretation",
+          "description": "Highest-confidence intent classification."
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IntentInterpretation"
+          },
+          "maxItems": 3,
+          "description": "Up to 3 additional ranked intent classifications."
+        },
+        "user_correction": {
+          "oneOf": [
+            { "$ref": "#/definitions/IntentCategory" },
+            { "type": "null" }
+          ],
+          "default": null,
+          "description": "User-overridden intent category. Null if no correction applied."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+
+  "type": "object",
+  "$ref": "#/definitions/InterpretiveFrame"
+}
