@@ -7,7 +7,7 @@ VCP uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the minor
 
 ---
 
-## [3.1] — 2026-02-28
+## [3.1.0] - 2026-02-28
 
 ### Added — Extension Model
 - **Extension architecture** (VEP-0001): Formal opt-in extension model with `VCP-X-*` naming, lifecycle (EXPERIMENTAL → STABLE → DEPRECATED), and standardized artifacts (spec.md, schema.json, examples/)
@@ -40,6 +40,7 @@ VCP uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the minor
 - 4 annotated wire format examples (CSM-1 lifecycle, personal state roundtrip, consensus deliberation, capability handshake)
 - Extension model README
 - Foundation-ready README
+- **VCP Inspector** — Live at https://inspector.valuecontextprotocol.org/
 
 ### Changed
 - Version bump from 1.1 to 3.1 (reflecting reference implementation lineage)
