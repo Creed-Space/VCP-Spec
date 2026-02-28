@@ -226,7 +226,7 @@ Reference implementations live in the [VCP-SDK repository](https://github.com/Cr
 
 ## Roadmap
 
-- **VCP Inspector**: Interactive web tool for decoding/encoding VCP tokens ([planned](https://github.com/Creed-Space/VCP-Inspector))
+- **VCP Inspector**: Interactive web tool for decoding/encoding VCP tokens — **[Live at inspector.valuecontextprotocol.org](https://inspector.valuecontextprotocol.org/)**
 - **VCP Examples**: 10 runnable examples covering all extensions ([planned](https://github.com/Creed-Space/VCP-Examples))
 - **Anti-drift CI**: Automated spec-implementation version sync checks
 - **Agentic AI Foundation**: Transfer of VCP governance to neutral foundation
@@ -263,6 +263,6 @@ A **[Creed Space](https://creedspace.com)** project, developed for contribution 
 
 *Context that travels with you.*
 
-[Website](https://www.valuecontextprotocol.org) | [SDK](https://github.com/Creed-Space/vcp-sdk) | [Spec](./specs/VCP_SPECIFICATION_v3.1.md)
+[Website](https://www.valuecontextprotocol.org) | [Inspector](https://inspector.valuecontextprotocol.org/) | [SDK](https://github.com/Creed-Space/vcp-sdk) | [Spec](./specs/VCP_SPECIFICATION_v3.1.md)
 
 </div>
