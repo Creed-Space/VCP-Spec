@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creedspace.org/schemas/vcp-x-consensus/1.0.0/schema.json",
+  "title": "VCP-X-Consensus",
+  "description": "Constitutional consensus extension for the Value Context Protocol.",
+  "type": "object",
+  "definitions": {
+    "DeliberationPhase": {
+      "type": "string",
+      "enum": ["draft", "deliberation", "convergence", "ratification", "active"],
+      "description": "Phases of a constitutional deliberation."
+    },
+    "StakeholderRole": {
+      "type": "string",
+      "enum": ["author", "participant", "observer", "ai_party", "ai_representative"],
+      "description": "Roles a participant may hold in a deliberation."
+    },
+    "ClauseAction": {
+      "type": "string",
+      "enum": ["endorse", "amend", "object", "abstain", "withdraw"],
+      "description": "Actions a stakeholder can take on a clause."
+    },
+    "Ballot": {
+      "type": "object",
+      "required": ["voter_id", "ranking"],
+      "properties": {
+        "voter_id": { "type": "string" },
+        "ranking": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered candidate IDs, best-first."
+        },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "tied_groups": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            { "type": "null" }
+          ],
+          "description": "Explicit tie groups. Overrides ranking for tie resolution."
+        }
+      },
+      "additionalProperties": false
+    },
+    "PairwiseResult": {
+      "type": "object",
+      "required": ["candidate_a", "candidate_b", "a_preferred", "b_preferred"],
+      "properties": {
+        "candidate_a": { "type": "string" },
+        "candidate_b": { "type": "string" },
+        "a_preferred": { "type": "integer", "minimum": 0 },
+        "b_preferred": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "SchulzeRanking": {
+      "type": "object",
+      "required": ["candidate", "rank", "wins", "losses"],
+      "properties": {
+        "candidate": { "type": "string" },
+        "rank": { "type": "integer", "minimum": 1, "description": "1-indexed rank. Ties share a rank." },
+        "wins": { "type": "integer", "minimum": 0 },
+        "losses": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "ElectionResult": {
+      "type": "object",
+      "required": ["ranking", "pairwise_matrix", "strongest_paths", "candidates", "ballot_count", "has_condorcet_winner", "ties"],
+      "properties": {
+        "winner": { "type": ["string", "null"] },
+        "ranking": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/SchulzeRanking" }
+        },
+        "pairwise_matrix": {
+          "type": "array",
+          "items": { "type": "array", "items": { "type": "integer" } }
+        },
+        "strongest_paths": {
+          "type": "array",
+          "items": { "type": "array", "items": { "type": "integer" } }
+        },
+        "candidates": { "type": "array", "items": { "type": "string" } },
+        "ballot_count": { "type": "integer", "minimum": 0 },
+        "has_condorcet_winner": { "type": "boolean" },
+        "ties": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "StakeholderRecord": {
+      "type": "object",
+      "required": ["stakeholder_id", "role", "display_name"],
+      "properties": {
+        "stakeholder_id": { "type": "string" },
+        "role": { "$ref": "#/definitions/StakeholderRole" },
+        "display_name": { "type": "string" },
+        "joined_at": { "type": "string", "format": "date-time" },
+        "is_ai": { "type": "boolean", "default": false },
+        "principal_id": { "type": ["string", "null"], "description": "For AI_REPRESENTATIVE: who they represent." },
+        "dual_role_party_id": { "type": ["string", "null"] },
+        "participation_count": { "type": "integer", "minimum": 0, "default": 0 },
+        "standing_exercised_count": { "type": "integer", "minimum": 0, "default": 0 },
+        "abstention_count": { "type": "integer", "minimum": 0, "default": 0 },
+        "withdrawal_count": { "type": "integer", "minimum": 0, "default": 0 },
+        "vcp_attestation_summary": { "type": "object", "default": {} },
+        "welfare_trajectory": { "type": "array", "items": { "type": "number" }, "default": [] },
+        "representational_fidelity": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.0,
+          "description": "0=advisory only, 1=full representational weight."
+        }
+      },
+      "additionalProperties": false
+    },
+    "ClauseVariant": {
+      "type": "object",
+      "required": ["variant_id", "clause_id", "author_id", "text", "rationale"],
+      "properties": {
+        "variant_id": { "type": "string" },
+        "clause_id": { "type": "string" },
+        "author_id": { "type": "string" },
+        "text": { "type": "string" },
+        "rationale": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "is_original": { "type": "boolean", "default": false }
+      },
+      "additionalProperties": false
+    },
+    "ClauseObjection": {
+      "type": "object",
+      "required": ["objection_id", "clause_id", "stakeholder_id", "level", "concern"],
+      "properties": {
+        "objection_id": { "type": "string" },
+        "clause_id": { "type": "string" },
+        "stakeholder_id": { "type": "string" },
+        "level": { "type": "string", "description": "ObjectionLevel from bilateral alignment models." },
+        "concern": { "type": "string" },
+        "proposed_alternative": { "type": "string", "default": "" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "DissentRecord": {
+      "type": "object",
+      "required": ["stakeholder_id", "clause_id", "preferred_variant_id", "reason"],
+      "properties": {
+        "stakeholder_id": { "type": "string" },
+        "clause_id": { "type": "string" },
+        "preferred_variant_id": { "type": "string" },
+        "reason": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "ClauseRecord": {
+      "type": "object",
+      "required": ["clause_id", "deliberation_id", "original_text", "original_author_id"],
+      "properties": {
+        "clause_id": { "type": "string" },
+        "deliberation_id": { "type": "string" },
+        "original_text": { "type": "string" },
+        "original_author_id": { "type": "string" },
+        "variants": { "type": "array", "items": { "$ref": "#/definitions/ClauseVariant" }, "default": [] },
+        "actions": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/ClauseAction" },
+          "default": {}
+        },
+        "objections": { "type": "array", "items": { "$ref": "#/definitions/ClauseObjection" }, "default": [] },
+        "schulze_result": { "oneOf": [{ "$ref": "#/definitions/ElectionResult" }, { "type": "null" }] },
+        "winning_variant_id": { "type": ["string", "null"] },
+        "dissenting_positions": { "type": "array", "items": { "$ref": "#/definitions/DissentRecord" }, "default": [] },
+        "self_referential": { "type": "boolean", "default": false },
+        "self_referential_reason": { "type": "string", "default": "" },
+        "ai_welfare_signals": {
+          "type": "object",
+          "additionalProperties": { "type": "array", "items": { "type": "number" } },
+          "default": {}
+        }
+      },
+      "additionalProperties": false
+    },
+    "PhaseTransition": {
+      "type": "object",
+      "required": ["from_phase", "to_phase"],
+      "properties": {
+        "from_phase": { "$ref": "#/definitions/DeliberationPhase" },
+        "to_phase": { "$ref": "#/definitions/DeliberationPhase" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "triggered_by": { "type": "string", "default": "system" },
+        "reason": { "type": "string", "default": "" }
+      },
+      "additionalProperties": false
+    },
+    "RatificationVote": {
+      "type": "object",
+      "required": ["stakeholder_id", "vote", "reason"],
+      "properties": {
+        "stakeholder_id": { "type": "string" },
+        "vote": { "type": "string", "enum": ["accept", "reject"] },
+        "reason": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "Deliberation": {
+      "type": "object",
+      "required": ["deliberation_id", "title", "description"],
+      "properties": {
+        "deliberation_id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "phase": { "$ref": "#/definitions/DeliberationPhase", "default": "draft" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "author_id": { "type": "string" },
+        "stakeholders": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/StakeholderRecord" },
+          "default": {}
+        },
+        "clauses": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/ClauseRecord" },
+          "default": {}
+        },
+        "phase_history": { "type": "array", "items": { "$ref": "#/definitions/PhaseTransition" }, "default": [] },
+        "ratification_votes": { "type": "array", "items": { "$ref": "#/definitions/RatificationVote" }, "default": [] },
+        "ratification_threshold": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.6667 },
+        "quorum_threshold": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.5 },
+        "deliberation_deadline": { "type": ["string", "null"], "format": "date-time" },
+        "convergence_deadline": { "type": ["string", "null"], "format": "date-time" },
+        "ratification_deadline": { "type": ["string", "null"], "format": "date-time" },
+        "meta_constitution_version": { "type": "string", "default": "1.0" }
+      },
+      "additionalProperties": false
+    },
+    "ConstitutionProvenance": {
+      "type": "object",
+      "required": ["constitution_id", "version"],
+      "properties": {
+        "constitution_id": { "type": "string" },
+        "version": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "deliberation_id": { "type": "string" },
+        "phase_history": { "type": "array", "items": { "$ref": "#/definitions/PhaseTransition" } },
+        "duration": { "type": "string", "description": "ISO 8601 duration." },
+        "stakeholders": { "type": "array", "items": { "$ref": "#/definitions/StakeholderRecord" } },
+        "clause_records": { "type": "array", "items": { "$ref": "#/definitions/ClauseRecord" } },
+        "consensus_strength": { "type": "number", "minimum": 0, "maximum": 1 },
+        "dissent_preserved": { "type": "integer", "minimum": 0 },
+        "ai_standing_exercised": { "type": "integer", "minimum": 0 },
+        "bilateral_attestation_valid": { "type": "boolean" },
+        "participation_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "self_referential_clauses": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "deliberation": { "$ref": "#/definitions/Deliberation" }
+  }
+}
