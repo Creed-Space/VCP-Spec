@@ -18,12 +18,14 @@
 
 ### Why the Data File is Optional
 
-**VCP functions completely without a populated ontology.** The four layers work as follows:
+**VCP functions completely without a populated ontology.** The six layers work as follows:
 
 - **VCP/I (Identity)**: Tokens are names that resolve to bundles. No semantic backing required.
 - **VCP/T (Transport)**: Bundles are signed containers. Content-agnostic.
 - **VCP/S (Semantics)**: CSM1 codes and constitutions are self-contained.
 - **VCP/A (Adaptation)**: Context encoding is orthogonal to value semantics.
+- **VCP/M (Messaging)**: Inter-agent communication is content-agnostic, works at all abstraction levels.
+- **VCP/E (Economics)**: Resource allocation and cost tracking are orthogonal to value semantics.
 
 **The ontology enables optional enhancements:**
 - Semantic search ("find constitutions about fairness")

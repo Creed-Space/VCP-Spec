@@ -18,6 +18,13 @@
 - [x] **Persona updates** — NZGAMRHC → NZGAMDC across schemas, Python SDK, docs (`c14603d`)
 - [x] **CULTURE dimension** — Nationalities → communication styles (high/low context, formal/informal, etc.)
 - [x] **STATE→R-line relationship** — Documented in both adaptation + context specs
+- [x] **Hook system (all 3 SDKs)** — Python (registry, executor, 4 built-ins, integration wiring), Rust (HookRegistry, HookExecutor), TypeScript (browser-side registry). 124 tests. (`8c16f10` on vcp-sdk)
+- [x] **Revocation checking (Python + Rust)** — SSRF protection, CRL + online endpoint, caching, wired into Python orchestrator. 79 tests. (`9c418a2` on vcp-sdk)
+- [x] **Rust orchestrator** — 12-step verification pipeline (size, schema, hash, trust, signature, attestation, temporal, replay, budget, scope, injection scan). 19 tests. (`826ea0e` on vcp-sdk)
+- [x] **Rust composition engine** — 4 modes (Base, Extend, Override, Strict), keyword conflict detection. 23 tests. (`826ea0e` on vcp-sdk)
+- [x] **Python messaging v1.2** — VcpMessage envelope, create/validate/sign/verify. 25 tests. (`3cc77be` on vcp-sdk)
+- [x] **CHANGELOG** — Keep a Changelog format (`3cc77be` on vcp-sdk)
+- [x] **Runnable examples** — 5 Python + 3 Rust examples with README (`3cc77be` on vcp-sdk)
 
 ---
 

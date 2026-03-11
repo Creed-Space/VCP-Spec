@@ -47,28 +47,32 @@ The [VCP-over-MCP bridge](./specs/core/mcp-bridge.md) makes this concrete: VCP t
 
 ## Architecture
 
-VCP is a four-layer protocol stack with an extension model:
+VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│                   Extensions (VCP-X-*)                │
-│  Personal | Relational | Consensus | Torch | Intent  │
-├──────────────────────────────────────────────────────┤
-│  Layer 4 — VCP/A  ADAPTATION     WHEN and HOW        │
-│  Layer 3 — VCP/S  SEMANTICS      WHAT values mean    │
-│  Layer 2 — VCP/T  TRANSPORT      HOW values travel   │
-│  Layer 1 — VCP/I  IDENTITY       WHO and WHAT        │
+│  Layer 6 — VCP/E  ECONOMIC GOV   WHO PAYS             │
+│  Layer 5 — VCP/M  MESSAGING      WHO TALKS            │
+│  Layer 4 — VCP/A  ADAPTATION     WHEN and HOW         │
+│  Layer 3 — VCP/S  SEMANTICS      WHAT values mean     │
+│  Layer 2 — VCP/T  TRANSPORT      HOW values travel    │
+│  Layer 1 — VCP/I  IDENTITY       WHO and WHAT         │
 ├──────────────────────────────────────────────────────┤
 │                   Core Security                       │
 │  Encryption | Scanning | Opacity | Revocation | Audit │
+├──────────────────────────────────────────────────────┤
+│                   Extensions (VCP-X-*)                │
+│  Personal | Relational | Consensus | Torch | Intent  │
 └──────────────────────────────────────────────────────┘
 ```
 
-**Core layers** (stable since v1.0):
+**The six layers:**
 - **VCP/I — Identity**: Token format, namespace tiers, identity encoding
 - **VCP/T — Transport**: Signed bundle format, manifests, trust anchors
 - **VCP/S — Semantics**: CSM-1 constitutional encoding, personas, composition
 - **VCP/A — Adaptation**: Context dimensions, state machine, hooks
+- **VCP/M — Messaging**: Inter-agent message types, escalation severity, delivery semantics
+- **VCP/E — Economic Governance**: Fiduciary constraints, authorization gaps, transaction governance
 
 **Core security** (v3.1): Context encryption, injection scanning, context opacity, revocation infrastructure, tamper-evident audit chain.
 
@@ -149,6 +153,8 @@ VCP layers map to MCP primitives:
 | Transport | Resources (`vcp://bundle/*`) |
 | Semantics | Tools + Resources |
 | Adaptation | Resources + Sampling integration |
+| Messaging | Tools (`vcp_send_message`, `vcp_escalate`) |
+| Economic Governance | Tools (`vcp_authorize_transaction`) + Resources |
 | Extensions | Negotiation-filtered tools + resources |
 
 The bridge enables any MCP-compatible client to access VCP values without implementing VCP natively. See the [MCP Bridge spec](./specs/core/mcp-bridge.md).
@@ -159,10 +165,11 @@ The bridge enables any MCP-compatible client to access VCP values without implem
 
 ### Protocol Stack
 
-VCP is a five-layer protocol stack:
+VCP is a six-layer protocol stack (I-T-S-A-M-E):
 
 ```
-Layer 5 -- VCP/C  COMPETENCE     WHO is competent to act
+Layer 6 -- VCP/E  ECONOMIC GOV   WHO PAYS
+Layer 5 -- VCP/M  MESSAGING      WHO TALKS
 Layer 4 -- VCP/A  ADAPTATION     WHEN and HOW constitutions apply
 Layer 3 -- VCP/S  SEMANTICS      WHAT the values mean
 Layer 2 -- VCP/T  TRANSPORT      HOW values travel securely
@@ -179,8 +186,9 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | [VCP Specification v1.0](./specs/VCP_SPECIFICATION_v1.0.md) | Full protocol specification |
 | [VCP v1.1 Amendments](./specs/VCP_SPECIFICATION_v1.1_AMENDMENTS.md) | R-line, personal state additions |
 | [Academic Paper](./specs/value_context_protocols_paper_v1.md) | Formal paper |
-| [VCP/E Economic Governance v0.1](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) | Economic governance extension (Draft) |
-| [VCP/C Competence v2.0](./specs/VCP_COMPETENCE_v2.0.md) | Competence assessment and adaptive friction (Draft) |
+| [VCP/M Messaging v2.0](./specs/VCP_MESSAGING_v2.0.md) | Inter-agent messaging and escalation |
+| [VCP/E Economic Governance v2.0](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) | Economic governance layer |
+| [VCP/C Competence v2.0](./specs/VCP_COMPETENCE_v2.0.md) | Competence assessment and adaptive friction (Supplementary) |
 
 ### By Layer
 
@@ -190,8 +198,8 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | VCP/T — Transport | [v1.0 Spec SS6](./specs/VCP_SPECIFICATION_v1.0.md) |
 | VCP/S — Semantics | [CSM-1 Grammar](./docs/content/CSM1_GRAMMAR_SPECIFICATION.md), [Composition](./docs/semantics/VCP_SEMANTICS_COMPOSITION.md) |
 | VCP/A — Adaptation | [Adaptation](./docs/adaptation/VCP_ADAPTATION.md), [Context](./docs/context/VCP_CONTEXT_SPECIFICATION.md) |
+| VCP/M — Messaging | [Specification](./specs/VCP_MESSAGING_v2.0.md) |
 | VCP/E — Economic Governance | [Specification](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) |
-| VCP/C — Competence | [Specification](./specs/VCP_COMPETENCE_v2.0.md) |
 
 ### Core Security
 [Encryption, Injection Scanning, Context Opacity, Revocation](./specs/core/security.md) | [Audit Chain](./specs/core/audit.md)
@@ -203,9 +211,9 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | VCP/I — Identity | Stable | 5 docs |
 | VCP/T — Transport | Stable | 1 spec + 1 amendment |
 | VCP/S — Semantics | Stable | 4 docs |
-| VCP/A — Adaptation | Stable (messaging: Preview) | 4 docs |
-| VCP/E — Economic Governance | Draft | 1 spec |
-| VCP/C — Competence | Draft | 1 spec |
+| VCP/A — Adaptation | Stable | 4 docs |
+| VCP/M — Messaging | Stable | 1 spec |
+| VCP/E — Economic Governance | Stable | 1 spec |
 
 ### Universal Value Codes (UVC)
 
