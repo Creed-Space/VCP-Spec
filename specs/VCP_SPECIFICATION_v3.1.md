@@ -15,21 +15,40 @@ The Value-Context Protocol (VCP) is an open specification for transporting const
 
 ## 1. Protocol Overview
 
-VCP is a four-layer protocol stack with an opt-in extension model:
+VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 
 ```
-┌──────────────────────────────────────────────────┐
-│                  Extensions (VCP-X-*)             │
-│  Personal | Relational | Consensus | Torch | Intent │
-├──────────────────────────────────────────────────┤
-│  Layer 4 — VCP/A  ADAPTATION    WHEN and HOW     │
-│  Layer 3 — VCP/S  SEMANTICS     WHAT values mean │
-│  Layer 2 — VCP/T  TRANSPORT     HOW values travel │
-│  Layer 1 — VCP/I  IDENTITY      WHO and WHAT     │
-├──────────────────────────────────────────────────┤
-│                Core Security                      │
-│  Encryption | Scanning | Opacity | Revocation | Audit │
-└──────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│  Layer 6 — VCP/E  ECONOMIC GOVERNANCE                              │
+│  WHO PAYS and transaction governance                                │
+│  Fiduciary constraints · Authorization gaps · Capability decisions  │
+├─────────────────────────────────────────────────────────────────────┤
+│  Layer 5 — VCP/M  MESSAGING                                        │
+│  WHO TALKS - Inter-agent message exchange                           │
+│  Message types · Escalation severity · Delivery semantics           │
+├─────────────────────────────────────────────────────────────────────┤
+│  Layer 4 — VCP/A  ADAPTATION                                       │
+│  WHEN and HOW constitutions apply                                   │
+│  Context encoding · State tracking · Messaging · Deterministic hooks│
+├─────────────────────────────────────────────────────────────────────┤
+│  Layer 3 — VCP/S  SEMANTICS                                        │
+│  WHAT the values mean                                               │
+│  CSM-1 grammar · Persona composition · Traits · Personal state      │
+├─────────────────────────────────────────────────────────────────────┤
+│  Layer 2 — VCP/T  TRANSPORT                                        │
+│  HOW values travel securely                                         │
+│  Signed bundles · Hash verification · Audit logging                 │
+├─────────────────────────────────────────────────────────────────────┤
+│  Layer 1 — VCP/I  IDENTITY                                         │
+│  WHO and WHAT is being addressed                                    │
+│  Naming · Namespaces · Registry · Encoding                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                   Core Security                                     │
+│  Encryption | Scanning | Opacity | Revocation | Audit               │
+├─────────────────────────────────────────────────────────────────────┤
+│                   Extensions (VCP-X-*)                              │
+│  Personal | Relational | Consensus | Torch | Intent                 │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ### 1.1. Design Principles
@@ -63,7 +82,7 @@ VCP is a four-layer protocol stack with an opt-in extension model:
 
 ## 2. Core Protocol Layers
 
-The four core layers are unchanged from v1.0. See the [v1.0 specification](./VCP_SPECIFICATION_v1.0.md) for full details.
+The six layers of the VCP stack. Layers 1–4 are unchanged from v1.0; layers 5–6 were introduced in v2.0.
 
 ### 2.1. VCP/I — Identity
 
@@ -80,6 +99,14 @@ Defines CSM-1 grammar for constitutional profile encoding, persona profiles, and
 ### 2.4. VCP/A — Adaptation
 
 Defines context dimensions, state machine, hooks, and context specification. See [Adaptation documentation](../docs/adaptation/).
+
+### 2.5. VCP/M — Messaging
+
+Defines inter-agent message types, escalation severity levels, and delivery semantics. See [Messaging specification](./VCP_MESSAGING_v2.0.md).
+
+### 2.6. VCP/E — Economic Governance
+
+Defines fiduciary constraints, authorization gaps (capability, accountability, compatibility), and transaction governance. See [Economic Governance specification](./VCP_ECONOMIC_GOVERNANCE_v2.0.md).
 
 ---
 
@@ -194,9 +221,10 @@ Versions 2.0 and 3.0 shipped in the reference implementation before the public s
 
 | Level | Requirements |
 |-------|-------------|
-| **Core** | Implement VCP/I, VCP/T, VCP/S, VCP/A per v1.0 spec |
+| **Core** | Implement VCP/I, VCP/T, VCP/S, VCP/A |
 | **Core + Security** | Core + context encryption + injection scanning + revocation |
-| **Full** | Core + Security + capability negotiation + all stable extensions |
+| **Core + Messaging** | Core + Security + VCP/M messaging + VCP/E economic governance |
+| **Full** | Core + Security + Messaging + capability negotiation + all stable extensions |
 
 ### 11.2. Extension Conformance
 

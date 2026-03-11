@@ -6,7 +6,7 @@
 
 ## Completed (2026-02-15)
 
-- [x] **VCP Spec completion** — all 4 layers finalized, 10 tasks (`c0bfb4d`)
+- [x] **VCP Spec completion** — all 6 layers finalized, 10 tasks (`c0bfb4d`)
 - [x] **Rust SDK transport** — Ed25519 signing/verification, content hashing, trust anchors, 139 tests (`c14603d` on vcp-sdk)
 - [x] **METTLE tests** — 1129/1129 passing, `scripts/__init__.py` fix + cryptography installed (`e22c52e`)
 - [x] **Inter-agent messaging v1.2** — `specs/VCP_INTER_AGENT_MESSAGING_v1.2.md` + `schemas/vcp-messaging-v1.2.schema.json` (`2b43bbc`)

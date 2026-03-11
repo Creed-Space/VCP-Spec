@@ -67,12 +67,12 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 ```
 
 **The six layers:**
-- **VCP/I — Identity**: Token format, namespace tiers, identity encoding
-- **VCP/T — Transport**: Signed bundle format, manifests, trust anchors
-- **VCP/S — Semantics**: CSM-1 constitutional encoding, personas, composition
-- **VCP/A — Adaptation**: Context dimensions, state machine, hooks
-- **VCP/M — Messaging**: Inter-agent message types, escalation severity, delivery semantics
 - **VCP/E — Economic Governance**: Fiduciary constraints, authorization gaps, transaction governance
+- **VCP/M — Messaging**: Inter-agent message types, escalation severity, delivery semantics
+- **VCP/A — Adaptation**: Context dimensions, state machine, hooks
+- **VCP/S — Semantics**: CSM-1 constitutional encoding, personas, composition
+- **VCP/T — Transport**: Signed bundle format, manifests, trust anchors
+- **VCP/I — Identity**: Token format, namespace tiers, identity encoding
 
 **Core security** (v3.1): Context encryption, injection scanning, context opacity, revocation infrastructure, tamper-evident audit chain.
 

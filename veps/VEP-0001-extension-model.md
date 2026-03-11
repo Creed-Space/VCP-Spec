@@ -9,11 +9,11 @@
 
 ## Summary
 
-This VEP introduces a formal extension model for VCP, enabling opt-in protocol extensions (VCP-X-*) that extend the core four-layer protocol without modifying it.
+This VEP introduces a formal extension model for VCP, enabling opt-in protocol extensions (VCP-X-*) that extend the core six-layer protocol without modifying it.
 
 ## Motivation
 
-VCP v1.0-v1.1 defined a stable four-layer core (Identity, Transport, Semantics, Adaptation). The reference implementation has since added features — personal state tracking, relational context, consensus voting, session handoff — that are valuable for specific use cases but not universally required.
+VCP v1.0-v1.1 defined a stable core that has since grown to six layers (Identity, Transport, Semantics, Adaptation, Messaging, Economic Governance). The reference implementation has since added features — personal state tracking, relational context, consensus voting, session handoff — that are valuable for specific use cases but not universally required.
 
 Without an extension model, these features would either:
 1. Be forced into the core spec, bloating it for simple use cases

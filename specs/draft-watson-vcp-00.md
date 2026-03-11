@@ -13,12 +13,13 @@ Expires: August 2026                                  February 2026
 
 The Value Context Protocol (VCP) enables portable, verifiable value
 alignment for AI systems through structured constitutions, contextual
-adaptation, and cryptographic integrity. VCP defines a four-layer
-protocol stack -- Identity, Transport, Semantics, and Adaptation --
-that together provide a standard mechanism for delivering behavioral
-guidelines from external stakeholders to AI systems with
-cryptographic verification, compositional semantics, and situational
-awareness. This document provides an informational overview of the
+adaptation, and cryptographic integrity. VCP defines a six-layer
+protocol stack -- Identity, Transport, Semantics, Adaptation,
+Messaging, and Economic Governance (I-T-S-A-M-E) -- that together
+provide a standard mechanism for delivering behavioral guidelines
+from external stakeholders to AI systems with cryptographic
+verification, compositional semantics, situational awareness,
+inter-agent messaging, and transaction governance. This document provides an informational overview of the
 VCP architecture, data formats, verification procedures, and
 security model.
 
@@ -105,10 +106,12 @@ reliably.
 ## 1.2. Solution
 
 The Value Context Protocol (VCP) addresses these requirements
-through a four-layer architecture modeled on the OSI networking
+through a six-layer architecture modeled on the OSI networking
 stack:
 
 ```
+Layer 6 -- VCP/E  ECONOMIC GOV   WHO PAYS and transaction governance
+Layer 5 -- VCP/M  MESSAGING      WHO TALKS - inter-agent exchange
 Layer 4 -- VCP/A  ADAPTATION     WHEN and HOW constitutions apply
 Layer 3 -- VCP/S  SEMANTICS      WHAT the values mean
 Layer 2 -- VCP/T  TRANSPORT      HOW values travel securely
@@ -217,17 +220,19 @@ no-exceptions (5).
 
 # 3. Protocol Overview
 
-## 3.1. Four-Layer Architecture
+## 3.1. Six-Layer Architecture (I-T-S-A-M-E)
 
-VCP is one protocol with four layers. Each layer addresses a
+VCP is one protocol with six layers. Each layer addresses a
 distinct concern, with well-defined interfaces between them.
 
-| Layer | Name      | Short | Purpose                       |
-|-------|-----------|-------|-------------------------------|
-| 4     | Adaptation| VCP/A | When and how it applies       |
-| 3     | Semantics | VCP/S | What the values mean          |
-| 2     | Transport | VCP/T | How values travel securely    |
-| 1     | Identity  | VCP/I | What is being addressed       |
+| Layer | Name                 | Short | Purpose                              |
+|-------|----------------------|-------|--------------------------------------|
+| 6     | Economic Governance  | VCP/E | Who pays and transaction governance   |
+| 5     | Messaging            | VCP/M | Inter-agent message exchange          |
+| 4     | Adaptation           | VCP/A | When and how it applies               |
+| 3     | Semantics            | VCP/S | What the values mean                  |
+| 2     | Transport            | VCP/T | How values travel securely            |
+| 1     | Identity             | VCP/I | What is being addressed               |
 
 ### 3.1.1. VCP/I -- Identity
 
