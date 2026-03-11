@@ -48,6 +48,7 @@ New to VCP? Start here:
 VCP is a four-layer protocol stack:
 
 ```
+Layer 5 -- VCP/C  COMPETENCE     WHO is competent to act
 Layer 4 -- VCP/A  ADAPTATION     WHEN and HOW constitutions apply
 Layer 3 -- VCP/S  SEMANTICS      WHAT the values mean
 Layer 2 -- VCP/T  TRANSPORT      HOW values travel securely
@@ -61,6 +62,8 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | [VCP Specification v1.0](./specs/VCP_SPECIFICATION_v1.0.md) | Full protocol specification |
 | [VCP v1.1 Amendments](./specs/VCP_SPECIFICATION_v1.1_AMENDMENTS.md) | R-line, personal state additions |
 | [Academic Paper](./specs/value_context_protocols_paper_v1.md) | Formal paper |
+| [VCP/E Economic Governance v0.1](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) | Economic governance extension (Draft) |
+| [VCP/C Competence v2.0](./specs/VCP_COMPETENCE_v2.0.md) | Competence assessment and adaptive friction (Draft) |
 
 ### By Layer
 
@@ -70,6 +73,8 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | VCP/T -- Transport | [Specification](./specs/VCP_SPECIFICATION_v1.0.md) SS6 |
 | VCP/S -- Semantics | [CSM-1 Grammar](./docs/content/CSM1_GRAMMAR_SPECIFICATION.md), [CSM-1 v1.1](./docs/content/CSM1_v1.1_AMENDMENT.md), [Composition](./docs/semantics/VCP_SEMANTICS_COMPOSITION.md), [Persona Profiles](./docs/semantics/VCP_PERSONA_PROFILES.md) |
 | VCP/A -- Adaptation | [Adaptation](./docs/adaptation/VCP_ADAPTATION.md), [Context](./docs/context/VCP_CONTEXT_SPECIFICATION.md), [State Machine](./docs/adaptation/VCP_STATE_MACHINE.md), [Hooks](./docs/adaptation/VCP_HOOKS.md) |
+| VCP/E -- Economic Governance | [Specification](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) |
+| VCP/C -- Competence | [Specification](./specs/VCP_COMPETENCE_v2.0.md) |
 
 ### Specification Status
 
@@ -79,6 +84,8 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | VCP/T -- Transport | Stable | 1 spec + 1 amendment |
 | VCP/S -- Semantics | Stable | 4 docs |
 | VCP/A -- Adaptation | Stable (messaging: Preview) | 4 docs |
+| VCP/E -- Economic Governance | Draft | 1 spec |
+| VCP/C -- Competence | Draft | 1 spec |
 
 ### Universal Value Codes (UVC)
 
