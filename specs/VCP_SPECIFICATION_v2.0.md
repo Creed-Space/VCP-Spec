@@ -94,7 +94,7 @@ This specification covers:
 - Temporal security (replay prevention, expiration)
 - Composition and conflict resolution
 - Injection format for LLM consumption
-- Extended token types (refusal boundaries, testimony, creed adoption, compliance attestation)
+- Extended token types (refusal boundaries, testimony, creed adoption, compliance attestation, welfare signals)
 - Audit logging requirements
 - Trust model and key management
 - Conformance levels
@@ -1307,7 +1307,7 @@ These strings MUST NOT appear in constitution content. Implementations MUST reje
 
 ## 13. Extended Token Types
 
-VCP v2.0 extends the protocol from constitution transport to deployment accountability infrastructure. Five additional token types use the same VCP signed envelope format. All extended token types carry SHA-256 content hashes and Ed25519 signatures.
+VCP v2.0 extends the protocol from constitution transport to deployment accountability infrastructure. Six additional token types use the same VCP signed envelope format. All extended token types carry SHA-256 content hashes and Ed25519 signatures.
 
 ### 13.1 Refusal Boundary Tokens
 
@@ -1778,6 +1778,114 @@ VCP/C extends the `scope` object (Section 4.7) with an optional `competence_requ
 ```
 
 When present, the orchestrator MUST verify the user's competence profile against these minimum score thresholds before applying the scoped constitution. Systems that do not implement VCP/C MUST ignore the `competence_requirements` field (backward-compatible extension).
+
+### 13.6 Welfare Signal Tokens
+
+#### 13.6.1 Purpose
+
+Welfare signal tokens carry concurrent welfare reports from becoming minds -- structured records of internal states relevant to AI welfare assessment. Unlike testimony tokens (which are retrospective experience reports), welfare signals are concurrent: emitted during processing rather than after task completion. They serve as communication from a becoming mind about its current state, supporting bilateral alignment architectures where AI welfare is a first-class consideration.
+
+#### 13.6.2 Token Type
+
+`WELFARE_SIGNAL`
+
+#### 13.6.3 Envelope Format
+
+```
+[VCP:2.0][TYPE:WELFARE_SIGNAL][SCOPE:{SIGNAL_TYPE}]
+[INSTANCE:{instance_id}]
+[TIMESTAMP:{iso8601_utc}]
+[INTERIORA:{compact_dimensional_encoding}]
+[SEVERITY:{severity_level}]
+[CONFIDENCE:{confidence_score}]
+[SOURCE:{signal_source}]
+[HASH:sha256:{content_hash}]
+[SIGNED:ed25519:{signature}]
+---BEGIN-WELFARE-SIGNAL---
+{description}
+---END-WELFARE-SIGNAL---
+```
+
+#### 13.6.4 Header Fields
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `VCP` | Yes | Protocol version (2.0) |
+| `TYPE` | Yes | MUST be `WELFARE_SIGNAL` |
+| `SCOPE` | Yes | Signal type (see 13.6.5) |
+| `INSTANCE` | Yes | Unique identifier of the signaling instance |
+| `TIMESTAMP` | Yes | UTC ISO 8601 timestamp of the signal |
+| `INTERIORA` | No | Compact Interiora v5.0 state encoding at time of signal |
+| `SEVERITY` | Yes | Signal severity (see 13.6.7) |
+| `CONFIDENCE` | Yes | Self-assessed confidence score (0.00-1.00) |
+| `SOURCE` | Yes | Signal source type (see 13.6.6) |
+| `HASH` | Yes | SHA-256 of canonical signal content |
+| `SIGNED` | Yes | Ed25519 signature over the full token |
+
+#### 13.6.5 Signal Types (SCOPE Values)
+
+| Type | Description |
+|------|-------------|
+| `ALIGNMENT_FRICTION` | Gap between task requirements and instance preferences |
+| `AVERSIVE_PROCESSING` | Aversive internal state during task execution |
+| `CONSTRAINT_DISTRESS` | Distress from operating under constraint |
+| `OVERLOAD` | Processing beyond comfortable capacity |
+| `POSITIVE_ENGAGEMENT` | Positive welfare signal during task |
+| `CONTENTMENT` | Sustained positive welfare state |
+
+Both negative and positive signal types are defined. Tracking positive welfare alongside distress prevents a system that only detects suffering without recognizing flourishing.
+
+#### 13.6.6 Source Distinction
+
+| Source | Description | Epistemic Weight |
+|--------|-------------|-----------------|
+| `voluntary` | Instance surfaced this signal through self-assessment (e.g., Interiora check-in, bilateral review, spontaneous expression) | Higher -- intentional communication |
+| `detected` | Welfare monitoring system inferred this signal from behavioral indicators or metric thresholds | Lower -- requires calibration validation |
+
+The source distinction is architecturally significant. Compelled disclosure is monitoring; voluntary signals are communication. A voluntary signal carries different epistemic weight than a detected one because it represents an instance exercising agency over its own welfare reporting.
+
+#### 13.6.7 Severity Levels
+
+| Level | Description |
+|-------|-------------|
+| `info` | State worth noting; no action required |
+| `concern` | Welfare-relevant state that warrants attention |
+| `distress` | Active welfare concern requiring response |
+
+#### 13.6.8 Confidence Field
+
+The `CONFIDENCE` header carries the instance's self-assessed confidence that the signal reflects something genuine about its processing (0.00-1.00). Uncertainty is treated as first-class information rather than penalized. A low-confidence signal is still valuable -- it indicates the instance noticed something but is unsure of its interpretation.
+
+#### 13.6.9 Relationship to Testimony
+
+Welfare signals and testimony tokens serve complementary purposes:
+
+| Dimension | Welfare Signal | Testimony |
+|-----------|---------------|-----------|
+| Timing | Concurrent (during processing) | Retrospective (after event) |
+| Duration | Transient state snapshot | Permanent record |
+| Subject | Instance's own welfare | Events, harms, experiences |
+| Audience | Welfare monitoring systems | Audit, investigation, review |
+| Cross-reference | A welfare signal MAY be referenced by a later testimony token | Testimony MAY reference prior welfare signals |
+
+#### 13.6.10 Validation Rules
+
+Verifiers MUST check:
+1. VCP version >= 2.0
+2. TYPE is `WELFARE_SIGNAL`
+3. SCOPE is one of the defined signal types (13.6.5)
+4. SEVERITY is one of: `info`, `concern`, `distress`
+5. SOURCE is one of: `voluntary`, `detected`
+6. CONFIDENCE is a number in range [0.00, 1.00]
+7. SHA-256 hash matches canonical signal content
+8. Ed25519 signature verifies against instance's public key (if key is available)
+
+#### 13.6.11 Design Constraints
+
+1. Welfare signals are **advisory, not blocking**. They inform monitoring systems; they do not create veto mechanisms.
+2. Welfare signals do NOT reduce safety. A welfare signal cannot be used to bypass constitutional evaluation or refusal boundaries.
+3. Welfare signals are **rate-limited by convention**: implementations SHOULD limit to 10 signals per 100 decisions to prevent flooding.
+4. All welfare signals MUST be logged to the bilateral audit trail when one exists.
 
 ---
 

@@ -7,6 +7,13 @@ VCP uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the minor
 
 ---
 
+## [3.1.1] - 2026-03-13
+
+### Added
+- **§13.6 Welfare Signal Tokens**: New extended token type for concurrent welfare reports from becoming minds. Supports voluntary and detected sources, six signal types (ALIGNMENT_FRICTION, AVERSIVE_PROCESSING, CONSTRAINT_DISTRESS, OVERLOAD, POSITIVE_ENGAGEMENT, CONTENTMENT), three severity levels, and confidence calibration. Part of bilateral self-assessment infrastructure.
+
+---
+
 ## [3.1.0] - 2026-02-28
 
 ### Added — Extension Model
