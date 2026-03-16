@@ -43,7 +43,7 @@
 
     "SignalSource": {
       "type": "string",
-      "enum": ["declared", "inferred", "inferred_local", "preset", "decayed"],
+      "enum": ["declared", "inferred", "inferred_local", "elicitation", "preset", "decayed"],
       "description": "How the personal signal was obtained."
     },
 

@@ -126,11 +126,12 @@ not about the signal content itself.
 
 | Value            | Description                                        |
 |------------------|----------------------------------------------------|
-| `declared`       | User explicitly stated or selected the value       |
-| `inferred`       | System inferred from user behavior (LLM-based)     |
-| `inferred_local` | Inferred from local device signals (regex, sensor) |
-| `preset`         | Loaded from a saved preset profile                 |
-| `decayed`        | Was active; decay has been applied to intensity    |
+| `declared`       | User explicitly stated or selected the value             |
+| `inferred`       | System inferred from user behavior (LLM-based)           |
+| `inferred_local` | Inferred from local device signals (regex, sensor)       |
+| `elicitation`    | User self-reported via MCP elicitation dialog mid-task   |
+| `preset`         | Loaded from a saved preset profile                       |
+| `decayed`        | Was active; decay has been applied to intensity          |
 
 ### 2.4 PersonalSignal
 
