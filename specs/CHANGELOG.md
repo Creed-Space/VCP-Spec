@@ -7,6 +7,19 @@ VCP uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the minor
 
 ---
 
+## [3.1.2] - 2026-03-17
+
+### Added
+- **VCP-X-Personal §2.3**: New `measured` SignalSource value for instrument-mediated observation (IoT sensors, wearables, biometric devices). Distinct from `inferred_local` which involves model/heuristic processing. Enables proper credibility scoring for direct physical measurements.
+- **VCP-X-Personal §7.6**: Cross-substrate source credibility normative notes. The `(subject, source)` pair, not `source` alone, determines epistemic weight. Documents asymmetric failure modes across AI and human subjects. Non-response MUST NOT be treated as a negative signal.
+- **VCP-X-Personal §7.7**: Industrial and multi-party consent requirements. Routing transparency, aggregation before escalation, opt-out without penalty, and institutional decay guidelines. Addresses power-asymmetric contexts (factories, hospitals, schools).
+
+### Changed
+- **VCP-X-Personal §2.3**: Clarified `inferred_local` description — applies to heuristic/model processing of local data, not raw instrument readings. Updated `elicitation` description to use "Subject" instead of "User" to accommodate non-human subjects.
+- **VCP-X-Personal schema.json**: Added `measured` to SignalSource enum.
+
+---
+
 ## [3.1.1] - 2026-03-13
 
 ### Added

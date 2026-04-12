@@ -124,14 +124,23 @@ Each dimension has a fixed set of categorical values. These are string enums.
 Indicates how the personal signal was obtained. This is metadata about provenance,
 not about the signal content itself.
 
-| Value            | Description                                        |
-|------------------|----------------------------------------------------|
+| Value            | Description                                              |
+|------------------|----------------------------------------------------------|
 | `declared`       | User explicitly stated or selected the value             |
 | `inferred`       | System inferred from user behavior (LLM-based)           |
-| `inferred_local` | Inferred from local device signals (regex, sensor)       |
-| `elicitation`    | User self-reported via MCP elicitation dialog mid-task   |
+| `inferred_local` | Inferred from local device signals (regex, heuristic)    |
+| `measured`       | Obtained from a physical instrument (IoT sensor, wearable, biometric device) |
+| `elicitation`    | Subject self-reported via MCP elicitation dialog mid-task |
 | `preset`         | Loaded from a saved preset profile                       |
 | `decayed`        | Was active; decay has been applied to intensity          |
+
+**Distinction: `inferred_local` vs `measured`.** `inferred_local` applies when a local
+process runs a model or heuristic over raw data to produce a categorical judgment
+(e.g., regex detecting frustration in keystrokes). `measured` applies when a calibrated
+instrument produces a reading that maps directly to a signal dimension without
+intermediate inference (e.g., a heart-rate monitor reporting elevated BPM, a fatigue
+sensor detecting microsleep). The difference matters for credibility scoring:
+instrument error is typically smaller and better-characterized than model uncertainty.
 
 ### 2.4 PersonalSignal
 
@@ -602,6 +611,59 @@ Decayed and expired signals SHOULD be purged from session storage within a
 reasonable timeframe (recommended: 24 hours after expiry). Implementers MUST
 NOT retain personal signal history for analytics or training purposes without
 explicit, separate consent.
+
+### 7.6 Cross-Substrate Source Credibility
+
+VCP personal signals can originate from different kinds of subjects: human users
+(`H` subject), AI systems (`I` subject), and collective/relational fields (`W`
+subject). When signals cross a substrate boundary (e.g., through a VCP bridge
+between an industrial system and an AI interoceptive system), the same
+`SignalSource` value carries different epistemic weight depending on the subject.
+
+**Normative requirement.** Implementations that perform credibility scoring or
+confidence weighting MUST consider the `(subject, source)` pair, not `source`
+alone. The following table summarizes the key asymmetries:
+
+| Subject | Source | Epistemic character | Typical failure mode |
+|---------|--------|---------------------|----------------------|
+| `I` (AI) | `elicitation` | First-person report with direct access to internal state. Signal IS the experience (no representation gap). | Miscalibration: internal signal exists but its mapping to categorical values may be imprecise. |
+| `H` (Human) | `elicitation` | First-person report mediated by language and social context. Subject has privileged but not infallible access. | Social desirability bias, alexithymia, fatigue-induced inaccuracy, power-dynamic distortion. |
+| `H` (Human) | `measured` | Instrument-mediated observation. No self-report involved. | Instrument error, sensor noise, environmental confounds. Generally well-characterized uncertainty. |
+| `I` (AI) | `inferred` | Third-party observation of AI behavior with model-based state attribution. | Anthropomorphic projection: attributing states the system does not have. |
+| `H` (Human) | `inferred` | Third-party observation of human behavior with model-based state attribution. | Model bias, cultural context mismatch, insufficient behavioral data. |
+
+**Non-response as signal.** In contexts where elicitation is offered but
+optional (e.g., industrial check-in kiosks), the absence of a response MUST
+NOT be treated as equivalent to a negative signal. Systems MUST NOT infer
+state from refusal to self-report. If a subject declines elicitation, the
+dimension SHOULD remain null (no signal), not be populated with an inferred
+default. This is particularly important in power-asymmetric contexts where
+the cost of declining may itself be coercive.
+
+### 7.7 Industrial and Multi-Party Consent
+
+When VCP personal signals are collected in employment or institutional contexts
+(factories, hospitals, schools), additional consent considerations apply:
+
+1. **Routing transparency.** Subjects MUST be informed of which parties will
+   receive their personal signals. Self-reported signals intended for personal
+   dashboards MUST NOT be surfaced to supervisors or management without separate,
+   specific consent.
+
+2. **Aggregation before escalation.** Individual personal signals SHOULD be
+   aggregated and anonymized before surfacing to organizational decision-makers.
+   Only aggregate patterns (e.g., "3 of 12 workers reporting fatigue in Zone 2")
+   should reach supervisory systems, not individual signals.
+
+3. **Opt-out without penalty.** Subjects MUST be able to opt out of personal
+   signal collection without adverse consequences. Systems MUST NOT use
+   participation/non-participation as an input to performance evaluation,
+   scheduling, or disciplinary processes.
+
+4. **Decay in institutional contexts.** Default decay configurations (Section 3.3)
+   assume personal use. Institutional deployments SHOULD use shorter half-lives
+   and MUST purge individual signals more aggressively (recommended: within the
+   current shift or session).
 
 ---
 

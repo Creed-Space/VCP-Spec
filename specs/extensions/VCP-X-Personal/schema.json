@@ -43,8 +43,8 @@
 
     "SignalSource": {
       "type": "string",
-      "enum": ["declared", "inferred", "inferred_local", "elicitation", "preset", "decayed"],
-      "description": "How the personal signal was obtained."
+      "enum": ["declared", "inferred", "inferred_local", "measured", "elicitation", "preset", "decayed"],
+      "description": "How the personal signal was obtained. 'measured' indicates instrument-mediated observation (IoT, wearable, biometric). See spec §2.3 for the inferred_local/measured distinction."
     },
 
     "DecayCurve": {

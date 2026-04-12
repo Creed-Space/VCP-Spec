@@ -1,0 +1,321 @@
+EXACT LINE CONTEXTS - Problem Areas with Full Surrounding Text
+
+================================================================================
+ISSUE #1: §7.2 "How to handle genuine value conflicts?" (CRITICAL)
+================================================================================
+
+Lines 929-943 (Full context):
+
+  How to handle genuine value conflicts?
+
+VCP can detect conflicts but cannot always resolve them. Some value conflicts may
+be genuine — not communication failures but real disagreements. What happens when
+AI systems with incompatible values must coordinate? Such occasions might trigger
+additional "tuning" and "clarification" processes that could derive from 
+extensions derived from combinations of already existing UVCs.
+
+  Approach: CSM includes conflict detection and priority ordering. For
+irresolvable conflicts, escalate to human oversight. Document patterns of
+irresolvable conflicts for research.
+
+PROBLEMS IDENTIFIED:
+- Line 931: "Such occasions might trigger additional 'tuning' and 'clarification' 
+  processes" — what are these processes? No prior definition.
+- Line 933: "could derive from extensions derived from combinations of already 
+  existing UVCs" — awkward double nesting suggests merge artifact
+- Lines 935-936: Approach simply describes CSM priority ordering, does NOT 
+  explain the "tuning" and "clarification" mentioned above
+- Same solution appears for Question #1 (lines 921-922): "Extensions can derive 
+  from combinations of already existing UVCs"
+
+================================================================================
+ISSUE #2: §7.2 Circular Question-Answer Structure (CRITICAL)
+================================================================================
+
+Compare Q#1 and Q#2:
+
+Lines 917-922 (Q#1):
+"Can AI develop values outside human frameworks? VCP's UVC is derived from human
+cultural production...will VCP have vocabulary to express them? Approach: Version 
+the UVC with explicit extension mechanisms."
+
+Lines 929-936 (Q#2):
+"How to handle genuine value conflicts?...What happens when AI systems with 
+incompatible values must coordinate? Such occasions might trigger additional 
+'tuning'...that could derive from extensions derived from combinations of already 
+existing UVCs. Approach: CSM includes conflict detection and priority ordering."
+
+ISSUE: Both Q#1 and Q#2 propose nearly identical answers (extension mechanisms,
+combinations of existing UVCs). Two distinct problems should not have 
+near-identical solutions without explanation of why they're equivalent or how 
+they differently apply.
+
+================================================================================
+ISSUE #3: §2.7 Information Gap - Missing Mechanism Explanation (CRITICAL)
+================================================================================
+
+Lines 421-427 (Bracketed summary):
+
+"[The three-layer model details (constitutional rules, situational context, 
+personal state) have been consolidated. The constitutional layer sets absolute 
+boundaries and conditional rules. The situational layer activates relevant 
+provisions based on detected context (company, setting, activity, urgency). 
+The personal layer modulates expression intensity based on the user's emotional, 
+cognitive, and physical state. Each layer constrains the next: constitutional 
+rules bound what situational context can activate, and situational context 
+bounds how personal state modulates expression.]"
+
+Immediately followed by §2.8:
+
+Lines 428-439:
+
+  2.8 Layer Interactions
+
+-   Layer: Constitutional
+    -   Sets: Boundaries (what's allowed)
+    -   Example: "Don't provide medical diagnoses"
+
+-   Layer: Situational
+    -   Sets: Which rules apply
+    -   Example: Children present → family safety rules
+
+PROBLEM: §2.7 intro (line 421) says "constitutional rules set boundaries, 
+situational context determines which rules apply" — but HOW are rules determined 
+to "apply"? The bracketed text claims details were "consolidated" but §2.8 
+provides only bullet points and examples, not the algorithmic mechanism. What 
+decision logic evaluates situational context against constitutional rules?
+
+No section explains this rule-activation algorithm. It appears to have been 
+removed entirely.
+
+================================================================================
+ISSUE #4: §2.6 Contradictory Metadata (MEDIUM - CONFUSING)
+================================================================================
+
+Lines 406-420:
+
+  2.6 Conformance Levels
+
+VCP defines four conformance levels for implementers:
+
+  Level            Layers   Requirements                                 Use Case
+  ...conformance table...
+
+[Conformance level requirements have been moved to the VCP Specification 
+document. Four conformance levels (VCP-Minimal, VCP-Standard, VCP-Full, 
+VCP-Enterprise) specify progressive implementation requirements. See VCP 
+Specification for detailed requirements per level.]
+
+PROBLEM: The bracketed note (lines 417-420) says content "has been moved" but 
+immediately AFTER this note comes §2.6 with a complete conformance levels 
+table! This creates a logical contradiction:
+
+- Bracketed note claims content moved → reader expects missing content
+- Actual §2.6 table is present → reader is confused
+
+The bracketed note should either:
+(a) BE DELETED (since content is here)
+(b) PRECEDE the table (explaining what original spec was condensed)
+(c) BE CLARIFIED (explaining this IS the condensed version)
+
+Current placement creates false expectation of missing content.
+
+================================================================================
+ISSUE #5: §2.10 Specification Entirely Removed (HIGH)
+================================================================================
+
+Lines 505-514:
+
+  2.10 Context Lifecycle
+
+VCP 3.1's personal state signals are not static — they have a lifecycle. Urgency
+fades, energy shifts, cognitive state drifts. The Context Lifecycle model
+formalises how signals evolve over time, enabling systems to distinguish fresh
+context from stale, and to adapt their confidence in each signal accordingly.
+
+[Context lifecycle state machine details have been moved to the VCP Specification
+document. Personal dimension signals transition through SET → ACTIVE → DECAYING
+→ STALE → EXPIRED states with configurable decay curves and pinning. See VCP
+Specification for full lifecycle semantics.]
+
+  3. Inter-Agent Communication: The Latent State Bridge
+
+PROBLEM: §2.10 is ONLY the bracketed summary. No actual state machine definition,
+decay curve formulas, or configuration examples follow. The section ends after 
+the bracketed note and immediately transitions to §3.
+
+Compare this to §2.6 and §2.7 which have detailed content AFTER their bracketed 
+notes. §2.10 has NO subsequent specification — only the bracketed reference to 
+external document.
+
+Reader cannot implement context lifecycle without accessing external VCP 
+Specification document. This section is purely a pointer, not a specification.
+
+================================================================================
+ISSUE #6: §2.9 Incomplete Hook Specification (HIGH)
+================================================================================
+
+Lines 499-504:
+
+  2.9 Hooks
+
+VCP implements deterministic hooks: sub-millisecond rule-based checks that
+execute before and after LLM evaluation, handling common constitutional
+enforcement patterns without consuming inference budget. Hooks are categorized
+as PRE (block/transform before LLM sees input), POST (filter/modify LLM output),
+and LIFECYCLE (manage constitutional state transitions).
+
+Example hook types include: content-filter hooks for profanity/PII detection with
+configurable actions (block, mask, warn); context-trigger hooks that activate
+additional constitutional provisions when situational signals change (e.g.,
+child-safety mode when company: ["children"]); and rate-limit hooks that enforce
+interaction boundaries. Hooks operate at the PDP layer with <1ms latency and
+deterministic behavior, complementing rather than replacing LLM-based
+constitutional evaluation. Full hook specifications are provided in the VCP
+Specification document.
+
+MISSING:
+- No hook syntax/schema (unlike §2.2-2.5 which have JSON or grammar)
+- No composition examples (unlike §2.4 CSM1 grammar)
+- No configuration methods
+- No lifecycle transitions detail
+- No priority ordering for hook conflicts
+- NO BRACKETED NOTE explaining removal
+
+Compared to VCP/I (lines 159-198), VCP/T (lines 201-287), VCP/S (lines 289-404),
+and VCP/A (lines 293-515), §2.9 is substantially less detailed despite being a 
+core protocol component.
+
+Status: Either incomplete specification or removed specification without notation.
+
+================================================================================
+ISSUE #7: §2.5 Token Efficiency Metric Ambiguity (MEDIUM)
+================================================================================
+
+Line 404 (within §2.5 Adaptation Layer):
+
+"[Token efficiency metrics have been moved to the VCP Specification document.
+VCP/A encodings achieve significant compression relative to natural language,
+with compact representations of 15–20 tokens for full context state. See VCP
+Specification for detailed benchmarks.]"
+
+Compare to §4.3 (Line 620):
+
+"VCL (~35 characters, ~9 tokens): 👑⚙️🎓😐✅|🏛️5/5🟡→⚙️6/6🟠
+
+With 90% fewer tokens, AI systems can track more state within fixed context
+windows."
+
+DISCREPANCY:
+- §2.5 claims "15–20 tokens for full context state"
+- §4.3 shows "~9 tokens" for MillOS example
+
+These could be measuring different things (full VCP/A state vs. MillOS 
+simplified encoding) but without the removed metrics section, reader cannot 
+verify. Missing:
+- Measurement methodology
+- Baseline (natural language? JSON?)
+- Scope definition ("full context state" = how many dimensions?)
+- Validation procedure
+
+================================================================================
+ISSUE #8: §6.7 → §7.1 Transition Gap (MEDIUM)
+================================================================================
+
+Lines 900-908 (End of §6.7):
+
+"VCP addresses these gaps through: (1) transportability—creeds are runtime
+configuration via VCP/T, decoupled from model weights; (2) composability—VCP/S
+composition modes (BASE, EXTEND, OVERRIDE, STRICT) allow contradictory values
+to coexist with explicit conflict resolution...Design principles from the
+democratic constitution research further inform VCP's approach: paired framing,
+plain-language constitutions, a common-core-with-divergent-edges architecture..."
+
+Immediately followed by §7.1 (Lines 909-920):
+
+"  7. Discussion and Limitations
+
+  7.1 Acknowledged Limitations
+
+Cultural variance. Emoji cultural variance is mitigated but not fully resolved...
+
+Adoption dependencies. Standards require community buy-in. VCP's value depends
+on network effects — broader adoption increases utility. Bootstrap problem..."
+
+PROBLEM: §6.7 describes how VCP solves:
+- Transportability (addresses adoption)
+- Composability (addresses conflicts)
+- Pluralism (addresses value diversity)
+
+Then §7.1 describes limitations:
+- Cultural variance
+- Adoption dependencies
+- AI-native values
+
+But §6.7 already discussed how VCP's "transportability" and composition modes 
+address adoption and conflicts! §7.1 should either:
+(a) Acknowledge these are limitations DESPITE 6.7's solutions
+(b) Focus on new limitations beyond what 6.7 covered
+(c) Explicitly reference 6.7's solutions before discussing remaining limitations
+
+Current structure creates false impression that §6.7's solutions don't address 
+the §7.1 limitations.
+
+================================================================================
+ISSUE #9: §7.7 Phantom Section Reference (LOW)
+================================================================================
+
+Lines 984-999:
+
+First mention (line 984):
+"Assumption transparency at inference time...Building on the three-layer model
+(Section 2.7), we are developing an Assumption Transparency Layer..."
+
+Second mention (lines 990-999):
+"Assumption Transparency. A planned extension (formerly Section 2.12) introduces
+an Assumption Transparency Layer that surfaces inference-time judgments with
+VCP-derived quality signals...Early implementations of VCP (Creed Space, 2026)
+demonstrate that users are prepared to engage productively with surfaced
+assumptions..."
+
+ISSUE: Text acknowledges "(formerly Section 2.12)" but this section does not 
+exist in current document. The acknowledged removal is good (transparency), but 
+the content here appears to be aspirational/future work, not a condensed version 
+of what was in §2.12.
+
+Reader cannot verify:
+- What was originally in §2.12
+- How it was condensed or changed
+- Whether "Creed Space, 2026" implementation is completed or planned
+
+The bracketed-note style should clarify: "[...moved to future work section...]"
+
+================================================================================
+ISSUE #10: §7.2 Q#2 "Approach" Disconnect (MEDIUM)
+================================================================================
+
+Lines 931-936:
+
+Question (931-933):
+"What happens when AI systems with incompatible values must coordinate? Such
+occasions might trigger additional 'tuning' and 'clarification' processes that
+could derive from extensions derived from combinations of already existing UVCs."
+
+Answer (935-936):
+"Approach: CSM includes conflict detection and priority ordering. For
+irresolvable conflicts, escalate to human oversight."
+
+DISCONNECT: The question introduces "tuning" and "clarification" as potential 
+processes, but the answer merely describes existing CSM features. The answer does 
+NOT explain:
+- What "tuning" and "clarification" are
+- How they relate to CSM priority ordering
+- Whether these are NEW mechanisms or existing ones
+
+The answer deflects to human oversight without explaining the question's 
+suggested "tuning and clarification processes." This suggests the original 
+section explaining these processes was removed, leaving orphaned question 
+language.
+
+================================================================================
+
