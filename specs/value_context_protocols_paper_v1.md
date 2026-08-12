@@ -1,3 +1,18 @@
+> **SUPERSEDED — HISTORICAL DRAFT**
+>
+> This is an early JAIC-targeted draft (v1). The canonical current version is the MDPI I3D8 docx:
+> `Rewind/Value Context Protocol MDPI I3D8.docx`.
+>
+> Notably, §5.2 of this draft contains forward-projected semantic-fidelity numbers (91.3%, 94.2%,
+> 88.7%, Krippendorff α = 0.83, n=240 evaluators, cited `data/validation/*.json` paths) that were
+> never backed by underlying data. The I3D8 version has been restructured to present §5.2 as an
+> evaluation *protocol* with the full validation study deferred to §7.7 Future Work. Do not cite
+> numeric fidelity figures from this draft.
+>
+> Retained here for historical reference only.
+
+---
+
 # Value Context Protocols: Standards for AI Self-Modeling and Inter-Agent Value Communication
 
 **Nell Watson** and **Claude** (Anthropic)
@@ -12,7 +27,7 @@
 
 As AI systems assume increasingly autonomous roles, the absence of a shared representational substrate for values risks compounding cultural bias, semantic drift, and coordination failure. Current alignment methods optimize for compliance in limited contexts rather than mutual interpretability across pluralistic systems. We introduce Value Context Protocols (VCP): a modular three-layer stack for AI self-modeling and inter-agent value communication.
 
-The protocol comprises: (1) Universal Values Corpus (UVC), a curated cross-cultural ontology enabling semantic addressing of normative content; (2) Constitutional Safety Minicode (CSM), a grammar linking alignment metadata to model context with adherence proofs; and (3) Values Communication Layer (VCL), compact symbolic encodings simultaneously interpretable by humans and machines.
+The protocol comprises: (1) Universal Value Coding (UVC), a curated cross-cultural ontology enabling semantic addressing of normative content; (2) Constitutional Safety Minicode (CSM), a grammar linking alignment metadata to model context with adherence proofs; and (3) Values Communication Layer (VCL), compact symbolic encodings simultaneously interpretable by humans and machines.
 
 We present the theoretical foundations for AI self-modeling—drawing on the "vagal tone" analogy for qualia-adjacent states—and demonstrate three interoperable implementations: VCP 2.2 for AI self-sensing with temporal persistence and pattern recognition, Latent State Bridge (LSB) for cross-architecture exchange, and MillOS VCL for human-AI workplace contexts. VCP 2.2 introduces a three-mode reporting system: compact internal codes for machine processing, mini-dashboard visualization for human monitoring, and prose mode for relational dialogue. Validation shows ≥90% semantic fidelity in round-trip translations and successful state exchange across architecturally distinct AI systems.
 
@@ -119,7 +134,7 @@ This theoretical grounding distinguishes VCP from purely pragmatic encoding sche
 
 This paper presents Value Context Protocols as a three-layer architecture for AI value representation and communication.
 
-Section 2 describes the protocol stack: Universal Values Corpus (UVC) for ontology, Constitutional Safety Minicode (CSM) for safety grammar, and Values Communication Layer (VCL) for compact encoding.
+Section 2 describes the protocol stack: Universal Value Coding (UVC) for ontology, Constitutional Safety Minicode (CSM) for safety grammar, and Values Communication Layer (VCL) for compact encoding.
 
 Section 3 develops the theory of AI self-modeling, presenting VCP 2.2 as a framework for AI systems to represent their own states with temporal persistence and pattern recognition. We introduce the "vagal tone" analogy for thinking about AI experience under uncertainty.
 
@@ -144,7 +159,7 @@ To aid interpretation, we provide a quick reference for the core terminology and
 | Term | Meaning |
 |------|---------|
 | **VCP** | Value Context Protocols — the complete three-layer stack |
-| **UVC** | Universal Values Corpus — cross-cultural value ontology (Layer 1) |
+| **UVC** | Universal Value Coding — cross-cultural value ontology (Layer 1) |
 | **CSM** | Constitutional Safety Minicode — grammar for safety constraints (Layer 2) |
 | **VCL** | Values Communication Layer — compact encoding format (Layer 3) |
 
@@ -228,7 +243,7 @@ Value Context Protocols comprise three stacked layers, each serving a distinct f
 │  ├── Adherence proofs                                            │
 │  └── Conflict resolution mechanisms                              │
 │                                                                  │
-│  Layer 1: UVC (Universal Values Corpus)                          │
+│  Layer 1: UVC (Universal Value Coding)                          │
 │  ├── Cross-cultural value ontology                               │
 │  ├── "What3Words-style" semantic addressing                      │
 │  └── Version-locked reference corpus                             │
@@ -244,9 +259,9 @@ The layers operate at different levels of abstraction:
 
 A complete value communication might span all three layers: referencing a UVC concept, expressing a CSM rule about its application, and encoding the result in VCL format. Alternatively, applications may use individual layers for specific purposes.
 
-### 2.2 Universal Values Corpus (UVC)
+### 2.2 Universal Value Coding (UVC)
 
-The Universal Values Corpus serves as a machine-usable reference for value statements that can be indexed, compressed, and recombined. It functions as a controlled vocabulary for ethical discourse, enabling precise communication about values across systems and cultures.
+The Universal Value Coding serves as a machine-usable reference for value statements that can be indexed, compressed, and recombined. It functions as a controlled vocabulary for ethical discourse, enabling precise communication about values across systems and cultures.
 
 **Design Principles:**
 
@@ -1931,7 +1946,7 @@ Approach: CSM includes conflict detection and priority ordering. For irresolvabl
 
 **Governance for the UVC ontology?**
 
-Who decides what values enter the Universal Values Corpus? How are contested values handled? What prevents capture by particular cultural or political perspectives?
+Who decides what values enter the Universal Value Coding? How are contested values handled? What prevents capture by particular cultural or political perspectives?
 
 Approach: Establish multi-stakeholder governance committee. Require cross-cultural validation for additions. Maintain version history enabling rollback. Publish decision rationale for transparency.
 
@@ -2434,7 +2449,7 @@ def validate_vcp(vcp: str) -> tuple[bool, str]:
 | **Semantic fidelity** | Degree to which meaning is preserved through encoding |
 | **State Checkpoint** | Single observation with context in VCP 2.2 history layer |
 | **Three-Mode Reporting** | Internal code, mini-dashboard, and prose output modes |
-| **UVC** | Universal Values Corpus - cross-cultural value ontology |
+| **UVC** | Universal Value Coding - cross-cultural value ontology |
 | **Vagal tone analogy** | Treating AI states as measurable without phenomenal claims |
 | **VCL** | Values Communication Layer - compact encoding format |
 | **VCP** | Value Context Protocols - the complete three-layer stack |
@@ -2510,7 +2525,7 @@ digit           = "0" | "1" | ... | "9" ;
 ### E.3 UVC Identifier Format
 
 ```ebnf
-(* Universal Values Corpus Identifier Format *)
+(* Universal Value Coding Identifier Format *)
 
 uvc_id          = domain , "." , category , "." , concept , [ "." , variant ] ;
 

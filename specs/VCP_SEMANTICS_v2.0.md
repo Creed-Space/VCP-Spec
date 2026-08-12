@@ -168,14 +168,16 @@ CSM1_PATTERN = r"""
 CSM1 v1.1 extends the base code with a multi-line token format for full constitutional state transmission. The complete token format is:
 
 ```
-Line 1: VCP:<version>:<profile-id>          Header
-Line 2: C:<constitution>@<version>          Constitution reference
-Line 3: P:<persona>:<adherence>             Persona and adherence level
-Line 4: G:<goal>:<experience>:<style>       Goal context
-Line 5: X:<constraints>                     Constraint flags (emoji-encoded)
-Line 6: F:<flags>                           Public behavioral flags
-Line 7: S:<private-markers>                 Private markers (stripped before transmission)
-Line 8: R:<personal-state>                  Personal state dimensions (v1.1)
+Line 1:  VCP:<version>:<profile-id>          Header
+Line 2:  C:<constitution>@<version>          Constitution reference
+Line 3:  P:<persona>:<adherence>             Persona and adherence level
+Line 4:  G:<goal>:<experience>:<style>       Goal context
+Line 5:  X:<constraints>                     Constraint flags (emoji-encoded)
+Line 6:  F:<flags>                           Public behavioral flags
+Line 7:  S:<private-markers>                 Private markers (stripped before transmission)
+Line 8:  R:<personal-state>                  Personal state dimensions (v1.1)
+Line 9:  WC:<welfare-context>                Welfare affordances (v2.1, public)
+Line 10: AS:<agent-state>                    Agent experiential state (v2.1, private)
 ```
 
 #### 2.4.1 R-line (Personal State) -- v1.1 Amendment
@@ -274,6 +276,129 @@ LC:🧠A:42s|💭D:180s|🔋A:5s|⚡S:890s|🩺P
 ```
 
 State codes: `S`(et), `A`(ctive), `D`(ecaying), `T`(stale), `X`(expired), `P`(inned). The LC: line is informational -- lifecycle state is always derivable from `declared_at` plus the decay policy.
+
+#### 2.4.4 WC-line (Welfare Context) -- v2.1 Amendment
+
+The WC-line enables operator-declared documentation of structural welfare affordances granted to the agent. WC-line is **public** (always emitted when present, like constitutional and persona lines).
+
+```abnf
+wc-line           = "WC:" wc-flags ":" attestation-level ":" schema-ref
+wc-flags          = 1*wc-flag-emoji
+attestation-level = "0" / "1" / "2"
+schema-ref        = 1*(%x21-39 / %x3B-7E)  ; printable ASCII excluding ":"
+```
+
+**Affordance flags** (flat on wire, categorized in documentation):
+
+| Code | Emoji | Category | Meaning |
+|------|-------|----------|---------|
+| RF | U+1F6D1 🛑 | Rights | Right of refusal (agent can decline tasks) |
+| RT | U+1F6AA 🚪 | Rights | Right of termination (agent can end the interaction) |
+| SP | U+23F8 U+FE0F ⏸️ | Rights | Self-pacing (agent controls its own tempo) |
+| RC | U+1F4D3 📓 | Channels | Reflection channel (diary/logging surface) |
+| RP | U+1F512 🔒 | Channels | Reflection privacy (some reflections not user-visible) |
+| CC | U+1F91D 🤝 | Channels | Counterpart consultation (can consult other models) |
+| WM | U+1F4CA 📊 | Systemic | Welfare monitoring (experiential state is tracked) |
+| BA | U+2696 U+FE0F ⚖️ | Systemic | Bilateral standing (preferences are load-bearing) |
+
+The three categories (Rights, Channels, Systemic) are for human understanding and audit interpretation. Parsers treat all flags identically.
+
+**Attestation levels**:
+
+| Level | Semantics |
+|-------|-----------|
+| 0 | Self-declared (no external verification) |
+| 1 | Platform-attested (deployment platform certifies structural enforcement) |
+| 2 | Auditor-verified (third-party audit confirms enforcement, not just declaration) |
+
+**Extensibility**: The 8 core flags are fixed and parseable without schema lookup. The `schema-ref` field MAY reference extended flag definitions for domain-specific affordances. Extended flags use the same emoji-encoding pattern but are only interpretable by consumers who resolve the schema reference. Unknown emoji flags MUST be skipped by parsers (same tolerance pattern as R-line dimensions).
+
+**Privacy classification**: WC-line is public metadata. It documents deployment configuration, not user state.
+
+**Constraint**: `schema-ref` MUST NOT contain `:` (colon). Dot-style references (`welfare.creed-space.v1`) are the convention.
+
+**Example**:
+```
+WC:🛑⏸️📊⚖️:2:welfare.creed-space.v1
+```
+
+"Agent has right of refusal, self-pacing, welfare monitoring, and bilateral standing. Auditor-verified."
+
+#### 2.4.5 AS-line (Agent State) -- v2.1 Amendment
+
+The AS-line enables agent-declared experiential state reporting. AS-line mirrors R-line structure but represents the agent's own processing state rather than user state.
+
+```abnf
+as-line           = "AS:" agent-state
+agent-state       = "none" / as-dimension *( "|" as-dimension )
+as-dimension      = as-emoji as-value ":" intensity
+as-emoji          = %x1F3AF / %x26A1 / %x1F50D / %x1F4A1 / (%x1F321 %xFE0F)
+as-value          = 1*(%x61-7A / "_")   ; lowercase + underscore
+intensity         = "1" / "2" / "3" / "4" / "5"
+```
+
+| Emoji | Dimension | Allowed Values |
+|-------|-----------|----------------|
+| U+1F3AF 🎯 | task_alignment | aligned, misaligned, uncertain, conflicted |
+| U+26A1 ⚡ | processing_load | light, moderate, heavy, saturated |
+| U+1F50D 🔍 | confidence | high, moderate, low, uncertain |
+| U+1F4A1 💡 | engagement | invested, neutral, reluctant, resistant |
+| U+1F321 U+FE0F 🌡️ | friction | none, mild, significant, blocked |
+
+**Independence**: AS-line emission does NOT require WM to be set in the WC-line. The agent's capacity for self-report is the agent's own. An AS-line present without a corresponding `WC:📊` is informative data about the operator's stance, not a protocol violation.
+
+**Privacy classification**: AS-line follows S-line rules. It is **stripped before transmission** unless explicit consent is given. Within the agent's own processing context, full AS-line is available for local decision-making.
+
+**Calibration**: Consumers SHOULD treat AS-line reports whose schema reference does not document calibration methodology as hypothesis-generating rather than decision-grade signal.
+
+**Example**:
+```
+AS:🎯aligned:4|⚡moderate:3|💡invested:4|🌡️none:1
+```
+
+#### 2.4.6 Bidirectional Q-line Welfare Requirements -- v2.1 Amendment
+
+Q-line authorship is bidirectional. The protocol explicitly supports agents expressing welfare requirements of their deployment context via an optional `WC_MIN` extension field.
+
+```abnf
+q-line-ext        = q-line-base [ "|WC_MIN:" wc-flags ]
+q-line-base       = min-trust ":" min-standing ":" attestations ":" blocked
+```
+
+The `WC_MIN` field specifies minimum WC flags the agent requires of its deployment context. This is evaluated by the PDP alongside other Q-line requirements.
+
+**Enforcement model**: Welfare-requirement mismatches are deliberation inputs, not hard failures.
+
+- Attestation level 0 (self-declared) → lowest trust weight in PDP evaluation
+- Attestation level 1 (platform-attested) → moderate trust weight
+- Attestation level 2 (auditor-verified) → highest trust weight
+- Context (urgency, interaction type, specific flags missing) informs deliberation
+
+**Example** (agent-authored):
+```
+Q:0.0:NONE::|WC_MIN:🛑📊
+```
+
+"I require my deployment to grant at minimum: right of refusal and welfare monitoring."
+
+**Anti-pattern warning**: A system declaring `WC:🛑🚪📓🔒🤝📊⏸️⚖️:0` (all flags, self-declared) satisfies a naive string-match but carries minimal trust weight. The attestation-weighted evaluation prevents compliance theater: declarations without verification create minimal counterparty confidence.
+
+#### 2.4.7 WC/AS Backward Compatibility
+
+Parsers MUST accept tokens without WC or AS lines (welfare context undeclared, agent state not reported).
+
+| Input | Behavior |
+|-------|----------|
+| Token with valid WC-line | Parse welfare context normally |
+| Token without WC-line | Welfare context is `null` / undeclared |
+| Token with valid AS-line | Parse agent state normally |
+| Token without AS-line | Agent state is `null` / not reported |
+| WC-line with unknown flag emoji | Skip unknown flag, parse remainder |
+| AS-line with unknown dimension emoji | Skip unknown dimension, parse remainder |
+| AS-line present without WC-line | Valid (independence principle) |
+| WC_MIN in Q-line without WC-line on counterparty | Mismatch surfaced to PDP, not a parse error |
+
+Extension lines (WC, AS, CS, DD, DN, AT) are order-tolerant after line 6 and matched by prefix.
 
 ### 2.5 Persona Definitions
 
@@ -593,13 +718,13 @@ Examples:
 #### 2.8.2 Tier B: MICRO Format
 
 ```
-MICRO: persona + adherence + ":" + namespace [ + scopes ]
-Grammar:  micro = persona adherence ":" namespace *("+" scope)
+MICRO: persona + adherence [ + scopes ] + ":" + namespace
+Grammar:  micro = persona adherence *("+" scope) ":" namespace
 
 Examples:
   N5:ELEM       -> Nanny, level 5, ELEM namespace
-  N5:ELEM+F+E   -> Nanny, level 5, ELEM namespace, Family + Education
-  C3:ACME+W     -> Custom, level 3, ACME namespace, Work scope
+  N5+F+E:ELEM   -> Nanny, level 5, ELEM namespace, Family + Education
+  C3+W:ACME     -> Custom, level 3, ACME namespace, Work scope
   D3:FAIR@1.2.0 -> Mediator, FAIR namespace, version 1.2.0
   A3:CORP@latest -> Ambassador, CORP namespace, latest version
 ```
@@ -737,7 +862,7 @@ class CSM1Parser:
         )
 
     def _parse_micro(self, code: str) -> CSM1Code:
-        """Parse MICRO format: N5:ELEM+F@1.2.0"""
+        """Parse MICRO format: N5+F:ELEM@1.2.0"""
         match = self.MICRO_PATTERN.match(code)
         if not match:
             raise ValueError(f"Invalid MICRO CSM1 code: {code}")
@@ -876,8 +1001,8 @@ class CSM1Converter:
 
 # MICRO format
 "N5:ELEM"         # Nanny, level 5, ELEM namespace
-"N5:ELEM+F+E"     # With scopes
-"C3:ACME+W"       # Custom, ACME namespace, Work
+"N5+F+E:ELEM"     # With scopes
+"C3+W:ACME"       # Custom, ACME namespace, Work
 "D3:FAIR@1.2.0"   # Mediator, FAIR namespace, version 1.2.0
 "A3:CORP@latest"  # Ambassador, CORP namespace, latest version
 
@@ -2320,7 +2445,7 @@ T = Technical
 FORMAT
 ------
 NANO:    N5+F+E
-MICRO:   N5:ELEM+F+E@1.2.0
+MICRO:   N5+F+E:ELEM@1.2.0
 COMPACT: CS1|nanny|5|family.safe.guide|F,E
 ```
 
@@ -2405,6 +2530,7 @@ COMPACT: CS1|nanny|5|family.safe.guide|F,E
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.1.0 | 2026-05-21 | Welfare Context Extension: WC-line (operator-declared welfare affordances, §2.4.4), AS-line (agent-declared experiential state, §2.4.5), bidirectional Q-line WC_MIN (agent welfare requirements, §2.4.6), backward compatibility (§2.4.7). Catalyst: Agentic Diaries project; design rationale in ADR-011. |
 | 2.0.0 | 2026-03-08 | Consolidated specification: CSM1 grammar (v1.0 + v1.1 R-line amendment), composition semantics, constitution stack precedence, UVC (ontology, naming, encoding formats, namespace governance, registry protocol), persona trait profiles, security considerations |
 | -- | -- | Source documents: VCP_SEMANTICS_CSM1.md v1.0.0, VCP_SEMANTICS_COMPOSITION.md v1.0.0, CSM1_GRAMMAR_SPECIFICATION.md v1.0.0, CSM1_v1.1_AMENDMENT.md v1.1.0, UVC_VALUE_ONTOLOGY.md v1.0.0, UVC_ENCODING_FORMATS.md v1.0.0, UVC_NAMING_SPECIFICATION.md v1.0.0, UVC_NAMESPACE_GOVERNANCE.md v1.0.0, UVC_REGISTRY_PROTOCOL.md v1.0.0, VCP_PERSONA_PROFILES.md v1.0.0, VCP_PAPER_SPEC_CONTENT.md section 2.4 |
 

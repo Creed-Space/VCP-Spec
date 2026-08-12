@@ -84,7 +84,7 @@ Transition from STABLE to DEPRECATED requires:
   v3.1, removed no earlier than v5.0).
 
 
-## Current Extensions (v3.1)
+## Current Extensions (v3.2)
 
 | Extension        | Status       | Description                                                       |
 |------------------|--------------|-------------------------------------------------------------------|
@@ -93,6 +93,7 @@ Transition from STABLE to DEPRECATED requires:
 | VCP-X-Consensus  | Stable       | Constitutional consensus primitive: Schulze-method voting over constitution sets with structured deliberation rounds, quorum requirements, and amendment proposals. |
 | VCP-X-Torch      | Stable       | Session handoff between agents: captures relationship quality, trajectory, primes (key norms), and gestalt tokens. Enables continuity across instance boundaries. |
 | VCP-X-Intent     | Experimental | Heuristic intent inference from VCP context signals. Rule-based classification into 10 intent categories with confidence scores and transparent reasoning. Correctable by users. |
+| VCP-X-Welfare    | Experimental | Welfare instrumentation: core (WC/AS/bidirectional Q), embodied dimensions (robotics), temporal patterns (trajectory, checkpoints), multi-agent aggregation (swarm welfare), and attestation chains. Builds on VCP/S v2.1 welfare lines. |
 
 
 ## Adding a New Extension

@@ -32,7 +32,7 @@ The **Value-Context Protocol (VCP)** is a unified protocol stack for expressing,
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 1: VCP-IDENTITY (VCP/I)                                  │
 │  "What it's Called" - Token naming, namespaces, registry        │
-│  Maps to: UVC (Universal Values Corpus)                         │
+│  Maps to: UVC (Universal Value Coding)                         │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -40,7 +40,7 @@ The **Value-Context Protocol (VCP)** is a unified protocol stack for expressing,
 
 | Research Concept | VCP Layer | Purpose |
 |------------------|-----------|---------|
-| **UVC** (Universal Values Corpus) | Layer 1: Identity | Curated cross-cultural corpus of values, "What3Words for ethics" |
+| **UVC** (Universal Value Coding) | Layer 1: Identity | Curated cross-cultural corpus of values, "What3Words for ethics" |
 | **CSM** (Constitutional Safety Minicode) | Layer 3: Semantics | Compact grammar for safety rules, adherence proofs |
 | **VCL** (Values Communication Layer) | Layer 4: Adaptation | Emoji-based symbolic encoding for context |
 
@@ -273,7 +273,7 @@ Context encoded across 9 dimensions using emoji:
 | 1 | ⏰ | TIME | 🌅morning, 🌆evening, 🌙night |
 | 2 | 📍 | SPACE | 🏡home, 🏢office, 🏫school |
 | 3 | 👥 | COMPANY | 👤alone, 👶children, 👔colleagues |
-| 4 | 🌍 | CULTURE | 🇺🇸american, 🇯🇵japanese, 🌍global |
+| 4 | 🌍 | CULTURE | 🔇high_context, 📢low_context, 🎩formal |
 | 5 | 🎭 | OCCASION | ➖normal, 🎂celebration, 🚨emergency |
 | 6 | 🧠 | STATE | 😊happy, 😰anxious, 🤔contemplative |
 | 7 | 🌡️ | ENVIRONMENT | ☀️comfortable, 🥵hot, 🔇quiet |
@@ -744,7 +744,7 @@ services/vcp/
 docs/
 ├── VCP_OVERVIEW.md          # Protocol specification
 ├── VCP_CONTEXT_DATA_FLOW.md # Dataflow reference
-├── VCP_IMPLEMENTATION_GUIDE.md # Developer guide
+├── VCP_INTEGRATION_GUIDE.md  # Developer guide
 ├── identity/                # Layer 1 specs
 ├── semantics/               # Layer 3 specs
 ├── adaptation/              # Layer 4 specs
@@ -834,7 +834,7 @@ python3 -m pytest tests/vcp/ --cov=services/vcp
 |----------|---------|
 | [VCP_OVERVIEW.md](VCP_OVERVIEW.md) | Full protocol specification |
 | [VCP_CONTEXT_DATA_FLOW.md](VCP_CONTEXT_DATA_FLOW.md) | Dataflow and security model |
-| [VCP_IMPLEMENTATION_GUIDE.md](VCP_IMPLEMENTATION_GUIDE.md) | Developer reference |
+| [VCP_INTEGRATION_GUIDE.md](VCP_INTEGRATION_GUIDE.md) | Developer reference |
 | [VCP_ADAPTATION.md](adaptation/VCP_ADAPTATION.md) | Enneagram Protocol spec |
 | [VCP_SEMANTICS_CSM1.md](semantics/VCP_SEMANTICS_CSM1.md) | CSM1 grammar spec |
 
@@ -851,4 +851,3 @@ VCP implements the theoretical framework from the research proposal:
 | "Emoji-based symbolic encoding" | VCP/A Enneagram: `⏰🌅\|📍🏡\|👥👶` |
 | "Auditable value exchange" | VCP/T signed bundles + audit logs |
 | "Inter-agent negotiation" | VCP signals in PDP pipeline |
-

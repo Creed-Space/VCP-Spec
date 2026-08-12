@@ -888,7 +888,7 @@ CSM-1 supports three encoding tiers for different use cases:
 | Tier | Name    | Example                      | Use Case        |
 |------|---------|------------------------------|-----------------|
 | A    | NANO    | `N5+F+E`                     | Wire protocols  |
-| B    | MICRO   | `N5:ELEM+F+E@1.2.0`         | API parameters  |
+| B    | MICRO   | `N5+F+E:ELEM@1.2.0`         | API parameters  |
 | C    | COMPACT | `CS1\|nanny\|5\|family.safe.guide\|F,E` | Logging|
 
 The NANO tier omits namespace and version. The MICRO tier includes
@@ -904,7 +904,7 @@ Z4+P+W      Sentinel, level 4, Privacy + Work scopes
 G4+E+R      Godparent, level 4, Education + Religious scopes
 A3+W:CORP   Ambassador, level 3, Work scope, CORP namespace
 M2+A        Muse, level 2, Adult scope
-C3:ACME+W@1.0.0  Custom, level 3, ACME namespace, Work, v1.0.0
+C3+W:ACME@1.0.0  Custom, level 3, ACME namespace, Work, v1.0.0
 ```
 
 ## 6.2. Personas

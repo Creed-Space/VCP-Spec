@@ -352,7 +352,6 @@
   },
 
   "type": "object",
-  "description": "Root schema for VCP-X-Personal extension data within a VCP context envelope.",
   "properties": {
     "personal": {
       "oneOf": [

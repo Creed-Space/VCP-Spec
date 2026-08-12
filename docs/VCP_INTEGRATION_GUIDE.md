@@ -288,7 +288,7 @@ DIMENSIONS = {
     "time":        ("⏰", {"morning": "🌅", "midday": "☀️", "evening": "🌆", "night": "🌙"}),
     "space":       ("📍", {"home": "🏡", "office": "🏢", "school": "🏫", "hospital": "🏥", "transit": "🚗"}),
     "company":     ("👥", {"alone": "👤", "children": "👶", "colleagues": "👔", "family": "👨‍👩‍👧", "strangers": "👥"}),
-    "culture":     ("🌍", {"global": "🌍", "american": "🇺🇸", "european": "🇪🇺", "japanese": "🇯🇵"}),
+    "culture":     ("🌍", {"high_context": "🔇", "low_context": "📢", "formal": "🎩", "casual": "😎", "mixed": "🌐"}),
     "occasion":    ("🎭", {"normal": "➖", "celebration": "🎂", "mourning": "😢", "emergency": "🚨"}),
     "state":       ("🧠", {"happy": "😊", "anxious": "😰", "tired": "😴", "contemplative": "🤔", "frustrated": "😤"}),
     "environment": ("🌡️", {"comfortable": "☀️", "hot": "🥵", "cold": "🥶", "quiet": "🔇", "noisy": "🔊"}),
@@ -829,7 +829,7 @@ For the full conformance test suite as runnable code, see the `schemas/` and `sp
 | 1 | ⏰ | Time | morning, midday, evening, night |
 | 2 | 📍 | Space | home, office, school, hospital, transit |
 | 3 | 👥 | Company | alone, children, colleagues, family, strangers |
-| 4 | 🌍 | Culture | global, american, european, japanese |
+| 4 | 🌍 | Culture | high_context, low_context, formal, casual, mixed |
 | 5 | 🎭 | Occasion | normal, celebration, mourning, emergency |
 | 6 | 🧠 | State | happy, anxious, tired, contemplative, frustrated |
 | 7 | 🌡️ | Environment | comfortable, hot, cold, quiet, noisy |

@@ -2669,7 +2669,7 @@ VCP defines four conformance levels for implementers:
 |-------|--------|--------------|----------|
 | **VCP-Minimal** | VCP/I + VCP/T | Parse and validate identity tokens; verify signatures; reject tampered bundles | Basic value identification |
 | **VCP-Standard** | Minimal + VCP/S | Parse CSM1; resolve personas and scopes; handle composition modes | Rule composition |
-| **VCP-Full** | Standard + VCP/A | Encode/decode 14-dimension context (9 situational + 5 personal); detect transitions; maintain state; execute hooks; track context lifecycle | Context-aware systems |
+| **VCP-Full** | Standard + VCP/A | Encode/decode 18-dimension context (13 situational + 5 personal); detect transitions; maintain state; execute hooks; track context lifecycle | Context-aware systems |
 | **VCP-Enterprise** | Full + extensions | Multi-party signatures; append-only audit logs; transparency logs; regulatory reporting; HSM support | Regulated environments |
 
 ### 21.2 Conformance Requirements
@@ -2697,7 +2697,7 @@ Implementations at VCP-Standard level MUST satisfy all VCP-Minimal requirements 
 #### VCP-Full
 
 Implementations at VCP-Full level MUST satisfy all VCP-Standard requirements and additionally:
-- Encode/decode VCP/A context (14 dimensions: 9 situational + 5 personal)
+- Encode/decode VCP/A context (18 dimensions: 13 situational + 5 personal)
 - Detect context transitions (NONE/MINOR/MAJOR/EMERGENCY)
 - Maintain context state with lifecycle tracking
 - Support at least the exponential decay curve for context signals
@@ -3034,21 +3034,28 @@ csm1_rule = "CSM1:" , persona_clause , scope_clause , require_clause ,
             adherence_clause , priority_clause , [ proof_clause ] ;
 
 persona_clause = "PERSONA[" , persona_code , "]" ;
-persona_code = "N" | "Z" | "G" | "A" | "M" | "R" | "H" | "C" | "S" ;
-(* N=Nanny, Z=Sentinel, G=Godparent, A=Ambassador, M=Muse, R=Researcher,
-   H=Anchor, C=Companion, S=Steward *)
+persona_code = "N" | "Z" | "G" | "A" | "M" | "D" | "C" ;
+(* N=Nanny, Z=Sentinel, G=Godparent, A=Ambassador, M=Muse, D=Mediator, C=Custom
+   See draft-watson-vcp-00 §2.5.1 and VCP_SEMANTICS_v2.0.md for canonical definitions *)
 
-scope_clause = "SCOPE[" , scope_value , "]" ;
-scope_value = "GLOBAL" | "HEALTH" | "FINANCIAL" | "LEGAL" | "CREATIVE"
-            | "EDUCATIONAL" | "WORKPLACE" | "PERSONAL" | "RESEARCH"
-            | "SAFETY" | "EMERGENCY" | "STEWARD" ;
+scope_clause = "SCOPE[" , scope_code , "]" ;
+scope_code = "F" | "W" | "P" | "E" | "T" | "O" | "V" | "A" | "H" | "S" | "R" ;
+(* F=Family, W=Work, P=Privacy, E=Education, T=Technical, O=Official,
+   V=Vulnerable, A=Adult, H=Healthcare, S=Social, R=Religious
+   Compose multiple scopes by concatenation (e.g. F+E for Family and Education).
+   See VCP_SEMANTICS_v2.0.md §2.6.1 *)
 
 require_clause = "REQUIRE[" , requirement , "]" ;
 requirement = identifier , { "," , identifier } ;
 
 adherence_clause = "ADHERENCE[" , adherence_level , "]" ;
-adherence_level = "MUST" | "SHOULD" | "MAY" | "MUST_NOT" | "SHOULD_NOT" |
-                  "MAY_NOT" ;
+adherence_level = "0" | "1" | "2" | "3" | "4" | "5" ;
+(* Numeric 0-5, corresponding to Minimal, Relaxed, Moderate, Standard, Strict, Maximum.
+   RFC 2119 keyword mapping for readability:
+     MAY     = 0-1 (Minimal, Relaxed)
+     SHOULD  = 2-3 (Moderate, Standard)
+     MUST    = 4-5 (Strict, Maximum)
+   See VCP_SEMANTICS_v2.0.md §2.7.1 for the canonical definition *)
 
 priority_clause = "PRIORITY[" , priority_value , "]" ;
 priority_value = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
@@ -3061,8 +3068,8 @@ identifier = letter , { letter | digit | "_" } ;
 letter = "a" | ... | "z" | "A" | ... | "Z" ;
 digit = "0" | "1" | ... | "9" ;
 
-(* Example: CSM1:PERSONA[Z] SCOPE[HEALTH] REQUIRE[consent_verified]
-            ADHERENCE[MUST] PRIORITY[1] *)
+(* Example: CSM1:PERSONA[Z] SCOPE[H] REQUIRE[consent_verified]
+            ADHERENCE[5] PRIORITY[1] *)
 ```
 
 ### E. EBNF Grammar for Composition
