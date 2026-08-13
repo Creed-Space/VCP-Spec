@@ -410,6 +410,10 @@ Servers MUST support VCP 1.0 clients that do not send `vcp-hello`.
   establishment, it MUST assume the client is VCP 1.0.
 - The server MUST proceed with version 1.0 semantics: no extensions,
   no personal state, no core feature advertisements.
+- The 5-second timeout applies to connection-oriented transports only
+  (TCP, WebSocket, legacy MCP sessions); on stateless MCP transports there is
+  no connection moment to time from, and absence of `space.creed.vcp/*` keys
+  in `_meta` marks the legacy client instead (VEP-0005 §1).
 - The 5-second timeout is measured from the transport-layer connection
   (TCP handshake complete, WebSocket upgrade complete, or MCP session
   established).
@@ -443,8 +447,18 @@ Servers MUST support VCP 1.0 clients that do not send `vcp-hello`.
 
 ## 9. MCP Integration
 
-When VCP operates as a Model Context Protocol (MCP) server, the capability
-negotiation piggybacks on MCP's `initialize` handshake.
+> **Profile note (2026-08-13)**: This section describes the legacy profile for
+> MCP <= 2025-11-25. MCP revision 2026-07-28 removed the `initialize` handshake
+> and protocol-level sessions; on stateless MCP the Hello/Ack payloads travel in
+> per-request `_meta` under the `space.creed.vcp/*` namespace, VCP is declared
+> under the `extensions` capability field, and negotiation is idempotent and
+> re-derivable from any single message. See
+> [VEP-0005](../../veps/VEP-0005-stateless-mcp.md) and
+> [mcp-bridge.md §5.0](./mcp-bridge.md). The payloads and negotiation algorithm
+> of this document apply unchanged to both profiles.
+
+When VCP operates as a Model Context Protocol (MCP) server under the legacy
+profile, the capability negotiation piggybacks on MCP's `initialize` handshake.
 
 ### 9.1 Mapping
 

@@ -1,8 +1,10 @@
 # VCP-over-MCP Bridge Specification
 
-**Version**: 3.1
-**Status**: Stable
-**See also**: VEP-0003
+**Version**: 3.3 (draft)
+**Status**: Stable core; stateless profile Draft
+**See also**: VEP-0003, VEP-0005
+
+> **Profiles.** This document defines two MCP profiles. The **stateless profile** targets MCP specification revision 2026-07-28 and later (no protocol sessions, no `initialize`, MRTR interaction pattern) and is normative for new implementations. The **legacy profile** (§5.1, §6) targets MCP ≤ 2025-11-25 and remains supported through MCP's deprecation window. Sections 3, 4, 7, and 8 apply to both profiles.
 
 ---
 
@@ -91,7 +93,8 @@ Available only when the corresponding extension is negotiated:
 
 - Resource URIs containing `{session_id}` MUST validate session ownership before returning data
 - Resources MUST respect context opacity — `vcp://personal-state/*` returns `ModelSafeContext`, not raw signals
-- Resources SHOULD support MCP resource subscriptions for real-time updates
+- Stateless profile: real-time updates use `subscriptions/listen` with the `resourceSubscriptions` opt-in; polling governed by `ttlMs` is the fallback. Legacy profile: `resources/subscribe`.
+- Stateless profile: list/read results MUST carry `ttlMs` and `cacheScope`. Capabilities and CSM-1 decode surfaces are `public`; bundle, relational, and personal-state surfaces are `private`. Personal-state `ttlMs` MUST NOT exceed the decay half-life of the fastest signal present.
 - The `vcp://capabilities` resource MUST NOT require authentication
 
 ---
@@ -128,7 +131,13 @@ All VCP tools MUST use the `vcp_` prefix followed by `snake_case` verb-object na
 
 ## 5. Capability Negotiation
 
-### 5.1. Via MCP Initialize
+### 5.0. Stateless Profile (MCP >= 2026-07-28) — normative for new implementations
+
+There is no handshake moment. The VCP-Hello payload travels in `_meta` on every request under the reserved `space.creed.vcp/*` namespace; the VCP-Ack payload returns in each result's `_meta`. Presence of any `space.creed.vcp/*` key constitutes the hello; absence marks a VCP-unaware peer (legacy-client behavior, no timeout). VCP is declared under MCP's `extensions` capability field as `space.creed.vcp`, discoverable via `server/discover` and mirrored by a `vcp_discover` tool. Negotiation is idempotent and re-derivable from any single message. Context carried in `space.creed.vcp/context` is advisory; explicit tool arguments are authoritative on conflict. Context SHOULD be accompanied by `space.creed.vcp/contextAge`; servers MUST refuse welfare-gated actions on stale context. Full requirements: [VEP-0005](../../veps/VEP-0005-stateless-mcp.md).
+
+Server-initiated elicitation is replaced by the Multi Round-Trip Request pattern: the bridge returns `resultType: "input_required"` with typed `inputRequests` and an integrity-protected `requestState`; the client re-issues the call with `inputResponses`. `requestState` MUST be integrity-protected, MUST NOT carry opacity-redacted content in recoverable form, and SHOULD expire.
+
+### 5.1. Legacy Profile: Via MCP Initialize (MCP <= 2025-11-25)
 
 The VCP capability handshake piggybacks on MCP's `initialize` method:
 
@@ -188,11 +197,17 @@ If the MCP client does not include `vcp` in initialization options, the server M
 
 ---
 
-## 6. Sampling Integration
+## 6. Context Injection
+
+### 6.0. Stateless Profile (MCP >= 2026-07-28)
+
+MCP Sampling is deprecated. Constitutional injection moves to a declared injection point, in order of preference: (1) client-side injection by the VCP-aware host, reading the bundle via `vcp://` resources before its own LLM call; (2) `_meta` passthrough via `space.creed.vcp/context`; (3) an explicit `vcp_render_injection(session_id, target_format)` tool returning the formatted prefix (`cacheScope: "private"`). The audit chain MUST record which injection point was active for each governed exchange. Constraint transport requires a cooperating injection point; the former sampling-based soft guarantee is withdrawn.
+
+### 6.1. Legacy Profile: Sampling Integration (MCP <= 2025-11-25)
 
 When MCP sampling is requested and VCP context is active, the bridge injects VCP context into the sampling request.
 
-### 6.1. Context Injection
+### 6.1.1. Context Injection
 
 The bridge constructs a VCP context prefix and prepends it to the sampling system prompt:
 
@@ -208,7 +223,7 @@ Active constraints: {list of constraints}
 {original system prompt}
 ```
 
-### 6.2. Requirements
+### 6.1.2. Requirements
 
 - The VCP context prefix MUST be prepended, not appended (it sets the behavioral frame)
 - Injection MUST be recorded in the VCP audit chain
@@ -250,10 +265,10 @@ A conformant VCP-MCP bridge implementation MUST:
 
 1. Expose all core tools (`vcp_validate_token`, `vcp_parse_csm1`, `vcp_encode_context`, `vcp_status`)
 2. Expose core resources (`vcp://capabilities`, `vcp://bundle/*`)
-3. Support capability negotiation via MCP initialize
+3. Support capability negotiation appropriate to the MCP revision: per-request `_meta` carriage and `server/discover` participation on the stateless profile; `initialize` piggyback on the legacy profile
 4. Filter resources and tools based on negotiated extensions
-5. Implement sampling integration when MCP sampling is available
-6. Return proper error responses for VCP violations
+5. Implement a declared context injection point (stateless profile) or sampling integration (legacy profile)
+6. Return proper error responses for VCP violations; on the stateless profile, all results MUST carry `resultType`, list/read results MUST carry `ttlMs`/`cacheScope`, and Streamable HTTP requests MUST carry `Mcp-Method`/`Mcp-Name` headers
 
 A conformant implementation SHOULD:
 

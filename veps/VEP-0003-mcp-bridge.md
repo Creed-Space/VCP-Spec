@@ -5,6 +5,9 @@
 **Created**: 2026-02-28
 **Version**: 3.1
 **Depends on**: VEP-0001 (Extension Model), VEP-0002 (Capability Negotiation)
+**Amended by**: VEP-0005 (Stateless MCP Adaptation)
+
+> **Editor's note (2026-08-13)**: MCP specification revision 2026-07-28 removed the `initialize` handshake, protocol-level sessions, Sampling, and `resources/subscribe`. The Capability Negotiation Mapping, Sampling Integration, and Resource Subscription sections below describe the legacy profile (MCP ≤ 2025-11-25) and are superseded for stateless MCP by [VEP-0005](./VEP-0005-stateless-mcp.md). Resource URIs, tool definitions, and error semantics are unaffected. The backward-compatibility statement pinned to MCP `2024-11-05` should be read against the legacy profile only.
 
 ---
 

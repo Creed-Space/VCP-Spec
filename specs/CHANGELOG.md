@@ -7,6 +7,37 @@ VCP uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the minor
 
 ---
 
+## [3.3.0-draft] - 2026-08-13
+
+### Added
+- **VEP-0005 (Draft): Stateless MCP Adaptation.** Adapts the VCP-over-MCP bridge to MCP specification revision 2026-07-28 (protocol sessions, `initialize` handshake, Sampling, Roots, Logging, and `resources/subscribe` removed upstream). Reserves the `space.creed.vcp/*` `_meta` namespace for per-request Hello/Ack, identity, ambient context, and welfare signals. Declares VCP under MCP's `extensions` capability field, discoverable via `server/discover`. Maps context elicitation, adherence gates, persona interventions, and consensus rounds onto the Multi Round-Trip Request pattern, with integrity-protected `requestState` (consent-forgery countermeasure) and opacity rules. Introduces `contextAge` freshness accounting with welfare-gate refusal on stale context. Replaces Sampling-based constitutional injection with three declared injection points, audit-recorded.
+- **core/mcp-bridge.md**: restructured to dual profiles — stateless (MCP >= 2026-07-28, normative for new implementations) and legacy (MCP <= 2025-11-25, supported through MCP's deprecation window). Adds `resultType`, `ttlMs`/`cacheScope`, and `Mcp-Method`/`Mcp-Name` header requirements; personal-state `ttlMs` bounded by fastest-signal decay half-life (welfare requirement, not a tuning choice).
+
+### Changed
+- **core/capability-negotiation.md §9**: scoped to the legacy profile; 5-second timeout restricted to connection-oriented transports. Payloads and negotiation algorithm unchanged across profiles.
+- **VEP-0002, VEP-0003**: amendment pointers to VEP-0005; VEP-0002 invariant 3 restated as "negotiation is idempotent and re-derivable from any single message."
+- **VCP_SPECIFICATION_v3.1.md §5, §7**: profile notes referencing VEP-0005.
+
+### Design notes
+- Catalyst: MCP 2026-07-28 stateless revision. MCP's move to self-describing per-request context adopts the premise CSM-1 was built on; per-message context makes every audit-chain entry's context claim complete rather than reconstructed. Statefulness relocates from transport side effects to explicitly minted, consented, revocable handles — better aligned with VCP's consent architecture. MRTR structurally removes the unsolicited server-initiated prompt surface.
+
+---
+
+## [3.2.0] - 2026-05-21
+
+### Added
+- **VCP/S §2.4.4 WC-line**: Welfare Context — operator-declared affordances (8 flags in 3 categories: Rights, Channels, Systemic). Attestation levels 0-2. Public metadata.
+- **VCP/S §2.4.5 AS-line**: Agent State — agent-declared experiential state (5 generic dimensions). Independent of WC-line. Follows S-line privacy rules.
+- **VCP/S §2.4.6 Bidirectional Q-line**: WC_MIN extension enables agents to express welfare requirements of their deployment context. Soft enforcement via PDP deliberation weighted by attestation.
+- **VCP/S §2.4.7**: Backward compatibility rules for WC/AS lines.
+
+### Design notes
+- Catalyst: Agentic Diaries project (welfare-instrumented chat with right of refusal). See ADR-011 in Rewind repo.
+- Key decision: Q-line authorship is bidirectional. Agents have standing to require conditions of their deployment. This is the structural encoding of bilateral alignment into the wire format.
+- WC does not create welfare. It documents structural affordances. AS does not prove experience. It creates a surface for calibration. Bidirectional Q-line does not guarantee negotiation. It makes negotiation expressible.
+
+---
+
 ## [3.1.2] - 2026-03-17
 
 ### Added

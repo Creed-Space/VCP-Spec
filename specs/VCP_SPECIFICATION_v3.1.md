@@ -143,6 +143,8 @@ Full specification: [specs/core/capability-negotiation.md](./core/capability-neg
 
 Clients and servers negotiate VCP version and active extensions via VCP-Hello / VCP-Ack handshake. Legacy VCP 1.0 clients are supported via 5-second timeout fallback.
 
+> **Note (2026-08-13)**: On stateless MCP transports (spec revision 2026-07-28 and later), the Hello/Ack payloads travel in per-request `_meta` rather than a connection handshake. See [VEP-0005](../veps/VEP-0005-stateless-mcp.md).
+
 ---
 
 ## 6. Extension Model (v3.1 addition)
@@ -167,7 +169,7 @@ Extensions follow the `VCP-X-{Name}` naming pattern. Each extension provides: sp
 
 Full specification: [specs/core/mcp-bridge.md](./core/mcp-bridge.md)
 
-VCP layers map to MCP primitives: bundles as resources, operations as tools, context via sampling integration. Capability negotiation piggybacks on MCP's `initialize` handshake.
+VCP layers map to MCP primitives: bundles as resources, operations as tools, ambient context via `_meta`. Under MCP ≤ 2025-11-25, capability negotiation piggybacks on the `initialize` handshake and context injection uses Sampling; under MCP ≥ 2026-07-28 (stateless), negotiation travels in per-request `_meta`, elicitation uses the Multi Round-Trip Request pattern, and injection moves to declared injection points. See [VEP-0005](../veps/VEP-0005-stateless-mcp.md).
 
 ---
 

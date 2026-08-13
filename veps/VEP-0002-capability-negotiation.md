@@ -5,6 +5,9 @@
 **Created**: 2026-02-28
 **Version**: 3.1
 **Depends on**: VEP-0001 (Extension Model)
+**Amended by**: VEP-0005 (Stateless MCP Adaptation)
+
+> **Editor's note (2026-08-13)**: The MCP Integration section below (piggyback on `initialize`) applies to MCP ≤ 2025-11-25 only; for MCP ≥ 2026-07-28 the Hello/Ack payloads travel in per-request `_meta` per [VEP-0005](./VEP-0005-stateless-mcp.md). The payloads, negotiation algorithm, and error codes of this VEP are unchanged. Invariant 3 (“negotiation happens exactly once per session”) is restated by VEP-0005 as: negotiation is idempotent and re-derivable from any single message. The 5-second legacy timeout applies only to connection-oriented transports.
 
 ---
 
