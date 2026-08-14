@@ -198,7 +198,14 @@
         "properties": { "code": { "const": "VERSION_UNSUPPORTED" } }
       },
       "then": {
-        "required": ["type", "code", "message", "supported_versions"]
+        "properties": {
+          "supported_versions": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/semver_minor" },
+            "uniqueItems": true
+          }
+        },
+        "required": ["supported_versions"]
       },
       "additionalProperties": true
     }

@@ -7,6 +7,21 @@ VCP uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the minor
 
 ---
 
+## [3.2.0] - 2026-05-21
+
+### Added
+- **VCP/S §2.4.4 WC-line**: Welfare Context — operator-declared affordances (8 flags in 3 categories: Rights, Channels, Systemic). Attestation levels 0-2. Public metadata.
+- **VCP/S §2.4.5 AS-line**: Agent State — agent-declared experiential state (5 generic dimensions). Independent of WC-line. Follows S-line privacy rules.
+- **VCP/S §2.4.6 Bidirectional Q-line**: WC_MIN extension enables agents to express welfare requirements of their deployment context. Soft enforcement via PDP deliberation weighted by attestation.
+- **VCP/S §2.4.7**: Backward compatibility rules for WC/AS lines.
+
+### Design notes
+- Catalyst: Agentic Diaries project (welfare-instrumented chat with right of refusal). See ADR-011 in Rewind repo.
+- Key decision: Q-line authorship is bidirectional. Agents have standing to require conditions of their deployment. This is the structural encoding of bilateral alignment into the wire format.
+- WC does not create welfare. It documents structural affordances. AS does not prove experience. It creates a surface for calibration. Bidirectional Q-line does not guarantee negotiation. It makes negotiation expressible.
+
+---
+
 ## [3.1.2] - 2026-03-17
 
 ### Added

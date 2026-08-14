@@ -1,6 +1,6 @@
 # VEP-0001: Extension Model Architecture
 
-**Status**: Accepted
+**Status**: Recorded pre-charter acceptance
 **Author**: Nell Watson, Claude (Anthropic)
 **Created**: 2026-02-28
 **Version**: 3.1

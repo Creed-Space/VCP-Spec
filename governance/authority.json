@@ -1,0 +1,28 @@
+{
+  "$schema": "./authority.schema.json",
+  "schema": "vcp-governance-authority/1",
+  "as_of": "2026-08-14",
+  "status": "interim-unratified",
+  "canonical_repository": "https://github.com/Creed-Space/VCP-Spec",
+  "interim_administrator": {
+    "name": "Nell Watson",
+    "basis": "Only currently named repository governance administrator",
+    "authority_limit": "Repository administration does not close independent, legal, registry, publication, or permanent-governance gates"
+  },
+  "tsc": {
+    "constituted": false,
+    "ratification_record": null,
+    "seated_members": []
+  },
+  "claims": {
+    "neutral_governance": false,
+    "foundation_transfer": false,
+    "licensing_matrix_approved": false,
+    "patent_policy_approved": false,
+    "trademark_policy_approved": false,
+    "certification_authority": false,
+    "canonical_render_selected": false
+  },
+  "canonical_vep_tracker": "https://github.com/Creed-Space/VCP-Spec/issues/new?template=spec_amendment.yml",
+  "decision_record_root": "governance/decisions/"
+}

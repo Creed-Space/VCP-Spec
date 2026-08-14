@@ -1,6 +1,6 @@
 # VEP-0002: Capability Negotiation Protocol
 
-**Status**: Accepted
+**Status**: Recorded pre-charter acceptance
 **Author**: Nell Watson, Claude (Anthropic)
 **Created**: 2026-02-28
 **Version**: 3.1

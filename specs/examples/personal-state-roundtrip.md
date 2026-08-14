@@ -81,7 +81,7 @@ The VCP bundle transmits only the protection level to the inference model:
 }
 ```
 
-**Key principle**: Raw personal signals (focused, pressured, rested) NEVER reach the inference model. Only the computed `protection_level` is exposed. The context opacity layer ensures this separation.
+**Required integration property**: Raw personal signals (focused, pressured, rested) do not reach the inference model in a conforming opacity deployment. Only the approved derived `protection_level` is exposed. This example illustrates the boundary; end-to-end tests must prove that prompts, tools, logs, telemetry, errors, and provider metadata do not bypass it.
 
 ---
 

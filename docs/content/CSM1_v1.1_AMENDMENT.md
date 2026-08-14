@@ -1,5 +1,14 @@
 # CSM-1 Format Amendment v1.1
 
+<!-- vcp-document-control
+status: Reference companion, status-classified
+normative-authority: Accepted specifications and schemas control
+protocol-version: Lineage document, see document body
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP Spec maintainers
+evidence-boundary: Explanatory material, not implementation conformance
+-->
+
 **Status**: Draft
 **Version**: 1.1.0
 **Date**: 2026-02-13

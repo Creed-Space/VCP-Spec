@@ -1,5 +1,14 @@
 # VCP Context Specification
 
+<!-- vcp-document-control
+status: Reference companion, status-classified
+normative-authority: Accepted specifications and schemas control
+protocol-version: Lineage document, see document body
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP Spec maintainers
+evidence-boundary: Explanatory material, not implementation conformance
+-->
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: 4 (VCP Context)
@@ -259,7 +268,7 @@ emoji-value     = 1*4EMOJI   ; Unicode emoji codepoints
 
 ```python
 # Full context encoding
-context = "⏰🌅|📍🏡|👥👶👨‍👩‍👧|🌍🇺🇸|🎭➖|🧠😊|🌡️☀️|🔷🤝|🔶○"
+context = "⏰🌅|📍🏡|👥👶👨‍👩‍👧|🌍🔇|🎭➖|🧠😊|🌡️☀️|🔷🤝|🔶○"
 # Meaning: Morning, home, children+family, American, normal occasion,
 #          happy state, comfortable environment, peer agency, minimal constraints
 
@@ -1171,7 +1180,10 @@ __version__ = '1.0.0'
 
 ### 9.2 JSON Schema
 
-See `data/schemas/vcp-context.schema.json` for JSON Schema validation.
+Use the maintained
+[VCP adaptation-context schema](../../schemas/vcp-adaptation-context.schema.json)
+for JSON Schema validation. The implementation sketch in this companion is
+explanatory and does not define a second schema contract.
 
 ---
 
@@ -1180,19 +1192,37 @@ See `data/schemas/vcp-context.schema.json` for JSON Schema validation.
 ### A. Emoji Quick Reference
 
 ```
-DIMENSIONS
-⏰ TIME     📍 SPACE    👥 COMPANY   🌍 CULTURE   🎭 OCCASION
-🧠 STATE    🌡️ ENV      🔷 AGENCY    🔶 CONSTRAINTS
+SITUATIONAL DIMENSIONS (13)
+⏰ TIME       📍 SPACE      👥 COMPANY    🌍 CULTURE    🎭 OCCASION
+🌡️ ENV        🔷 AGENCY     🔶 CONSTRAINTS  📡 SYSTEM_CONTEXT
+🧍 EMBODIMENT  ↔️ PROXIMITY  🪢 RELATIONSHIP  🎩 FORMALITY
 
-TIME: 🌅🌙📅🎉⏰
-SPACE: 🏡🏢🏫🏥💻🌳
-COMPANY: 👤👶👨‍👩‍👧👔👮🤝
-CULTURE: 🔇📢🎩👋📊⚖️👥👤
-OCCASION: ➖🎂💼🚨🎪⚖️
-STATE: 😊😴😰😡😢🥺
-ENV: ☀️🥵🥶🌧️🌪️🔇🔥
-AGENCY: 👑🤝👇💰🔐🆓
-CONSTRAINTS: ○🚧⚖️💸⏰🚨
+TIME:           🌅🌙📅🎉⏰
+SPACE:          🏡🏢🏫🏥💻🌳
+COMPANY:        👤👶👨‍👩‍👧👔👮🤝
+CULTURE:        🔇📢🎩😎🌐
+OCCASION:       ➖🎂💼🚨🎪⚖️
+ENV:            ☀️🥵🥶🌧️🌪️🔇🔥
+AGENCY:         👑🤝👇💰🔐🆓
+CONSTRAINTS:    ○🚧⚖️💸⏰🚨
+SYSTEM_CONTEXT: 🟢🟡🔴⚙️🔌
+EMBODIMENT:     🧍🚶✋🫳🛑   (stationary, navigating, manipulating, carrying, emergency stop)
+PROXIMITY:      🌐🛋️🤝🤏👆   (distant, same room, nearby, close, contact)
+RELATIONSHIP:   free-form '{tie}:{function}' — e.g. colleague:professional, family:caregiving
+FORMALITY:      🎩💼🎓🎉⚖️   (casual, everyday, professional, ceremonial, legal)
+
+PERSONAL-STATE DIMENSIONS (5, R-line)
+🧠 COGNITIVE_STATE  💭 EMOTIONAL_TONE  🔋 ENERGY_LEVEL
+⚡ PERCEIVED_URGENCY  🩺 BODY_SIGNALS
+
+COGNITIVE_STATE:   focused, distracted, overloaded, foggy, reflective
+EMOTIONAL_TONE:    calm, tense, frustrated, neutral, uplifted
+ENERGY_LEVEL:      rested, low_energy, fatigued, wired, depleted
+PERCEIVED_URGENCY: unhurried, time_aware, pressured, critical
+BODY_SIGNALS:      neutral, discomfort, pain, unwell, recovering
+
+Each personal-state dimension carries an optional 1-5 intensity, encoded as 'value:intensity'.
+The wire format separates situational and personal bands with U+2016 (‖).
 ```
 
 ### B. Context-Constitution Mapping

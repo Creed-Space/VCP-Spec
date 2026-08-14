@@ -1,0 +1,92 @@
+name: Specification release candidate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spec-release-candidate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Independent candidate build (${{ matrix.builder }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        builder: [primary, rebuild]
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+
+      - name: Install locked validation dependencies
+        run: |
+          python -m pip install --requirement requirements-dev.txt
+          npm ci --ignore-scripts
+
+      - name: Validate the candidate
+        run: |
+          make check PYTHON=python
+          make audits PYTHON=python
+
+      - name: Package source and all non-canonical rendered candidates
+        run: |
+          python scripts/package_release_candidate.py \
+            --require-clean \
+            --output-dir "$RUNNER_TEMP/spec-${{ matrix.builder }}"
+
+      - name: Upload exact candidate bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: spec-release-${{ matrix.builder }}-${{ github.sha }}
+          path: ${{ runner.temp }}/spec-${{ matrix.builder }}/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+  compare-and-attest:
+    name: Compare candidates and attest
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout comparison script
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download primary candidate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: spec-release-primary-${{ github.sha }}
+          path: primary
+
+      - name: Download independent rebuild
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: spec-release-rebuild-${{ github.sha }}
+          path: rebuild
+
+      - name: Require byte-identical candidate outputs
+        run: python scripts/compare_release_candidates.py primary rebuild
+
+      - name: Attest source candidate, document candidates, checksums, and manifest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: primary/**/*

@@ -1,15 +1,32 @@
 # Contributing to the Value-Context Protocol
 
+<!-- vcp-document-control
+status: Current contributor guidance
+normative-authority: Interim repository contribution process
+protocol-version: VCP 3.1 with candidate work separately labelled
+last-reviewed: 2026-08-14 active authority and evidence boundary
+owner: VCP Spec maintainers
+evidence-boundary: Source contribution process, not rights approval or protocol ratification
+-->
+
 Thank you for your interest in contributing to the VCP specification. This
 document explains how to contribute effectively, whether you are fixing a typo
 or proposing a new protocol extension.
+
+Permanent governance and the file-class licensing matrix remain unratified.
+Contribution review follows the interim process in [GOVERNANCE.md](./GOVERNANCE.md),
+and contributors should read [LICENSING_STATUS.md](./LICENSING_STATUS.md) before
+submitting rights-sensitive material.
 
 ---
 
 ## 1. Developer Certificate of Origin (DCO)
 
 Every commit to this repository MUST include a `Signed-off-by` line certifying
-that you have the right to submit the work under the project's MIT License.
+that you have the right to submit the work under the applicable licence for its
+destination file class. The authorized file-class matrix is still pending. A
+sign-off records the contributor's certification; it does not resolve the
+repository's historical licensing conflict by itself.
 
 ### How to sign off
 
@@ -39,7 +56,7 @@ git config user.email "your.email@example.com"
 By signing off, you certify that:
 
 1. You created the contribution (in whole or part) and have the right to
-   submit it under the MIT License; or
+   submit it under the applicable project licence; or
 2. The contribution is based on prior work under a compatible open source
    license and you have the right to submit it with modifications; or
 3. Someone who certified (1) or (2) provided the contribution to you directly
@@ -107,8 +124,9 @@ Reference implementations and language-specific SDKs.
 - SDK-only changes (bug fixes, performance improvements) can be submitted
   as direct PRs
 - SDK changes that alter protocol behavior require a VEP
-- Conformance tests live in this repository; SDK implementations may live
-  in separate repositories
+- Cross-language conformance vectors live in the
+  [VCP-SDK repository](https://github.com/Creed-Space/VCP-SDK/tree/main/conformance).
+  Schema fixtures for this repository live in `schemas/examples/`.
 
 ---
 
@@ -191,7 +209,8 @@ Use JSON Schema draft 2020-12:
 
 - Every schema MUST include a top-level `"description"` field
 - Every property MUST include a `"description"` field
-- Use `$ref` to reference shared definitions in `schemas/common/`
+- Prefer `$defs` and local `$ref` values for definitions reused inside a schema.
+  A shared-schema directory may be introduced only with resolver and CI support.
 - All `enum` values MUST be documented
 - Default values MUST be specified where applicable
 
@@ -210,7 +229,9 @@ If your PR adds or modifies a schema, include at least one valid example in
 ### Naming conventions
 
 - File names: `kebab-case.json` (e.g., `identity-layer.json`)
-- Property names: `camelCase` in wire format, `snake_case` in Python SDKs
+- Property names: follow the existing wire schema, which currently uses
+  `snake_case`; language SDKs may expose idiomatic aliases only when the wire
+  representation remains unambiguous
 - Type names: `PascalCase` (e.g., `IdentityAssertion`)
 
 ---
@@ -227,6 +248,10 @@ git remote add upstream https://github.com/Creed-Space/VCP-Spec.git
 
 # Create a branch
 git checkout -b vep-0042-attestation-chaining
+
+# Install pinned repository-validation tools
+python3 -m pip install --requirement requirements-dev.txt
+npm ci --ignore-scripts
 ```
 
 ### Before submitting
@@ -235,6 +260,7 @@ git checkout -b vep-0042-attestation-chaining
 - [ ] Markdown renders correctly (preview locally or on GitHub)
 - [ ] Schema changes validate: `make validate-schemas`
 - [ ] Conformance tests pass: `make test`
+- [ ] All repository checks pass: `make check`
 - [ ] VEP issue is referenced in the PR description
 
 ### Submitting
@@ -255,9 +281,9 @@ Open a pull request against `main`. In the PR description:
 |---------------------|---------------------------------------|
 | Typo / editorial    | 1 reviewer                            |
 | Documentation       | 1 reviewer                            |
-| Schema change       | 1 TSC member                          |
-| Specification change| 1 TSC member + VEP accepted           |
-| Breaking change     | 2 TSC members + VEP accepted          |
+| Schema change       | Interim maintainer review plus canonical VEP when normative |
+| Specification change| Candidate review plus a recorded authorized VEP decision |
+| Breaking change     | Candidate review plus ratified governance decision |
 
 ### After merge
 
@@ -334,7 +360,9 @@ This project follows the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUC
 In brief: be respectful, be constructive, assume good faith. Technical
 disagreement is welcome; personal attacks are not.
 
-Report violations to the TSC at the contact address listed in CODE_OF_CONDUCT.md.
+Report violations through the contact route listed in CODE_OF_CONDUCT.md. The
+interim administrator must record conflicts and use an independent handler when
+personally involved.
 
 ---
 
@@ -342,9 +370,10 @@ Report violations to the TSC at the contact address listed in CODE_OF_CONDUCT.md
 
 - **Questions about the spec**: Open a [Discussion](https://github.com/Creed-Space/VCP-Spec/discussions)
 - **Bug reports**: Open an [Issue](https://github.com/Creed-Space/VCP-Spec/issues)
-- **VEP process questions**: Tag a TSC member on your issue
-- **Security vulnerabilities**: See [SECURITY.md](./SECURITY.md) for responsible
-  disclosure
+- **VEP process questions**: Use the canonical VCP-Spec amendment issue and tag
+  the interim repository administrator
+- **Security vulnerabilities**: Use the [private security advisory form](https://github.com/Creed-Space/VCP-Spec/security/advisories/new)
+  for responsible disclosure
 
 ---
 

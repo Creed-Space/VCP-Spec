@@ -1,0 +1,11 @@
+title = "VCP-Spec secret scanning policy"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Documented namespace-verification placeholder, never a credential"
+regexTarget = "match"
+regexes = [
+  '''vcp-verify=abc123xyz'''
+]

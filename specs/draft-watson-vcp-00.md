@@ -1,3 +1,11 @@
+> **Repository status, 2026-08-13:** Withdrawn working copy. The text below
+> states that it expires on 15 August 2026 and is not publication-ready. It has
+> not been revalidated against the current VCP repository, IANA requirements,
+> contributor acknowledgements, or IETF submission tooling. The final CC BY 4.0
+> line is retained as historical source text while its compatibility with the
+> IETF Trust and BCP 78 boilerplate receives authorized rights review. Do not
+> submit, cite as current, or treat this file as an RFC or standard.
+
 ```
 Internet-Draft                                              N. Watson
 Intended status: Informational                           Creed Space
@@ -13,10 +21,11 @@ Expires: August 2026                                  February 2026
 
 The Value Context Protocol (VCP) enables portable, verifiable value
 alignment for AI systems through structured constitutions, contextual
-adaptation, and cryptographic integrity. VCP defines a six-layer
-protocol stack -- Identity, Transport, Semantics, Adaptation,
-Messaging, and Economic Governance (I-T-S-A-M-E) -- that together
-provide a standard mechanism for delivering behavioral guidelines
+adaptation, and cryptographic integrity. The wider VCP architecture
+names six layers. This draft specifies the four core layers --
+Identity, Transport, Semantics, and Adaptation -- and leaves Messaging
+and Economic Governance outside its normative scope. The core layers
+provide a mechanism for delivering behavioral guidelines
 from external stakeholders to AI systems with cryptographic
 verification, compositional semantics, situational awareness,
 inter-agent messaging, and transaction governance. This document provides an informational overview of the
@@ -105,9 +114,8 @@ reliably.
 
 ## 1.2. Solution
 
-The Value Context Protocol (VCP) addresses these requirements
-through a six-layer architecture modeled on the OSI networking
-stack:
+The Value Context Protocol (VCP) addresses these requirements through
+four core layers within a wider six-layer architecture:
 
 ```
 Layer 6 -- VCP/E  ECONOMIC GOV   WHO PAYS and transaction governance
@@ -117,6 +125,12 @@ Layer 3 -- VCP/S  SEMANTICS      WHAT the values mean
 Layer 2 -- VCP/T  TRANSPORT      HOW values travel securely
 Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 ```
+
+This document specifies VCP/I, VCP/T, VCP/S, and VCP/A. VCP/M and
+VCP/E are architecture labels only in this draft. Their wire formats,
+security properties, and conformance requirements require separate
+documents before a future draft can claim a complete six-layer
+specification.
 
 VCP operates on a fundamental architectural insight: LLMs are "dumb
 receivers" -- they accept text input but cannot resolve references,
@@ -149,6 +163,8 @@ This document does NOT specify:
 - Constitution authoring guidance (content semantics)
 - Model-specific prompt engineering
 - Governance of trust anchors (organizational policy)
+- Messaging Layer wire behavior or conformance
+- Economic Governance Layer wire behavior or conformance
 
 ## 1.4. Relationship to Existing Standards
 
@@ -220,10 +236,11 @@ no-exceptions (5).
 
 # 3. Protocol Overview
 
-## 3.1. Six-Layer Architecture (I-T-S-A-M-E)
+## 3.1. Architecture Overview (I-T-S-A-M-E)
 
-VCP is one protocol with six layers. Each layer addresses a
-distinct concern, with well-defined interfaces between them.
+The wider VCP architecture names six layers. This draft defines the
+four core layers and lists VCP/M and VCP/E only to show their intended
+architectural position.
 
 | Layer | Name                 | Short | Purpose                              |
 |-------|----------------------|-------|--------------------------------------|
@@ -888,7 +905,7 @@ CSM-1 supports three encoding tiers for different use cases:
 | Tier | Name    | Example                      | Use Case        |
 |------|---------|------------------------------|-----------------|
 | A    | NANO    | `N5+F+E`                     | Wire protocols  |
-| B    | MICRO   | `N5:ELEM+F+E@1.2.0`         | API parameters  |
+| B    | MICRO   | `N5+F+E:ELEM@1.2.0`         | API parameters  |
 | C    | COMPACT | `CS1\|nanny\|5\|family.safe.guide\|F,E` | Logging|
 
 The NANO tier omits namespace and version. The MICRO tier includes
@@ -904,7 +921,7 @@ Z4+P+W      Sentinel, level 4, Privacy + Work scopes
 G4+E+R      Godparent, level 4, Education + Religious scopes
 A3+W:CORP   Ambassador, level 3, Work scope, CORP namespace
 M2+A        Muse, level 2, Adult scope
-C3:ACME+W@1.0.0  Custom, level 3, ACME namespace, Work, v1.0.0
+C3+W:ACME@1.0.0  Custom, level 3, ACME namespace, Work, v1.0.0
 ```
 
 ## 6.2. Personas

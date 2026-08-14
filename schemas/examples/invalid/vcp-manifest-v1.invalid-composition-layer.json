@@ -1,0 +1,33 @@
+{
+  "vcp_version": "1.0",
+  "bundle": {
+    "id": "creed://example.org/support/guide",
+    "version": "1.0.0",
+    "content_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "issuer": {
+    "id": "example.org",
+    "public_key": "ed25519:AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=",
+    "key_id": "example-2026"
+  },
+  "timestamps": {
+    "iat": "2026-01-01T00:00:00Z",
+    "nbf": "2026-01-01T00:00:00Z",
+    "exp": "2027-01-01T00:00:00Z",
+    "jti": "123e4567-e89b-42d3-a456-426614174000"
+  },
+  "budget": {"token_count": 128, "tokenizer": "cl100k_base"},
+  "composition": {"layer": 5},
+  "safety_attestation": {
+    "auditor": "review.example.org",
+    "auditor_key_id": "review-2026",
+    "reviewed_at": "2026-01-01T00:00:00Z",
+    "attestation_type": "injection-safe",
+    "signature": "base64:YQ=="
+  },
+  "signature": {
+    "algorithm": "ed25519",
+    "value": "base64:YQ==",
+    "signed_fields": ["vcp_version", "bundle", "issuer", "timestamps", "budget", "safety_attestation"]
+  }
+}

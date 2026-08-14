@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valuecontextprotocol.org/governance/authority.schema.json",
+  "title": "VCP governance authority state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "as_of",
+    "status",
+    "canonical_repository",
+    "interim_administrator",
+    "tsc",
+    "claims",
+    "canonical_vep_tracker",
+    "decision_record_root"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema": { "const": "vcp-governance-authority/1" },
+    "as_of": { "type": "string", "format": "date" },
+    "status": { "const": "interim-unratified" },
+    "canonical_repository": { "type": "string", "format": "uri" },
+    "interim_administrator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "basis", "authority_limit"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "basis": { "type": "string", "minLength": 1 },
+        "authority_limit": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tsc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["constituted", "ratification_record", "seated_members"],
+      "properties": {
+        "constituted": { "const": false },
+        "ratification_record": { "type": "null" },
+        "seated_members": { "type": "array", "maxItems": 0 }
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "neutral_governance",
+        "foundation_transfer",
+        "licensing_matrix_approved",
+        "patent_policy_approved",
+        "trademark_policy_approved",
+        "certification_authority",
+        "canonical_render_selected"
+      ],
+      "properties": {
+        "neutral_governance": { "const": false },
+        "foundation_transfer": { "const": false },
+        "licensing_matrix_approved": { "const": false },
+        "patent_policy_approved": { "const": false },
+        "trademark_policy_approved": { "const": false },
+        "certification_authority": { "const": false },
+        "canonical_render_selected": { "const": false }
+      }
+    },
+    "canonical_vep_tracker": { "type": "string", "format": "uri" },
+    "decision_record_root": { "type": "string", "minLength": 1 }
+  }
+}

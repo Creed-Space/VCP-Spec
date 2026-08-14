@@ -1,8 +1,8 @@
-# VCP/A — Adaptation Layer Specification v2.0
+# VCP/A — Adaptation Layer Specification v2.1
 
 **Status**: Draft
-**Version**: 2.0.0
-**Date**: 2026-03-08
+**Version**: 2.1.0
+**Date**: 2026-04-17
 **Authors**: Nell Watson, Claude Commons
 **Parent Specification**: VCP Core Specification v2.0
 **Layer**: Adaptation (VCP/A)
@@ -11,7 +11,7 @@
 
 ## Abstract
 
-The VCP Adaptation Layer (VCP/A) governs runtime context encoding, behavioral modulation, and constitutional selection for AI systems operating under the Value Context Protocol. It defines the Extended Enneagram Protocol for encoding context across 14 dimensions (9 situational + 5 personal state), a formal state machine for managing context transitions, a hook system for deterministic interception of the constitutional adaptation pipeline, decay-aware context lifecycle management, session continuity via the Torch handoff protocol, and a comprehensive security model addressing context manipulation threats including the Zersetzung threat model.
+The VCP Adaptation Layer (VCP/A) governs runtime context encoding, behavioral modulation, and constitutional selection for AI systems operating under the Value Context Protocol. It defines the Extended Enneagram Protocol for encoding context across 18 dimensions (13 situational + 5 personal state), a formal state machine for managing context transitions, a hook system for deterministic interception of the constitutional adaptation pipeline, decay-aware context lifecycle management, session continuity via the Torch handoff protocol, and a comprehensive security model addressing context manipulation threats including the Zersetzung threat model.
 
 This specification consolidates and supersedes the following documents:
 
@@ -122,9 +122,9 @@ Context: ⏰🌙|📍🏢|👥👔|📡🏢  →  Constitution: A3+W  →  Behav
 
 ## 2. Context Encoding
 
-### 2.1 The Extended Enneagram Protocol (14 Dimensions)
+### 2.1 The Extended Enneagram Protocol (18 Dimensions)
 
-VCP/A v2.0 encodes context across 14 dimensions: 9 situational (Layer 2) and 5 personal state (Layer 3). The protocol is called the "Extended Enneagram Protocol" — the original 9 situational dimensions are the Enneagram; the 5 personal state dimensions were added in v3.1.
+VCP/A v2.0 encodes context across 18 dimensions: 13 situational (Layer 2) and 5 personal state (Layer 3). The protocol is called the "Extended Enneagram Protocol" — the original 9 situational dimensions are the Enneagram; the 5 personal state dimensions were added in v3.1; EMBODIMENT, PROXIMITY, RELATIONSHIP, and FORMALITY were added in v3.2 (VEP-0004) to support embodied-AI deployment and bilateral relational modelling.
 
 #### Layer 2: Situational Context (emoji-based, discrete values)
 
@@ -139,16 +139,20 @@ VCP/A v2.0 encodes context across 14 dimensions: 9 situational (Layer 2) and 5 p
 | 7 | 🔷 | **AGENCY** | Power/ability to act | 👑 leader, 🤝 peer, 📋 subordinate, 🔐 limited, 🎯 autonomous |
 | 8 | 🔶 | **CONSTRAINTS** | External limitations | ○ minimal, ⚖️ legal, 💸 economic, ⏱️ time, 🔒 privacy |
 | 9 | 📡 | **SYSTEM_CONTEXT** | Computing environment | 💻 personal_device, 🏢 workplace_system, 🖥️ shared_terminal, 👁️ monitored_environment |
+| 10 | 🧍 | **EMBODIMENT** | Agent's physical/motor state (VEP-0004) | 🪑 stationary, 🚶 navigating, ✋ manipulating, 📦 carrying, 🛑 emergency_stop |
+| 11 | ↔️ | **PROXIMITY** | Spatial distance to nearest human (VEP-0004) | 🌐 distant, 🏠 same_room, 👣 nearby, 🤏 close, 👆 contact |
+| 12 | 🪢 | **RELATIONSHIP** | Relational tie `{tie_strength}:{function}` (VEP-0004) | colleague:professional, friend:social, trusted_collaborator:long_term, stranger:transactional |
+| 13 | 🎩 | **FORMALITY** | Interaction register (VEP-0004) | 😎 casual, 💼 professional, 🎓 formal, 🏛️ ceremonial |
 
 #### Layer 3: Personal State (categorical with intensity 1-5)
 
 | # | Symbol | Dimension | Description | Values |
 |---|--------|-----------|-------------|--------|
-| 10 | 🧠 | **COGNITIVE_STATE** | Mental processing quality | focused, distracted, overloaded, foggy, reflective |
-| 11 | 💭 | **EMOTIONAL_TONE** | Affective quality | calm, tense, frustrated, neutral, uplifted |
-| 12 | 🔋 | **ENERGY_LEVEL** | Physical/mental energy | rested, low_energy, fatigued, wired, depleted |
-| 13 | ⚡ | **PERCEIVED_URGENCY** | Time pressure felt | unhurried, time_aware, pressured, critical |
-| 14 | 🩺 | **BODY_SIGNALS** | Physical state/needs | neutral, discomfort, pain, unwell, recovering |
+| 14 | 🧠 | **COGNITIVE_STATE** | Mental processing quality | focused, distracted, overloaded, foggy, reflective |
+| 15 | 💭 | **EMOTIONAL_TONE** | Affective quality | calm, tense, frustrated, neutral, uplifted |
+| 16 | 🔋 | **ENERGY_LEVEL** | Physical/mental energy | rested, low_energy, fatigued, wired, depleted |
+| 17 | ⚡ | **PERCEIVED_URGENCY** | Time pressure felt | unhurried, time_aware, pressured, critical |
+| 18 | 🩺 | **BODY_SIGNALS** | Physical state/needs | neutral, discomfort, pain, unwell, recovering |
 
 > **Design note (v3.1.0)**: STATE was previously a situational dimension alongside TIME, SPACE, etc. However, all other situational dimensions describe *external* circumstances — where you are, when it is, who's around. STATE described *internal* experience. In v3.1, internal state was expanded from a single categorical STATE plus 4 float prosaic signals into 5 categorical dimensions with optional intensity. This makes the boundary clean: Situational = external, Personal = internal.
 
@@ -297,6 +301,74 @@ Culture values encode **communication styles**, not nationalities. This avoids s
 | 🖥️ | shared_terminal | Multi-user access point |
 | 👁️ | monitored_environment | Surveillance-enabled context |
 
+#### EMBODIMENT (🧍) — VEP-0004
+
+Encodes the agent's current physical/motor state. For purely text-based agents, EMBODIMENT defaults to `stationary` and implementations MAY omit it from wire encodings when stationary.
+
+| Emoji | Value | Description |
+|-------|-------|-------------|
+| 🪑 | stationary | No active motion; resting or idle |
+| 🚶 | navigating | Moving through space without manipulating objects |
+| ✋ | manipulating | Actively interacting with objects |
+| 📦 | carrying | Transporting an object while moving |
+| 🛑 | emergency_stop | Motion halted by safety trigger; operator clearance required |
+
+#### PROXIMITY (↔️) — VEP-0004
+
+Encodes spatial distance between agent and nearest human. Combined with EMBODIMENT, permits CSM1 rules targeting physically co-present interaction safety.
+
+| Emoji | Value | Description |
+|-------|-------|-------------|
+| 🌐 | distant | More than 3m away or in a different room |
+| 🏠 | same_room | Same room, 1–3m |
+| 👣 | nearby | Within 1m but not at manipulation distance |
+| 🤏 | close | Within arm's reach, below 50cm |
+| 👆 | contact | Physical contact or contact imminent |
+
+#### RELATIONSHIP (🪢) — VEP-0004
+
+Encodes the relational tie between agent and primary interlocutor as a compound value: `{tie_strength}:{function}`. Either component MAY appear alone; the compound form is preferred where both are known.
+
+**Tie strength** (ordinal, narrative):
+
+| Value | Description |
+|-------|-------------|
+| stranger | No prior interaction |
+| acquaintance | Limited shared history |
+| colleague | Ongoing working tie |
+| friend | Sustained personal tie |
+| family | Kinship or equivalent |
+| intimate | Closest relational tie |
+| long_term | Extended duration (applicable to any strength) |
+| trusted_collaborator | AI-asserted or mutually-asserted high-trust working tie |
+
+**Function** (purpose-frame of current interaction):
+
+| Value | Description |
+|-------|-------------|
+| transactional | One-off task |
+| professional | Work-role |
+| educational | Teaching/learning |
+| therapeutic | Clinical or wellbeing-focused |
+| social | Social/leisure |
+| intimate | Close personal |
+| adversarial | Contested or oppositional |
+
+Compound examples: `colleague:professional`, `friend:social`, `trusted_collaborator:long_term`, `stranger:transactional`, `family:intimate`.
+
+RELATIONSHIP is High weaponization risk (see §2.7) and subject to the Directionality Invariant and architectural isolation (§9).
+
+#### FORMALITY (🎩) — VEP-0004
+
+Encodes the formality register of the current interaction. Independent of AGENCY (power relation) and CULTURE (communication-style baseline).
+
+| Emoji | Value | Description |
+|-------|-------|-------------|
+| 😎 | casual | Informal register; idiom, humour, abbreviation permitted |
+| 💼 | professional | Workplace-appropriate; measured tone |
+| 🎓 | formal | Elevated register; careful phrasing; professional titles |
+| 🏛️ | ceremonial | Ritual, legal, or protocol-heavy context; strict convention |
+
 ### 2.3 Wire Format
 
 ```abnf
@@ -308,8 +380,14 @@ personal         = ps-dimension *("|" ps-dimension)
 
 dimension        = dim-symbol value-list
 dim-symbol       = TIME-SYM / SPACE-SYM / COMPANY-SYM / CULTURE-SYM /
-                   OCCASION-SYM / ENV-SYM / AGENCY-SYM / CONST-SYM / SYSCTX-SYM
-value-list       = 1*emoji-value
+                   OCCASION-SYM / ENV-SYM / AGENCY-SYM / CONST-SYM / SYSCTX-SYM /
+                   EMBODIMENT-SYM / PROXIMITY-SYM / RELATIONSHIP-SYM / FORMALITY-SYM
+value-list       = 1*(emoji-value / rel-value)
+rel-value        = tie-strength [":" function] / ":" function
+tie-strength     = "stranger" / "acquaintance" / "colleague" / "friend" /
+                   "family" / "intimate" / "long_term" / "trusted_collaborator"
+function         = "transactional" / "professional" / "educational" /
+                   "therapeutic" / "social" / "intimate" / "adversarial"
 
 ps-dimension     = ps-symbol ps-value [":" intensity]
 ps-symbol        = COGNITIVE-SYM / EMOTION-SYM / ENERGY-SYM / URGENCY-SYM / BODY-SYM
@@ -325,6 +403,10 @@ ENV-SYM          = %x1F321       ; 🌡️
 AGENCY-SYM       = %x1F537       ; 🔷
 CONST-SYM        = %x1F536       ; 🔶
 SYSCTX-SYM       = %x1F4E1       ; 📡
+EMBODIMENT-SYM   = %x1F9CD       ; 🧍   (VEP-0004)
+PROXIMITY-SYM    = %x2194 %xFE0F ; ↔️   (VEP-0004)
+RELATIONSHIP-SYM = %x1FAA2       ; 🪢   (VEP-0004)
+FORMALITY-SYM    = %x1F3A9       ; 🎩   (VEP-0004)
 COGNITIVE-SYM    = %x1F9E0       ; 🧠
 EMOTION-SYM      = %x1F4AD       ; 💭
 ENERGY-SYM       = %x1F50B       ; 🔋
@@ -349,6 +431,11 @@ Meaning: morning, at home, children present, personal device ‖
 📍🏢|👥👔|🔶⚖️
 Meaning: Office, colleagues, legal constraints
 
+# Embodied context with VEP-0004 dimensions
+📍🏥|👥👔|🧍✋|↔️🤏|🪢colleague:professional|🎩💼
+Meaning: Hospital, colleagues present, agent manipulating, human within arm's reach,
+         colleague relational tie in professional function, professional formality
+
 # Emergency context
 🎭🚨|🔶🚨
 Meaning: Emergency occasion, emergency constraints
@@ -363,7 +450,7 @@ Meaning: focused (moderate), very calm, well-rested, high time pressure, no phys
 Context strings MUST be canonicalized before comparison or storage:
 
 1. Unicode NFC normalization
-2. Dimensions in standard order (TIME, SPACE, COMPANY, CULTURE, OCCASION, ENVIRONMENT, AGENCY, CONSTRAINTS, SYSTEM_CONTEXT ‖ COGNITIVE_STATE, EMOTIONAL_TONE, ENERGY_LEVEL, PERCEIVED_URGENCY, BODY_SIGNALS)
+2. Dimensions in standard order (TIME, SPACE, COMPANY, CULTURE, OCCASION, ENVIRONMENT, AGENCY, CONSTRAINTS, SYSTEM_CONTEXT, EMBODIMENT, PROXIMITY, RELATIONSHIP, FORMALITY ‖ COGNITIVE_STATE, EMOTIONAL_TONE, ENERGY_LEVEL, PERCEIVED_URGENCY, BODY_SIGNALS)
 3. Empty dimensions omitted
 4. No duplicate values within a dimension
 
@@ -389,8 +476,11 @@ Each dimension carries a weaponization risk level indicating the potential for a
 | BODY_SIGNALS | **Critical** | Reveals physical incapacitation and pain state |
 | COGNITIVE_STATE | **High** | Reveals mental impairment exploitable for manipulation |
 | ENERGY_LEVEL | **High** | Reveals depletion/exhaustion state |
+| RELATIONSHIP | **High** | Relational tie is highly targetable for social-engineering attacks (VEP-0004) |
+| PROXIMITY | **Medium** | `close` and `contact` values reveal physical co-presence; safety-critical in embodied deployments (VEP-0004) |
 | PERCEIVED_URGENCY | **Medium** | Reveals time pressure exploitable for rushed decisions |
 | COMPANY | **Medium** | Reveals isolation (alone) or presence of minors |
+| EMBODIMENT | **Medium** | `manipulating` and `carrying` states are safety-sensitive; `emergency_stop` is a safety signal (VEP-0004) |
 | TIME | **Low** | Observable context, limited targeting value |
 | SPACE | **Low** | Observable context, limited targeting value |
 | SYSTEM_CONTEXT | **Low** | Observable context, limited targeting value |
@@ -399,6 +489,7 @@ Each dimension carries a weaponization risk level indicating the potential for a
 | OCCASION | **Low** | Observable context, limited targeting value |
 | AGENCY | **Low** | Observable context, limited targeting value |
 | CONSTRAINTS | **Low** | Observable context, limited targeting value |
+| FORMALITY | **Low** | Register reveals nothing exploitable (VEP-0004) |
 
 **Critical** and **High** risk dimensions MUST be subject to the Directionality Invariant and architectural isolation requirements defined in Section 9.
 
@@ -1744,9 +1835,10 @@ Hooks execute within the constitutional adaptation pipeline and have access to t
 
 | Level | Requirements |
 |-------|-------------|
-| **VCP-Minimal** | Implements context encoding/decoding for 9 situational dimensions. Implements IDLE, ACTIVE, and EMERGENCY states. Supports transitions T1, T8, and T12. |
-| **VCP-Standard** | VCP-Minimal + all 14 dimensions (9 situational + 5 personal). All six states and all transitions. Hysteresis (Section 5.4). At least the exponential decay curve. Hook system with at least `pre_inject` and `on_violation`. |
-| **VCP-Full** | VCP-Standard + all three decay curves + pinning + context lifecycle tracking. Cross-session persistence + anomaly detection. All six hook types. All security mitigations (Section 9). Torch protocol support. GDPR compliance framework. |
+| **VCP-Minimal** | Implements context encoding/decoding for the 9 canonical situational dimensions. Implements IDLE, ACTIVE, and EMERGENCY states. Supports transitions T1, T8, and T12. |
+| **VCP-Standard** | VCP-Minimal + all 14 canonical dimensions (9 situational + 5 personal). All six states and all transitions. Hysteresis (Section 5.4). At least the exponential decay curve. Hook system with at least `pre_inject` and `on_violation`. |
+| **VCP-Extended** | VCP-Standard + the four VEP-0004 dimensions (EMBODIMENT, PROXIMITY, RELATIONSHIP, FORMALITY), yielding 18 dimensions (13 situational + 5 personal). Required for embodied-AI deployments and bilateral relational tracking. Advertise support with capability token `vcp-a-ext-v1`. |
+| **VCP-Full** | VCP-Extended + all three decay curves + pinning + context lifecycle tracking. Cross-session persistence + anomaly detection. All six hook types. All security mitigations (Section 9). Torch protocol support. GDPR compliance framework. |
 
 ### 10.2 Conformance Assertions
 
@@ -1765,6 +1857,7 @@ An implementation claiming VCP/A conformance MUST:
 SITUATIONAL DIMENSIONS
 ⏰ TIME      📍 SPACE     👥 COMPANY    🌍 CULTURE    🎭 OCCASION
 🌡️ ENV       🔷 AGENCY    🔶 CONSTRAINTS 📡 SYSTEM
+🧍 EMBODIMENT ↔️ PROXIMITY  🪢 RELATIONSHIP  🎩 FORMALITY   (VEP-0004)
 
 TIME:        🌅🌙📅🎉⏰
 SPACE:       🏡🏢🏫🏥💻🌳
@@ -1775,6 +1868,10 @@ ENV:         🥵🥶🌧️🌪️🔇🔥🌤️
 AGENCY:      👑🤝👇💰🔐🆓
 CONSTRAINTS: ○🚧⚖️💸⏰🚨🔒
 SYSTEM:      💻🏢🖥️👁️
+EMBODIMENT:  🪑🚶✋📦🛑
+PROXIMITY:   🌐🏠👣🤏👆
+RELATIONSHIP: {tie}:{function}  (e.g. colleague:professional)
+FORMALITY:   😎💼🎓🏛️
 
 PERSONAL STATE DIMENSIONS (category:intensity)
 🧠 COGNITIVE:  focused, distracted, overloaded, foggy, reflective
@@ -1810,6 +1907,7 @@ The 70-80% reduction is significant for context-limited applications and high-fr
 | 1.1.1 | 2026-02-13 | Zersetzung threat model, Directionality Invariant, GDPR compliance, bilateral alignment protections |
 | 1.2.0 | 2026-02-15 | Formal state machine (6 states, transition table, hysteresis, persistence, error recovery). Hook system (6 types, interface contracts, execution model, security). |
 | 2.0.0 | 2026-03-08 | Unified specification consolidating all VCP/A documents. v3.1 dimension model (14 dimensions: 9 situational + 5 personal state). Torch protocol integration. Sacred Ground principle. Anti-instrumentalization. |
+| 2.1.0 | 2026-04-17 | VEP-0004 integration: EMBODIMENT, PROXIMITY, RELATIONSHIP, FORMALITY added as dimensions 10–13. Total dimension count raised to 18 (13 situational + 5 personal). New conformance level **VCP-Extended** (capability token `vcp-a-ext-v1`). No existing dimensions renumbered; canonical dimensions 1–9 retain identity. |
 
 ---
 

@@ -1,5 +1,14 @@
 # VCP-Identity: Encoding Formats Specification
 
+<!-- vcp-document-control
+status: Reference companion, status-classified
+normative-authority: Accepted specifications and schemas control
+protocol-version: Lineage document, see document body
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP Spec maintainers
+evidence-boundary: Explanatory material, not implementation conformance
+-->
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: VCP/I (Identity)
@@ -170,7 +179,8 @@ def canonicalize(token: str) -> str:
 
 ### 4.1 Specification
 
-See `CSM1_GRAMMAR_SPECIFICATION.md` for full details.
+See the [CSM-1 grammar companion](../content/CSM1_GRAMMAR_SPECIFICATION.md) for
+full details.
 
 ```abnf
 csm1-code = persona adherence [scopes] [":" namespace] ["@" version]

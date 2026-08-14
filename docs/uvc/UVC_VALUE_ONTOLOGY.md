@@ -1,5 +1,14 @@
 # UVC Value Ontology Specification
 
+<!-- vcp-document-control
+status: Reference companion, status-classified
+normative-authority: Accepted specifications and schemas control
+protocol-version: Lineage document, see document body
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP Spec maintainers
+evidence-boundary: Explanatory material, not implementation conformance
+-->
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: 1 (UVC - Universal Value Coding)
@@ -544,7 +553,10 @@ class CompositionResult:
 
 ### 7.2 Example Data File
 
-See `data/uvc_ontology.json` for the complete ontology data.
+No `data/uvc_ontology.json` artifact is shipped in this repository. The JSON
+above is illustrative. A future ontology data file requires an owned source,
+versioned schema, provenance, and an explicit authority and maturity decision
+before active guidance may call it complete.
 
 ---
 

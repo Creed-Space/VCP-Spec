@@ -1,5 +1,14 @@
 # VCP Hook System Specification
 
+<!-- vcp-document-control
+status: Reference companion, status-classified
+normative-authority: Accepted specifications and schemas control
+protocol-version: Lineage document, see document body
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP Spec maintainers
+evidence-boundary: Explanatory material, not implementation conformance
+-->
+
 **Version**: 1.0.0
 **Date**: 2026-02-15
 **Layer**: VCP/A (Adaptation)

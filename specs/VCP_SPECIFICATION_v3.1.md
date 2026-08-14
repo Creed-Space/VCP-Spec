@@ -36,7 +36,7 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 │  CSM-1 grammar · Persona composition · Traits · Personal state      │
 ├─────────────────────────────────────────────────────────────────────┤
 │  Layer 2 — VCP/T  TRANSPORT                                        │
-│  HOW values travel securely                                         │
+│  HOW integrity and provenance travel                                │
 │  Signed bundles · Hash verification · Audit logging                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │  Layer 1 — VCP/I  IDENTITY                                         │
@@ -57,7 +57,7 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 2. **Adaptation**: Context profiles shift by situation
 3. **Liveness**: Real-time personal state modulates AI behavior
 4. **Verification**: Cryptographic integrity and provenance
-5. **Privacy**: Share influence without sharing information
+5. **Privacy**: Minimize source disclosure through purpose-limited derived context; deployment privacy remains an application obligation
 6. **Extensibility**: Core is stable; extensions are opt-in
 
 ### 1.2. What's New in v3.1
@@ -115,13 +115,13 @@ Defines fiduciary constraints, authorization gaps (capability, accountability, c
 Full specification: [specs/core/security.md](./core/security.md)
 
 ### 3.1. Context Encryption
-Fernet symmetric encryption for personal context at rest. Production enforcement: encryption MUST be active in production and staging environments. Fail-closed: ciphertext is never returned as data.
+The v3.1 security profile specifies Fernet symmetric encryption for personal context at rest. Conforming production and staging implementations MUST activate the selected at-rest protection and fail closed on decryption errors. This requirement does not protect plaintext after authorized decryption or data sent to downstream services.
 
 ### 3.2. Injection Scanning
-12 detection patterns (8 OWASP, 2 VCP-specific, 2 Unicode) for validating constitution content before injection into LLM context. All constitution content MUST pass scanning before use.
+The reference profile defines 12 detection patterns (8 OWASP, 2 VCP-specific, 2 Unicode) as one defense-in-depth control before model use. Passing these patterns does not establish that content is safe from prompt injection. Applications MUST combine verification, parsing, policy, least privilege, output controls, and adversarial tests appropriate to the deployment.
 
 ### 3.3. Context Opacity
-Protection levels (STANDARD, ELEVATED, HIGH, CRITICAL) computed from vulnerability scoring. Raw personal signals MUST NOT reach inference models — only the protection level is exposed. Directionality invariant enforced.
+Protection levels (STANDARD, ELEVATED, HIGH, CRITICAL) may be computed from personal-state inputs. A conforming opacity integration MUST prevent raw personal signals from reaching inference models and expose only the approved derived level. Derived levels can still reveal sensitive state and require consent, minimisation, access control, retention limits, and inference review. Conformance requires end-to-end mediation evidence rather than an encoder claim alone.
 
 ### 3.4. Revocation Infrastructure
 CRL (Certificate Revocation List) + OCSP-style stapled proofs. Signature verification via Ed25519 (preferred) or HMAC-SHA256. Fail-closed: if all revocation sources are unavailable, treat as revoked.
@@ -133,7 +133,7 @@ CRL (Certificate Revocation List) + OCSP-style stapled proofs. Signature verific
 Full specification: [specs/core/audit.md](./core/audit.md)
 
 ### 4.1. Tamper-Evident Audit Chain
-SHA-256 hash chain with canonical JSON serialization, PostgreSQL advisory locks for append-only integrity, and privacy-preserving hashing (SHA-256 truncated to 128 bits).
+The profile specifies a SHA-256 hash chain with canonical JSON serialization and serialized appends. Truncated hashes may reduce stored detail but are not anonymization: stable or low-entropy inputs can remain linkable. Audit designs MUST separately address minimisation, keyed pseudonymization where appropriate, access, retention, erasure obligations, and chain verification.
 
 ---
 
@@ -149,15 +149,15 @@ Clients and servers negotiate VCP version and active extensions via VCP-Hello / 
 
 Full specification: [specs/extensions/README.md](./extensions/README.md)
 
-Extensions follow the `VCP-X-{Name}` naming pattern. Each extension provides: spec.md, schema.json, examples/, reference implementation, and conformance tests. Extensions are opt-in and negotiated per session.
+Extensions follow the `VCP-X-{Name}` naming pattern. Each registered extension provides a specification and schema; examples, reference implementations, and conformance coverage are tracked separately and MUST NOT be inferred from registration. Extensions are opt-in and negotiated per session.
 
 ### 6.1. Current Extensions
 
 | Extension | Status | Description | Spec |
 |-----------|--------|-------------|------|
 | VCP-X-Personal | Stable | Personal state (5 dims + intensity + decay) | [spec](./extensions/VCP-X-Personal/spec.md) |
-| VCP-X-Relational | Stable | Relational continuity (trust, standing, norms, self-model) | [spec](./extensions/VCP-X-Relational/spec.md) |
-| VCP-X-Consensus | Stable | Constitutional consensus (Schulze voting + deliberation) | [spec](./extensions/VCP-X-Consensus/spec.md) |
+| VCP-X-Relational | Draft | Relational continuity (trust, standing, norms, self-model) | [spec](./extensions/VCP-X-Relational/spec.md) |
+| VCP-X-Consensus | Draft | Constitutional consensus (Schulze voting + deliberation) | [spec](./extensions/VCP-X-Consensus/spec.md) |
 | VCP-X-Torch | Stable | Session handoff between agents | [spec](./extensions/VCP-X-Torch/spec.md) |
 | VCP-X-Intent | Experimental | Heuristic intent inference | [spec](./extensions/VCP-X-Intent/spec.md) |
 
@@ -249,7 +249,8 @@ Each extension defines its own conformance requirements in its spec.md. Implemen
 
 Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
 
-A **[Creed Space](https://creedspace.com)** project, developed for contribution to the **Agentic AI Foundation**.
+A **[Creed Space](https://creedspace.com)** project. Possible future foundation
+stewardship remains unapproved and no transfer is currently claimed.
 
 ---
 
