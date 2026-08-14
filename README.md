@@ -2,14 +2,23 @@
 
 # Value-Context Protocol (VCP)
 
+<!-- vcp-document-control
+status: Current repository overview
+normative-authority: Index and repository status only
+protocol-version: VCP 3.1 with candidate amendments named separately
+last-reviewed: 2026-08-14 active authority and evidence boundary
+owner: VCP Spec maintainers
+evidence-boundary: Navigation and source status, not external standards, conformance, governance, or publication proof
+-->
+
 **The open standard for encoding values in AI context.**
 
 MCP moves data. VCP encodes what matters about that data.
 
 [![Specification](https://img.shields.io/badge/spec-v3.1-blue?style=flat-square)](./specs/VCP_SPECIFICATION_v3.1.md)
-[![Extensions](https://img.shields.io/badge/extensions-5-purple?style=flat-square)](./specs/extensions/README.md)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](./LICENSE)
-[![VEPs](https://img.shields.io/badge/VEPs-3_filed-orange?style=flat-square)](./veps/)
+[![Extensions](https://img.shields.io/badge/extensions-6-purple?style=flat-square)](./specs/extensions/README.md)
+[![Rights review](https://img.shields.io/badge/rights-review_pending-orange?style=flat-square)](./LICENSING_STATUS.md)
+[![VEPs](https://img.shields.io/badge/VEPs-4_filed-orange?style=flat-square)](./veps/README.md)
 
 [Overview](#overview) | [Architecture](#architecture) | [Quick Start](#quick-start) | [Extensions](#extensions) | [MCP Bridge](#mcp-bridge) | [Governance](#governance) | [SDKs](#sdks)
 
@@ -21,17 +30,17 @@ MCP moves data. VCP encodes what matters about that data.
 
 The **Value-Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to AI systems.
 
-AI systems accept text input but have no native ability to resolve references, verify signatures, or validate behavioral constraints. VCP provides a **signed envelope format** with cryptographic verification at the orchestration layer, delivering complete, self-contained behavioral context to the model.
+AI systems accept text input but do not by themselves resolve VCP references, verify signatures, or enforce behavioral constraints. VCP provides a **signed envelope format** and verification primitives for the orchestration layer. A conforming application still decides whether verified content may reach a model and must demonstrate that its enforcement path is complete.
 
 ### Core Properties
 
 | Property | Description |
 |:---|:---|
-| **Portability** | Define your context once — every compatible service receives it |
-| **Adaptation** | Context profiles shift by situation: work mode, personal mode, crisis mode |
-| **Liveness** | Real-time personal state (energy, focus, urgency) modulates AI behavior |
-| **Verification** | Cryptographic signatures and content hashes ensure integrity |
-| **Privacy** | Share *influence* without sharing *information* |
+| **Portability** | A compatible service can receive the same declared context format |
+| **Adaptation** | Applications can select context profiles by declared situation |
+| **Liveness** | Current personal-state inputs can inform application behavior |
+| **Verification** | Signatures and content hashes provide integrity and provenance relative to configured trust anchors |
+| **Privacy** | Purpose-limited derived context can reduce source disclosure; applications still own consent, minimisation, access, retention, and inference risk |
 | **Extensibility** | Stable core + opt-in extensions for specialized needs |
 
 ### How VCP Relates to MCP
@@ -62,7 +71,7 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 │  Encryption | Scanning | Opacity | Revocation | Audit │
 ├──────────────────────────────────────────────────────┤
 │                   Extensions (VCP-X-*)                │
-│  Personal | Relational | Consensus | Torch | Intent  │
+│  Personal | Relational | Consensus | Torch | Intent | Welfare │
 └──────────────────────────────────────────────────────┘
 ```
 
@@ -74,13 +83,20 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 - **VCP/T — Transport**: Signed bundle format, manifests, trust anchors
 - **VCP/I — Identity**: Token format, namespace tiers, identity encoding
 
-**Core security** (v3.1): Context encryption, injection scanning, context opacity, revocation infrastructure, tamper-evident audit chain.
+**Core security** (v3.1): The specification defines context encryption, injection scanning, context opacity, revocation, and tamper-evident audit controls. Their presence in a document does not establish correct deployment; implementations need direct security and privacy evidence.
 
-**Extensions** (v3.1): Opt-in protocol extensions negotiated per session via capability handshake.
+**Extensions**: Six opt-in protocol extensions are present. The v3.1 core is
+the published baseline. VEP-0004 and the v3.2 amendments remain pre-release;
+their presence in this repository does not promote them to an accepted release.
 
 ---
 
 ## Quick Start
+
+> **SDK publication state:** source-only candidate. No PyPI, npm, or crates.io
+> release is currently claimed. Candidate names identify repository metadata,
+> not registry availability. Run build commands from an immutable VCP-SDK
+> checkout recorded in the coordinated candidate manifest.
 
 ### 1. Read the Newcomer Guide
 **[VCP Newcomer Guide](./docs/VCP_NEWCOMER_GUIDE.md)** — What VCP is and why it exists.
@@ -91,51 +107,48 @@ See how VCP works end-to-end with annotated examples:
 - [Personal State Roundtrip](./specs/examples/personal-state-roundtrip.md) — Signal encoding + decay
 - [Capability Handshake](./specs/examples/capability-handshake.md) — Extension negotiation
 
-### 3. Install the SDK
+### 3. Build the SDK Source Candidate
 
 **Python**:
 ```bash
-pip install creed-sdk
+python -m pip install ./python
 ```
 
 **TypeScript**:
 ```bash
-npm install @creed-space/vcp-sdk
+npm install ./webmcp
 ```
 
 **Rust**:
-```toml
-[dependencies]
-vcp-sdk = "3.1"
+```bash
+cargo build --manifest-path ./rust/Cargo.toml -p vcp-core
 ```
 
 ### 4. Create Your First Token
 
 ```python
-from creed_sdk import VCPClient
+from vcp.semantics import CSM1Code
 
-client = VCPClient()
-token = client.create_token(
-    persona="supportive_companion",
-    dimensions={"empathy": "high", "transparency": "high"},
-    scope={"domain": "mental_health"}
-)
-print(token.csm1)  # csm1:supportive_companion:EH-TH-...
+code = CSM1Code.parse("N5+F+E")
+print(code.persona.name)       # NANNY
+print(code.encode())           # N5+E+F (canonical scope order)
 ```
 
 ---
 
 ## Extensions
 
-VCP v3.1 introduces five protocol extensions:
+The repository contains six protocol extensions. Stable and experimental
+statuses are independent of the v3.1 core release label:
 
 | Extension | Status | Description |
 |-----------|--------|-------------|
 | [VCP-X-Personal](./specs/extensions/VCP-X-Personal/spec.md) | Stable | 5 personal state dimensions with intensity + configurable decay |
-| [VCP-X-Relational](./specs/extensions/VCP-X-Relational/spec.md) | Stable | Trust, standing, norms, AI self-model with mandatory uncertainty |
-| [VCP-X-Consensus](./specs/extensions/VCP-X-Consensus/spec.md) | Stable | Schulze voting for multi-stakeholder constitutional deliberation |
+| [VCP-X-Relational](./specs/extensions/VCP-X-Relational/spec.md) | Draft | Trust, standing, norms, AI self-model with mandatory uncertainty |
+| [VCP-X-Consensus](./specs/extensions/VCP-X-Consensus/spec.md) | Draft | Schulze voting for multi-stakeholder constitutional deliberation |
 | [VCP-X-Torch](./specs/extensions/VCP-X-Torch/spec.md) | Stable | Session handoff for relational continuity across agents |
 | [VCP-X-Intent](./specs/extensions/VCP-X-Intent/spec.md) | Experimental | Transparent, correctable intent inference from personal state |
+| [VCP-X-Welfare](./specs/extensions/VCP-X-Welfare/spec.md) | Experimental | Welfare affordances, signals, temporal patterns, and attestation chains |
 
 Extensions are opt-in and negotiated per session via [capability handshake](./specs/core/capability-negotiation.md). Each extension has a spec, JSON schema, and wire format examples.
 
@@ -172,7 +185,7 @@ Layer 6 -- VCP/E  ECONOMIC GOV   WHO PAYS
 Layer 5 -- VCP/M  MESSAGING      WHO TALKS
 Layer 4 -- VCP/A  ADAPTATION     WHEN and HOW constitutions apply
 Layer 3 -- VCP/S  SEMANTICS      WHAT the values mean
-Layer 2 -- VCP/T  TRANSPORT      HOW values travel securely
+Layer 2 -- VCP/T  TRANSPORT      HOW integrity and provenance travel
 Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 ```
 
@@ -185,7 +198,7 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 |:---|:---|
 | [VCP Specification v1.0](./specs/VCP_SPECIFICATION_v1.0.md) | Full protocol specification |
 | [VCP v1.1 Amendments](./specs/VCP_SPECIFICATION_v1.1_AMENDMENTS.md) | R-line, personal state additions |
-| [Academic Paper](./specs/value_context_protocols_paper_v1.md) | Formal paper |
+| [Historical paper draft](./specs/value_context_protocols_paper_v1.md) | Superseded draft retained for lineage; not a publication source |
 | [VCP/M Messaging v2.0](./specs/VCP_MESSAGING_v2.0.md) | Inter-agent messaging and escalation |
 | [VCP/E Economic Governance v2.0](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) | Economic governance layer |
 | [VCP/C Competence v2.0](./specs/VCP_COMPETENCE_v2.0.md) | Competence assessment and adaptive friction (Supplementary) |
@@ -208,12 +221,16 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 
 | Layer | Status | Documents |
 |:---|:---|:---|
-| VCP/I — Identity | Stable | 5 docs |
-| VCP/T — Transport | Stable | 1 spec + 1 amendment |
-| VCP/S — Semantics | Stable | 4 docs |
-| VCP/A — Adaptation | Stable | 4 docs |
-| VCP/M — Messaging | Stable | 1 spec |
-| VCP/E — Economic Governance | Stable | 1 spec |
+| VCP/I — Identity | Published v3.1 baseline | 5 docs |
+| VCP/T — Transport | Published v3.1 baseline | 1 spec + 1 amendment |
+| VCP/S — Semantics | Published v3.1 baseline | 4 docs |
+| VCP/A — Adaptation | Published v3.1 baseline | 4 docs |
+| VCP/M — Messaging | Published v3.1 summary | 1 detailed draft |
+| VCP/E — Economic Governance | Published v3.1 summary | 1 detailed draft |
+
+This table describes the v3.1 baseline. Separately versioned v2.0 layer documents
+that declare `Draft` remain drafts; a reference from v3.1 does not silently
+promote their additional detail.
 
 ### Universal Value Codes (UVC)
 
@@ -246,22 +263,25 @@ Extension schemas are co-located: `specs/extensions/VCP-X-*/schema.json`.
 
 ## Governance
 
-VCP is governed by a Technical Steering Committee (TSC) under a foundation-compatible model:
+VCP currently uses an interim, unratified repository process. A Technical
+Steering Committee has not been constituted, neutral foundation governance is
+not claimed, and Nell Watson is the only currently named interim administrator.
+VCP-Spec is the canonical home for protocol decisions and VEP intake.
 
-- **Decision process**: Lazy consensus, supermajority for spec changes
-- **Contribution**: DCO (Developer Certificate of Origin) sign-off
-- **Extension proposals**: Via the [VEP process](./GOVERNANCE.md)
-- **IP license**: MIT License with Agentic AI Foundation transfer clause
-
-See [GOVERNANCE.md](./GOVERNANCE.md) for the full charter and [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
+See [GOVERNANCE.md](./GOVERNANCE.md) for present authority boundaries,
+[`governance/authority.json`](./governance/authority.json) for machine-readable
+state, and [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidance. The
+former TSC charter is preserved as an explicitly unratified proposal.
 
 ### Filed VEPs
 
 | VEP | Title | Status |
 |-----|-------|--------|
-| [VEP-0001](./veps/VEP-0001-extension-model.md) | Extension Model Architecture | Accepted |
-| [VEP-0002](./veps/VEP-0002-capability-negotiation.md) | Capability Negotiation Protocol | Accepted |
-| [VEP-0003](./veps/VEP-0003-mcp-bridge.md) | VCP-over-MCP Bridge | Accepted |
+| [VEP-0001](./veps/VEP-0001-extension-model.md) | Extension Model Architecture | Recorded pre-charter acceptance |
+| [VEP-0002](./veps/VEP-0002-capability-negotiation.md) | Capability Negotiation Protocol | Recorded pre-charter acceptance |
+| [VEP-0003](./veps/VEP-0003-mcp-bridge.md) | VCP-over-MCP Bridge | Recorded pre-charter acceptance |
+| [VEP-0004](./veps/VEP-0004-extended-vcpa-dimensions.md) | Extended VCP/A Dimensions | Experimental, v3.2 pre-release |
+| [VEP-0005](./veps/VEP-0005-stateless-mcp.md) | Stateless MCP Adaptation | Draft, v3.3 candidate |
 
 ---
 
@@ -271,18 +291,20 @@ Reference implementations live in the [VCP-SDK repository](https://github.com/Cr
 
 | Language | Version | Status |
 |:---|:---|:---|
-| **Python** | 3.1.0 | Reference implementation |
-| **Rust** | 3.1.0 | High-performance / WASM |
-| **TypeScript** | 3.1.0 | Browser-side |
+| **Python** | 4.2.0 | Reference implementation, package `value-context-protocol` |
+| **Rust** | 4.2.0 | Core, WASM, and CLI workspace; crate `vcp-core` |
+| **TypeScript** | 4.2.0 | WebMCP browser integration package `@creed-space/vcp-sdk` |
 
 ---
 
 ## Roadmap
 
-- **VCP Inspector**: Interactive web tool for decoding/encoding VCP tokens — **[Live at inspector.valuecontextprotocol.org](https://inspector.valuecontextprotocol.org/)**
+- **VCP Inspector**: [Interactive token inspector project](https://inspector.valuecontextprotocol.org/)
 - **VCP Examples**: 10 runnable examples covering all extensions ([planned](https://github.com/Creed-Space/VCP-Examples))
 - **Anti-drift CI**: Automated spec-implementation version sync checks
-- **Agentic AI Foundation**: Transfer of VCP governance to neutral foundation
+- **Governance proposal**: evaluate a possible future foundation stewardship
+  model through an authorized, recorded process. No transfer is currently
+  claimed.
 
 ---
 
@@ -300,7 +322,10 @@ Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) before participating.
 
 ## License
 
-This project is licensed under the [MIT License](./LICENSE).
+Licensing and submission rights are under authorized review. The root
+[LICENSE](./LICENSE), file-specific notices, IETF draft text, contribution
+history, rendered artifacts, and proposed trademark terms do not yet form an
+approved file-class matrix. See [LICENSING_STATUS.md](./LICENSING_STATUS.md).
 
 ---
 
@@ -308,7 +333,9 @@ This project is licensed under the [MIT License](./LICENSE).
 
 Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
 
-A **[Creed Space](https://creedspace.com)** project, developed for contribution to the **[Agentic AI Foundation](https://agenticaifoundation.org)**.
+A **[Creed Space](https://creedspace.com)** project. Possible future foundation
+stewardship remains a proposal without an executed transfer or acceptance
+record.
 
 ---
 

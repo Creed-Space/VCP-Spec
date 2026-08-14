@@ -1,5 +1,14 @@
 # VCP-Adaptation: Context & State Specification
 
+<!-- vcp-document-control
+status: Reference companion, status-classified
+normative-authority: Accepted specifications and schemas control
+protocol-version: Lineage document, see document body
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP Spec maintainers
+evidence-boundary: Explanatory material, not implementation conformance
+-->
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: VCP/A (Adaptation)
@@ -1173,7 +1182,10 @@ __version__ = '1.0.0'
 
 ### 9.2 JSON Schema
 
-See `data/schemas/vcp-context.schema.json` for JSON Schema validation.
+Use the maintained
+[VCP adaptation-context schema](../../schemas/vcp-adaptation-context.schema.json)
+for JSON Schema validation. The implementation sketch in this companion is
+explanatory and does not define a second schema contract.
 
 ---
 

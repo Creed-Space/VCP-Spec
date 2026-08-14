@@ -1,0 +1,8 @@
+# Review ownership. Branch protection remains a repository-administrator gate.
+* @NellInc
+/schemas/ @NellInc
+/specs/ @NellInc
+/veps/ @NellInc
+/GOVERNANCE.md @NellInc
+/SECURITY.md @NellInc
+/.github/workflows/ @NellInc

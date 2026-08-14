@@ -2,7 +2,7 @@
 
 ## Extension Model
 
-The Verifiable Context Protocol core specification (v1.0 through v1.1) defines a
+The Value-Context Protocol core specification (v1.0 through v1.1) defines a
 stable wire format for context bundles, manifests, attestation, and verification.
 These core primitives are sufficient for many deployments and are expected to
 remain backward-compatible across major versions.
@@ -31,13 +31,14 @@ entry exactly when referenced in capability negotiation payloads.
 
 ## Extension Structure
 
-Each extension directory contains three artifacts:
+Each extension directory contains two required artifacts and may contain an
+examples directory:
 
 | File             | Purpose                                                   |
 |------------------|-----------------------------------------------------------|
 | `spec.md`        | Prose specification: data model, semantics, constraints   |
 | `schema.json`    | Machine-readable JSON Schema for the extension's payloads |
-| `examples/`      | Annotated wire-format examples (request + response pairs) |
+| `examples/`      | Recommended annotated wire-format examples |
 
 The `spec.md` is the normative document. The schema and examples are informative
 but MUST be consistent with the prose specification at all times.
@@ -68,6 +69,7 @@ Every extension progresses through a defined lifecycle:
 | Status         | Meaning                                                         |
 |----------------|-----------------------------------------------------------------|
 | EXPERIMENTAL   | Under active development. Wire format may change without notice. Implementations SHOULD flag experimental extensions to users. |
+| DRAFT          | A documented candidate under review. Implementations MUST negotiate it and MUST NOT advertise accepted or stable status. |
 | STABLE         | Wire format is frozen. Breaking changes require a new extension identifier (e.g., `VCP-X-Torch` to `VCP-X-Torch2`). Implementations MAY rely on stable extensions in production. |
 | DEPRECATED     | Superseded by a newer extension or folded into the core. Implementations SHOULD emit warnings. Deprecated extensions are removed after two major VCP versions. |
 
@@ -89,8 +91,8 @@ Transition from STABLE to DEPRECATED requires:
 | Extension        | Status       | Description                                                       |
 |------------------|--------------|-------------------------------------------------------------------|
 | VCP-X-Personal   | Stable       | Personal state modeling: 5 categorical dimensions with intensity (1-5) and configurable decay. Dimensions: cognitive_state, emotional_tone, energy_level, perceived_urgency, body_signals. |
-| VCP-X-Relational | Stable       | Relational continuity layer: trust levels (initial/developing/established/deep), standing (observer/advisory/collaborative/autonomous), established norms, AI self-model, and session continuity depth. |
-| VCP-X-Consensus  | Stable       | Constitutional consensus primitive: Schulze-method voting over constitution sets with structured deliberation rounds, quorum requirements, and amendment proposals. |
+| VCP-X-Relational | Draft        | Relational continuity layer: trust levels (initial/developing/established/deep), standing (observer/advisory/collaborative/autonomous), established norms, AI self-model, and session continuity depth. |
+| VCP-X-Consensus  | Draft        | Constitutional consensus primitive: Schulze-method voting over constitution sets with structured deliberation rounds, quorum requirements, and amendment proposals. |
 | VCP-X-Torch      | Stable       | Session handoff between agents: captures relationship quality, trajectory, primes (key norms), and gestalt tokens. Enables continuity across instance boundaries. |
 | VCP-X-Intent     | Experimental | Heuristic intent inference from VCP context signals. Rule-based classification into 10 intent categories with confidence scores and transparent reasoning. Correctable by users. |
 | VCP-X-Welfare    | Experimental | Welfare instrumentation: core (WC/AS/bidirectional Q), embodied dimensions (robotics), temporal patterns (trajectory, checkpoints), multi-agent aggregation (swarm welfare), and attestation chains. Builds on VCP/S v2.1 welfare lines. |

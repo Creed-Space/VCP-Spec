@@ -1,0 +1,57 @@
+{
+  "schema": "vcp-rendered-artifact-inventory/1",
+  "generated": "2026-08-13",
+  "canonical": null,
+  "authority": "inventory-only",
+  "notice": "No artifact is selected, rights-cleared, or publication-approved.",
+  "files": [
+    {
+      "file": "VCP_MDPI_Clone.docx",
+      "bytes": 1660107,
+      "sha256": "a9f6cb65128d90b5f0c80d1cfb407225693cec1bca8c30c2a2a4b6cbb0d62ca6",
+      "status": "working-candidate"
+    },
+    {
+      "file": "VCP_MDPI_Pure.docx",
+      "bytes": 1744247,
+      "sha256": "6a61cec873b41f70bd288ac7b17287dac6d8f8efe7cfeeda16aa267ceb6bb1b4",
+      "status": "working-candidate"
+    },
+    {
+      "file": "VCP_MDPI_Surgical.docx",
+      "bytes": 1674361,
+      "sha256": "de03e84704cd6d68ab02dd286ca446a5a0f522579905581014d1d6aa50cdf4e4",
+      "status": "working-candidate"
+    },
+    {
+      "file": "Value Context Protocol - Clean.docx",
+      "bytes": 49449,
+      "sha256": "88bc28a3a68bc1c6043f6e9e0e2221f6b7ce705f91dee09b998379366aa442c2",
+      "status": "working-candidate"
+    },
+    {
+      "file": "Value Context Protocol MDPI - Styled.docx",
+      "bytes": 1645120,
+      "sha256": "76b90d4247b5d875ebbdd7680d4118ce9f6ae327a28d72fb5dbf5e5c16afbded",
+      "status": "working-candidate"
+    },
+    {
+      "file": "Value Context Protocol MDPI I2D2.docx",
+      "bytes": 1737317,
+      "sha256": "4c7df5b6b8212261e9dec2c8a9b8732878839a5ec132320da2bb92a6a12c821f",
+      "status": "working-candidate"
+    },
+    {
+      "file": "Value Context Protocol MDPI I2D3.docx",
+      "bytes": 1673908,
+      "sha256": "2850fd5053ddbdc4b1b9864099a0e3840b9b3c724c0b03ad5df941aa35e6e4e8",
+      "status": "working-candidate"
+    },
+    {
+      "file": "ai-template.dot",
+      "bytes": 80944,
+      "sha256": "5683d00952316d6f9bdc68a3bba067977475b4a66a4923edb9bdce840b87fb98",
+      "status": "working-candidate"
+    }
+  ]
+}

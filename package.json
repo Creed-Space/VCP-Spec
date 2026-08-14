@@ -1,0 +1,13 @@
+{
+  "name": "vcp-spec-validation",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Pinned validation tooling for the VCP specification repository",
+  "scripts": {
+    "validate:schemas": "node scripts/check_strict_schemas.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  }
+}

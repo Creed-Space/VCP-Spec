@@ -542,8 +542,11 @@ the VCP opacity layer maps personal signals to a protection level:
 | `elevated`       | body_signals discomfort at 3+, OR emotional tense at 3+                    | 0.6         | 0.1          |
 | `standard`       | Default / no notable signals                                               | 0.85        | 0.0          |
 
-This opacity pattern ensures that AI systems adapt their behavior based on the
-user's state without having access to the specific categorical values.
+This opacity pattern is intended to let an application adapt behavior from a
+coarse level without passing specific categorical values onward. It provides
+that property only when the application completely mediates every downstream
+path and prevents raw values from entering prompts, tools, logs, telemetry, or
+model-provider metadata. The derived level can itself be sensitive.
 
 ### 6.2 Generation Parameter Computation
 

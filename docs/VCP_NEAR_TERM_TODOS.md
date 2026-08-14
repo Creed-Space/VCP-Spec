@@ -1,98 +1,64 @@
-# VCP Near-Term TODOs
+# VCP Current Work Register
 
-**Last updated**: 2026-02-15
+<!-- vcp-document-control
+status: Current planning record
+normative-authority: None
+protocol-version: VCP 3.1
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP maintainers
+evidence-boundary: Plans and gates only
+-->
 
----
+| Field | Value |
+|:---|:---|
+| Status | Current planning record |
+| Normative authority | None |
+| Protocol baseline | VCP 3.1 |
+| Last reviewed | 2026-08-13 |
+| Owner | VCP maintainers |
+| Evidence boundary | Plans and gates. Completion requires linked machine or authorized human evidence. |
 
-## Completed (2026-02-15)
+## Current state
 
-- [x] **VCP Spec completion** — all 6 layers finalized, 10 tasks (`c0bfb4d`)
-- [x] **Rust SDK transport** — Ed25519 signing/verification, content hashing, trust anchors, 139 tests (`c14603d` on vcp-sdk)
-- [x] **METTLE tests** — 1129/1129 passing, `scripts/__init__.py` fix + cryptography installed (`e22c52e`)
-- [x] **Inter-agent messaging v1.2** — `specs/VCP_INTER_AGENT_MESSAGING_v1.2.md` + `schemas/vcp-messaging-v1.2.schema.json` (`2b43bbc`)
-- [x] **RFC draft** — `specs/draft-watson-vcp-00.md`, 1618 lines, IANA registrations for `creed://`, `application/vcp+json`, `.vcp` (`2b43bbc`)
-- [x] **Adoption strategy** — `docs/VCP_ADOPTION_STRATEGY.md`, 4-tier adopter outreach (`2b43bbc`)
-- [x] **Branch protection** — vcp-sdk: 4 required CI checks, dismiss stale reviews
-- [x] **Package naming convention** — `docs/VCP_PACKAGE_NAMING.md` mirrors MCP (`e9f27aa`)
-- [x] **GitHub templates** — Issue/PR templates on vcp-sdk (`f8d5025`)
-- [x] **Persona updates** — NZGAMRHC → NZGAMDC across schemas, Python SDK, docs (`c14603d`)
-- [x] **CULTURE dimension** — Nationalities → communication styles (high/low context, formal/informal, etc.)
-- [x] **STATE→R-line relationship** — Documented in both adaptation + context specs
-- [x] **Hook system (all 3 SDKs)** — Python (registry, executor, 4 built-ins, integration wiring), Rust (HookRegistry, HookExecutor), TypeScript (browser-side registry). 124 tests. (`8c16f10` on vcp-sdk)
-- [x] **Revocation checking (Python + Rust)** — SSRF protection, CRL + online endpoint, caching, wired into Python orchestrator. 79 tests. (`9c418a2` on vcp-sdk)
-- [x] **Rust orchestrator** — 12-step verification pipeline (size, schema, hash, trust, signature, attestation, temporal, replay, budget, scope, injection scan). 19 tests. (`826ea0e` on vcp-sdk)
-- [x] **Rust composition engine** — 4 modes (Base, Extend, Override, Strict), keyword conflict detection. 23 tests. (`826ea0e` on vcp-sdk)
-- [x] **Python messaging v1.2** — VcpMessage envelope, create/validate/sign/verify. 25 tests. (`3cc77be` on vcp-sdk)
-- [x] **CHANGELOG** — Keep a Changelog format (`3cc77be` on vcp-sdk)
-- [x] **Runnable examples** — 5 Python + 3 Rust examples with README (`3cc77be` on vcp-sdk)
+- VCP 3.1 is the repository protocol baseline.
+- VCP 3.2 material remains pre-release.
+- VEP-0005 is a draft response to MCP 2026-07-28.
+- SDK artifacts remain source-only candidates.
+- The Demo is not conformance evidence.
+- Registry publication, production deployment, independent review, governance
+  ratification, licensing decisions, and canonical rendered documents require
+  separate authority and receipts.
 
----
+## Machine work before an immutable candidate
 
-## Package Publishing (BLOCKED: needs design decisions)
+1. Keep public instructions synchronized with the publication-state record.
+2. Run repository, schema, SDK, conformance, security, package, browser, and
+   accessibility checks on the exact selected source tree.
+3. Produce a coverage report whose unsupported suites remain explicit.
+4. Build packages once, inspect their contents, generate SBOMs and attestable
+   hashes, and create the release manifest last.
+5. Select exact Spec, SDK, and Demo commits in the coordinated review ledger.
+6. Run hosted CI on those immutable commits and retain workflow URLs and hashes.
 
-Before publishing to any registry, the following must be confirmed:
+## Decisions that machines cannot make
 
-| Decision | Options | Status |
-|----------|---------|--------|
-| Package names | `vcp` / `@valuecontextprotocol/sdk` / `rvcp` (mirrors MCP) | Proposed, see `docs/VCP_PACKAGE_NAMING.md` |
-| GitHub org | `valuecontextprotocol` (mirrors `modelcontextprotocol`) | Not yet created |
-| PyPI account | Who owns `vcp` on PyPI? Need to register | Not checked |
-| npm scope | `@valuecontextprotocol` — need npm org | Not created |
-| crates.io | `rvcp` — need to check availability | Not checked |
-| Versioning | Start at 0.1.0 (pre-1.0 signals prototype) or 1.0.0 (matches spec)? | Undecided |
-| Foundation donation | Mirror MCP's donation to Agentic AI Foundation? | Strategic discussion needed |
+| Decision | Required authority |
+|:---|:---|
+| Final registry names and owners | Project owner, registry owners, and trademark review |
+| VCP 3.2 maturity | Ratified protocol governance |
+| Licensing matrix and IETF draft rights | Rights authority with appropriate legal review |
+| Governance seats, quorum, and effective date | Constituting participants |
+| Canonical DOCX and PDF | Editorial and publication authority |
+| Independent protocol, cryptographic, privacy, and security acceptance | Reviewers independent of this implementation effort |
+| Package publication and production deployment | Named release and deployment approvers |
 
-**Next step**: Nell to confirm naming convention and create `valuecontextprotocol` org on GitHub/npm/crates.io before any publishing.
+## Evidence rule
 
----
+Each completed item records an exact commit or artifact digest, the command or
+workflow that produced the result, the result scope, and the identity of any
+human approver. Earlier evidence is superseded whenever the candidate changes.
+Passing source tests never substitutes for installed-artifact, deployed-runtime,
+human-review, rights, or publication evidence.
 
-## External Adopter (see `docs/VCP_ADOPTION_STRATEGY.md`)
-
-| Priority | Action | Target | Owner | Status |
-|----------|--------|--------|-------|--------|
-| P0 | Write integration guide + conformance test suite | All | Claude | TODO |
-| P0 | LangChain RFC issue | LangChain | Nell | TODO |
-| P1 | AutoGen partnership reach-out | Microsoft | Nell | TODO |
-| P1 | CrewAI founder call | CrewAI | Nell | TODO |
-| P1 | Blog post: "Why AI Needs a Value Protocol" | General audience | Claude | TODO |
-| P1 | FAccT 2026 submission | Academic | Nell | TODO |
-| P2 | Stanford HAI outreach | Stanford | Nell | TODO |
-| P2 | W3C Community Group proposal | W3C | Nell | TODO |
-
----
-
-## Standards Body Submission
-
-- [x] RFC draft written (`specs/draft-watson-vcp-00.md`)
-- [ ] Review RFC draft for accuracy against current spec
-- [ ] Submit to IETF as Informational I-D
-- [ ] W3C Community Group proposal (see adoption strategy P2)
-- [ ] Identify IETF area director / sponsor
-
----
-
-## Conformance Test Suite
-
-A public conformance test suite is needed for:
-- Validating third-party implementations
-- Standards body submission evidence
-- Adoption strategy (adopters need something to test against)
-
-**Proposed location**: `vcp-sdk/conformance/` with language-agnostic test vectors (JSON fixtures + expected results).
-
-**Test areas**:
-- VCP/I: Token parsing (`family.safe.guide@1.2.0`)
-- VCP/T: Bundle verification (signed manifest → verify → pass/fail)
-- VCP/S: CSM-1 composition (`[N5+F, A3+W]` → merged result)
-- VCP/A: Context encoding (morning/home/children → emoji wire)
-- Cross-impl: Round-trip (Impl A signs → Impl B verifies)
-
----
-
-## VCP-Spec README Badges
-
-Once CI passes on published packages:
-- PyPI version badge
-- npm version badge
-- crates.io version badge
-- Docs badge (link to generated API docs)
+The exhaustive improvement ledger for the current programme is maintained with
+the coordinated implementation evidence, outside this normative repository.

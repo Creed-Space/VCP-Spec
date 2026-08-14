@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use the Value-Context Protocol, cite this specification."
+title: "Value-Context Protocol Specification"
+type: software
+version: "3.1"
+license: MIT
+authors:
+  - family-names: Watson
+    given-names: Nell
+repository-code: "https://github.com/Creed-Space/VCP-Spec"
+url: "https://valuecontextprotocol.org/"
+abstract: >-
+  An open specification for transporting signed constitutional values,
+  behavioral rules, and contextual signals to computational agents.

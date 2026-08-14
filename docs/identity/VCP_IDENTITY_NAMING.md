@@ -1,5 +1,14 @@
 # VCP-Identity: Naming Specification
 
+<!-- vcp-document-control
+status: Reference companion, status-classified
+normative-authority: Accepted specifications and schemas control
+protocol-version: Lineage document, see document body
+last-reviewed: 2026-08-13 status and authority classification
+owner: VCP Spec maintainers
+evidence-boundary: Explanatory material, not implementation conformance
+-->
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: VCP/I (Identity)
@@ -834,7 +843,11 @@ __version__ = '1.0.0'
 
 ### 8.2 JSON Schema
 
-See `data/schemas/uvc-token.schema.json` for JSON Schema validation.
+This companion does not ship the formerly anticipated
+`data/schemas/uvc-token.schema.json`. The maintained
+[VCP identity-token schema](../../schemas/vcp-identity-token.schema.json)
+defines the current machine contract; it does not imply validation of every
+illustrative UVC naming example in this document.
 
 ---
 
