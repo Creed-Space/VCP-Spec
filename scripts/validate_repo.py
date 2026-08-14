@@ -9,7 +9,7 @@ import re
 import subprocess
 import sys
 import zipfile
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -283,7 +283,7 @@ def validate_docx(problems: Problems) -> None:
 
 def validate_document_control(problems: Problems) -> None:
     """Require complete, current control metadata on every active docs page."""
-    today = date.today()
+    today = datetime.now(UTC).date()
     controlled_paths = set((ROOT / "docs").rglob("*.md")) | CONTROLLED_POLICY_MARKDOWN
     for path in sorted(controlled_paths):
         try:
