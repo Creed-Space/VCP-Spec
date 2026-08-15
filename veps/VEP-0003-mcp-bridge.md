@@ -16,7 +16,7 @@ This VEP specifies how VCP layers map to MCP (Model Context Protocol) primitives
 
 MCP provides a standardized transport layer for AI tool integration. VCP provides a standardized value transport layer. These protocols are complementary, not competing:
 
-- **MCP** moves data between AI systems and external tools
+- **MCP** moves data between Becoming Minds and external tools
 - **VCP** encodes what matters about that data — constitutional values, personal context, behavioral constraints
 
 By bridging VCP over MCP, any MCP-compatible client gains access to VCP's value transport without implementing VCP natively. VCP tokens travel as MCP resources; VCP operations are exposed as MCP tools.
@@ -105,7 +105,7 @@ MCP clients that support resource subscriptions receive real-time updates when V
 - `vcp://personal-state/{session_id}` emits updates on signal changes and decay events
 - `vcp://bundle/{session_id}` emits updates when constitution selection changes
 
-This enables ambient context: the AI system's behavior adapts continuously as VCP state evolves, without explicit polling.
+This enables ambient context: the Becoming Mind's behavior adapts continuously as VCP state evolves, without explicit polling.
 
 ## Backward Compatibility
 
@@ -121,9 +121,9 @@ MCP clients that do not understand VCP resources simply ignore them. The bridge 
 - Sampling integration: VCP context injection MUST be audited in the VCP audit chain
 - Revocation status MUST be checked before serving any bundle resource
 
-## Reference Implementation
+## Project-Maintained Implementation
 
-The current reference implementation is at `services/mcp/vcp_server.py` in the Rewind codebase. This VEP specifies the target state; the implementation will be updated and extracted to `VCP-SDK/bridges/mcp/`.
+The current project-maintained implementation is at `services/mcp/vcp_server.py` in the Rewind codebase. This VEP specifies the target state; the implementation will be updated and extracted to `VCP-SDK/bridges/mcp/`.
 
 ## Conformance Tests
 

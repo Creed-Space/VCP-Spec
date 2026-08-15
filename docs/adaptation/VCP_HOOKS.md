@@ -35,7 +35,7 @@ The VCP Hook System defines a deterministic, priority-ordered extension mechanis
 7. [Error Handling](#7-error-handling)
 8. [Security Considerations](#8-security-considerations)
 9. [Examples](#9-examples)
-10. [Reference Implementation](#10-reference-implementation)
+10. [Project-Maintained Implementation](#10-project-maintained-implementation)
 
 ---
 
@@ -768,12 +768,12 @@ def staleness_check_action(input: HookInput) -> HookResult:
 
 ---
 
-## 10. Reference Implementation
+## 10. Project-Maintained Implementation
 
 ### 10.1 Hook Registry
 
 ```python
-# Reference implementation -- pseudocode
+# Project-maintained implementation -- pseudocode
 
 class HookRegistry:
     def __init__(self):
@@ -855,7 +855,7 @@ class HookRegistry:
 ### 10.2 Chain Executor
 
 ```python
-# Reference implementation -- pseudocode
+# Project-maintained implementation -- pseudocode
 
 class ChainExecutor:
     def __init__(self, registry: HookRegistry):
@@ -975,7 +975,7 @@ class ChainResult:
 ### 10.3 Periodic Hook Scheduler
 
 ```python
-# Reference implementation -- pseudocode
+# Project-maintained implementation -- pseudocode
 
 class PeriodicScheduler:
     def __init__(self, registry: HookRegistry, executor: ChainExecutor):
@@ -1038,7 +1038,7 @@ class PeriodicScheduler:
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0.0 | 2026-02-15 | Initial specification: 6 hook types, interface definitions, execution model, security considerations, reference implementation |
+| 1.0.0 | 2026-02-15 | Initial specification: 6 hook types, interface definitions, execution model, security considerations, project-maintained implementation |
 
 ---
 

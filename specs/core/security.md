@@ -841,7 +841,7 @@ that require tighter revocation timeliness SHOULD reduce
 JTI replay prevention (SS4.6) ensures that an intercepted bundle cannot
 be re-presented after its first use. The Redis-backed cache with TTL
 provides automatic cleanup. Implementations using in-memory fallback
-MUST bound memory growth (the reference implementation delegates to a
+MUST bound memory growth (the project-maintained implementation delegates to a
 bounded `ReplayCache`).
 
 ### SS5.7 Timestamp Security

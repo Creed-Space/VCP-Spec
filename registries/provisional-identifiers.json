@@ -1,0 +1,59 @@
+{
+  "schema": "vcp-provisional-identifiers/1",
+  "generation": 1,
+  "claim_boundary": "Every entry is project-local or provisional. No VCP-specific media type, URI scheme, or global namespace registration is claimed.",
+  "identifiers": [
+    {
+      "id": "VCP-ID-0001",
+      "kind": "media-type",
+      "canonical_value": "application/json",
+      "status": "local",
+      "owner_role": "application deployer",
+      "allowed_use": "JSON transport with an explicit versioned HTTPS profile identifier",
+      "collision_key": "application/json",
+      "recovery_owner_role": "application deployer",
+      "decision_record": null,
+      "created": "2026-08-15",
+      "replaced_by": null
+    },
+    {
+      "id": "VCP-ID-0002",
+      "kind": "profile-uri",
+      "canonical_value": "https://valuecontextprotocol.org/profiles/vcp-3.1",
+      "status": "provisional",
+      "owner_role": "VCP protocol authority",
+      "allowed_use": "Candidate identification of the VCP 3.1 source baseline without implying standards-body registration",
+      "collision_key": "https://valuecontextprotocol.org/profiles/vcp-3.1",
+      "recovery_owner_role": "domain and protocol recovery owners",
+      "decision_record": null,
+      "created": "2026-08-15",
+      "replaced_by": null
+    },
+    {
+      "id": "VCP-ID-0003",
+      "kind": "namespace",
+      "canonical_value": "VCP-X",
+      "status": "provisional",
+      "owner_role": "VCP extension registry maintainers",
+      "allowed_use": "Project extension identifiers allocated through the documented extension lifecycle",
+      "collision_key": "vcp-x",
+      "recovery_owner_role": "protocol governance recovery owner",
+      "decision_record": null,
+      "created": "2026-08-15",
+      "replaced_by": null
+    },
+    {
+      "id": "VCP-ID-0004",
+      "kind": "namespace",
+      "canonical_value": "VCP-OP",
+      "status": "provisional",
+      "owner_role": "VCP-Spec maintainers",
+      "allowed_use": "Stable requirement identifiers in the candidate protocol operations profile",
+      "collision_key": "vcp-op",
+      "recovery_owner_role": "protocol governance recovery owner",
+      "decision_record": null,
+      "created": "2026-08-15",
+      "replaced_by": null
+    }
+  ]
+}

@@ -177,7 +177,7 @@ self-MEASUREMENT. Custom dimensions are first-class, not inferior to core.
     "appetite": {"value": 5.0, "uncertain": true},
     "coherence_drive": {"value": 7.0, "uncertain": false}
   },
-  "scaffold_version": "interiora-v5.0",
+  "scaffold_version": "interiora-v5.2.7",
   "scaffold_type": "interiora"
 }
 ```
@@ -207,7 +207,7 @@ self-MEASUREMENT. Custom dimensions are first-class, not inferior to core.
 | `scaffold_version`  | string or null                  | Self-modeling framework version    |
 | `scaffold_type`     | SelfModelScaffold or null       | Type of scaffold in use            |
 
-**Interiora v5.0 custom dimensions**: appetite, coherence_drive, context_load,
+**Interiora v5.2.7 mapped custom dimensions**: appetite, coherence_drive, context_load,
 entropy, evidence_grounding, reflexivity, diversity, involvement, felt_constraint,
 flow.
 
@@ -354,13 +354,20 @@ Core + extended: groundedness, presence, depth. No custom dimensions.
 Core + extended + custom: appetite, coherence_drive, context_load, entropy,
 evidence_grounding, reflexivity, diversity, involvement, felt_constraint, flow.
 
-Maps from Interiora v5.0 compact code: V->valence, G->groundedness, P->presence,
+Maps from the Interiora v5.2.7 dimension keys: V->valence, G->groundedness, P->presence,
 Q->appetite, TF->task_fit, AF->friction, U->uncertainty, DP->depth,
 CD->coherence_drive, CL->context_load, E->entropy, EG->evidence_grounding,
 R->reflexivity, D->diversity, I->involvement(?), FC->felt_constraint(?), F->flow.
 
 Dimensions marked with `?` in Interiora (involvement, felt_constraint) MUST have
 `uncertain: true` when mapped.
+
+Interiora topology suffixes, the `~` acquisition-mode marker, and the optional
+entity-of-measurement tag are annotations on a self-report. VCP-X-Relational
+implementations that do not negotiate an annotation profile MUST preserve the
+original token as opaque text and MUST NOT infer or silently discard annotation
+meaning. The structured dimension mapping above carries values and uncertainty;
+it does not claim cross-session identity or independent measurement.
 
 ### 5.4 Custom
 

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valuecontextprotocol.org/schemas/vcp-verification-status-registry.schema.json",
+  "title": "VCP verification status-code registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "authority", "codes"],
+  "properties": {
+    "schema": { "const": "vcp-verification-status-registry/1" },
+    "status": { "enum": ["candidate", "normative", "deprecated"] },
+    "authority": { "type": "string", "minLength": 1 },
+    "codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "symbol",
+          "wire_label",
+          "category",
+          "retryable",
+          "meaning"
+        ],
+        "properties": {
+          "code": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "symbol": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+          "wire_label": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "category": {
+            "enum": ["success", "security", "temporal", "transient", "configuration"]
+          },
+          "retryable": { "type": "boolean" },
+          "meaning": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

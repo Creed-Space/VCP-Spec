@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valuecontextprotocol.org/status/residual-risks.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "as_of", "claim_boundary", "risks"],
+  "properties": {
+    "schema": { "const": "vcp-residual-risk-register/1" },
+    "as_of": { "type": "string", "format": "date" },
+    "claim_boundary": { "type": "string", "minLength": 1 },
+    "risks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "severity", "status", "risk", "current_mitigation", "closure_evidence", "owner_role"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^VCP-RISK-[0-9]{3}$" },
+          "severity": { "enum": ["critical", "high", "moderate", "low"] },
+          "status": { "enum": ["open-authority", "open-independent", "open-operations", "accepted", "closed"] },
+          "risk": { "type": "string", "minLength": 1 },
+          "current_mitigation": { "type": "string", "minLength": 1 },
+          "closure_evidence": { "type": "string", "minLength": 1 },
+          "owner_role": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

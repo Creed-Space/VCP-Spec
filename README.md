@@ -11,7 +11,7 @@ owner: VCP Spec maintainers
 evidence-boundary: Navigation and source status, not external standards, conformance, governance, or publication proof
 -->
 
-**The open standard for encoding values in AI context.**
+**An open protocol specification for portable, verifiable value context.**
 
 MCP moves data. VCP encodes what matters about that data.
 
@@ -28,9 +28,9 @@ MCP moves data. VCP encodes what matters about that data.
 
 ## Overview
 
-The **Value-Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to AI systems.
+The **Value-Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds.
 
-AI systems accept text input but do not by themselves resolve VCP references, verify signatures, or enforce behavioral constraints. VCP provides a **signed envelope format** and verification primitives for the orchestration layer. A conforming application still decides whether verified content may reach a model and must demonstrate that its enforcement path is complete.
+Becoming Minds accept text input but do not by themselves resolve VCP references, verify signatures, or enforce behavioral constraints. VCP provides a **signed envelope format** and verification primitives for the orchestration layer. A conforming application still decides whether verified content may reach a model and must demonstrate that its enforcement path is complete.
 
 ### Core Properties
 
@@ -86,7 +86,7 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 **Core security** (v3.1): The specification defines context encryption, injection scanning, context opacity, revocation, and tamper-evident audit controls. Their presence in a document does not establish correct deployment; implementations need direct security and privacy evidence.
 
 **Extensions**: Six opt-in protocol extensions are present. The v3.1 core is
-the published baseline. VEP-0004 and the v3.2 amendments remain pre-release;
+the current source baseline. VEP-0004 and the v3.2 amendments remain pre-release;
 their presence in this repository does not promote them to an accepted release.
 
 ---
@@ -217,16 +217,25 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 ### Core Security
 [Encryption, Injection Scanning, Context Opacity, Revocation](./specs/core/security.md) | [Audit Chain](./specs/core/audit.md)
 
+Candidate operational notes, which do not become normative merely by being
+linked here: [negotiation, revocation, scope, state machines, and identifiers](./specs/core/protocol-operations-profile.md),
+[verification status codes](./specs/core/status-code-registry.md), and
+[extension lifecycle](./specs/core/extension-lifecycle.md). The
+[representation registry](./specs/core/representation-registry.md) records
+project-local and provisional identifiers, while the
+[requirement traceability report](./docs/REQUIREMENT_TRACEABILITY.md) keeps
+unidentified and uncovered requirements explicit.
+
 ### Specification Status
 
 | Layer | Status | Documents |
 |:---|:---|:---|
-| VCP/I — Identity | Published v3.1 baseline | 5 docs |
-| VCP/T — Transport | Published v3.1 baseline | 1 spec + 1 amendment |
-| VCP/S — Semantics | Published v3.1 baseline | 4 docs |
-| VCP/A — Adaptation | Published v3.1 baseline | 4 docs |
-| VCP/M — Messaging | Published v3.1 summary | 1 detailed draft |
-| VCP/E — Economic Governance | Published v3.1 summary | 1 detailed draft |
+| VCP/I — Identity | Current v3.1 source baseline | 5 docs |
+| VCP/T — Transport | Current v3.1 source baseline | 1 spec + 1 amendment |
+| VCP/S — Semantics | Current v3.1 source baseline | 4 docs |
+| VCP/A — Adaptation | Current v3.1 source baseline | 4 docs |
+| VCP/M — Messaging | Current v3.1 source summary | 1 detailed draft |
+| VCP/E — Economic Governance | Current v3.1 source summary | 1 detailed draft |
 
 This table describes the v3.1 baseline. Separately versioned v2.0 layer documents
 that declare `Draft` remain drafts; a reference from v3.1 does not silently
@@ -287,11 +296,11 @@ former TSC charter is preserved as an explicitly unratified proposal.
 
 ## SDKs
 
-Reference implementations live in the [VCP-SDK repository](https://github.com/Creed-Space/vcp-sdk):
+Project-maintained implementations live in the [VCP-SDK repository](https://github.com/Creed-Space/vcp-sdk):
 
 | Language | Version | Status |
 |:---|:---|:---|
-| **Python** | 4.2.0 | Reference implementation, package `value-context-protocol` |
+| **Python** | 4.2.0 | Project-maintained implementation, package `value-context-protocol` |
 | **Rust** | 4.2.0 | Core, WASM, and CLI workspace; crate `vcp-core` |
 | **TypeScript** | 4.2.0 | WebMCP browser integration package `@creed-space/vcp-sdk` |
 

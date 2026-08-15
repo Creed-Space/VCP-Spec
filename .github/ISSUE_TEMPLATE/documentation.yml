@@ -1,0 +1,52 @@
+name: Documentation Problem
+description: Report an unclear, incorrect, inaccessible, or stale VCP document
+title: "[Docs] "
+labels: ["documentation", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a public form. Do not include secrets, personal data, private context, embargoed vulnerability details, or confidential third-party material. Use the private route in SECURITY.md for vulnerabilities.
+  - type: input
+    id: location
+    attributes:
+      label: Document and location
+      description: Give the path or public URL, heading, and line or paragraph when possible.
+      placeholder: "docs/VCP_OVERVIEW.md, Protocol layers table"
+    validations:
+      required: true
+  - type: dropdown
+    id: problem_type
+    attributes:
+      label: Problem type
+      options:
+        - Incorrect or contradictory
+        - Unclear or incomplete
+        - Accessibility
+        - Broken link or navigation
+        - Stale version or provenance
+        - Terminology
+        - Other documentation defect
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed problem
+      description: Explain what a reader encounters and why it is a problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected correction
+      description: Describe the accurate or more usable outcome. A full rewrite is optional.
+    validations:
+      required: true
+  - type: input
+    id: candidate
+    attributes:
+      label: Source commit or publication version
+      description: Identify the exact source or publication you reviewed when known.
+    validations:
+      required: false

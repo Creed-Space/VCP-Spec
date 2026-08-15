@@ -1,0 +1,25 @@
+{
+  "schema": "vcp-verification-status-registry/1",
+  "status": "candidate",
+  "authority": "Derived from the VCP-SDK 4.2.0 candidate. Normative status requires an authorized VCP release decision.",
+  "codes": [
+    { "code": 0, "symbol": "VALID", "wire_label": "valid", "category": "success", "retryable": false, "meaning": "All required verification checks passed." },
+    { "code": 1, "symbol": "SIZE_EXCEEDED", "wire_label": "size_exceeded", "category": "security", "retryable": false, "meaning": "The bounded input size was exceeded." },
+    { "code": 2, "symbol": "INVALID_SCHEMA", "wire_label": "invalid_schema", "category": "configuration", "retryable": false, "meaning": "The input does not satisfy the selected schema." },
+    { "code": 3, "symbol": "UNTRUSTED_ISSUER", "wire_label": "untrusted_issuer", "category": "configuration", "retryable": false, "meaning": "The issuer is not trusted by the active verification policy." },
+    { "code": 4, "symbol": "INVALID_SIGNATURE", "wire_label": "invalid_signature", "category": "security", "retryable": false, "meaning": "The required signature did not verify." },
+    { "code": 5, "symbol": "UNTRUSTED_AUDITOR", "wire_label": "untrusted_auditor", "category": "configuration", "retryable": false, "meaning": "The auditor is not trusted by the active verification policy." },
+    { "code": 6, "symbol": "INVALID_ATTESTATION", "wire_label": "invalid_attestation", "category": "security", "retryable": false, "meaning": "A required attestation is missing or invalid." },
+    { "code": 7, "symbol": "HASH_MISMATCH", "wire_label": "hash_mismatch", "category": "security", "retryable": false, "meaning": "The canonical content hash does not match the manifest." },
+    { "code": 8, "symbol": "NOT_YET_VALID", "wire_label": "not_yet_valid", "category": "temporal", "retryable": true, "meaning": "The object is valid only after its not-before time." },
+    { "code": 9, "symbol": "EXPIRED", "wire_label": "expired", "category": "temporal", "retryable": false, "meaning": "The object is past its expiry time." },
+    { "code": 10, "symbol": "FUTURE_TIMESTAMP", "wire_label": "future_timestamp", "category": "security", "retryable": false, "meaning": "A timestamp exceeds the allowed clock-skew policy." },
+    { "code": 11, "symbol": "REPLAY_DETECTED", "wire_label": "replay_detected", "category": "security", "retryable": false, "meaning": "A replay identifier has already been consumed in the applicable scope." },
+    { "code": 12, "symbol": "TOKEN_MISMATCH", "wire_label": "token_mismatch", "category": "security", "retryable": false, "meaning": "The supplied token does not match the verified object." },
+    { "code": 13, "symbol": "BUDGET_EXCEEDED", "wire_label": "budget_exceeded", "category": "configuration", "retryable": false, "meaning": "The operation exceeds the configured policy budget." },
+    { "code": 14, "symbol": "SCOPE_MISMATCH", "wire_label": "scope_mismatch", "category": "configuration", "retryable": false, "meaning": "The requested operation falls outside the granted scope." },
+    { "code": 15, "symbol": "REVOKED", "wire_label": "revoked", "category": "security", "retryable": false, "meaning": "Authoritative status evidence marks the object as revoked." },
+    { "code": 16, "symbol": "FETCH_FAILED", "wire_label": "fetch_failed", "category": "transient", "retryable": true, "meaning": "A required bounded network retrieval failed." },
+    { "code": 17, "symbol": "REVOCATION_UNAVAILABLE", "wire_label": "revocation_unavailable", "category": "transient", "retryable": true, "meaning": "Required revocation status could not be established, so verification failed closed." }
+  ]
+}

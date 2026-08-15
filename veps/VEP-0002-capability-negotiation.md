@@ -118,9 +118,9 @@ Fully backward compatible. VCP 1.0/1.1 clients that send no VCP-Hello are treate
 - Capability downgrade attacks: clients SHOULD verify the server supports expected extensions
 - Extension probing: servers MAY omit extension names from error messages to prevent enumeration
 
-## Reference Implementation
+## Project-Maintained Implementation
 
-Reference implementation at `services/mcp/vcp_server.py` in the Rewind codebase, to be extracted to `VCP-SDK/bridges/mcp/`.
+Project-maintained implementation at `services/mcp/vcp_server.py` in the Rewind codebase, to be extracted to `VCP-SDK/bridges/mcp/`.
 
 ## Conformance Tests
 

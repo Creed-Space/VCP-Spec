@@ -2,14 +2,17 @@
 
 **Version**: 3.1
 **Date**: 2026-02-28
-**Status**: Stable
+**Status**: Current source baseline; immutable normative release and governance ratification remain open
 **Authors**: Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
+**Authority boundary**: This source document identifies the intended v3.1
+baseline. It is not a signed release object, standards-body publication,
+certification, or independent conformance report.
 
 ---
 
 ## Abstract
 
-The Value-Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to AI systems. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference.
+The Value-Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference.
 
 ---
 
@@ -53,9 +56,9 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 
 ### 1.1. Design Principles
 
-1. **Portability**: Define context once, transport it everywhere
+1. **Portability**: Define context once and transport supported fields between compatible integrations
 2. **Adaptation**: Context profiles shift by situation
-3. **Liveness**: Real-time personal state modulates AI behavior
+3. **Liveness**: Current personal state can inform Becoming Mind behavior where the integration and consent policy allow it
 4. **Verification**: Cryptographic integrity and provenance
 5. **Privacy**: Minimize source disclosure through purpose-limited derived context; deployment privacy remains an application obligation
 6. **Extensibility**: Core is stable; extensions are opt-in

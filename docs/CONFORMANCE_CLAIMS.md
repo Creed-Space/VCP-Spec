@@ -38,7 +38,7 @@ environment named in their evidence.
 | **VCP Certified** | Reserved for a future authorized certification programme. | Ratified criteria and test authority, independent assessment rules, trademark authorization, appeals, expiry, surveillance or renewal, revocation, and a public certification record. |
 
 The phrases **VCP compliant**, **fully VCP compatible**, **fully conformant**,
-**official implementation**, and **reference implementation** are prohibited
+**official implementation**, and **project-maintained implementation** are prohibited
 unless an authorized decision defines their exact scope and required evidence.
 Unqualified compatibility or conformance language is prohibited.
 

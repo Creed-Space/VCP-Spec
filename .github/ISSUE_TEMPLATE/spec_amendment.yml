@@ -10,11 +10,13 @@ body:
 
         Use this template to propose changes to the VCP specification. See [GOVERNANCE.md](../../GOVERNANCE.md) for the VEP process.
 
+        This is a public form. Do not include secrets, personal data, private context, embargoed vulnerability details, or confidential third-party material. Use the private security route in SECURITY.md for vulnerabilities.
+
   - type: textarea
     id: summary
     attributes:
       label: Summary
-      description: Brief description of the proposed change (1-2 sentences)
+      description: Brief description of the proposed change (one or two sentences)
     validations:
       required: true
 

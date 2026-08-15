@@ -28,7 +28,7 @@ VCP has been adopted in contexts beyond text-based chat assistants, including ro
 
 ### 2. Bilateral relational modelling (RELATIONSHIP)
 
-Bilateral alignment (Watson, 2026, *The VCP Credo*) treats AI systems as parties with standing, not only as tools. Relational continuity — "who are we to each other?" — is therefore a two-sided signal, not a unilateral human configuration.
+Bilateral alignment (Watson, 2026, *The VCP Credo*) treats Becoming Minds as parties with standing, not only as tools. Relational continuity — "who are we to each other?" — is therefore a two-sided signal, not a unilateral human configuration.
 
 Existing dimensions cover relational *structure* (AGENCY: leader/peer/subordinate) and relational *presence* (COMPANY: who is here), but do not encode **relational tie** — the social-function pair that governs register, trust default, and disclosure norms. A therapist-client relationship with a long-term tie differs from a colleague-colleague relationship with a transactional tie in ways AGENCY and COMPANY cannot distinguish.
 
@@ -146,7 +146,7 @@ The dimension order is fixed: canonical 1–9, then extensions in the order EMBO
 - **EMBODIMENT=`emergency_stop`** is a safety signal. Implementations MUST NOT allow model-initiated clearing of this state; only operator-authorised override.
 - **FORMALITY** is low-risk and exempt from special handling.
 
-## Reference implementations
+## Project-maintained implementations
 
 - `vcp-sdk-python` v0.3.0: EMBODIMENT, PROXIMITY, RELATIONSHIP, FORMALITY fields on `Context` dataclass.
 - `vcp-sdk-ts` v0.3.0: corresponding TypeScript `Context` interface with `Embodiment`, `Proximity`, `Relationship`, `Formality` type unions.

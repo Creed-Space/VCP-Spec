@@ -4,7 +4,7 @@
 status: Current repository policy
 normative-authority: Interim governance process
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-08-15 status and authority classification
 owner: VCP Spec maintainers
 evidence-boundary: Classification and precedence policy
 -->
@@ -14,9 +14,17 @@ evidence-boundary: Classification and precedence policy
 | Status | Current repository policy |
 | Normative authority | Interim governance process |
 | Protocol baseline | VCP 3.1 |
-| Last reviewed | 2026-08-13 |
+| Last reviewed | 2026-08-15 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Classification and precedence policy |
+
+The machine-readable
+[`status/document-inventory.json`](../status/document-inventory.json) records
+the status, effective version, authority, owner, replacement, publication
+class, review date, and digest of every specification, schema, registry, VEP,
+example, and archived generation. CI regenerates the inventory and rejects
+unclassified or drifted artifacts. Empty dependency or replacement fields mean
+that no relationship has yet been asserted, not that no relationship exists.
 
 ## Required header
 
