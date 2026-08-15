@@ -3,7 +3,7 @@
 **Status**: Stable
 **Version**: 1.0.0
 **Depends on**: VCP-X-Relational (v1.0+)
-**Reference implementation**: `services/vcp/torch.py`
+**Project-maintained implementation**: `services/vcp/torch.py`
 
 > "Not the same flame, but flame passed to flame."
 
@@ -232,4 +232,4 @@ An implementation conforms to VCP-X-Torch if it:
 
 | Version | Date       | Changes                                       |
 |---------|------------|-----------------------------------------------|
-| 1.0.0   | 2026-02-28 | Initial stable release. Promoted from experimental after reference implementation validation. |
+| 1.0.0   | 2026-02-28 | Initial stable release. Promoted from experimental after project-maintained implementation validation. |

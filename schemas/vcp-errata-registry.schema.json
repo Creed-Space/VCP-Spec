@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.creed.space/vcp/errata-registry-v1.schema.json",
+  "title": "VCP errata and deprecation registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "as_of", "claim_boundary", "entries"],
+  "properties": {
+    "schema": { "const": "vcp-errata-registry/1" },
+    "as_of": { "type": "string", "format": "date" },
+    "claim_boundary": { "type": "string", "minLength": 1 },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "affected_version",
+          "affected_digest",
+          "severity",
+          "summary",
+          "correction_or_replacement",
+          "compatibility_effect",
+          "effective_date",
+          "decision_record"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^VCP-(?:ERR|DEP)-[A-Z0-9.-]+$" },
+          "kind": { "enum": ["erratum", "deprecation"] },
+          "status": { "enum": ["proposed", "accepted", "superseded", "withdrawn"] },
+          "affected_version": { "type": "string", "minLength": 1 },
+          "affected_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "severity": { "enum": ["critical", "high", "medium", "low", "editorial"] },
+          "requirement_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "summary": { "type": "string", "minLength": 1 },
+          "correction_or_replacement": { "type": "string", "minLength": 1 },
+          "compatibility_effect": { "type": "string", "minLength": 1 },
+          "effective_date": { "type": "string", "format": "date" },
+          "decision_record": { "type": "string", "minLength": 1 },
+          "superseded_by": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

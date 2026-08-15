@@ -3,7 +3,7 @@
 **Status**: EXPERIMENTAL
 **Version**: 0.1.0
 **Depends on**: VCP-X-Personal (v1.0+)
-**Reference implementation**: `services/vcp/intent_inference.py`
+**Project-maintained implementation**: `services/vcp/intent_inference.py`
 
 > Wire format and inference rules may change without notice while this extension
 > remains EXPERIMENTAL. Implementations SHOULD flag intent classifications as

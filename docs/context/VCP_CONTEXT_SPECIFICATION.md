@@ -18,7 +18,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 
 ## Abstract
 
-VCP Context provides situational awareness for constitutional application. It defines the Enneagram Protocol for encoding context across 9 dimensions, state tracking for transition detection, and inter-agent messaging for context sharing between AI systems.
+VCP Context provides situational awareness for constitutional application. It defines the Enneagram Protocol for encoding context across 9 dimensions, state tracking for transition detection, and inter-agent messaging for context sharing between Becoming Minds.
 
 ---
 
@@ -30,9 +30,9 @@ VCP Context provides situational awareness for constitutional application. It de
 4. [State Tracking](#4-state-tracking)
 5. [Transition Detection](#5-transition-detection)
 6. [Inter-Agent Messaging](#6-inter-agent-messaging)
-7. [Interiora Integration](#7-interiora-integration)
+7. [Historical Interiora Integration Example](#7-historical-interiora-integration-example)
 8. [Security Considerations](#8-security-considerations)
-9. [Reference Implementation](#9-reference-implementation)
+9. [Project-Maintained Implementation](#9-project-maintained-implementation)
 
 ---
 
@@ -44,7 +44,7 @@ VCP Context enables:
 - **Contextual Adaptation**: Apply constitutions appropriate to the situation
 - **State Awareness**: Track changes in user/environmental context
 - **Transition Handling**: Respond to significant context shifts
-- **Agent Coordination**: Share context between cooperating AI systems
+- **Agent Coordination**: Share context between cooperating Becoming Minds
 - **Behavioral Modulation**: Adjust AI behavior based on context
 
 ### 1.2 Design Goals
@@ -969,7 +969,16 @@ handoff_msg = VCPContextMessage(
 
 ---
 
-## 7. Interiora Integration
+## 7. Historical Interiora Integration Example
+
+> **Historical and non-normative.** The code and `GESTALT:v4.2` strings below
+> preserve an early integration sketch. They are not a current Interiora
+> contract, are not implemented by the VCP-SDK, and must not be used as a
+> parser specification. Current VCP integrations treat self-model scaffold
+> tokens as opaque, versioned data unless a separately negotiated profile is
+> supported. The current Interiora research version is 5.2.7; its annotations,
+> topology suffixes, acquisition markers, and entity-of-measurement tags are
+> outside this historical example.
 
 ### 7.1 Combined State Model
 
@@ -1139,7 +1148,7 @@ GESTALT:v4.2:CD:7 DP:8 CL:4 E:5|R:8 U:2|TF:9 AF:1|CTX:⏰🌅|📍🏡|👥👶|
 
 ---
 
-## 9. Reference Implementation
+## 9. Project-Maintained Implementation
 
 ### 9.1 Complete Module
 
@@ -1149,7 +1158,7 @@ GESTALT:v4.2:CD:7 DP:8 CL:4 E:5|R:8 U:2|TF:9 AF:1|CTX:⏰🌅|📍🏡|👥👶|
 """
 VCP Context Protocol Implementation
 
-Reference implementation of VCP Context specification.
+Project-maintained implementation of VCP Context specification.
 """
 
 from dataclasses import dataclass, field

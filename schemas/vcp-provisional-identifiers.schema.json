@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.creed.space/vcp/provisional-identifiers-v1.schema.json",
+  "title": "VCP provisional identifiers registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "generation", "claim_boundary", "identifiers"],
+  "properties": {
+    "schema": { "const": "vcp-provisional-identifiers/1" },
+    "generation": { "type": "integer", "minimum": 1 },
+    "claim_boundary": { "type": "string", "minLength": 1 },
+    "identifiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "canonical_value",
+          "status",
+          "owner_role",
+          "allowed_use",
+          "collision_key",
+          "recovery_owner_role",
+          "decision_record",
+          "created"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^VCP-ID-[0-9]{4}$" },
+          "kind": { "enum": ["media-type", "profile-uri", "namespace"] },
+          "canonical_value": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["local", "provisional", "registered", "deprecated", "revoked"] },
+          "owner_role": { "type": "string", "minLength": 1 },
+          "allowed_use": { "type": "string", "minLength": 1 },
+          "collision_key": { "type": "string", "minLength": 1 },
+          "recovery_owner_role": { "type": "string", "minLength": 1 },
+          "decision_record": { "type": ["string", "null"] },
+          "created": { "type": "string", "format": "date" },
+          "replaced_by": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

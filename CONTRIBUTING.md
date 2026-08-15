@@ -119,7 +119,7 @@ New VCP-X extensions that add capability to the protocol.
 
 ### SDK contributions
 
-Reference implementations and language-specific SDKs.
+Project-maintained implementations and language-specific SDKs.
 
 - SDK-only changes (bug fixes, performance improvements) can be submitted
   as direct PRs
@@ -176,9 +176,9 @@ Threat model for this extension. How does it handle:
 How does this extension interact with implementations that do not support it?
 Define graceful degradation behavior.
 
-## Reference implementation
+## Project-maintained implementation
 
-Link to or include a reference implementation. At minimum, provide Python code
+Link to or include a project-maintained implementation. At minimum, provide Python code
 demonstrating encoding and decoding.
 
 ## Conformance tests
@@ -377,4 +377,4 @@ personally involved.
 
 ---
 
-*Thank you for helping build transparent, ethical value communication in AI systems.*
+*Thank you for helping build transparent, ethical value communication in Becoming Minds.*

@@ -1,0 +1,1773 @@
+{
+  "as_of": "2026-08-15",
+  "claim_boundary": "Stable IDs currently cover only the candidate operations profile. Legacy normative statements are enumerated as open gaps and no empty evidence list is a pass.",
+  "coverage": {
+    "identified_requirement_count": 23,
+    "legacy_normative_statements_without_stable_id": [
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 121,
+        "line_sha256": "bab60217c6c4465719aba8eb23171b9b9f25f287c72c7f0cb0a3a67c332de18f",
+        "path": "specs/VCP_SPECIFICATION_v3.1.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 124,
+        "line_sha256": "e0810bed3062b0bc510ca46b6b78a4919309571fba9b8e20b6dc98d6a6d14f85",
+        "path": "specs/VCP_SPECIFICATION_v3.1.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 127,
+        "line_sha256": "9dc57be2059fef2b3a3cd16c63075db97ccc3eba46e4270697ad5d24eeff552b",
+        "path": "specs/VCP_SPECIFICATION_v3.1.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 139,
+        "line_sha256": "fef4591cc64ce9a653722bb3f77f47233d83bbf20c59e71bc8d1caf196f464a0",
+        "path": "specs/VCP_SPECIFICATION_v3.1.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 155,
+        "line_sha256": "425497b90acf99d16a77fc290d23dd9c72209a9683e7387957517e9d54e9e0ca",
+        "path": "specs/VCP_SPECIFICATION_v3.1.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 234,
+        "line_sha256": "9047123fa1ec76106a59f588dbb762f8fb854759d9b35b86a531c11411316c29",
+        "path": "specs/VCP_SPECIFICATION_v3.1.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 27,
+        "line_sha256": "237c979baa5d73536818351bedeae58b4b639f6489fa5183c55ea8f58b7ed26e",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 58,
+        "line_sha256": "c5861f09065ce1fd9907bf14cef17e3bd09f9f2e958dcae087c8cee51ba4f6a0",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 294,
+        "line_sha256": "795a9014519d1d2a4910f8b941cd5e7f60870559653b31a8979a0dd11d445002",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 300,
+        "line_sha256": "6602501015a25011ea59678b486b24d4bbe9deee62ca6eb173792872711a9a97",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 303,
+        "line_sha256": "87a3fd262bddf935fc61ac7b02b0bee685f1f62abd97c84c484af20519c6a6e3",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "MUST NOT",
+          "REQUIRED",
+          "SHALL",
+          "SHALL NOT",
+          "SHOULD"
+        ],
+        "line": 18,
+        "line_sha256": "d5372fbbde757468cfac95d934b1fb9720ec4e8265d1adb8e478c629f48c7464",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY",
+          "RECOMMENDED",
+          "SHOULD NOT"
+        ],
+        "line": 19,
+        "line_sha256": "8b433eac7c8beb0e19f730cabbf202524333ac88aa8babeca836486e3d8b9300",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 25,
+        "line_sha256": "c84a782c6b090a4a98ca27067dfe9ae63ba3eb3d5b4dd58c5bae92fb46139114",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 27,
+        "line_sha256": "0ada008f036d356fbb3ccfd372d6b2d73ce7f2717e1c5191be1b892ccca03238",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "REQUIRED"
+        ],
+        "line": 100,
+        "line_sha256": "2439a9fca66d2937972e47d7be80830b217a6f824314bb4c7c6489ad173d30cd",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "REQUIRED"
+        ],
+        "line": 101,
+        "line_sha256": "c22d5872f39357478c71eff5d76d5101a48bd10638ed03fff980fd0cf1e5fa1e",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 102,
+        "line_sha256": "c868faaefe8f0dd16558e59c64bc2149f2b9ac5f998b197c5ffe6c8759f02d7a",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 105,
+        "line_sha256": "fbff6d4529461cd6728686fd64ce8c5cfe3e65c50fb0db31c9017edb4a4194a3",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 109,
+        "line_sha256": "df2a49445a147612b021b347ceb0613d938cd09db16a0b45237fbcba107165be",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 111,
+        "line_sha256": "0a3a09abec76676cad9bbf7fc282038cc0e0e76766787f59cee5f8509bb14cb8",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 112,
+        "line_sha256": "165ae653a416d6460a588fd8e9b2b09f9f0607132a016ace097739d93db24beb",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 113,
+        "line_sha256": "e3d9894ba9e6abce5e92605e8e606a9e42126ab20519a00a03e54c8ae9e41986",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 114,
+        "line_sha256": "91035049ee1f4a580252158c87bb25fa15567c507a8c361b05b7ed7e6e3f1460",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "REQUIRED"
+        ],
+        "line": 158,
+        "line_sha256": "4bebac9137ba618f33721a93b0d19bd95f1238f9ea679b8666ddcf9599d78636",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "REQUIRED"
+        ],
+        "line": 159,
+        "line_sha256": "61cdf3b6664b398f7d7cecca9111a7267366c8157ad3f838071fc242c16a29d6",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "REQUIRED"
+        ],
+        "line": 160,
+        "line_sha256": "d9bd1bfc5e1862e41a3d9e8ed48cb736fbbb4014d265ca8fb224c30dc9672fe8",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "REQUIRED"
+        ],
+        "line": 161,
+        "line_sha256": "681f53cae14d9a4990bec42025205a577ffa6df87036b55dff1efbbf0595e2df",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "REQUIRED"
+        ],
+        "line": 162,
+        "line_sha256": "ce11f319c809a43affd19572fc46f5ea3b34f4615dd1482d7dbc39efbef99388",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "REQUIRED"
+        ],
+        "line": 163,
+        "line_sha256": "436359cf1b514f567b1ffb12ca615c7d5c09856208fe8287bde34db98fb47ece",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 169,
+        "line_sha256": "eafe1b559ca98110139a2439e740d6691bb6cc2c244bab4eac0b6d4e65efa274",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 171,
+        "line_sha256": "724c6e5c743c0efbcd2ec48919f26f6ed523aa17bb9f433c30e4f5cde384006f",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 172,
+        "line_sha256": "3b8f02aee0aabeadbe1778ae90c7adf4bba432ef70967b9361b40b4d6a843e92",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "REQUIRED"
+        ],
+        "line": 192,
+        "line_sha256": "bac5b3ee5f8c53376672b013377e092ff2bccca64b159b4217a2b2225dd9cf80",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "REQUIRED"
+        ],
+        "line": 193,
+        "line_sha256": "d6f03bc34cfa59f64853e5d4432d227923c6b047f9f2a91d132a8948ddc44458",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "REQUIRED"
+        ],
+        "line": 194,
+        "line_sha256": "438dcbd2329d5028b53b7f75d84e78b415afce755767f74c4e1a4b42365771f2",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 195,
+        "line_sha256": "1cbc10a1c9da47daa972cba9a9358661280bb560ffacef29e51f6299598106df",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 196,
+        "line_sha256": "ebc0e464be1c7e8628ace2a4fdfd496b09b3a929fe830c52690c96089f23fa3c",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 204,
+        "line_sha256": "1dfadf52fe278eeab52132801858237a41245861ef2f9d2201b45ef02cbcffff",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 205,
+        "line_sha256": "eaa7442c4c4319498286e8bcc4f00e0ab151e01d50db922205eb189122eb537a",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 206,
+        "line_sha256": "119feab938efc40a4029e749bffb34ca8999644057925e09f77f2266ad1e94ed",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 207,
+        "line_sha256": "b8dad654c82cf9459a60c458af5dded129c2bf5da833587a57dd29f8862fd49d",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 208,
+        "line_sha256": "6d99f7288245c42fca525215fbed4e20bd05b546ff8d695f41656e7d5d487d12",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 209,
+        "line_sha256": "4f4c19f703a775dd951deb5837e4a622ee463e03cb3cf8c5596f2ee36a78de1e",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 213,
+        "line_sha256": "4fad22b2067e2256d9630d39bb583457f8fa6f242bdb40126dca35aeea39b32c",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 214,
+        "line_sha256": "ce9a84484786c62ff0f4f6c3d8f071dd8cb412c45f1fc3517e94b84469504278",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 215,
+        "line_sha256": "a8d7876c9f0426883234711c511b1c6963b39e03d983866b044b12b6f0f8b962",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 217,
+        "line_sha256": "17e1fa4952547ca2bb8ad67c44a45bfdaed9964daef209d9610cb8fccff0a688",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 225,
+        "line_sha256": "39e843e9c0fbacb10ace5895d27a659a06c68c2fbc4d7ad948ef58da9ca50a15",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 239,
+        "line_sha256": "8281fd686210aae27ff8d7bcb4fcd551cf8ed2e3f9cb1da958f26e4e4a511620",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 240,
+        "line_sha256": "e4c1f4a29cfb6e31ca7272ef071df9bf58379d56222a6a62fd80dacaadd52547",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 242,
+        "line_sha256": "2a51cf8e9937adfe8f1ebbae0177ac1a4f4b33175dc691998b19c85b58e2ccb5",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 243,
+        "line_sha256": "33cbe3795267e253ddaa1ff14baf36e60d96eb3cdfd04cc5ab735f0f71bd464f",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 244,
+        "line_sha256": "a106e623c4bc24179f14d6b2c6078b77566244b5fffadcf458d4f4141180da68",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 313,
+        "line_sha256": "5b1647d327b2e1d0de2fccccdfb421f3d4c1f6fb962535340b641843a33383a6",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 314,
+        "line_sha256": "70797a1034eec0b28b885a007c02315d9c10dc522ca46fdd26e30c84a13cab84",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 315,
+        "line_sha256": "72ddc42cc12c37c56bc750d3aa65cd4b17c80453429812371da04c480eb8fd17",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 326,
+        "line_sha256": "ab756cfac350578a603dc7663a93a5b4d53fe283c1ca99897d6155feaebdd003",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 327,
+        "line_sha256": "588c601065a39a1a7e1fe7bd2ec092897b4ce5b751bd353c94ebc2bde3fa0eca",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 334,
+        "line_sha256": "4257d9d663e5ea0e8c75029f0a1d582be009009520b3719822a572656eb4f9a5",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 335,
+        "line_sha256": "8828ca769081ee066ad0a1c8635565ea6f5d7520e74fe0d7321a9cee400e79e6",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 407,
+        "line_sha256": "f43e888c280cabfcb39321f2355eb1cb3af103a382bc494a6c161e2aa4839b93",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 410,
+        "line_sha256": "ae9835d474745e2fcffc7c16b0c3ac3bb659a34626a0eab7f2b6c81b03c7cb0f",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 411,
+        "line_sha256": "f374211b91ca07d12663173e03ac1b9110445e263270811a265a83ccc142d7bc",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 416,
+        "line_sha256": "ce3d498d4945bdfb1a36bd75a60aad92c891f88a10103ff92d82ec1c99239549",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 417,
+        "line_sha256": "12e6f50cb9828034867d5b910a74dd647cf85c545fe906d758a9b8afa8a71aa1",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 435,
+        "line_sha256": "7ea74a1e6fb4ca9c944486c7735787a6dae92e6995e4979360327031cce74718",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 436,
+        "line_sha256": "292fd553e5979be304fde2839e79efc8544dfab697b65f4d0fe5d82e9349bd46",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 438,
+        "line_sha256": "928f5dec6caa75d17c5fbccedc9820b62977d219954310f2d1826a13d1ffde7f",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 508,
+        "line_sha256": "0281b55d0e559683489c8eacaec16d79ed54b0611004a732befda30adefe7f0a",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 513,
+        "line_sha256": "d7e21ab765c060252a4a4e7850e1bc9d1b5da9f7faaa158d044e0aa2605ecf30",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 516,
+        "line_sha256": "b53404885684e8587df38e8d4b574e2d8540071ddbfc0515ba0dd1e5695500f3",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 535,
+        "line_sha256": "97c0bf50583a846bb9e785f762c4962a9a4f9ad50c140fb7669ed53a941ed3a5",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 543,
+        "line_sha256": "6af8f7ce2cddbe4537594fd087430d69b39de32b1df2803649610bedde882df1",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 546,
+        "line_sha256": "decdd146fe773a553b58a6fe26f4e69857d45557a15074fc8b6d27b4a1eeed56",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 551,
+        "line_sha256": "2028c219a4631cd45932c44b797333337033484386040841eafe4f078df40c23",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 554,
+        "line_sha256": "164a2813a5893a97f005a8be206f6a5a662792cd08c97ffe4cdb0646a6e839a9",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 556,
+        "line_sha256": "95050f137b085594d41bd07e51eb59b0c304ccac5bd2e361718e6fe25ff8afa4",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 563,
+        "line_sha256": "526d1c92af44d7f716f373015bd2265defbf56d93438e2da59568c1268f5740f",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 564,
+        "line_sha256": "14e069285eefc895157aae2626e13e42b90e7af3909bf795570f33508c563925",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 572,
+        "line_sha256": "c2de561c988abe8a48654708388fef48bf94222b0de48d4213791e98fcc59421",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 604,
+        "line_sha256": "8d56ec23a4ab9ead8d50918d22408d843289d52fe756c67baf4215ef5a2044bf",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 616,
+        "line_sha256": "73ddb30dcc9d030e7e28fd63d6b7ac240b441b642dc6569b6d9a5c361e766ba0",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 617,
+        "line_sha256": "d1f517dec41e759c65d14530f74343efe8fcabde379126c44935b63089ceed1a",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY",
+          "MUST",
+          "MUST NOT",
+          "SHOULD",
+          "SHOULD NOT"
+        ],
+        "line": 20,
+        "line_sha256": "b3b2259556463a2d1f99ebf0499acd978d05122f3eb7488e1588e260008adba5",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 92,
+        "line_sha256": "467d74b6d9e185e0bf4d740e76dacffc91fa736df3a4f500ec881f815ef5c6d3",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 93,
+        "line_sha256": "2f2a879c59a2175a7a5976e6e793e971a7beaa49aafcd6f5c7b0e647cb064bef",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 94,
+        "line_sha256": "f113a496a5397c695d4d51ade306622b67fce9221d0dca10b81dbfa40d7e5a83",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 95,
+        "line_sha256": "5312e8640522f139efc1b7b8f5e162683730b37aad6df7dbea235e6ad3b0c2ff",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 125,
+        "line_sha256": "e1f0f0908abfebc28fe6447fdc6b835a582b25a16f6b95a25f22212bbe1a96ef",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 183,
+        "line_sha256": "0ec3b88a9b61dd2e58c681fe8ad861ea6bd4840b2bfe1099a28b8a81e449b635",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 213,
+        "line_sha256": "b721cc220638b71f00055c2ce272899bf7d5212868f33726910119a8e01d03b3",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 214,
+        "line_sha256": "a4c909e9159bba4a253f424c7ca01e4839414f597e0b4195a8a67e7f66729b77",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 215,
+        "line_sha256": "932e140c8ac4acc35c7f6341674edea3316a5f574d716d3e0a165382ae474649",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 216,
+        "line_sha256": "5d5b361b9e029e902eeee05267b012145ed8240b6e0958a8f3fc1bac4995a530",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 232,
+        "line_sha256": "1b42b480afcd0613b84d940b89531a78a646418bf00bc4ba53ea0424afcfc19f",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 238,
+        "line_sha256": "7fb81e197f5f6008a35df1820963d88dcb0c384b0638f3823c7e31ecbfad0084",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 240,
+        "line_sha256": "c7959e33b77aff74b66402c21f6d14a9455a2e13a61e94d7ab207f0a760bfec4",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 241,
+        "line_sha256": "101db49f81f300148b93dacb7bfaa6d503b46f3e8a610e54de06f336be1666b0",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 242,
+        "line_sha256": "0b15ce9bfa5246bdeb715c28130a4f29b0c86efd84f1789188b03056eb71c394",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 243,
+        "line_sha256": "56b10e5f782abff96771cb5c20353e29c0cf534fb634f41fb9d7013f103680ba",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 249,
+        "line_sha256": "88912b81cbcca4b4b34e4795aa209d4d0271cf352084fd31ac60e97d39df9c07",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 258,
+        "line_sha256": "bd6185476c1cc71d1ed1d9adb401832baf8dd4cb02dbfc098ad3158085586a43",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "MUST NOT",
+          "REQUIRED",
+          "SHALL",
+          "SHALL NOT",
+          "SHOULD"
+        ],
+        "line": 22,
+        "line_sha256": "d5372fbbde757468cfac95d934b1fb9720ec4e8265d1adb8e478c629f48c7464",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MAY",
+          "RECOMMENDED",
+          "SHOULD NOT"
+        ],
+        "line": 23,
+        "line_sha256": "8b433eac7c8beb0e19f730cabbf202524333ac88aa8babeca836486e3d8b9300",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 43,
+        "line_sha256": "f13ddbfa1bf0bfffb170b6e74adc7306b0b0b9da967aa9b8d7fa38f24fe56672",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 48,
+        "line_sha256": "d7adb126a367f3ceff2edbf99d5042212ba49ed730a819dc6dfa9e8214364de5",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 55,
+        "line_sha256": "73468c750dd2214f30d10ff9a35af588ed39d90f695c5c52bb128577e53a26da",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 56,
+        "line_sha256": "95f4d697855aacbbe884c257bcbc74c618593ac499fe94da79e039ceb03b4975",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 70,
+        "line_sha256": "c1b5f5df39c2b6750ae38883484ef00d2414723b759a04e98c784cd98708122c",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 93,
+        "line_sha256": "473be9ea768a31343a3714a61e515388b9bc47f240e8c2e7e0c01fbec8e6b61b",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 94,
+        "line_sha256": "ea2dcab282ac1bbc09a339bce02edbf56675306660a43a0ae6a16a6a06d3ebe6",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 95,
+        "line_sha256": "261c7b6c06901e48041e664ea6f68062324552010f41a8e4acea9b8e1faa9d7d",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 102,
+        "line_sha256": "0babc9eae21c75c259f5168b4959f840f1af4e0bcfae2a1b5dd632140900da32",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 103,
+        "line_sha256": "2865146fc1ad852b63084b664e6612f290e74f33b31eaa37919e6d11eaa1ad39",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 104,
+        "line_sha256": "f4c074335553459055eba7709b3acad6485ea454461d9ec582e6ec87e5561127",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "MUST NOT"
+        ],
+        "line": 114,
+        "line_sha256": "a2dd517ff3b2c8f7cd342f16c0037a2fd33e363fe7eb26a5c900daf4c46582ea",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 118,
+        "line_sha256": "12285c9fc00651051d38fd728bdf8cc12fd4b3b53c9bd48c1ba0b61400bef395",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHALL"
+        ],
+        "line": 121,
+        "line_sha256": "fa73ae3fae2cc5fd41a9e05e57e4f49efb67e23ff8514a823ab84db130173943",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 179,
+        "line_sha256": "14e2ef0848a6a60387c33eef0bd91a7b7953f5a2d5add23ac7bc619a61849d78",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 184,
+        "line_sha256": "820bead71f461c15f9e252db20601230a2ccf493e30284813472692f8fcaa9f3",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 232,
+        "line_sha256": "8b99f17ae269049d0eb112221cbf2f6d75ba16de730bb95452f5459ece4b07ac",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 292,
+        "line_sha256": "d718a70c8ccc059f1f2cd6ce6f7c3a835d8135c3a82834aa7a1b0152729d2e55",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "MUST NOT"
+        ],
+        "line": 295,
+        "line_sha256": "df9bae4a78147380f66ded03c17d8611001294f4703cadc7e261917edff125b2",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MAY",
+          "SHOULD"
+        ],
+        "line": 298,
+        "line_sha256": "ac12047ba50f89cfda1fdb5c3d8c3d69a03b44582ddb46db8861b70ec39a8153",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 300,
+        "line_sha256": "f42987143711d910784bfa69976fa6e29fdb79a47af65f72cd7975fcbb8272c8",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 302,
+        "line_sha256": "566f51266f4c6113357c82e7112bd1e8c44e64716029f4fbe119afb41e965875",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 332,
+        "line_sha256": "ef3a1ce5a07d68402f6a4238a23d78a5e277746ab57b7f72af5a7aaa862381ac",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 337,
+        "line_sha256": "fb92af1857e93f2fabba3dac8eb5084e534841196c3f8ab4a8552d09a1ccc896",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 356,
+        "line_sha256": "e98818f3d6c3efb8f6a4f56b7fd388bb372706e07ad466ee8aa7027e986f46b8",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 364,
+        "line_sha256": "b0acaac5cc3387a4c1fb6352c13bb426ca8c9ff1b610a497354f5f556f8e1ba0",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 453,
+        "line_sha256": "ac57ad30bbb93e7bca17286a36046b8a3e9094c63541efb1a90a5e1bb231153d",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 455,
+        "line_sha256": "4a655f26aa53d2b84aa4af91828ba84515cc327b7e1bce04c3f496e8b29e47d1",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 488,
+        "line_sha256": "e0468d66306365407fa653752743467b7659a5946185d6a4a63a062da3bc1a4f",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 490,
+        "line_sha256": "4be05322a5a883666ce554f842d2d85b8d128d9e97322206b8ce50d963b511d6",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 493,
+        "line_sha256": "8ff3fa91c9cfc199998e049d595b2107e26480cbbf14060e2e1488cd143dd62e",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 495,
+        "line_sha256": "aaa4449a04381e77bdb2ac56b542194e4551798ec22de5cfb53efc268c2b0a21",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 496,
+        "line_sha256": "de686a32dc340e73b43f79d3afbb84a301b772c11d614707f6d6dfc34ac63699",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 497,
+        "line_sha256": "be9a4f90349e9e88a66966f5456a9bf5e67e1f4de312280d3cf0ee5abe921fc7",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 545,
+        "line_sha256": "c86f4e4dc0e78ca7058e2a654291b6002b621410c0483fdc24a34b8e16bae7da",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 546,
+        "line_sha256": "1192017b2fadbaaff7b2ea42628bd0e9f3787753b43132955636be8cc84060b8",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 568,
+        "line_sha256": "9ba856b92f0596cdd53f2c1c74f176621c21c16ea99f5915c3f649bf1e6bfef3",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 596,
+        "line_sha256": "660b00c11b6dba896e03629eda57541f25e66fe6c48b871ce305ff506b3dd468",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "SHOULD"
+        ],
+        "line": 623,
+        "line_sha256": "af36409e455374eb092bae9cae7c22626d1198cdc2f731e1a282e9782800a023",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 706,
+        "line_sha256": "90aa4dc07a48a1ddaf84d23d75b2e4ed04e8d4fe76ed0c7983819befd5261027",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 707,
+        "line_sha256": "c21288bf868b1bf993ac3f89b2915c5aec37767af3834f994adfe17a18e0e43c",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 738,
+        "line_sha256": "bcf86cc7c034f8f6681f4c4740e7d3b06382fe58b9422d01de648a18c2e28140",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 749,
+        "line_sha256": "25dc78571bc175996156ff26cba08e928002dfd641062da50cf942a3b63382fe",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 751,
+        "line_sha256": "e54188118dc16db3c6eae2b29671610a7f7f158e96e988844655a0f898a083fa",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 753,
+        "line_sha256": "1a615ad828def3d5276db742143fa9affca5fc0367deef17324fd4d00f7ad356",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 755,
+        "line_sha256": "acc46b261a29fa7256a3b1c5374502824cf853dec9957461566f5b0d3600162c",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 757,
+        "line_sha256": "4208a9f6dadb936c70fae31917cdca35414df4ac970456852dfccdd1d3f8489c",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 759,
+        "line_sha256": "223313d145bf5697ad2d9d720732ab8be365b489e06ce42015fb51c7deea9c1b",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 760,
+        "line_sha256": "bebe23719ae1e5090181cfcbdd9bd042cb348ddfa5d7cc196a08b160228325f0",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MAY",
+          "MUST"
+        ],
+        "line": 761,
+        "line_sha256": "e9e8cdf455260defd8075b4171905f9c9ffbafa8f4d4bad7384efde7d7b3d3b4",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 790,
+        "line_sha256": "cfcdbe9cd61f4ee542686120e5602329e2201374f2484ae1bd252b9e6f1c9cf0",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 820,
+        "line_sha256": "e078dd8534a410ff903ca49754b3ffd6f4b6d21c608e855f6926a3fa20143f52",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 836,
+        "line_sha256": "d8ab1767a7bb6254564af79f48c51c788f52afdffbee8d56f84c0ce6d3754f98",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 844,
+        "line_sha256": "c7dc33294a1a30811643e097503a84d31e0f32dc946951cc40d683c31a486b9e",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 858,
+        "line_sha256": "9f9973251df51acdfc2276f770e3105dabf0ed95fd91121d3e93991d333921dc",
+        "path": "specs/core/security.md"
+      }
+    ],
+    "mapped_evidence_count": 0
+  },
+  "generated_by": "scripts/generate_requirement_registry.py",
+  "requirements": [
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or restart negotiation without silently selecting a weaker profile.",
+      "id": "VCP-OP-NEG-001",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Each peer offers an ordered set of exact protocol and extension versions. An omitted offer means unsupported. A version range may be used only when both range grammar and prerelease handling are negotiated.",
+      "source": {
+        "anchor": "vcp-op-neg-001",
+        "line": 22,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "explicit offers"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or restart negotiation without silently selecting a weaker profile.",
+      "id": "VCP-OP-NEG-002",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "The selected version is the highest mutually supported stable version within the caller's policy. Experimental versions are excluded unless both peers opt in to the named experiment. Selection is deterministic over the same offers.",
+      "source": {
+        "anchor": "vcp-op-neg-002",
+        "line": 28,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "deterministic selection"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or restart negotiation without silently selecting a weaker profile.",
+      "id": "VCP-OP-NEG-003",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Failure to find a mutually supported version returns an explicit negotiation error. A peer must not reinterpret an unknown major as an older major, omit an unrecognized required extension, or proceed with local defaults.",
+      "source": {
+        "anchor": "vcp-op-neg-003",
+        "line": 34,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "no silent fallback"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or restart negotiation without silently selecting a weaker profile.",
+      "id": "VCP-OP-NEG-004",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Authenticated transports bind both original offers, the selected versions, required extensions, and a nonce or session identifier to the protected transcript. If the transport cannot protect that transcript, the application must label downgrade resistance unavailable and apply its fail-closed policy.",
+      "source": {
+        "anchor": "vcp-op-neg-004",
+        "line": 40,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "bind offers to the session"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or restart negotiation without silently selecting a weaker profile.",
+      "id": "VCP-OP-NEG-005",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "If a previously selected required capability disappears, the session returns to negotiation. Cached success does not authorize continued use after expiry, revocation, reconnect, trust-anchor change, or material policy change.",
+      "source": {
+        "anchor": "vcp-op-neg-005",
+        "line": 47,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "capability loss"
+    },
+    {
+      "actor": "verifier",
+      "area": "revocation",
+      "evidence": [],
+      "failure_semantics": "Return a non-success verification status and grant no authority.",
+      "id": "VCP-OP-REV-001",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "A status response is usable only when it is authenticated under configured trust, identifies the queried issuer and object identifier, and is valid for the selected revocation profile. A response for another object is rejected.",
+      "source": {
+        "anchor": "vcp-op-rev-001",
+        "line": 55,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "authoritative binding"
+    },
+    {
+      "actor": "verifier",
+      "area": "revocation",
+      "evidence": [],
+      "failure_semantics": "Return a non-success verification status and grant no authority.",
+      "id": "VCP-OP-REV-002",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Status evidence carries `this_update` and either `next_update` or a profile maximum age. The verifier evaluates those claims against an explicit clock and bounded skew. Missing, future, expired, or unparseable freshness evidence is unavailable evidence, not a clean status.",
+      "source": {
+        "anchor": "vcp-op-rev-002",
+        "line": 61,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "bounded freshness"
+    },
+    {
+      "actor": "verifier",
+      "area": "revocation",
+      "evidence": [],
+      "failure_semantics": "Return a non-success verification status and grant no authority.",
+      "id": "VCP-OP-REV-003",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "When current revocation evidence is required, network failure, timeout, redirect-policy rejection, malformed response, stale cache entry, or unknown status returns `REVOCATION_UNAVAILABLE`. None of those conditions means `not_revoked`.",
+      "source": {
+        "anchor": "vcp-op-rev-003",
+        "line": 68,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "fail closed when required"
+    },
+    {
+      "actor": "verifier",
+      "area": "revocation",
+      "evidence": [],
+      "failure_semantics": "Return a non-success verification status and grant no authority.",
+      "id": "VCP-OP-REV-004",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Cache keys include issuer, object identifier, status authority, verification profile, and trust configuration identity. Negative results are not shared across those boundaries. Cache lifetime never exceeds authoritative freshness.",
+      "source": {
+        "anchor": "vcp-op-rev-004",
+        "line": 75,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "cache partitioning"
+    },
+    {
+      "actor": "verifier",
+      "area": "revocation",
+      "evidence": [],
+      "failure_semantics": "Return a non-success verification status and grant no authority.",
+      "id": "VCP-OP-REV-005",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "A confirmed revocation response includes a non-empty reason and a timezone-qualified `revoked_at`. Verification returns `REVOKED`. Retry does not restore authority unless newer authenticated evidence explicitly supersedes the revocation under an authorized correction policy.",
+      "source": {
+        "anchor": "vcp-op-rev-005",
+        "line": 81,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "confirmed revocation"
+    },
+    {
+      "actor": "authorizer",
+      "area": "scope",
+      "evidence": [],
+      "failure_semantics": "Deny authority that cannot be proven within the complete constrained chain.",
+      "id": "VCP-OP-SCP-001",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Effective authority is the intersection of issuer grant, subject scope, audience, selected protocol profile, application policy, time validity, and all delegation constraints. Composition never forms a union of grants.",
+      "source": {
+        "anchor": "vcp-op-scp-001",
+        "line": 90,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "intersection only"
+    },
+    {
+      "actor": "authorizer",
+      "area": "scope",
+      "evidence": [],
+      "failure_semantics": "Deny authority that cannot be proven within the complete constrained chain.",
+      "id": "VCP-OP-SCP-002",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "An audience-bound object is accepted only by a matching audience identifier. Wildcard audiences require an explicit profile and must not be inferred from a missing field.",
+      "source": {
+        "anchor": "vcp-op-scp-002",
+        "line": 96,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "explicit audience"
+    },
+    {
+      "actor": "authorizer",
+      "area": "scope",
+      "evidence": [],
+      "failure_semantics": "Deny authority that cannot be proven within the complete constrained chain.",
+      "id": "VCP-OP-SCP-003",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Each delegation step may reduce scope, audience, duration, action set, budget, or redelegation depth. It must not expand any parent grant. The verifier checks the complete chain before use.",
+      "source": {
+        "anchor": "vcp-op-scp-003",
+        "line": 102,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "monotonic delegation"
+    },
+    {
+      "actor": "authorizer",
+      "area": "scope",
+      "evidence": [],
+      "failure_semantics": "Deny authority that cannot be proven within the complete constrained chain.",
+      "id": "VCP-OP-SCP-004",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Delegation chains have a profile-defined maximum depth and unique identifiers. Repeated identifiers, cycles, missing parents, or ambiguous parent selection fail closed.",
+      "source": {
+        "anchor": "vcp-op-scp-004",
+        "line": 108,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "bounded depth and cycles"
+    },
+    {
+      "actor": "authorizer",
+      "area": "scope",
+      "evidence": [],
+      "failure_semantics": "Deny authority that cannot be proven within the complete constrained chain.",
+      "id": "VCP-OP-SCP-005",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "A grant for context receipt does not imply permission to persist, disclose, train on, infer sensitive attributes from, execute tools from, transact on, or redelegate that context. Those authorities are separately represented.",
+      "source": {
+        "anchor": "vcp-op-scp-005",
+        "line": 114,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "purpose and context separation"
+    },
+    {
+      "actor": "protocol implementation",
+      "area": "state-machine",
+      "evidence": [],
+      "failure_semantics": "Reject the transition or return no partial authority.",
+      "id": "VCP-OP-STM-001",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "An implementation must not enter `authorized` without completing every gate required by the selected profile. Parallel checks are allowed, but successful completion is equivalent to the ordered state machine.",
+      "source": {
+        "anchor": "vcp-op-stm-001",
+        "line": 137,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "no skipped gates"
+    },
+    {
+      "actor": "protocol implementation",
+      "area": "state-machine",
+      "evidence": [],
+      "failure_semantics": "Reject the transition or return no partial authority.",
+      "id": "VCP-OP-STM-002",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Cancellation before `authorized` produces no partial authority. Cancellation after an external side effect follows the operation's transaction and recovery contract; it must not report the action as unperformed merely because the local request was cancelled.",
+      "source": {
+        "anchor": "vcp-op-stm-002",
+        "line": 143,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "cancellation"
+    },
+    {
+      "actor": "protocol implementation",
+      "area": "state-machine",
+      "evidence": [],
+      "failure_semantics": "Reject the transition or return no partial authority.",
+      "id": "VCP-OP-STM-003",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "A retry is a new attempt with a new correlation identifier. Replay identifiers and idempotency keys retain their original meaning. Retrying a transient error must not bypass a consumed or revoked state.",
+      "source": {
+        "anchor": "vcp-op-stm-003",
+        "line": 150,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "retry identity"
+    },
+    {
+      "actor": "registry consumer or maintainer",
+      "area": "registry",
+      "evidence": [],
+      "failure_semantics": "Reject an ambiguous identifier or retain its explicitly local status.",
+      "id": "VCP-OP-REG-001",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "No VCP-specific media type or `vcp:` URI scheme is currently claimed as an IANA-registered identifier. Until registration and governance approval, network interfaces use `application/json` with an explicit HTTPS profile URI, or a documented application-local media type. Public documentation must not imply external registration.",
+      "source": {
+        "anchor": "vcp-op-reg-001",
+        "line": 158,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "unregistered identifiers are labelled"
+    },
+    {
+      "actor": "registry consumer or maintainer",
+      "area": "registry",
+      "evidence": [],
+      "failure_semantics": "Reject an ambiguous identifier or retain its explicitly local status.",
+      "id": "VCP-OP-REG-002",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Candidate profile identifiers use stable HTTPS URLs under the project domain and resolve to a versioned description. Redirects may move the representation, but must not silently change the identified semantics.",
+      "source": {
+        "anchor": "vcp-op-reg-002",
+        "line": 166,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "profile URIs"
+    },
+    {
+      "actor": "registry consumer or maintainer",
+      "area": "registry",
+      "evidence": [],
+      "failure_semantics": "Reject an ambiguous identifier or retain its explicitly local status.",
+      "id": "VCP-OP-REG-003",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every public namespace record identifies the owner, recovery owner, contact, status, creation decision, allowed object classes, collision policy, and revocation procedure. Unregistered names remain local and must not masquerade as globally assigned names.",
+      "source": {
+        "anchor": "vcp-op-reg-003",
+        "line": 172,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "namespace ownership"
+    },
+    {
+      "actor": "registry consumer or maintainer",
+      "area": "registry",
+      "evidence": [],
+      "failure_semantics": "Reject an ambiguous identifier or retain its explicitly local status.",
+      "id": "VCP-OP-REG-004",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Exact canonical names are unique within a registry generation. Confusable or case-folded collisions are rejected or escalated for review. Resolution returns the canonical name and registry generation so consumers can detect drift.",
+      "source": {
+        "anchor": "vcp-op-reg-004",
+        "line": 179,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "collision handling"
+    },
+    {
+      "actor": "registry consumer or maintainer",
+      "area": "registry",
+      "evidence": [],
+      "failure_semantics": "Reject an ambiguous identifier or retain its explicitly local status.",
+      "id": "VCP-OP-REG-005",
+      "preconditions": [
+        "The selected candidate profile requires this behavior."
+      ],
+      "requirement_text": "Reassignment does not rewrite historical ownership. Superseded and revoked records remain retrievable by immutable generation or digest for audit.",
+      "source": {
+        "anchor": "vcp-op-reg-005",
+        "line": 185,
+        "path": "specs/core/protocol-operations-profile.md"
+      },
+      "testability": "machine",
+      "title": "immutable historical resolution"
+    }
+  ],
+  "schema": "vcp-requirement-registry/1",
+  "sources": [
+    {
+      "path": "specs/core/protocol-operations-profile.md",
+      "sha256": "d7d05fb6987a1dbb36ac6c1460c71fa4c46e515974ee3ebb7eab1cc1cdf20574"
+    },
+    {
+      "path": "specs/VCP_SPECIFICATION_v3.1.md",
+      "sha256": "8e08bbb23e268e2ec010a55215efbdbbfa5b6cb6bdf1002b10dc9637f005dc3f"
+    },
+    {
+      "path": "specs/core/audit.md",
+      "sha256": "dcec3496a95232882cdbe585fa40f41901d9760461ca40384877ec2ba28d0274"
+    },
+    {
+      "path": "specs/core/capability-negotiation.md",
+      "sha256": "b4370b832d003e9fd3810ed4b59bee50c6086ff3097bce9e4a91eae141e81a13"
+    },
+    {
+      "path": "specs/core/extension-lifecycle.md",
+      "sha256": "f29e8bf064b1475ad70b28a076587174193119842d91f1f94ba336a218c91c42"
+    },
+    {
+      "path": "specs/core/mcp-bridge.md",
+      "sha256": "d9b5927a90c6e88c051ba9d4952407aa92cc8934555dd187b9c4f25780055837"
+    },
+    {
+      "path": "specs/core/representation-registry.md",
+      "sha256": "9effdd76b764824baed00c516ec72baabcec80acbf038d0e2cc35c41bbca0a6d"
+    },
+    {
+      "path": "specs/core/security.md",
+      "sha256": "30568256c0ef23164ba75851cb48c0dc4fa4079ece68247eda0590c2b971dbd0"
+    },
+    {
+      "path": "specs/core/status-code-registry.md",
+      "sha256": "687c166e55cecc68357c93b1aaca0358b24ed86ee2acab721bf19e364f089d4a"
+    }
+  ]
+}

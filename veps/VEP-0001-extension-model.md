@@ -13,7 +13,7 @@ This VEP introduces a formal extension model for VCP, enabling opt-in protocol e
 
 ## Motivation
 
-VCP v1.0-v1.1 defined a stable core that has since grown to six layers (Identity, Transport, Semantics, Adaptation, Messaging, Economic Governance). The reference implementation has since added features — personal state tracking, relational context, consensus voting, session handoff — that are valuable for specific use cases but not universally required.
+VCP v1.0-v1.1 defined a stable core that has since grown to six layers (Identity, Transport, Semantics, Adaptation, Messaging, Economic Governance). The project-maintained implementation has since added features — personal state tracking, relational context, consensus voting, session handoff — that are valuable for specific use cases but not universally required.
 
 Without an extension model, these features would either:
 1. Be forced into the core spec, bloating it for simple use cases
@@ -42,7 +42,7 @@ Each extension MUST provide:
 | Specification | `specs/extensions/{name}/spec.md` | Yes |
 | JSON Schema | `specs/extensions/{name}/schema.json` | Yes |
 | Wire format examples | `specs/extensions/{name}/examples/` | Yes |
-| Reference implementation | VCP-SDK repository | Yes |
+| Project-maintained implementation | VCP-SDK repository | Yes |
 | Conformance tests | `conformance/extensions/{name}.json` | Yes |
 
 ### Extension Lifecycle
@@ -131,9 +131,9 @@ The extension model is purely additive:
 - Malformed extension data MUST NOT cause core protocol failures (graceful degradation)
 - Extension negotiation MUST happen before any extension-specific data is exchanged
 
-## Reference Implementation
+## Project-Maintained Implementation
 
-The extension model is implemented in the Rewind reference implementation at `services/vcp/`. Each extension maps to specific Python modules documented in the delta inventory (`_plans/vcp_spec_delta.md`).
+The extension model is implemented in the Rewind project-maintained implementation at `services/vcp/`. Each extension maps to specific Python modules documented in the delta inventory (`_plans/vcp_spec_delta.md`).
 
 ## Conformance Tests
 

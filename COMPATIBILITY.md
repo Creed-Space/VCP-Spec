@@ -14,7 +14,7 @@ new protocol release.
 
 | Surface | Current repository status | Compatibility meaning |
 |:---|:---|:---|
-| Core specification | v3.1 published baseline | Stable protocol reference |
+| Core specification | v3.1 source baseline | Mutable source reference; immutable normative release remains open |
 | v3.2 amendments | Pre-release | Candidate behavior requiring governance approval |
 | VEP-0004 | Experimental | Extended VCP/A dimensions, not promoted by SDK support |
 | Python SDK | 4.2.0, `value-context-protocol` | SDK semver, implements v3.2 candidate features |

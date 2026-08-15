@@ -1,0 +1,6 @@
+{
+  "schema": "vcp-errata-registry/1",
+  "as_of": "2026-08-15",
+  "claim_boundary": "No immutable normative VCP release errata or accepted stable-feature deprecations are currently recorded. Candidate source defects remain ordinary source changes until authorized publication.",
+  "entries": []
+}

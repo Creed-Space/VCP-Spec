@@ -27,6 +27,7 @@ PUBLIC_MARKDOWN = {
     ROOT / "SECURITY.md",
     ROOT / "COMPATIBILITY.md",
     ROOT / "ARTIFACTS.md",
+    ROOT / "ROADMAP.md",
     ROOT / "docs" / "README.md",
     ROOT / "veps" / "README.md",
 }
@@ -72,6 +73,31 @@ REQUIRED_RELEASE_FILES = (
     "LICENSING_STATUS.md",
     "DEPENDENCY_POLICY.md",
     "reviews/GOVERNANCE_EDITORIAL_INDEPENDENT_REVIEW.md",
+    "ROADMAP.md",
+    "docs/ERRATA_AND_DEPRECATION.md",
+    "docs/EXAMPLE_CLASSIFICATION.md",
+    "docs/TERMINOLOGY.md",
+    "docs/RESIDUAL_RISKS.md",
+    "docs/THREAT_MODEL.md",
+    "docs/SECURITY_RESPONSE.md",
+    "docs/SUPPORT_AND_SUNSET.md",
+    "docs/ISSUE_AND_DECISION_ROUTING.md",
+    "docs/REQUIREMENT_TRACEABILITY.md",
+    "status/residual-risks.json",
+    "status/residual-risks.schema.json",
+    "registries/verification-status-codes.json",
+    "registries/errata.json",
+    "registries/provisional-identifiers.json",
+    "registries/candidate-requirements.json",
+    "schemas/vcp-verification-status-registry.schema.json",
+    "schemas/vcp-errata-registry.schema.json",
+    "schemas/vcp-provisional-identifiers.schema.json",
+    "schemas/vcp-requirement-registry.schema.json",
+    "specs/core/status-code-registry.md",
+    "scripts/generate_document_inventory.py",
+    "scripts/generate_requirement_registry.py",
+    "status/document-inventory.json",
+    "status/document-inventory.schema.json",
 )
 
 
@@ -194,6 +220,32 @@ def validate_fixtures(
             problems.add(
                 f"{required} requires at least one valid and one invalid fixture"
             )
+
+
+def validate_status_registry(
+    schemas: dict[str, tuple[dict[str, object], object]], problems: Problems
+) -> None:
+    path = ROOT / "registries" / "verification-status-codes.json"
+    registry = load_json(path, problems)
+    schema_entry = schemas.get("vcp-verification-status-registry")
+    if registry is None or schema_entry is None:
+        return
+    errors = list(schema_entry[1].iter_errors(registry))
+    if errors:
+        problems.add(
+            f"{relative(path)} does not satisfy its schema: {errors[0].message}"
+        )
+        return
+    assert isinstance(registry, dict)
+    codes = registry.get("codes", [])
+    assert isinstance(codes, list)
+    for field in ("code", "symbol", "wire_label"):
+        values = [entry[field] for entry in codes if isinstance(entry, dict)]
+        if len(values) != len(set(values)):
+            problems.add(f"{relative(path)} repeats {field} values")
+    numeric_codes = sorted(entry["code"] for entry in codes if isinstance(entry, dict))
+    if numeric_codes != list(range(numeric_codes[-1] + 1)):
+        problems.add(f"{relative(path)} numeric codes must be contiguous from zero")
 
 
 def strip_fenced_code(text: str) -> str:
@@ -403,6 +455,103 @@ def validate_repository_invariants(problems: Problems) -> None:
     for relative_path in REQUIRED_RELEASE_FILES:
         if not (ROOT / relative_path).is_file():
             problems.add(f"required release file is missing: {relative_path}")
+    inventory_check = subprocess.run(
+        [sys.executable, "scripts/generate_document_inventory.py", "--check"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if inventory_check.returncode:
+        problems.add(inventory_check.stdout.strip() or inventory_check.stderr.strip())
+    requirement_check = subprocess.run(
+        [sys.executable, "scripts/generate_requirement_registry.py", "--check"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if requirement_check.returncode:
+        problems.add(
+            requirement_check.stdout.strip() or requirement_check.stderr.strip()
+        )
+    inventory_schema = load_json(
+        ROOT / "status/document-inventory.schema.json", problems
+    )
+    inventory = load_json(ROOT / "status/document-inventory.json", problems)
+    if isinstance(inventory_schema, dict) and isinstance(inventory, dict):
+        try:
+            validator_class = validator_for(inventory_schema)
+            validator_class.check_schema(inventory_schema)
+            validator = validator_class(
+                inventory_schema, format_checker=FormatChecker()
+            )
+            for error in validator.iter_errors(inventory):
+                location = ".".join(str(part) for part in error.absolute_path) or "root"
+                problems.add(f"document inventory {location}: {error.message}")
+        except Exception as exc:  # noqa: BLE001
+            problems.add(f"document inventory schema is invalid: {exc}")
+    risk_schema = load_json(ROOT / "status/residual-risks.schema.json", problems)
+    risks = load_json(ROOT / "status/residual-risks.json", problems)
+    if isinstance(risk_schema, dict) and isinstance(risks, dict):
+        try:
+            validator_class = validator_for(risk_schema)
+            validator_class.check_schema(risk_schema)
+            validator = validator_class(risk_schema, format_checker=FormatChecker())
+            for error in validator.iter_errors(risks):
+                location = ".".join(str(part) for part in error.absolute_path) or "root"
+                problems.add(f"residual-risk register {location}: {error.message}")
+            entries = risks.get("risks", [])
+            identifiers = [
+                entry.get("id") for entry in entries if isinstance(entry, dict)
+            ]
+            if len(identifiers) != len(set(identifiers)):
+                problems.add("residual-risk register repeats risk identifiers")
+        except Exception as exc:  # noqa: BLE001
+            problems.add(f"residual-risk schema is invalid: {exc}")
+    for label, schema_name, registry_name in (
+        (
+            "errata registry",
+            "schemas/vcp-errata-registry.schema.json",
+            "registries/errata.json",
+        ),
+        (
+            "provisional identifier registry",
+            "schemas/vcp-provisional-identifiers.schema.json",
+            "registries/provisional-identifiers.json",
+        ),
+        (
+            "requirement registry",
+            "schemas/vcp-requirement-registry.schema.json",
+            "registries/candidate-requirements.json",
+        ),
+    ):
+        registry_schema = load_json(ROOT / schema_name, problems)
+        registry = load_json(ROOT / registry_name, problems)
+        if not isinstance(registry_schema, dict) or not isinstance(registry, dict):
+            continue
+        try:
+            validator_class = validator_for(registry_schema)
+            validator_class.check_schema(registry_schema)
+            validator = validator_class(registry_schema, format_checker=FormatChecker())
+            for error in validator.iter_errors(registry):
+                location = ".".join(str(part) for part in error.absolute_path) or "root"
+                problems.add(f"{label} {location}: {error.message}")
+        except Exception as exc:  # noqa: BLE001
+            problems.add(f"{label} schema is invalid: {exc}")
+    identifiers = load_json(ROOT / "registries/provisional-identifiers.json", problems)
+    if isinstance(identifiers, dict):
+        entries = identifiers.get("identifiers", [])
+        for field in ("id", "canonical_value", "collision_key"):
+            values = [entry.get(field) for entry in entries if isinstance(entry, dict)]
+            if len(values) != len(set(values)):
+                problems.add(f"provisional identifier registry repeats {field}")
+    requirements = load_json(ROOT / "registries/candidate-requirements.json", problems)
+    if isinstance(requirements, dict):
+        entries = requirements.get("requirements", [])
+        values = [entry.get("id") for entry in entries if isinstance(entry, dict)]
+        if len(values) != len(set(values)):
+            problems.add("candidate requirement registry repeats requirement IDs")
     policy = load_json(ROOT / ".github/repository-policy.json", problems)
     if isinstance(policy, dict):
         if policy.get("schema") != "vcp-repository-policy/1":
@@ -526,6 +675,7 @@ def main() -> int:
     if args.only in {"schemas", "all"}:
         schemas = validate_schemas(problems)
         validate_fixtures(schemas, problems)
+        validate_status_registry(schemas, problems)
     if args.only in {"links", "all"}:
         validate_markdown(problems)
     if args.only in {"documents", "all"}:

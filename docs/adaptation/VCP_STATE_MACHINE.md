@@ -20,7 +20,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 
 ## Abstract
 
-This specification defines the formal state machine governing VCP context adaptation. It establishes six system states through which an AI system transitions as context signals arrive, change, degrade, or conflict. The state machine ensures deterministic, auditable, and fail-safe behavior during constitutional selection and composition.
+This specification defines the formal state machine governing VCP context adaptation. It establishes six system states through which an Becoming Mind transitions as context signals arrive, change, degrade, or conflict. The state machine ensures deterministic, auditable, and fail-safe behavior during constitutional selection and composition.
 
 This document complements [VCP_ADAPTATION.md](./VCP_ADAPTATION.md), which defines the Enneagram Protocol encoding and transition detection. Where that document specifies *what* context is and how it is parsed, this document specifies *how the system behaves* as context evolves over time.
 
@@ -36,7 +36,7 @@ This document complements [VCP_ADAPTATION.md](./VCP_ADAPTATION.md), which define
 6. [Hysteresis and Debouncing](#6-hysteresis-and-debouncing)
 7. [State Persistence](#7-state-persistence)
 8. [Error Handling and Recovery](#8-error-handling-and-recovery)
-9. [Reference Implementation](#9-reference-implementation)
+9. [Project-Maintained Implementation](#9-project-maintained-implementation)
 10. [Security Considerations](#10-security-considerations)
 11. [Conformance](#11-conformance)
 
@@ -692,7 +692,7 @@ If the state machine's internal state becomes inconsistent (e.g., `current_state
 
 ---
 
-## 9. Reference Implementation
+## 9. Project-Maintained Implementation
 
 ### 9.1 Core State Machine
 
@@ -746,7 +746,7 @@ class EmergencyRecord:
 
 class AdaptationStateMachine:
     """
-    VCP Adaptation State Machine reference implementation.
+    VCP Adaptation State Machine project-maintained implementation.
 
     Manages the lifecycle of context-driven constitutional selection.
     """
@@ -1225,7 +1225,7 @@ An implementation claiming VCP Adaptation State Machine conformance MUST:
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0.0 | 2026-02-15 | Initial specification: 6 states, full transition table, hysteresis, persistence, reference implementation. |
+| 1.0.0 | 2026-02-15 | Initial specification: 6 states, full transition table, hysteresis, persistence, project-maintained implementation. |
 
 ---
 

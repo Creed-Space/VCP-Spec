@@ -181,4 +181,4 @@ An implementation claiming VCP-X-Welfare-Swarm conformance MUST also:
 
 ---
 
-*This extension is released under CC BY 4.0. Reference implementation: `services/vcp/semantics/csm1.py` and `services/safety_stack/plugins/bilateral_alignment/welfare_requirements.py` in the Creed Space Rewind repository.*
+*This extension is released under CC BY 4.0. Project-maintained implementation: `services/vcp/semantics/csm1.py` and `services/safety_stack/plugins/bilateral_alignment/welfare_requirements.py` in the Creed Space Rewind repository.*

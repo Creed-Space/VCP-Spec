@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.creed.space/vcp/requirement-registry-v1.schema.json",
+  "title": "VCP candidate requirement registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "generated_by", "as_of", "claim_boundary", "sources", "requirements", "coverage"],
+  "properties": {
+    "schema": { "const": "vcp-requirement-registry/1" },
+    "generated_by": { "const": "scripts/generate_requirement_registry.py" },
+    "as_of": { "type": "string", "format": "date" },
+    "claim_boundary": { "type": "string", "minLength": 1 },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "area", "actor", "testability", "preconditions", "requirement_text", "failure_semantics", "source", "evidence"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^VCP-OP-[A-Z]{3}-[0-9]{3}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "area": { "enum": ["negotiation", "revocation", "scope", "state-machine", "registry"] },
+          "actor": { "type": "string", "minLength": 1 },
+          "testability": { "enum": ["machine", "human", "mixed", "not-yet-mapped"] },
+          "preconditions": { "type": "array", "items": { "type": "string" } },
+          "requirement_text": { "type": "string", "minLength": 1 },
+          "failure_semantics": { "type": "string", "minLength": 1 },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "line", "anchor"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "line": { "type": "integer", "minimum": 1 },
+              "anchor": { "type": "string", "minLength": 1 }
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "reference", "status"],
+              "properties": {
+                "kind": { "enum": ["positive", "negative", "unsupported", "human-review"] },
+                "reference": { "type": "string", "minLength": 1 },
+                "status": { "enum": ["mapped", "open"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identified_requirement_count", "mapped_evidence_count", "legacy_normative_statements_without_stable_id"],
+      "properties": {
+        "identified_requirement_count": { "type": "integer", "minimum": 0 },
+        "mapped_evidence_count": { "type": "integer", "minimum": 0 },
+        "legacy_normative_statements_without_stable_id": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "line", "keywords", "line_sha256"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "line": { "type": "integer", "minimum": 1 },
+              "keywords": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+              "line_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

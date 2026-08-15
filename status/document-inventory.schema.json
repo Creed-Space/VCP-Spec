@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valuecontextprotocol.org/status/document-inventory.schema.json",
+  "title": "VCP specification artifact inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "generated_by", "claim_boundary", "artifacts"],
+  "properties": {
+    "schema": { "const": "vcp-document-inventory/1" },
+    "generated_by": { "const": "scripts/generate_document_inventory.py" },
+    "claim_boundary": { "type": "string", "minLength": 1 },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "kind", "status", "effective_version", "authority", "dependencies", "replacement", "owner", "review_date", "publication_class", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "minLength": 1 },
+          "effective_version": { "type": "string", "minLength": 1 },
+          "authority": { "type": "string", "minLength": 1 },
+          "dependencies": { "type": "array", "items": { "type": "string" } },
+          "replacement": { "type": ["string", "null"] },
+          "owner": { "type": "string", "minLength": 1 },
+          "review_date": { "type": "string", "format": "date" },
+          "publication_class": { "enum": ["normative-candidate", "informative", "illustrative", "proposal", "historical"] },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
 status: Current index
 normative-authority: Index only
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-08-15 status and authority classification
 owner: VCP Spec maintainers
 evidence-boundary: Navigation and classification only
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Navigation and classification only
 | Status | Current index |
 | Normative authority | Index only. Normative requirements live in accepted specifications and schemas. |
 | Protocol baseline | VCP 3.1 |
-| Last reviewed | 2026-08-13 |
+| Last reviewed | 2026-08-15 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Navigation and document classification, not implementation conformance |
 
@@ -26,6 +26,15 @@ evidence-boundary: Navigation and classification only
 4. [Ecosystem status](./ECOSYSTEM_STATUS.md)
 5. [Document control](./DOCUMENT_CONTROL.md)
 6. [Conformance claim vocabulary](./CONFORMANCE_CLAIMS.md)
+7. [Terminology and editorial policy](./TERMINOLOGY.md)
+8. [Example classification](./EXAMPLE_CLASSIFICATION.md)
+9. [Errata and deprecation registry](./ERRATA_AND_DEPRECATION.md)
+10. [Residual-risk register](./RESIDUAL_RISKS.md)
+11. [Cross-repository threat model](./THREAT_MODEL.md)
+12. [Coordinated security response](./SECURITY_RESPONSE.md)
+13. [Support, maintenance, and sunset policy](./SUPPORT_AND_SUNSET.md)
+14. [Issue and decision routing](./ISSUE_AND_DECISION_ROUTING.md)
+15. [Requirement traceability status](./REQUIREMENT_TRACEABILITY.md)
 
 These pages describe the current source candidate. The root
 [publication-state record](../status/publication-state.json) is the machine
@@ -35,15 +44,15 @@ authority for artifact availability. It currently permits source installs only.
 
 | Surface | Current authority | Status |
 |:---|:---|:---|
-| Protocol baseline | [VCP 3.1](../specs/VCP_SPECIFICATION_v3.1.md) | Published repository baseline |
+| Protocol baseline | [VCP 3.1](../specs/VCP_SPECIFICATION_v3.1.md) | Current source baseline; immutable normative release remains open |
 | Candidate amendments | [VEP-0004 extended VCP/A dimensions](../veps/VEP-0004-extended-vcpa-dimensions.md) | Experimental, pre-release candidate |
 | Enhancement proposals | [VEP index](../veps/README.md) | Per-VEP status |
 | Machine contracts | [JSON Schemas](../schemas/) | Versioned beside specifications |
 | Internet-Draft source | [Expired working copy](../specs/draft-watson-vcp-00.md) | Withdrawn from publication readiness |
 
-Repository labels such as published baseline describe document maturity inside
-this repository. They do not establish IETF status, independent review,
-certification, or registry publication.
+Repository source labels describe document maturity inside this repository.
+They do not establish an immutable normative release, IETF status, independent
+review, certification, or registry publication.
 
 ## Protocol companions
 
@@ -67,6 +76,7 @@ specification and schema control.
 - [Compatibility policy](../COMPATIBILITY.md)
 - [Release checklist](../RELEASE_CHECKLIST.md)
 - [Governance](../GOVERNANCE.md), currently interim and unratified
+- [Finite roadmap](../ROADMAP.md)
 
 Historical host integration and audit evidence lives under
 [`archives/`](../archives/). Archived material preserves provenance and has no

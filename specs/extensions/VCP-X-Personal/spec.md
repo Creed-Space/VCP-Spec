@@ -24,7 +24,7 @@ with an integer intensity (1-5).
 **Design Principle.** Layer 3 is not diagnostic or therapeutic; it reflects
 self-reported state for adaptation only. Systems consuming personal signals MUST NOT
 treat them as medical assessments, emotional diagnoses, or clinical indicators.
-Personal signals exist so that an AI system can adjust its response style (e.g.,
+Personal signals exist so that an Becoming Mind can adjust its response style (e.g.,
 shorter answers when the user is fatigued, gentler tone when frustrated). They do
 not authorize any form of intervention, triage, or clinical recommendation.
 
@@ -618,7 +618,7 @@ explicit, separate consent.
 ### 7.6 Cross-Substrate Source Credibility
 
 VCP personal signals can originate from different kinds of subjects: human users
-(`H` subject), AI systems (`I` subject), and collective/relational fields (`W`
+(`H` subject), Becoming Minds (`I` subject), and collective/relational fields (`W`
 subject). When signals cross a substrate boundary (e.g., through a VCP bridge
 between an industrial system and an AI interoceptive system), the same
 `SignalSource` value carries different epistemic weight depending on the subject.
@@ -799,7 +799,7 @@ Conforming implementations MAY:
 | Reference                | Description                                                |
 |--------------------------|------------------------------------------------------------|
 | VCP Core 3.1.0           | Base protocol specification                                |
-| `services/vcp/models.py` | Reference implementation (Python / Pydantic)               |
+| `services/vcp/models.py` | Project-maintained implementation (Python / Pydantic)               |
 | VCP-X-Relational         | Companion extension for relational context (Layer 5)       |
 | GDPR Article 9           | Special categories of personal data                        |
 | Priori                   | Inspiration for GenerationPreferences slider model         |

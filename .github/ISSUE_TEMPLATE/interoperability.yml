@@ -1,0 +1,44 @@
+name: Interoperability Report
+description: Report an implementation result, ambiguity, or cross-implementation mismatch
+title: "[Interop] "
+labels: ["interoperability", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form records public interoperability evidence. Do not include secrets, personal data, private context, embargoed vulnerability details, or confidential third-party material. A project-controlled conformance pass is not independent evidence.
+  - type: input
+    id: spec_candidate
+    attributes:
+      label: Exact VCP specification candidate
+      description: Give a release digest or full source commit.
+    validations:
+      required: true
+  - type: textarea
+    id: implementations
+    attributes:
+      label: Implementations and versions
+      description: Name every independently built implementation, version, source commit, and environment.
+    validations:
+      required: true
+  - type: textarea
+    id: profile
+    attributes:
+      label: Profile and operation
+      description: Identify the protocol layer, negotiated profile, input, and operation tested.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result and reproducible evidence
+      description: State expected and observed behavior, exact commands, minimized test data, and non-sensitive evidence links.
+    validations:
+      required: true
+  - type: textarea
+    id: ambiguity
+    attributes:
+      label: Specification ambiguity or proposed disposition
+      description: Explain any text or schema conflict without assuming which source wins.
+    validations:
+      required: false

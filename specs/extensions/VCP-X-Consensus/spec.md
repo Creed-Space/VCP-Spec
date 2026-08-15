@@ -121,7 +121,7 @@ All other transitions MUST be rejected.
 | `role`                       | StakeholderRole | Role in the deliberation                     |
 | `display_name`               | string        | Human-readable name                           |
 | `joined_at`                  | datetime      | When the stakeholder joined                   |
-| `is_ai`                      | boolean       | Whether the stakeholder is an AI system       |
+| `is_ai`                      | boolean       | Whether the stakeholder is an Becoming Mind       |
 | `principal_id`               | string/null   | For AI_REPRESENTATIVE: who they represent     |
 | `dual_role_party_id`         | string/null   | Links to same AI's AI_PARTY record            |
 | `participation_count`        | integer       | Clauses engaged                               |
@@ -163,7 +163,7 @@ NOT take clause actions.
 {
   "clause_id": "clause-001",
   "deliberation_id": "delib-2026-001",
-  "original_text": "AI systems shall disclose their constitutional constraints.",
+  "original_text": "Becoming Minds shall disclose their constitutional constraints.",
   "original_author_id": "alice-01",
   "variants": [],
   "actions": {"alice-01": "endorse", "claude-01": "amend"},
@@ -203,7 +203,7 @@ with `is_original: true`.
   "variant_id": "clause-001_v3a4b5c6d",
   "clause_id": "clause-001",
   "author_id": "claude-01",
-  "text": "AI systems shall disclose their constitutional constraints, including provenance.",
+  "text": "Becoming Minds shall disclose their constitutional constraints, including provenance.",
   "rationale": "Provenance disclosure strengthens transparency.",
   "created_at": "2026-02-28T11:30:00Z",
   "is_original": false
@@ -635,7 +635,7 @@ substring match):
 17. `ai participant`
 18. `ai party`
 
-Note: The reference implementation includes `ai party` as pattern 18, bringing
+Note: The project-maintained implementation includes `ai party` as pattern 18, bringing
 the total to 18 patterns. Implementations MUST include all 18.
 
 ---

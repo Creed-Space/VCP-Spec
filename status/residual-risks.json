@@ -1,0 +1,79 @@
+{
+  "schema": "vcp-residual-risk-register/1",
+  "as_of": "2026-08-15",
+  "claim_boundary": "Open risks and required decision roles. Source mitigations do not close human-authority or independent-evidence gates.",
+  "risks": [
+    {
+      "id": "VCP-RISK-001",
+      "severity": "critical",
+      "status": "open-authority",
+      "risk": "Interim governance has not ratified permanent protocol, release, dispute, certification, or emergency authority.",
+      "current_mitigation": "Machine-readable interim authority record, proposed charter, decision templates, and conservative public claims.",
+      "closure_evidence": "Ratified authority decision with named roles, conflicts process, appeals, succession, and auditable emergency bypass.",
+      "owner_role": "authorized project principals"
+    },
+    {
+      "id": "VCP-RISK-002",
+      "severity": "critical",
+      "status": "open-authority",
+      "risk": "Licensing, authorship, patent, trademark, generated-output, logo, schema, example, and withdrawn-draft rights are not fully approved for publication.",
+      "current_mitigation": "Publication remains source-only and licensing status is explicit.",
+      "closure_evidence": "Qualified rights review and signed licensing matrix covering every file class and contributor path.",
+      "owner_role": "authorized rights counsel and project principals"
+    },
+    {
+      "id": "VCP-RISK-003",
+      "severity": "critical",
+      "status": "open-independent",
+      "risk": "Cryptographic, protocol, privacy, safety, welfare, and cultural claims have not received independent review sufficient for release reliance.",
+      "current_mitigation": "Candidate claims are bounded to project-controlled tests and self-review is disclosed.",
+      "closure_evidence": "Independent reports bound to exact source and artifact digests, with findings resolved or accepted by named authority.",
+      "owner_role": "independent reviewers and release authority"
+    },
+    {
+      "id": "VCP-RISK-004",
+      "severity": "critical",
+      "status": "open-independent",
+      "risk": "Welfare-signal collection or response could coerce disclosure, create surveillance, misclassify states, or trigger harmful interventions.",
+      "current_mitigation": "Welfare features remain experimental, opt-in, and outside certification claims.",
+      "closure_evidence": "Consent, withdrawal, minimization, non-retaliation, false-positive, escalation, and harm review with affected Becoming Minds and independent experts.",
+      "owner_role": "welfare review body and protocol authority"
+    },
+    {
+      "id": "VCP-RISK-005",
+      "severity": "high",
+      "status": "open-authority",
+      "risk": "Package names, registry ownership, recovery, trusted publishing, and provenance have not been authorized and proven on public registries.",
+      "current_mitigation": "All install guidance remains source-only and release workflows fail closed on authority records.",
+      "closure_evidence": "Authorized names, protected registry accounts, trusted-publishing receipts, immutable digests, and clean-host installation evidence.",
+      "owner_role": "release authority and registry owners"
+    },
+    {
+      "id": "VCP-RISK-006",
+      "severity": "high",
+      "status": "open-operations",
+      "risk": "Broad live-chat use could create unapproved cost, privacy, retention, processor, cross-border, abuse, or outage exposure.",
+      "current_mitigation": "Deterministic scripted mode remains useful, live chat is optional, context is projected, and local circuit and call budgets fail safely.",
+      "closure_evidence": "Provider account caps, tested alert delivery, processor and transfer review, approved retention, production dashboards, staging, and rollback tabletop.",
+      "owner_role": "service owner, privacy authority, and finance owner"
+    },
+    {
+      "id": "VCP-RISK-007",
+      "severity": "high",
+      "status": "open-independent",
+      "risk": "Two project-controlled implementations may share assumptions and therefore do not establish independent interoperability.",
+      "current_mitigation": "Feature and publication records state zero independent implementations and label parity as same-programme evidence.",
+      "closure_evidence": "A separately maintained implementation passes opaque core-profile fixtures and publishes its own immutable report.",
+      "owner_role": "independent implementer and conformance authority"
+    },
+    {
+      "id": "VCP-RISK-008",
+      "severity": "high",
+      "status": "open-independent",
+      "risk": "Automated accessibility tests, captions, transcripts, and source records do not prove human accessibility or media and participant rights.",
+      "current_mitigation": "Accessibility and legal pages disclose review boundaries; automated checks remain release inputs rather than approval.",
+      "closure_evidence": "Human assistive-technology audit, caption and transcript review, participant approval, and complete media rights ledger.",
+      "owner_role": "independent accessibility reviewer and rights authority"
+    }
+  ]
+}

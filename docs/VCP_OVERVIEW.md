@@ -83,7 +83,7 @@ and implementation surfaces named in its report.
 
 The sibling VCP-SDK repository contains:
 
-- a Python reference implementation and MCP server entry point;
+- a Python project-maintained implementation and MCP server entry point;
 - a Rust core library, CLI, and WASM package;
 - a WebMCP browser subset for registering VCP-oriented tools;
 - language-neutral fixtures and checked conformance runners.

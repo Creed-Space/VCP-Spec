@@ -3,7 +3,7 @@
 **Section**: SS12
 **Status**: Stable
 **Version**: 1.0.0
-**Reference implementation**: `services/vcp/audit.py`, `services/vcp/audit_chain.py`, `services/vcp/audit_store.py`
+**Project-maintained implementation**: `services/vcp/audit.py`, `services/vcp/audit_chain.py`, `services/vcp/audit_store.py`
 
 ---
 

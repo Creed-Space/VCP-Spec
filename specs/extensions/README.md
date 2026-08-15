@@ -75,7 +75,7 @@ Every extension progresses through a defined lifecycle:
 
 Transition from EXPERIMENTAL to STABLE requires:
 
-- A reference implementation with passing tests.
+- A project-maintained implementation with passing tests.
 - At least one independent consumer of the extension.
 - A formal review by the VCP working group.
 
