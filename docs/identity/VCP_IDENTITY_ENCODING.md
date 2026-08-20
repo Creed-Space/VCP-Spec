@@ -225,10 +225,14 @@ def csm1_to_canonical(csm1: str) -> str:
 ### 5.1 Specification
 
 ```abnf
-vcp-uri = "creed://" issuer "/" path ["@" version]
-issuer  = domain-name
-path    = segment *("/" segment)
+vcp-uri    = "creed://" issuer "/" token-path ["@" version]
+issuer     = domain-name
+token-path = segment 2*9("." segment)
 ```
+
+Canonical serializers MUST preserve the dots in the token path and MUST omit the
+optional `:NAMESPACE` suffix. Receivers MAY accept a legacy slash-separated token
+path, but MUST normalize it to dotted form before validation or reserialization.
 
 ### 5.2 Examples
 
@@ -243,11 +247,9 @@ creed://acme.com/company.acme.legal@latest
 ```python
 def canonical_to_uri(token: str, issuer: str = "creed.space") -> str:
     """Convert canonical token to URI"""
-    # Split version
-    if '@' in token:
-        base, version = token.rsplit('@', 1)
-        return f"creed://{issuer}/{base.replace('.', '/')}@{version}"
-    return f"creed://{issuer}/{token.replace('.', '/')}"
+    canonical = canonicalize(token)
+    token_without_namespace, _, _namespace = canonical.partition(':')
+    return f"creed://{issuer}/{token_without_namespace}"
 
 def uri_to_canonical(uri: str) -> str:
     """Convert URI to canonical token"""
@@ -255,23 +257,16 @@ def uri_to_canonical(uri: str) -> str:
     if not uri.startswith('creed://'):
         raise ValueError("Not a VCP URI")
 
-    rest = uri[8:]  # Remove scheme
-    parts = rest.split('/')
-    issuer = parts[0]
-    path = '/'.join(parts[1:])
-
-    # Handle version
-    version = None
-    if '@' in path:
-        path, version = path.rsplit('@', 1)
-
-    # Convert path to token
-    token = path.replace('/', '.')
-
-    if version:
-        token += f"@{version}"
-
-    return token
+    rest = uri[8:]
+    issuer, separator, path = rest.partition('/')
+    if not separator or not issuer or not path or ':' in path:
+        raise ValueError("Malformed VCP/I URI")
+    # Legacy input compatibility only. Canonical output remains dotted.
+    if '/' in path:
+        if '.' in path or any(not segment for segment in path.split('/')):
+            raise ValueError("Malformed legacy VCP/I token path")
+        path = '.'.join(path.split('/'))
+    return canonicalize(path)
 ```
 
 ---

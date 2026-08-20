@@ -1,0 +1,5 @@
+{
+  "type": "vcp-hello",
+  "version": "3.0",
+  "min_version": "3.1"
+}

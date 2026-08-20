@@ -3,20 +3,19 @@
   "$id": "https://vcp.creedspace.org/schemas/vcp-capability-handshake.schema.json",
   "title": "VCP Capability Negotiation Handshake",
   "description": "JSON Schema for VCP v3.1 capability negotiation messages: vcp-hello, vcp-ack, and vcp-error.",
-
   "$defs": {
     "semver_minor": {
       "type": "string",
-      "pattern": "^[0-9]+\\.[0-9]+$",
+      "pattern": "^(?:0|[1-9][0-9]{0,8})\\.(?:0|[1-9][0-9]{0,8})$",
       "description": "Semver major.minor version string (e.g., '3.1')."
     },
-
     "extension_id": {
       "type": "string",
       "pattern": "^VCP-X-[A-Za-z][A-Za-z0-9-]*$",
-      "description": "A VCP extension identifier (e.g., 'VCP-X-Personal')."
+      "description": "A VCP extension identifier (e.g., 'VCP-X-Personal').",
+      "minLength": 7,
+      "maxLength": 128
     },
-
     "vcp_hello": {
       "type": "object",
       "description": "Client-to-server handshake initiation.",
@@ -30,14 +29,21 @@
         },
         "extensions": {
           "type": "array",
-          "items": { "$ref": "#/$defs/extension_id" },
+          "items": {
+            "$ref": "#/$defs/extension_request"
+          },
           "uniqueItems": true,
           "default": [],
-          "description": "Extensions the client wishes to activate."
+          "description": "Extensions the client wishes to activate.",
+          "maxItems": 256
         },
         "identity": {
-          "type": ["string", "null"],
-          "description": "A VCP/I identity token, or null for anonymous access."
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "A VCP/I identity token, or null for anonymous access.",
+          "maxLength": 2048
         },
         "min_version": {
           "$ref": "#/$defs/semver_minor",
@@ -47,13 +53,16 @@
         "client_id": {
           "type": "string",
           "maxLength": 256,
-          "description": "Human-readable client identifier for diagnostics."
+          "description": "Human-readable client identifier for diagnostics.",
+          "minLength": 1
         }
       },
-      "required": ["type", "version"],
+      "required": [
+        "type",
+        "version"
+      ],
       "additionalProperties": true
     },
-
     "core_features": {
       "type": "object",
       "description": "Server-wide core security and verification features.",
@@ -88,7 +97,6 @@
       ],
       "additionalProperties": true
     },
-
     "extension_capabilities": {
       "type": "object",
       "description": "Per-extension capability advertisement. Keys are extension identifiers, values are extension-defined capability objects.",
@@ -99,9 +107,12 @@
           "description": "Capability object defined by the extension's own specification."
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "maxProperties": 256,
+      "propertyNames": {
+        "$ref": "#/$defs/extension_id"
+      }
     },
-
     "vcp_ack": {
       "type": "object",
       "description": "Server-to-client handshake confirmation.",
@@ -115,15 +126,21 @@
         },
         "supported": {
           "type": "array",
-          "items": { "$ref": "#/$defs/extension_id" },
+          "items": {
+            "$ref": "#/$defs/extension_id"
+          },
           "uniqueItems": true,
-          "description": "Extensions from the client's list that the server supports and activated."
+          "description": "Extensions from the client's list that the server supports and activated.",
+          "maxItems": 256
         },
         "unsupported": {
           "type": "array",
-          "items": { "$ref": "#/$defs/extension_id" },
+          "items": {
+            "$ref": "#/$defs/extension_id"
+          },
           "uniqueItems": true,
-          "description": "Extensions from the client's list that the server does not support."
+          "description": "Extensions from the client's list that the server does not support.",
+          "maxItems": 256
         },
         "capabilities": {
           "$ref": "#/$defs/extension_capabilities"
@@ -134,12 +151,14 @@
         "server_id": {
           "type": "string",
           "maxLength": 256,
-          "description": "Human-readable server identifier for diagnostics."
+          "description": "Human-readable server identifier for diagnostics.",
+          "minLength": 1
         },
         "session_id": {
           "type": "string",
           "maxLength": 128,
-          "description": "Opaque session identifier for correlation."
+          "description": "Opaque session identifier for correlation.",
+          "minLength": 1
         }
       },
       "required": [
@@ -152,7 +171,6 @@
       ],
       "additionalProperties": true
     },
-
     "error_code": {
       "type": "string",
       "enum": [
@@ -165,7 +183,6 @@
       ],
       "description": "Machine-readable error code for handshake failures."
     },
-
     "vcp_error": {
       "type": "object",
       "description": "Server-to-client handshake failure.",
@@ -179,41 +196,72 @@
         "message": {
           "type": "string",
           "maxLength": 1024,
-          "description": "Human-readable error description."
+          "description": "Human-readable error description.",
+          "minLength": 1
         },
         "supported_versions": {
           "type": "array",
-          "items": { "$ref": "#/$defs/semver_minor" },
+          "items": {
+            "$ref": "#/$defs/semver_minor"
+          },
           "uniqueItems": true,
-          "description": "Versions the server supports. MUST be present when code is VERSION_UNSUPPORTED."
+          "description": "Versions the server supports. MUST be present when code is VERSION_UNSUPPORTED.",
+          "minItems": 1,
+          "maxItems": 64
         },
         "retry_after": {
-          "type": ["integer", "null"],
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 0,
           "description": "Seconds the client should wait before retrying. Null means no retry expected."
         }
       },
-      "required": ["type", "code", "message"],
+      "required": [
+        "type",
+        "code",
+        "message"
+      ],
       "if": {
-        "properties": { "code": { "const": "VERSION_UNSUPPORTED" } }
+        "properties": {
+          "code": {
+            "const": "VERSION_UNSUPPORTED"
+          }
+        }
       },
       "then": {
         "properties": {
           "supported_versions": {
             "type": "array",
-            "items": { "$ref": "#/$defs/semver_minor" },
+            "items": {
+              "$ref": "#/$defs/semver_minor"
+            },
             "uniqueItems": true
           }
         },
-        "required": ["supported_versions"]
+        "required": [
+          "supported_versions"
+        ]
       },
       "additionalProperties": true
+    },
+    "extension_request": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "A bounded requested extension string. Receivers ignore entries that do not match extension_id."
     }
   },
-
   "oneOf": [
-    { "$ref": "#/$defs/vcp_hello" },
-    { "$ref": "#/$defs/vcp_ack" },
-    { "$ref": "#/$defs/vcp_error" }
+    {
+      "$ref": "#/$defs/vcp_hello"
+    },
+    {
+      "$ref": "#/$defs/vcp_ack"
+    },
+    {
+      "$ref": "#/$defs/vcp_error"
+    }
   ]
 }

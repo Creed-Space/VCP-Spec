@@ -1,0 +1,8 @@
+{
+  "type": "vcp-hello",
+  "version": "3.1",
+  "min_version": "1.0",
+  "extensions": ["VCP-X-Personal", "invalid-extension"],
+  "identity": null,
+  "future_minor_field": true
+}

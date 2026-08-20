@@ -435,7 +435,7 @@ Economic adherence maps onto the existing 0-5 scale but with economic semantics:
 N3+$P+$I          # Nanny persona, level 3, Procurement + Infrastructure scopes
 
 # Micro tier (API parameters)
-Z4:ACME+$P+$A@1.0.0   # Sentinel persona, level 4, ACME namespace, Procurement + Advertising
+Z4+$P+$A:ACME@1.0.0   # Sentinel persona, level 4, ACME namespace, Procurement + Advertising
 
 # Multi-line token (full context)
 VCP:2.0:agent-ad-buyer-7
@@ -1222,11 +1222,11 @@ This mandate expires at the end of the current grant period: [DATE]
 
 ```
 # Scenario: Marketing agent, moderate risk, advertising scope
-Z3:ACME+$A@1.0.0
+Z3+$A:ACME@1.0.0
 # Sentinel persona, adherence 3, ACME namespace, advertising scope
 
 # Scenario: Infrastructure agent, conservative, procurement + infrastructure
-N4:INFRA+$P+$I@2.0.0
+N4+$P+$I:INFRA@2.0.0
 # Nanny persona, adherence 4, INFRA namespace, procurement + infrastructure
 
 # Full multi-line token for economic context

@@ -88,7 +88,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "d7094a38500078cf36e9a274bf7e2b9332b2f8f3ce5897ad6d748d57a725b28e",
+      "sha256": "b44555da1d6af3e4a92104d2dbdf258c7fe1eda2f9e28aba08e580a93d1b4b19",
       "status": "active-source-candidate"
     },
     {
@@ -136,11 +136,141 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "example",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-adaptation-context.invalid-whitespace.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "915b51126e81d691f625f9eea3523a15b90a0644af90b0cb111bc827d2934312",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-capability-handshake.invalid-leading-zero-version.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "f3ef89369e6c6b36c67fb9add6b111fd72bf21122b6b87e76d1f477fb18ca8bf",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-capability-handshake.invalid-version-range.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "d8f0ee6c3bbf85ad6c3b5f50c9289b5ded43f92e76491a0259f0fe50535ac30d",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/examples/invalid/vcp-manifest-v1.invalid-composition-layer.json",
       "publication_class": "illustrative",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "f2d56e79e33528046ad450f6b9409393a80008a94e7704b0eb973b2516b61911",
+      "sha256": "b2d8f199b8fee66596571b176b6aa88d71c883fd86dc6932a26d0516d0176217",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-manifest-v1.invalid-duplicate-signer-id.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "7b6388cc0ce90a516d95adcd8f52927d15dcc9837864662f62631cb9f981a825",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-manifest-v1.invalid-multisig-without-signers.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "85f79a71f27eccb2eba5653ac1192d626c4f8b32f8af5ea348fe21edb678a53a",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-manifest-v1.invalid-signature-length.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "d3b7563647444b41ebc451daeed7b63c22a578e257069f61014c327459b6a069",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-manifest-v1.invalid-threshold-exceeds-signers.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "fa5a3d11a4bfe094234af183345c46b606ba2d4a4607b264dcb51061a5d964c2",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-manifest-v1.invalid-unsigned-required-fields.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "f7bb6f1d2ce6459a58c9c8e815825b350855e6e9400478f0d2f0ecc554c1e35c",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-messaging-v1.2.invalid-signature-length.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "924ffec1a96b04b4ede184cc5ead52b96d52e025139b794bd8e8684c4d8c5bfd",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-semantics-csm1.invalid-compact-duplicate-scope.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "e915c1d0986d6c098b82070356a1173b25afc9f6b3f7ee2e940fc6a4fbcdffa5",
       "status": "illustrative"
     },
     {
@@ -162,11 +292,89 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "example",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-semantics-csm1.invalid-contradictory-fields.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "70571f401812253e68ef0ec4767dd1e6f85bab6e410c6c4054e456ab62bf3792",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-adaptation-context.valid.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "624637f6dc22036293128b697e63ae9468d3bb59a942c92a695b59cb8d0ba7ec",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-capability-handshake.valid-ack.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "71896cdd105ca9c3de60f2cb7f6322f6925c3aacf3f7f10025304320bd91ad44",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-capability-handshake.valid-hello.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "672d1254524653fea2622576c9971c98bd77a889d43ebf88aa62d70e94d9ad5d",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-manifest-v1.valid-multisig.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "7fc676bd1d3707ee3a350f7cc3b169b50446d98da0dbf1c021912a9c2ffdcf12",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/examples/vcp-manifest-v1.valid.json",
       "publication_class": "illustrative",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "4dc618c2309e90804b371fe3b693a329c5339a19aa76c381a8ce2fe78ecf7845",
+      "sha256": "6ba96eb2f81a9a93b3f55b377cd1e87a7a7ca560381ff750668f83f1be74d3a5",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-messaging-v1.2.valid.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "aef9232aca0b5d34b2e84749b1b57ef1a918547a374ed35ed5c65a3f3691fbc7",
       "status": "illustrative"
     },
     {
@@ -179,7 +387,7 @@
       "publication_class": "illustrative",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "06e5cb9581d7b6ffacb045596d01845f1adea69bb82a6980f4f1cfdb2047b094",
+      "sha256": "7a4cc12538b5c6cafbf8aee1ef16701e5bb23b93d733ed424962baf19ccb5631",
       "status": "illustrative"
     },
     {
@@ -192,7 +400,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "a63cbe331e3607a5fa4569edf845a93da07eb92569e7b160cdc02c1199d00836",
+      "sha256": "bc2653b0b7fbfc5ec3b8acf45e6ba602d1462d18096496fbe63e4cf9c9ce416e",
       "status": "source-schema-candidate"
     },
     {
@@ -205,7 +413,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "22ef67cc5073f7a5b6376c0b87474d3fea73854a67d638534553aaaff181b804",
+      "sha256": "74bea1725444b95e8933a40806a9153e5b8d171e4ad821a120a22e29b7986ed4",
       "status": "source-schema-candidate"
     },
     {
@@ -244,7 +452,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "1ce3e26edd32a595e344655b347c5deb7385b6a888bc3d8acd09649a420fd0b8",
+      "sha256": "d8cb9cc364a9ff97fa6ce8e9af6db4560face440fe00ed82ee869e853464a253",
       "status": "source-schema-candidate"
     },
     {
@@ -257,7 +465,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "5f5cc10bca5994e4c340f5f9eaf87428a1e0e074c634e34499b5dd95010de398",
+      "sha256": "2f7bad2da6a8dbcaaa36a644b64548700db0a9c8ada64d9e6f317eb5048c2eda",
       "status": "source-schema-candidate"
     },
     {
@@ -296,7 +504,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "cd33265fa6c17fa34c8facb41c881db50152add5c4df3788fb830be56cb13fd7",
+      "sha256": "a4f1e24fe177e21eb8156ab8535843ce11269c7f7ba98a845a2d0e5530ba5b9d",
       "status": "source-schema-candidate"
     },
     {
@@ -335,7 +543,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "5cfc4d829dcb093cd1827b215aa45b14eda382fd5cd7256d59e810a508786eba",
+      "sha256": "db6a44a23dfac79783831aa6287cb96bb1da02baa3f1289473c6890f698cf683",
       "status": "active-source-candidate"
     },
     {
@@ -361,7 +569,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "dbc109d00a01aa9b1da9d5ab68c81fe53e040a4d08a30bc2ae96325c4d46b992",
+      "sha256": "0e824c334ac1a989b2a9c0b1ab7dde877ab4e2760251b429123fd4d2d13af684",
       "status": "active-source-candidate"
     },
     {
@@ -374,7 +582,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "f09f92291a6e8e40a5aeb5b5ab5d773a897afe3973d926a2d7ba3953d29ef69c",
+      "sha256": "ea829c87cae112ea9785b44bd4b4260573613187a4e0f9a0d4ba4a9af0d1fcee",
       "status": "active-source-candidate"
     },
     {
@@ -387,7 +595,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "6ddf2f5c07e194b1c0570f639751f5eac6c447e2aa8a6d9fd23706ed6ad48b94",
+      "sha256": "b7eb1a64fcb5dc5cd32575f9fd06c63ae1421d003b04c337730ea342cdfb30dc",
       "status": "active-source-candidate"
     },
     {
@@ -400,7 +608,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "9cb9466d962537d2ed34204bf2642357f3313e2c73342eef5ce70103c72157d6",
+      "sha256": "15f01204285b9374b1f7ef6acd88bbfa167b6cdf37d79ef93cbd2b2812f3b87a",
       "status": "active-source-candidate"
     },
     {
@@ -439,7 +647,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "7e02dedb1ed17affc489ecf8ad7162d64ae88b68e06b311e02ba63a3debccbf4",
+      "sha256": "d5e6dbfc92218a7e22932ab23517fb3d2e1390fc2559860168330ed3b7ced17d",
       "status": "active-source-candidate"
     },
     {
@@ -452,7 +660,7 @@
       "publication_class": "historical",
       "replacement": "specs/VCP_SPECIFICATION_v3.1.md",
       "review_date": "2026-08-15",
-      "sha256": "a01c64c6d4366fead47b3b1ad705aa4ea23b67ef828321d527803684ebc27a47",
+      "sha256": "0639e55de0f34c82787c05dd0fec6fb4b34a15d6ff23e75400acafdc2b4785e6",
       "status": "superseded-source-generation"
     },
     {
@@ -478,7 +686,7 @@
       "publication_class": "historical",
       "replacement": "specs/VCP_SPECIFICATION_v3.1.md",
       "review_date": "2026-08-15",
-      "sha256": "49c86a5531e340a678b74a74a641e9152f2945a60622e77db84857a8bd6998a0",
+      "sha256": "b59eaa4997180267949ab5d3130b892fb5de00cde24f36131239711d7dcd2d4f",
       "status": "superseded-source-generation"
     },
     {
@@ -517,7 +725,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "b4370b832d003e9fd3810ed4b59bee50c6086ff3097bce9e4a91eae141e81a13",
+      "sha256": "36455636a048329265c0e60cdc0864e608f7212117f4992419efc196ae87eb02",
       "status": "active-source-candidate"
     },
     {

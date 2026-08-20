@@ -1081,7 +1081,7 @@ Hooks MAY return `modify` with a corrected output or a retry directive. A hook r
 | **Payload** | The current context, the current constitution, elapsed time since last check, and session metadata |
 | **Typical Use** | Re-evaluate context every 60 seconds, refresh external data sources, detect stale sessions |
 
-The interval MUST be configurable per hook. The runtime MUST NOT fire periodic hooks more frequently than once per second. Periodic hooks returning `modify` SHALL trigger a context re-evaluation. Periodic hooks returning `abort` SHALL be treated as `continue` (periodic hooks cannot abort the pipeline since they are not part of a pipeline event).
+The interval MUST be configurable per hook. The runtime MUST NOT fire periodic hooks more frequently than once per second. Periodic hooks returning `modify` SHALL trigger a context re-evaluation. A periodic hook returning `abort` MUST stop the current periodic chain and discard that cycle's staged changes. It does not cancel an independently running request pipeline.
 
 ### 6.3 Hook Interface
 
@@ -1286,10 +1286,12 @@ All hooks within a chain MUST execute synchronously and sequentially. Implementa
 
 Each hook declares a `timeout_ms` value. The runtime MUST enforce this timeout:
 
-1. If a hook exceeds its `timeout_ms`, the runtime MUST terminate the hook's execution
-2. A timed-out hook SHALL be treated as if it returned `{ status: "continue" }`
-3. The runtime MUST log the timeout event with the hook name, configured timeout, and actual elapsed time
-4. The maximum permitted `timeout_ms` value is 30000 (30 seconds). Implementations MUST reject hook registrations with `timeout_ms` > 30000
+1. The runtime MUST execute the hook through an isolatable or cooperatively cancellable boundary and MUST stage, rather than immediately commit, hook modifications.
+2. At the deadline, the runtime MUST stop awaiting or accepting the hook result, request cancellation where the execution model supports it, and discard all staged modifications.
+3. A timed-out hook MUST abort the current chain and its pipeline operation. The runtime MUST retain the last committed context, constitution, and chain state.
+4. An execution model that cannot preempt a handler MUST isolate that handler from shared mutable adaptation state and from external side-effect authority. Implementations MUST reject hook registration or execution modes that cannot enforce this isolation.
+5. The runtime MUST log the timeout event with the hook name, configured timeout, and actual elapsed time, and SHOULD increment a timeout counter.
+6. The maximum permitted `timeout_ms` value is 30000 (30 seconds). Implementations MUST reject hook registrations with `timeout_ms` > 30000.
 
 #### 6.5.5 No LLM Invocation Constraint
 
@@ -1302,7 +1304,9 @@ Hooks MUST NOT invoke the LLM, either directly or indirectly. This constraint ex
 
 #### 6.5.6 Chain State
 
-The `chain_state` field in `HookInput` provides a mutable key-value store that persists across hooks within a single chain execution. Chain state is initialized as an empty map at the start of each chain execution and is discarded when the chain completes. Chain state MUST NOT persist across different hook types or different pipeline events.
+The `chain_state` field in `HookInput` provides a key-value store that persists across hooks within a single chain execution. Chain state is initialized as an empty map at the start of each chain execution and is discarded when the chain completes. Chain state MUST NOT persist across different hook types or different pipeline events.
+
+The runtime MUST give each hook a staged snapshot of chain state and MUST commit that snapshot only after the hook returns a timely, schema-valid result. On timeout, exception, or invalid result, the runtime MUST discard the snapshot. Context and constitution modifications follow the same commit rule, so a failed hook cannot leave partial state behind.
 
 ### 6.6 Hook Registration and Lifecycle
 
@@ -1345,17 +1349,16 @@ Implementations SHOULD emit these events to a structured logging system. Impleme
 
 ### 6.7 Hook Error Handling
 
-If a hook action throws an exception:
+Hook execution failures are fail-closed. If a hook action throws an exception, exceeds its deadline, or returns a result that does not conform to `HookResult`:
 
-1. The runtime MUST catch the exception
-2. The runtime MUST log the exception with full context (hook name, input summary, stack trace)
-3. The failed hook SHALL be treated as if it returned `{ status: "continue" }`
-4. The chain MUST continue with the next hook
-5. The runtime MUST increment an error counter for the hook
+1. The runtime MUST catch or classify the failure and emit `hook.error` or `hook.timeout` with bounded, redacted diagnostics.
+2. The runtime MUST discard the hook's staged context, constitution, and chain-state modifications.
+3. The runtime MUST abort the current chain and cancel the associated pipeline operation, retaining the last committed state.
+4. The runtime MUST increment an error counter for the hook. It MUST NOT invoke any later hook in that chain.
 
-This fail-open default ensures that a buggy hook does not block the entire adaptation pipeline. Deployments that require fail-closed semantics SHOULD implement a meta-hook that monitors error counts and aborts when thresholds are exceeded, or configure `fail_closed: true` on the hook definition.
+Predicate evaluation semantics in Section 6.4.4 remain distinct: an unevaluable boundary predicate is treated as triggered, while an unevaluable expression predicate is skipped. Neither rule permits a hook action failure to continue the pipeline.
 
-If more than 50% of hooks in a single chain fail (exception or timeout), the runtime MUST log a cascading failure warning and emit a `hook.cascade_failure` event.
+Because the first execution failure aborts a chain, cascading-failure percentages within a single chain are not meaningful. Implementations SHOULD monitor failure rates across chain executions and MAY disable a repeatedly failing hook, but MUST keep the affected pipeline operation fail-closed until an authorized recovery succeeds.
 
 ### 6.8 Hook Composition Across Creeds
 

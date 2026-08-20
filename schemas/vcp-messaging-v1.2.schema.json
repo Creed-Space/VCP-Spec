@@ -27,34 +27,42 @@
     "message_id": {
       "type": "string",
       "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36,
       "description": "UUIDv7 message identifier for deduplication"
     },
     "sender": {
       "type": "string",
       "minLength": 1,
+      "maxLength": 2048,
       "description": "Agent identifier (URI or opaque string)"
     },
     "recipient": {
       "type": "string",
       "minLength": 1,
+      "maxLength": 2048,
       "description": "Target agent identifier or 'broadcast'"
     },
     "timestamp": {
       "type": "string",
       "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,9})?Z$",
+      "maxLength": 30,
       "description": "ISO 8601 UTC timestamp of message creation"
     },
     "payload": {
       "type": "object",
+      "maxProperties": 16,
       "description": "Type-specific payload (validated by conditional schemas below)"
     },
     "signature": {
       "type": "string",
-      "pattern": "^base64:[A-Za-z0-9+/=]+$",
+      "pattern": "^base64:[A-Za-z0-9+/]{85}[AQgw]==$",
       "description": "Ed25519 signature of canonical message (excluding this field)"
     }
   },
   "additionalProperties": false,
+  "maxProperties": 8,
 
   "allOf": [
     {
@@ -107,6 +115,7 @@
         "context": {
           "type": "string",
           "minLength": 1,
+          "maxLength": 8192,
           "description": "Enneagram context string (emoji-encoded)",
           "examples": [
             "⏰🌅|📍🏡|👥👶",
@@ -117,6 +126,7 @@
         "constitution_ref": {
           "type": "string",
           "pattern": "^creed://[a-z0-9.-]+/[a-zA-Z0-9._/@-]+$",
+          "maxLength": 2048,
           "description": "Active constitution URI (creed:// scheme)",
           "examples": ["creed://creed.space/family.safe.guide@1.2.0"]
         },
@@ -130,6 +140,7 @@
 
     "r_line_state": {
       "type": "object",
+      "maxProperties": 5,
       "properties": {
         "cognitive": {
           "type": "number",
@@ -197,6 +208,7 @@
         "constitution_ref": {
           "type": "string",
           "pattern": "^creed://[a-z0-9.-]+/[a-zA-Z0-9._/@-]+$",
+          "maxLength": 2048,
           "description": "Constitution URI (creed:// scheme)",
           "examples": ["creed://creed.space/enterprise.compliance@2.0.1"]
         },
@@ -216,27 +228,36 @@
 
     "scope_object": {
       "type": "object",
+      "maxProperties": 3,
       "properties": {
         "model_families": {
           "type": "array",
+          "maxItems": 50,
+          "uniqueItems": true,
           "items": {
             "type": "string",
-            "pattern": "^[a-zA-Z0-9*-]+$"
+            "pattern": "^[a-zA-Z0-9*-]+$",
+            "maxLength": 256
           },
           "description": "Allowed model families (glob patterns)",
           "examples": [["gpt-*", "claude-*"]]
         },
         "purposes": {
           "type": "array",
+          "maxItems": 50,
+          "uniqueItems": true,
           "items": {
             "type": "string",
-            "pattern": "^[a-z0-9-]+$"
+            "pattern": "^[a-z0-9-]+$",
+            "maxLength": 256
           },
           "description": "Allowed purposes",
           "examples": [["general-assistant", "coding-assistant"]]
         },
         "environments": {
           "type": "array",
+          "maxItems": 4,
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "enum": ["production", "staging", "development", "testing"]
@@ -254,6 +275,7 @@
         "constraints": {
           "type": "array",
           "minItems": 1,
+          "maxItems": 100,
           "items": {
             "$ref": "#/$defs/constraint_object"
           },
@@ -275,6 +297,7 @@
         "type": {
           "type": "string",
           "minLength": 1,
+          "maxLength": 128,
           "description": "Constraint type identifier (e.g. 'topic_block', 'token_limit', 'audience_restrict', 'safety_floor')",
           "examples": ["topic_block", "token_limit", "audience_restrict", "safety_floor"]
         },
@@ -284,6 +307,7 @@
         "source_constitution_ref": {
           "type": "string",
           "pattern": "^creed://[a-z0-9.-]+/[a-zA-Z0-9._/@-]+$",
+          "maxLength": 2048,
           "description": "Constitution URI that originated this constraint"
         }
       },
@@ -308,6 +332,7 @@
         "context": {
           "type": "string",
           "minLength": 1,
+          "maxLength": 8192,
           "description": "Current Enneagram context string at time of escalation",
           "examples": [
             "⏰☀️|📍🏡|👥👶|🧠😰",
