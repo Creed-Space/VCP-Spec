@@ -179,7 +179,7 @@ def build_archive(
                     )
         with temporary.open("rb") as stream:
             os.fsync(stream.fileno())
-        os.chmod(temporary, 0o644)
+        os.chmod(temporary, 0o600)
         os.replace(temporary, output)
     except BaseException:
         temporary.unlink(missing_ok=True)

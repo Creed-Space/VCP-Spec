@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextlib
 import io
 import json
+import stat
 import sys
 import tarfile
 import tempfile
@@ -44,6 +45,8 @@ class ReleasePackagingTests(unittest.TestCase):
             build_archive(first, paths, 123456789)
             build_archive(second, paths, 123456789)
         self.assertEqual(first.read_bytes(), second.read_bytes())
+        self.assertEqual(stat.S_IMODE(first.stat().st_mode), 0o600)
+        self.assertEqual(stat.S_IMODE(second.stat().st_mode), 0o600)
 
         with tarfile.open(first, "r:gz") as archive:
             members = archive.getmembers()
