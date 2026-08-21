@@ -166,8 +166,9 @@ declare which extensions are supported, and advertise capabilities.
 
 **Invariants:**
 
-- `supported` UNION `unsupported` MUST equal the client's `extensions` list
-  (set equality, order independent).
+- `supported` UNION `unsupported` MUST equal the valid identifiers from the
+  client's `extensions` list after invalid identifiers are ignored (set
+  equality, order independent). The two lists MUST be disjoint.
 - Every key in `capabilities` MUST appear in `supported`.
 - `capabilities` MUST NOT contain keys for unsupported extensions.
 
@@ -557,12 +558,10 @@ Resources for inactive extensions MUST NOT appear in `resources/list`.
 
 ### 10.3 Extension Probing
 
-- The `unsupported` list in `vcp-ack` reveals which extensions a server
-  does not implement. This is acceptable because extension support is not
-  a secret. Servers that wish to avoid revealing unimplemented extensions
-  MAY omit the `unsupported` field and return only `supported`. Clients
-  MUST infer unsupported extensions as
-  `client.extensions - server.supported`.
+- The `unsupported` list in `vcp-ack` reveals which requested extensions a
+  server does not implement. This is acceptable because extension support is
+  not a secret. Conforming servers MUST emit both `supported` and `unsupported`
+  so they form the required partition of valid requested extension identifiers.
 
 ### 10.4 Replay Protection
 
@@ -628,8 +627,8 @@ A VCP server is **Negotiation-Conformant** if it:
 
 1. Responds to `vcp-hello` with `vcp-ack` or `vcp-error` within 5 seconds.
 2. Correctly implements the version negotiation algorithm.
-3. Reports `supported` and `unsupported` as a partition of the client's
-   `extensions` list.
+3. Filters invalid extension identifiers, then reports `supported` and
+   `unsupported` as a disjoint partition of the valid requested identifiers.
 4. Populates `capabilities` only for `supported` extensions.
 5. Populates `core_features` accurately.
 6. Assumes VCP 1.0 when no `vcp-hello` is received within the timeout.

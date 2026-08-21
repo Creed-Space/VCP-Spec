@@ -1,0 +1,18 @@
+{
+  "context": "⏰🌅|📍🏡|👥👶‖🧠focused:4",
+  "parsed": {
+    "situational": {
+      "time": ["🌅"],
+      "space": ["🏡"],
+      "company": ["👶"]
+    },
+    "personal": {
+      "cognitive_state": {
+        "value": "focused",
+        "intensity": 4
+      }
+    }
+  },
+  "conformance_level": "VCP-Standard",
+  "session_id": "session-1"
+}

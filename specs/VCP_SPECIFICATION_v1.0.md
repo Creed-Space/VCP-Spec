@@ -446,15 +446,30 @@ def compute_content_hash(content: str) -> str:
 
 ### 5.3 Signature Computation
 
+Ed25519 signatures MUST decode to exactly 64 bytes and use canonical standard base64 with the `base64:` prefix. Ed448 signatures MUST decode to exactly 114 bytes. Decoders MUST reject invalid alphabet, padding, length, non-canonical pad bits, and an encoding that does not round-trip byte-for-byte through the standard-base64 encoder.
+
 ```python
+import base64
+import re
+
 def compute_signature(manifest: dict, private_key) -> str:
     canonical = canonicalize_manifest(manifest)
     signature = ed25519_sign(private_key, canonical)
-    return base64.b64encode(signature).decode('ascii')
+    if len(signature) != 64:
+        raise ValueError('Ed25519 returned an invalid signature length')
+    return f"base64:{base64.b64encode(signature).decode('ascii')}"
 
 def verify_signature(manifest: dict, public_key) -> bool:
     canonical = canonicalize_manifest(manifest)
-    signature = base64.b64decode(manifest['signature']['value'])
+    encoded = manifest.get('signature', {}).get('value', '')
+    if re.fullmatch(r'base64:[A-Za-z0-9+/]{85}[AQgw]==', encoded) is None:
+        return False
+    signature_b64 = encoded[7:]
+    signature = base64.b64decode(signature_b64, validate=True)
+    if len(signature) != 64:
+        return False
+    if base64.b64encode(signature).decode('ascii') != signature_b64:
+        return False
     return ed25519_verify(public_key, canonical, signature)
 ```
 
@@ -935,6 +950,7 @@ For high-stakes constitutions:
 {
   "signature": {
     "algorithm": "ed25519-multisig",
+    "signed_fields": ["vcp_version", "bundle", "issuer", "timestamps", "budget", "safety_attestation"],
     "threshold": 2,
     "signers": [
       {"id": "creed.space", "signature": "..."},
@@ -943,6 +959,8 @@ For high-stakes constitutions:
   }
 }
 ```
+
+A multisignature object MUST omit the single-signature `value` field. It MUST declare the common `signed_fields`, a threshold no greater than the number of unique signers, and one canonical 64-byte Ed25519 signature per unique signer identifier.
 
 ---
 

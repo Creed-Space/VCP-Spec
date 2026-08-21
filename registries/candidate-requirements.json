@@ -259,7 +259,7 @@
           "MUST"
         ],
         "line": 169,
-        "line_sha256": "eafe1b559ca98110139a2439e740d6691bb6cc2c244bab4eac0b6d4e65efa274",
+        "line_sha256": "f49634e029675c45d290ea75619f88c55ffce642c8c5145323b7e3845209b977",
         "path": "specs/core/capability-negotiation.md"
       },
       {
@@ -267,6 +267,14 @@
           "MUST"
         ],
         "line": 171,
+        "line_sha256": "d18c9f58e240cc3eedb01e1bcbacba5f64173cf75c5f7e51ecd95427a2a53206",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 172,
         "line_sha256": "724c6e5c743c0efbcd2ec48919f26f6ed523aa17bb9f433c30e4f5cde384006f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -274,7 +282,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 172,
+        "line": 173,
         "line_sha256": "3b8f02aee0aabeadbe1778ae90c7adf4bba432ef70967b9361b40b4d6a843e92",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -283,7 +291,7 @@
           "MUST",
           "REQUIRED"
         ],
-        "line": 192,
+        "line": 193,
         "line_sha256": "bac5b3ee5f8c53376672b013377e092ff2bccca64b159b4217a2b2225dd9cf80",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -291,7 +299,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 193,
+        "line": 194,
         "line_sha256": "d6f03bc34cfa59f64853e5d4432d227923c6b047f9f2a91d132a8948ddc44458",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -299,7 +307,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 194,
+        "line": 195,
         "line_sha256": "438dcbd2329d5028b53b7f75d84e78b415afce755767f74c4e1a4b42365771f2",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -307,7 +315,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 195,
+        "line": 196,
         "line_sha256": "1cbc10a1c9da47daa972cba9a9358661280bb560ffacef29e51f6299598106df",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -315,7 +323,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 196,
+        "line": 197,
         "line_sha256": "ebc0e464be1c7e8628ace2a4fdfd496b09b3a929fe830c52690c96089f23fa3c",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -323,7 +331,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 204,
+        "line": 205,
         "line_sha256": "1dfadf52fe278eeab52132801858237a41245861ef2f9d2201b45ef02cbcffff",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -331,7 +339,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 205,
+        "line": 206,
         "line_sha256": "eaa7442c4c4319498286e8bcc4f00e0ab151e01d50db922205eb189122eb537a",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -339,7 +347,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 206,
+        "line": 207,
         "line_sha256": "119feab938efc40a4029e749bffb34ca8999644057925e09f77f2266ad1e94ed",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -347,7 +355,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 207,
+        "line": 208,
         "line_sha256": "b8dad654c82cf9459a60c458af5dded129c2bf5da833587a57dd29f8862fd49d",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -355,7 +363,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 208,
+        "line": 209,
         "line_sha256": "6d99f7288245c42fca525215fbed4e20bd05b546ff8d695f41656e7d5d487d12",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -363,7 +371,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 209,
+        "line": 210,
         "line_sha256": "4f4c19f703a775dd951deb5837e4a622ee463e03cb3cf8c5596f2ee36a78de1e",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -371,7 +379,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 213,
+        "line": 214,
         "line_sha256": "4fad22b2067e2256d9630d39bb583457f8fa6f242bdb40126dca35aeea39b32c",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -379,7 +387,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 214,
+        "line": 215,
         "line_sha256": "ce9a84484786c62ff0f4f6c3d8f071dd8cb412c45f1fc3517e94b84469504278",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -387,7 +395,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 215,
+        "line": 216,
         "line_sha256": "a8d7876c9f0426883234711c511b1c6963b39e03d983866b044b12b6f0f8b962",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -395,7 +403,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 217,
+        "line": 218,
         "line_sha256": "17e1fa4952547ca2bb8ad67c44a45bfdaed9964daef209d9610cb8fccff0a688",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -403,7 +411,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 225,
+        "line": 226,
         "line_sha256": "39e843e9c0fbacb10ace5895d27a659a06c68c2fbc4d7ad948ef58da9ca50a15",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -411,7 +419,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 239,
+        "line": 240,
         "line_sha256": "8281fd686210aae27ff8d7bcb4fcd551cf8ed2e3f9cb1da958f26e4e4a511620",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -419,7 +427,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 240,
+        "line": 241,
         "line_sha256": "e4c1f4a29cfb6e31ca7272ef071df9bf58379d56222a6a62fd80dacaadd52547",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -427,7 +435,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 242,
+        "line": 243,
         "line_sha256": "2a51cf8e9937adfe8f1ebbae0177ac1a4f4b33175dc691998b19c85b58e2ccb5",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -435,7 +443,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 243,
+        "line": 244,
         "line_sha256": "33cbe3795267e253ddaa1ff14baf36e60d96eb3cdfd04cc5ab735f0f71bd464f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -443,7 +451,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 244,
+        "line": 245,
         "line_sha256": "a106e623c4bc24179f14d6b2c6078b77566244b5fffadcf458d4f4141180da68",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -451,7 +459,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 313,
+        "line": 314,
         "line_sha256": "5b1647d327b2e1d0de2fccccdfb421f3d4c1f6fb962535340b641843a33383a6",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -459,7 +467,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 314,
+        "line": 315,
         "line_sha256": "70797a1034eec0b28b885a007c02315d9c10dc522ca46fdd26e30c84a13cab84",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -467,7 +475,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 315,
+        "line": 316,
         "line_sha256": "72ddc42cc12c37c56bc750d3aa65cd4b17c80453429812371da04c480eb8fd17",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -475,7 +483,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 326,
+        "line": 327,
         "line_sha256": "ab756cfac350578a603dc7663a93a5b4d53fe283c1ca99897d6155feaebdd003",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -483,7 +491,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 327,
+        "line": 328,
         "line_sha256": "588c601065a39a1a7e1fe7bd2ec092897b4ce5b751bd353c94ebc2bde3fa0eca",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -491,7 +499,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 334,
+        "line": 335,
         "line_sha256": "4257d9d663e5ea0e8c75029f0a1d582be009009520b3719822a572656eb4f9a5",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -499,7 +507,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 335,
+        "line": 336,
         "line_sha256": "8828ca769081ee066ad0a1c8635565ea6f5d7520e74fe0d7321a9cee400e79e6",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -507,7 +515,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 407,
+        "line": 408,
         "line_sha256": "f43e888c280cabfcb39321f2355eb1cb3af103a382bc494a6c161e2aa4839b93",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -515,7 +523,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 410,
+        "line": 411,
         "line_sha256": "ae9835d474745e2fcffc7c16b0c3ac3bb659a34626a0eab7f2b6c81b03c7cb0f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -523,7 +531,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 411,
+        "line": 412,
         "line_sha256": "f374211b91ca07d12663173e03ac1b9110445e263270811a265a83ccc142d7bc",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -531,7 +539,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 416,
+        "line": 417,
         "line_sha256": "ce3d498d4945bdfb1a36bd75a60aad92c891f88a10103ff92d82ec1c99239549",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -539,7 +547,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 417,
+        "line": 418,
         "line_sha256": "12e6f50cb9828034867d5b910a74dd647cf85c545fe906d758a9b8afa8a71aa1",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -547,7 +555,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 435,
+        "line": 436,
         "line_sha256": "7ea74a1e6fb4ca9c944486c7735787a6dae92e6995e4979360327031cce74718",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -555,7 +563,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 436,
+        "line": 437,
         "line_sha256": "292fd553e5979be304fde2839e79efc8544dfab697b65f4d0fe5d82e9349bd46",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -563,7 +571,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 438,
+        "line": 439,
         "line_sha256": "928f5dec6caa75d17c5fbccedc9820b62977d219954310f2d1826a13d1ffde7f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -571,7 +579,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 508,
+        "line": 509,
         "line_sha256": "0281b55d0e559683489c8eacaec16d79ed54b0611004a732befda30adefe7f0a",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -579,7 +587,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 513,
+        "line": 514,
         "line_sha256": "d7e21ab765c060252a4a4e7850e1bc9d1b5da9f7faaa158d044e0aa2605ecf30",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -587,7 +595,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 516,
+        "line": 517,
         "line_sha256": "b53404885684e8587df38e8d4b574e2d8540071ddbfc0515ba0dd1e5695500f3",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -595,7 +603,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 535,
+        "line": 536,
         "line_sha256": "97c0bf50583a846bb9e785f762c4962a9a4f9ad50c140fb7669ed53a941ed3a5",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -603,7 +611,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 543,
+        "line": 544,
         "line_sha256": "6af8f7ce2cddbe4537594fd087430d69b39de32b1df2803649610bedde882df1",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -611,7 +619,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 546,
+        "line": 547,
         "line_sha256": "decdd146fe773a553b58a6fe26f4e69857d45557a15074fc8b6d27b4a1eeed56",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -619,7 +627,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 551,
+        "line": 552,
         "line_sha256": "2028c219a4631cd45932c44b797333337033484386040841eafe4f078df40c23",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -627,7 +635,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 554,
+        "line": 555,
         "line_sha256": "164a2813a5893a97f005a8be206f6a5a662792cd08c97ffe4cdb0646a6e839a9",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -635,31 +643,23 @@
         "keywords": [
           "MUST"
         ],
-        "line": 556,
+        "line": 557,
         "line_sha256": "95050f137b085594d41bd07e51eb59b0c304ccac5bd2e361718e6fe25ff8afa4",
-        "path": "specs/core/capability-negotiation.md"
-      },
-      {
-        "keywords": [
-          "MAY"
-        ],
-        "line": 563,
-        "line_sha256": "526d1c92af44d7f716f373015bd2265defbf56d93438e2da59568c1268f5740f",
         "path": "specs/core/capability-negotiation.md"
       },
       {
         "keywords": [
           "MUST"
         ],
-        "line": 564,
-        "line_sha256": "14e069285eefc895157aae2626e13e42b90e7af3909bf795570f33508c563925",
+        "line": 563,
+        "line_sha256": "16d932fe1ef88065e171186134a903adb4e4fa230cd6103cca4fec9b2e8ffe5b",
         "path": "specs/core/capability-negotiation.md"
       },
       {
         "keywords": [
           "MUST NOT"
         ],
-        "line": 572,
+        "line": 571,
         "line_sha256": "c2de561c988abe8a48654708388fef48bf94222b0de48d4213791e98fcc59421",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -667,7 +667,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 604,
+        "line": 603,
         "line_sha256": "8d56ec23a4ab9ead8d50918d22408d843289d52fe756c67baf4215ef5a2044bf",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -675,7 +675,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 616,
+        "line": 615,
         "line_sha256": "73ddb30dcc9d030e7e28fd63d6b7ac240b441b642dc6569b6d9a5c361e766ba0",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -683,7 +683,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 617,
+        "line": 616,
         "line_sha256": "d1f517dec41e759c65d14530f74343efe8fcabde379126c44935b63089ceed1a",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -1747,7 +1747,7 @@
     },
     {
       "path": "specs/core/capability-negotiation.md",
-      "sha256": "b4370b832d003e9fd3810ed4b59bee50c6086ff3097bce9e4a91eae141e81a13"
+      "sha256": "36455636a048329265c0e60cdc0864e608f7212117f4992419efc196ae87eb02"
     },
     {
       "path": "specs/core/extension-lifecycle.md",

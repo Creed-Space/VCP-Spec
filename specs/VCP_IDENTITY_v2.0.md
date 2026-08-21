@@ -314,10 +314,20 @@ def csm1_to_canonical(csm1: str) -> str:
 #### 2.4.1 Grammar
 
 ```abnf
-vcp-uri = "creed://" issuer "/" path ["@" version]
-issuer  = domain-name
-path    = segment *("/" segment)
+vcp-uri    = "creed://" issuer "/" token-path ["@" version]
+issuer     = domain-name
+token-path = segment 2*9("." segment)
 ```
+
+Canonical VCP/I URI serialization MUST preserve the dots in the canonical token
+path. Serializers MUST NOT translate those dots into URI slash separators. The
+optional `:NAMESPACE` suffix is outside the VCP/I URI grammar and MUST be omitted
+from URI serialization; applications that require it MUST carry it separately.
+
+For backward compatibility, receivers MAY accept a legacy slash-separated token
+path such as `family/safe/guide`. A receiver that accepts that legacy form MUST
+normalize it to `family.safe.guide` before validation, comparison, or
+reserialization. Serializers MUST emit only the dotted canonical form.
 
 #### 2.4.2 Examples
 
@@ -340,29 +350,36 @@ Implementations MUST accept the `creed://` scheme. Implementations SHOULD also a
 ```python
 def canonical_to_uri(token: str, issuer: str = "creed.space") -> str:
     """Convert canonical token to URI"""
-    if '@' in token:
-        base, version = token.rsplit('@', 1)
-        return f"creed://{issuer}/{base.replace('.', '/')}@{version}"
-    return f"creed://{issuer}/{token.replace('.', '/')}"
+    canonical = canonicalize(token)
+    token_without_namespace, _, _namespace = canonical.partition(':')
+    return f"creed://{issuer}/{token_without_namespace}"
 
 def uri_to_canonical(uri: str) -> str:
     """Convert URI to canonical token"""
-    if not uri.startswith('creed://'):
+    if uri.startswith('vcp://'):
+        path = uri[6:]
+        if '/' in path:
+            raise ValueError("vcp:// requires a dotted token path")
+    elif uri.startswith('creed://'):
+        rest = uri[8:]
+        issuer, separator, path = rest.partition('/')
+        if not separator or not issuer or not path:
+            raise ValueError("Malformed VCP URI")
+        # Legacy input compatibility only. Canonical output remains dotted.
+        if '/' in path:
+            if '.' in path or any(not segment for segment in path.split('/')):
+                raise ValueError("Malformed legacy VCP/I token path")
+            path = '.'.join(path.split('/'))
+    else:
         raise ValueError("Not a VCP URI")
-    rest = uri[8:]  # Remove scheme
-    parts = rest.split('/')
-    issuer = parts[0]
-    path = '/'.join(parts[1:])
-    # Handle version
-    version = None
-    if '@' in path:
-        path, version = path.rsplit('@', 1)
-    # Convert path to token
-    token = path.replace('/', '.')
-    if version:
-        token += f"@{version}"
-    return token
+    if ':' in path:
+        raise ValueError("VCP/I URIs cannot carry a namespace suffix")
+    return canonicalize(path)
 ```
+
+Receivers MUST validate the converted result against the canonical-token grammar
+before using it. The `uri_to_canonical` result intentionally has no namespace
+suffix because VCP/I URI encoding does not carry that field.
 
 ### 2.5 Hash Format
 
@@ -3024,7 +3041,7 @@ All encoding algorithms MUST be deterministic: the same input MUST produce the s
 
 1. **Canonical**: Apply the canonicalization algorithm from Section 2.2.3 before any encoding
 2. **CSM1**: Mapping is deterministic via the `CSM1_TO_UVC_MAPPING` table
-3. **URI**: Path separators are deterministically replaced (`'.'` to `'/'`)
+3. **URI**: Canonical token dots are preserved in the single URI path component
 4. **Hash**: SHA-256 of UTF-8-encoded canonical form
 5. **Obfuscated**: HMAC-SHA256 with provided secret, deterministic index selection
 6. **Phonetic**: Character-by-character NATO phonetic alphabet mapping

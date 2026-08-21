@@ -171,7 +171,7 @@ An `on_violation` hook fires after the output evaluation layer detects that an L
 | **Payload** | The current context, the current constitution, elapsed time since last check, and session metadata |
 | **Typical Use** | Re-evaluate context every 60 seconds, refresh external data sources, detect stale sessions |
 
-Periodic hooks fire on a timer independent of pipeline events. The interval MUST be configurable per hook. The runtime MUST NOT fire periodic hooks more frequently than once per second. Periodic hooks returning `modify` SHALL trigger a context re-evaluation with the modified context. Periodic hooks returning `abort` SHALL be treated as `continue` (periodic hooks cannot abort the pipeline since they are not part of a pipeline event).
+Periodic hooks fire on a timer independent of pipeline events. The interval MUST be configurable per hook. The runtime MUST NOT fire periodic hooks more frequently than once per second. Periodic hooks returning `modify` SHALL trigger a context re-evaluation with the modified context. A periodic hook returning `abort` MUST stop the current periodic chain and discard that cycle's staged changes. It does not cancel an independently running request pipeline.
 
 ---
 
@@ -345,11 +345,12 @@ All hooks within a chain MUST execute synchronously and sequentially. Implementa
 
 Each hook declares a `timeout_ms` value. The runtime MUST enforce this timeout:
 
-1. If a hook exceeds its `timeout_ms`, the runtime MUST terminate the hook's execution
-2. A timed-out hook SHALL be treated as if it returned `{ status: "continue" }`
-3. The runtime MUST log the timeout event with the hook name, configured timeout, and actual elapsed time
-4. The runtime SHOULD increment a timeout counter for monitoring
-5. The maximum permitted `timeout_ms` value is 30000 (30 seconds). Implementations MUST reject hook registrations with `timeout_ms` > 30000
+1. The runtime MUST execute the hook through an isolatable or cooperatively cancellable boundary and MUST stage, rather than immediately commit, hook modifications.
+2. At the deadline, the runtime MUST stop awaiting or accepting the hook result, request cancellation where supported, and discard all staged modifications.
+3. A timed-out hook MUST abort the current chain and its pipeline operation, retaining the last committed context, constitution, and chain state.
+4. If an execution model cannot preempt a handler, that handler MUST be isolated from shared mutable adaptation state and external side-effect authority. Registration or execution modes that cannot enforce this isolation MUST be rejected.
+5. The runtime MUST log the timeout with the hook name, configured timeout, and actual elapsed time, and SHOULD increment a timeout counter.
+6. The maximum permitted `timeout_ms` value is 30000 (30 seconds). Implementations MUST reject hook registrations with `timeout_ms` > 30000.
 
 ### 5.5 No LLM Invocation Constraint
 
@@ -370,6 +371,8 @@ The `chain_state` field in `HookInput` provides a mutable key-value store that p
 - Hook B (priority 50) reads `chain_state["compliance_checked"]` and skips redundant work
 
 Chain state is initialized as an empty map at the start of each chain execution and is discarded when the chain completes. Chain state MUST NOT persist across different hook types or different pipeline events.
+
+Each hook MUST receive a staged snapshot of chain state. The runtime commits that snapshot only after the hook returns a timely, schema-valid result. A timeout, exception, or invalid result discards the snapshot and any staged context or constitution modification, preventing partial state corruption.
 
 ---
 
@@ -424,50 +427,27 @@ Implementations SHOULD emit these events to a structured logging system. Impleme
 
 ## 7. Error Handling
 
-### 7.1 Hook Exceptions
+### 7.1 Fail-Closed Execution Failures
 
-If a hook action throws an exception:
+If a hook action throws an exception or exceeds its deadline:
 
-1. The runtime MUST catch the exception
-2. The runtime MUST log the exception with full context (hook name, input summary, stack trace)
-3. The failed hook SHALL be treated as if it returned `{ status: "continue" }`
-4. The chain MUST continue with the next hook
-5. The runtime MUST increment an error counter for the hook
-
-This fail-open default ensures that a buggy hook does not block the entire adaptation pipeline. Deployments that require fail-closed semantics SHOULD implement a meta-hook that monitors error counts and aborts when thresholds are exceeded.
+1. The runtime MUST catch or classify the failure.
+2. The runtime MUST emit `hook.error` or `hook.timeout` with bounded, redacted diagnostics.
+3. The runtime MUST discard staged context, constitution, and chain-state changes.
+4. The runtime MUST abort the chain and cancel its pipeline operation while retaining the last committed state.
+5. The runtime MUST increment the hook's error or timeout counter and MUST NOT invoke later hooks in that chain.
 
 ### 7.2 Invalid Hook Results
 
-If a hook returns a result that does not conform to the `HookResult` schema:
+If a hook returns a result that does not conform to `HookResult`, including a `modify` result whose proposed values fail validation, the runtime MUST emit `hook.error`, discard all staged changes, abort the chain, and cancel the associated pipeline operation.
 
-1. The runtime MUST treat it as `{ status: "continue" }`
-2. The runtime MUST log a validation error
-3. The chain MUST continue
+### 7.3 Repeated Failures
 
-### 7.3 Cascading Failures
+The first execution failure aborts a chain, so a cascading-failure percentage within one chain is undefined. Implementations SHOULD monitor failure rates across chain executions and MAY disable a repeatedly failing hook until authorized recovery. A disabled or removed hook affects future chains only; it does not convert the failed pipeline operation into success.
 
-If more than 50% of hooks in a single chain fail (exception or timeout), the runtime MUST:
+### 7.4 Predicate Failures Are Separate
 
-1. Log a cascading failure warning
-2. Complete the chain with remaining hooks
-3. Emit a `hook.cascade_failure` event
-4. Optionally disable the failing hooks until manually re-enabled
-
-### 7.4 Fail-Open vs. Fail-Closed
-
-The default behavior for hook failures is fail-open (`continue`). Deployments MAY configure specific hooks as fail-closed by wrapping the hook action:
-
-```
-# Pseudocode: fail-closed wrapper
-function fail_closed_wrapper(original_action):
-  return function(input):
-    try:
-      return original_action(input)
-    catch exception:
-      return HookResult(status: "abort", reason: "fail-closed: " + exception.message)
-```
-
-Implementations SHOULD provide a built-in `fail_closed: bool` field on hook definitions as a convenience.
+The boundary/expression predicate rule remains as defined in Section 4.4: an unevaluable boundary predicate is treated as triggered, and an unevaluable expression predicate is skipped. That rule determines whether an action is invoked. Once invoked, action exceptions, timeouts, and invalid results always fail closed.
 
 ---
 
@@ -875,20 +855,21 @@ class ChainExecutor:
         current_context = context
         current_constitution = constitution
         results = []
-        errors = 0
 
         for hook in chain:
             if not hook.enabled:
                 emit_event("hook.skipped", {"hook": hook.name, "reason": "disabled"})
                 continue
 
-            # Evaluate predicate
+            # Give the hook staged copies. Nothing below mutates committed state
+            # until a timely, schema-valid result has been checked.
+            staged_chain_state = deep_copy(chain_state)
             hook_input = HookInput(
-                context=current_context,
-                constitution=current_constitution,
+                context=deep_copy(current_context),
+                constitution=deep_copy(current_constitution),
                 event=event,
                 session=get_session_info(session_id),
-                chain_state=chain_state
+                chain_state=staged_chain_state
             )
 
             if hook.condition is not None:
@@ -896,31 +877,77 @@ class ChainExecutor:
                     emit_event("hook.skipped", {"hook": hook.name, "reason": "predicate_false"})
                     continue
 
-            # Execute with timeout
+            # The isolation boundary has no direct shared-state or external
+            # side-effect authority. It may return staged changes only.
             emit_event("hook.fired", {"hook": hook.name})
             start_time = now_ms()
 
             try:
-                result = execute_with_timeout(hook.action, hook_input, hook.timeout_ms)
+                result = execute_isolated_with_timeout(
+                    hook.action, hook_input, hook.timeout_ms
+                )
             except TimeoutError:
                 elapsed = now_ms() - start_time
+                request_cancellation(hook.name)
                 emit_event("hook.timeout", {
                     "hook": hook.name,
                     "timeout_ms": hook.timeout_ms,
                     "elapsed_ms": elapsed
                 })
-                result = HookResult(status="continue")
-                errors += 1
+                return ChainResult(
+                    status="aborted",
+                    reason="hook timeout",
+                    context=current_context,
+                    constitution=current_constitution,
+                    hook_results=results,
+                    aborted_by=hook.name
+                )
             except Exception as exc:
                 emit_event("hook.error", {
                     "hook": hook.name,
-                    "error": str(exc),
-                    "traceback": format_traceback(exc)
+                    "error": redact_and_bound(str(exc))
                 })
-                result = HookResult(status="continue")
-                errors += 1
+                return ChainResult(
+                    status="aborted",
+                    reason="hook exception",
+                    context=current_context,
+                    constitution=current_constitution,
+                    hook_results=results,
+                    aborted_by=hook.name
+                )
 
             duration = now_ms() - start_time
+            if duration > hook.timeout_ms:
+                # Covers runtimes that can reject a late result but cannot
+                # preempt the handler itself. Isolation makes discarding safe.
+                request_cancellation(hook.name)
+                emit_event("hook.timeout", {
+                    "hook": hook.name,
+                    "timeout_ms": hook.timeout_ms,
+                    "elapsed_ms": duration
+                })
+                return ChainResult(
+                    status="aborted",
+                    reason="late hook result",
+                    context=current_context,
+                    constitution=current_constitution,
+                    hook_results=results,
+                    aborted_by=hook.name
+                )
+            if not validate_hook_result(result):
+                emit_event("hook.error", {
+                    "hook": hook.name,
+                    "error": "invalid HookResult"
+                })
+                return ChainResult(
+                    status="aborted",
+                    reason="invalid hook result",
+                    context=current_context,
+                    constitution=current_constitution,
+                    hook_results=results,
+                    aborted_by=hook.name
+                )
+
             result.duration_ms = duration
             results.append((hook.name, result))
 
@@ -945,15 +972,7 @@ class ChainExecutor:
                     current_context = result.modified_context
                 if result.modified_constitution is not None:
                     current_constitution = result.modified_constitution
-
-        # Check for cascading failures
-        total_executed = len([r for r in results])
-        if total_executed > 0 and errors / total_executed > 0.5:
-            emit_event("hook.cascade_failure", {
-                "hook_type": hook_type,
-                "total": total_executed,
-                "errors": errors
-            })
+            chain_state = staged_chain_state
 
         return ChainResult(
             status="completed",

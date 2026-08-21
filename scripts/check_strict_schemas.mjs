@@ -22,6 +22,12 @@ const schemas = [
   ...filesBelow(path.join(root, "specs", "extensions")).filter(
     (file) => path.basename(file) === "schema.json",
   ),
+  ...filesBelow(path.join(root, "governance")).filter((file) =>
+    file.endsWith(".schema.json"),
+  ),
+  ...filesBelow(path.join(root, "status")).filter((file) =>
+    file.endsWith(".schema.json"),
+  ),
 ].sort();
 
 let failed = false;

@@ -1,0 +1,13 @@
+{
+  "vcp_message": "1.2",
+  "type": "context_share",
+  "message_id": "019502a4-7e5c-7000-8000-000000000001",
+  "sender": "agent://source",
+  "recipient": "agent://target",
+  "timestamp": "2026-02-15T10:30:00Z",
+  "payload": {
+    "context": "x",
+    "constitution_ref": "creed://creed.space/family.safe.guide@1.2.0"
+  },
+  "signature": "base64:YQ=="
+}

@@ -116,9 +116,9 @@ namespace         = 1*8UALPHA
 ; Version (optional, semver or alias)
 version           = semver / "latest" / "canary"
 semver            = major "." minor "." patch
-major             = 1*3DIGIT
-minor             = 1*3DIGIT
-patch             = 1*3DIGIT
+major             = "0" / (%x31-39 *2DIGIT)
+minor             = "0" / (%x31-39 *2DIGIT)
+patch             = "0" / (%x31-39 *2DIGIT)
 
 ; Character classes
 UALPHA            = %x41-5A                    ; Uppercase A-Z
@@ -135,7 +135,7 @@ CSM1_PATTERN = r"""
     (?P<scopes>(?:\+[FWPETOVAHSR])*)     # Scopes (optional, +X format)
     (?::(?P<namespace>[A-Z]{1,8}))?      # Namespace (optional, :XXX format)
     (?:@(?P<version>                     # Version (optional, @X.Y.Z format)
-        (?:[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})
+        (?:(?:0|[1-9][0-9]{0,2})\.(?:0|[1-9][0-9]{0,2})\.(?:0|[1-9][0-9]{0,2}))
         |latest
         |canary
     ))?
@@ -465,15 +465,15 @@ CSM1 supports three encoding tiers for different use cases:
 
 | Tier | Name | Length | Format | Use Case |
 |------|------|--------|--------|----------|
-| **A** | NANO | 2-15 | `<P><A>[+<S>]*` | Wire protocols, HTTP headers |
-| **B** | MICRO | 8-25 | `<P><A>:<NS>[:<FLAGS>]` | API parameters, config files |
-| **C** | COMPACT | 20-50 | `CS1\|<full>\|<flags>` | Human debugging, logging |
+| **A** | NANO | 2-24 | `<P><A>[+<S>]*` | Wire protocols, HTTP headers |
+| **B** | MICRO | 2-45 | `<P><A>[+<S>]*[:<NS>][@<VERSION>]` | API parameters, config files |
+| **C** | COMPACT | 18-294 | `CS1\|<persona>\|<level>\|<token>\|<scopes>` | Human debugging, logging |
 
 ### 6.2 Tier A: NANO Format
 
 ```
 NANO: persona + adherence + scopes
-Example: N5+F+E
+Example: N5+E+F
 
 Grammar:
   nano = persona adherence *("+", scope)
@@ -488,15 +488,15 @@ Examples:
 ### 6.3 Tier B: MICRO Format
 
 ```
-MICRO: persona + adherence [ + scopes ] + ":" + namespace
+MICRO: persona + adherence [ + scopes ] [ ":" + namespace ] [ "@" + version ]
 Example: N5+F:ELEM
 
 Grammar:
-  micro = persona adherence *("+" scope) ":" namespace
+  micro = persona adherence *("+" scope) [":" namespace] ["@" version]
 
 Examples:
   N5:ELEM       → Nanny, level 5, ELEM namespace
-  N5+F+E:ELEM   → Nanny, level 5, ELEM namespace, Family + Education
+  N5+E+F:ELEM   → Nanny, level 5, ELEM namespace, Family + Education
   C3+W:ACME     → Custom, level 3, ACME namespace, Work scope
 ```
 
@@ -504,18 +504,20 @@ Examples:
 
 ```
 COMPACT: "CS1|" + persona_name + "|" + adherence + "|" + token + "|" + flags
-Example: CS1|nanny|5|family.safe.guide|F,E
+Example: CS1|nanny|5|family.safe.guide|E,F
 
 Grammar:
   compact = "CS1|" persona-name "|" adherence "|" token "|" scope-list
   persona-name = lowercase-persona-name
-  token = uvc-token
+  token = uvc-token  ; MUST already be in canonical UVC form
   scope-list = scope *("," scope)
 
+COMPACT accepts canonical UVC tokens only. Numeric semantic-version components MUST be `0` or begin with `1`-`9`; serializers normalize leading zeroes before emitting the token.
+
 Examples:
-  CS1|nanny|5|family.safe.guide|F,E
+  CS1|nanny|5|family.safe.guide|E,F
   CS1|sentinel|4|secure.privacy.guardian|P,W
-  CS1|custom|3|company.acme.legal|W,O
+  CS1|custom|3|company.acme.legal|O,W
 ```
 
 ### 6.5 Format Conversion
@@ -534,7 +536,8 @@ class CSM1Converter:
     def micro_to_compact(self, micro: str, uvc_token: str) -> str:
         """Convert MICRO to COMPACT format"""
         parsed = self.parse(micro)
-        return f"CS1|{parsed.persona_name}|{parsed.adherence}|{uvc_token}|{','.join(parsed.scopes)}"
+        scopes = ','.join(sorted(set(parsed.scopes)))
+        return f"CS1|{parsed.persona_name}|{parsed.adherence}|{uvc_token}|{scopes}"
 
     def compact_to_nano(self, compact: str) -> str:
         """Convert COMPACT to NANO format"""
@@ -542,7 +545,7 @@ class CSM1Converter:
         # CS1|persona|adherence|token|scopes
         persona_name = parts[1]
         adherence = parts[2]
-        scopes = parts[4].split(',') if parts[4] else []
+        scopes = sorted(set(parts[4].split(','))) if parts[4] else []
 
         persona_code = self._persona_name_to_code(persona_name)
         scope_str = ''.join(f'+{s}' for s in scopes)
@@ -571,19 +574,19 @@ class CSM1Code:
     scopes: List[str]         # List of scope codes
     namespace: Optional[str]  # Custom namespace (uppercase)
     version: Optional[str]    # Semver or alias
+    uvc_token: Optional[str] = None  # Present only in COMPACT input
 
     def to_nano(self) -> str:
         """Serialize to NANO format"""
-        scopes = ''.join(f'+{s}' for s in self.scopes)
+        scopes = ''.join(f'+{s}' for s in sorted(set(self.scopes)))
         return f"{self.persona}{self.adherence}{scopes}"
 
     def to_micro(self) -> str:
         """Serialize to MICRO format"""
-        base = f"{self.persona}{self.adherence}"
+        scopes = ''.join(f'+{s}' for s in sorted(set(self.scopes)))
+        result = f"{self.persona}{self.adherence}{scopes}"
         if self.namespace:
-            base += f":{self.namespace}"
-        scopes = ''.join(f'+{s}' for s in self.scopes)
-        result = base + scopes
+            result += f":{self.namespace}"
         if self.version:
             result += f"@{self.version}"
         return result
@@ -599,6 +602,16 @@ class CSM1Parser:
         'N': 'nanny', 'Z': 'sentinel', 'G': 'godparent', 'A': 'ambassador',
         'M': 'muse', 'D': 'mediator', 'C': 'custom',
     }
+    SCOPE_CONFLICTS = {frozenset(pair) for pair in (('F', 'A'), ('V', 'A'), ('H', 'A'))}
+
+    @classmethod
+    def _validate_scopes(cls, scopes: List[str]) -> List[str]:
+        if len(scopes) != len(set(scopes)):
+            raise ValueError("Duplicate CSM1 scope")
+        active = set(scopes)
+        if any(pair <= active for pair in cls.SCOPE_CONFLICTS):
+            raise ValueError("Conflicting CSM1 scopes")
+        return scopes
 
     # Compiled regex patterns
     NANO_PATTERN = re.compile(
@@ -606,11 +619,17 @@ class CSM1Parser:
     )
 
     MICRO_PATTERN = re.compile(
-        r'^([NZGAMDC])([0-5])(?::([A-Z]{1,8}))?((?:\+[FWPETOVAHSR])*)(?:@(.+))?$'
+        r'^([NZGAMDC])([0-5])((?:\+[FWPETOVAHSR])*)(?::([A-Z]{1,8}))?'
+        r'(?:@((?:(?:0|[1-9][0-9]{0,2})\.(?:0|[1-9][0-9]{0,2})\.(?:0|[1-9][0-9]{0,2})|latest|canary)))?$'
     )
 
     COMPACT_PATTERN = re.compile(
-        r'^CS1\|(\w+)\|([0-5])\|([^|]+)\|([A-Z,]*)$'
+        r'^CS1\|(nanny|sentinel|godparent|ambassador|muse|mediator|custom)'
+        r'\|([0-5])\|([a-z][a-z0-9-]{0,31}'
+        r'(?:\.[a-z][a-z0-9-]{0,31}){2,9}'
+        r'(?:@(?:[\^~]?(?:0|[1-9][0-9]{0,4})\.(?:0|[1-9][0-9]{0,4})\.(?:0|[1-9][0-9]{0,4})|latest|canary))?'
+        r'(?::[A-Z][A-Z0-9]{0,31})?)'
+        r'\|([FWPETOVAHSR](?:,[FWPETOVAHSR])*)$'
     )
 
     def parse(self, code: str) -> CSM1Code:
@@ -620,7 +639,8 @@ class CSM1Parser:
         Raises:
             ValueError: If code is invalid
         """
-        code = code.strip()
+        if code != code.strip():
+            raise ValueError("CSM1 codes MUST NOT contain surrounding whitespace")
 
         # Try COMPACT format first
         if code.startswith('CS1|'):
@@ -634,8 +654,8 @@ class CSM1Parser:
         return self._parse_nano(code)
 
     def _parse_nano(self, code: str) -> CSM1Code:
-        """Parse NANO format: N5+F+E"""
-        match = self.NANO_PATTERN.match(code)
+        """Parse NANO format: N5+E+F"""
+        match = self.NANO_PATTERN.fullmatch(code)
         if not match:
             raise ValueError(f"Invalid NANO CSM1 code: {code}")
 
@@ -643,7 +663,9 @@ class CSM1Parser:
         adherence = int(match.group(2))
         scope_str = match.group(3)
 
-        scopes = [s for s in scope_str.split('+') if s]
+        scopes = self._validate_scopes(
+            [s for s in scope_str.split('+') if s]
+        )
 
         return CSM1Code(
             raw=code,
@@ -657,17 +679,21 @@ class CSM1Parser:
 
     def _parse_micro(self, code: str) -> CSM1Code:
         """Parse MICRO format: N5+F:ELEM@1.2.0"""
-        match = self.MICRO_PATTERN.match(code)
+        match = self.MICRO_PATTERN.fullmatch(code)
         if not match:
             raise ValueError(f"Invalid MICRO CSM1 code: {code}")
 
         persona = match.group(1)
         adherence = int(match.group(2))
-        namespace = match.group(3)  # May be None
-        scope_str = match.group(4) or ''
+        scope_str = match.group(3) or ''
+        namespace = match.group(4)  # May be None
         version = match.group(5)    # May be None
 
-        scopes = [s for s in scope_str.split('+') if s]
+        scopes = self._validate_scopes(
+            [s for s in scope_str.split('+') if s]
+        )
+        if persona == 'C' and namespace is None:
+            raise ValueError("Custom persona requires a namespace")
 
         return CSM1Code(
             raw=code,
@@ -680,8 +706,8 @@ class CSM1Parser:
         )
 
     def _parse_compact(self, code: str) -> CSM1Code:
-        """Parse COMPACT format: CS1|nanny|5|family.safe.guide|F,E"""
-        match = self.COMPACT_PATTERN.match(code)
+        """Parse COMPACT format: CS1|nanny|5|family.safe.guide|E,F"""
+        match = self.COMPACT_PATTERN.fullmatch(code)
         if not match:
             raise ValueError(f"Invalid COMPACT CSM1 code: {code}")
 
@@ -700,7 +726,9 @@ class CSM1Parser:
         if not persona:
             raise ValueError(f"Unknown persona name: {persona_name}")
 
-        scopes = [s for s in scope_str.split(',') if s]
+        scopes = self._validate_scopes(
+            [s for s in scope_str.split(',') if s]
+        )
 
         return CSM1Code(
             raw=code,
@@ -710,6 +738,7 @@ class CSM1Parser:
             scopes=scopes,
             namespace=None,  # Extracted from UVC token if needed
             version=None,
+            uvc_token=uvc_token,
         )
 
     def validate(self, code: str) -> bool:
@@ -780,13 +809,13 @@ def canonical_csm1(parsed: CSM1Code) -> str:
     - No whitespace
     - Uppercase namespace
     """
-    scopes = sorted(parsed.scopes)
+    scopes = sorted(set(parsed.scopes))
     result = f"{parsed.persona}{parsed.adherence}"
+
+    result += ''.join(f'+{s}' for s in scopes)
 
     if parsed.namespace:
         result += f":{parsed.namespace.upper()}"
-
-    result += ''.join(f'+{s}' for s in scopes)
 
     if parsed.version:
         result += f"@{parsed.version}"
@@ -804,22 +833,22 @@ def canonical_csm1(parsed: CSM1Code) -> str:
 # NANO format
 "N5"              # ✓ Nanny, level 5
 "N5+F"            # ✓ Nanny, level 5, Family scope
-"N5+F+E"          # ✓ Nanny, level 5, Family + Education
+"N5+E+F"          # ✓ Nanny, level 5, Family + Education
 "Z4+P+W"          # ✓ Sentinel, level 4, Privacy + Work
 "D3+S+E"          # ✓ Mediator, level 3, Social + Education
 "G4"              # ✓ Godparent, level 4
 
 # MICRO format
 "N5:ELEM"         # ✓ Nanny, level 5, ELEM namespace
-"N5+F+E:ELEM"     # ✓ With scopes
+"N5+E+F:ELEM"     # ✓ With scopes
 "C3+W:ACME"       # ✓ Custom, ACME namespace, Work
 "D3:FAIR@1.2.0"   # ✓ Mediator, FAIR namespace, version 1.2.0
 "A3:CORP@latest"  # ✓ Ambassador, CORP namespace, latest version
 
 # COMPACT format
-"CS1|nanny|5|family.safe.guide|F,E"
+"CS1|nanny|5|family.safe.guide|E,F"
 "CS1|sentinel|4|secure.privacy.guardian|P,W"
-"CS1|custom|3|company.acme.legal|W,O"
+"CS1|custom|3|company.acme.legal|O,W"
 ```
 
 ### 9.2 Invalid CSM1 Codes
@@ -850,7 +879,7 @@ def canonical_csm1(parsed: CSM1Code) -> str:
 # Common use cases
 COMMON_CONFIGS = {
     # Child content
-    "family_safe": "N5+F+E",
+    "family_safe": "N5+E+F",
 
     # Corporate assistant
     "work_professional": "A3+W+P",
@@ -955,10 +984,10 @@ class CSM1Code:
     def to_micro(self) -> str:
         """Serialize to MICRO format"""
         result = f"{self.persona.value}{self.adherence}"
-        if self.namespace:
-            result += f":{self.namespace}"
         scope_str = ''.join(f'+{s.value}' for s in sorted(self.scopes, key=lambda x: x.value))
         result += scope_str
+        if self.namespace:
+            result += f":{self.namespace}"
         if self.version:
             result += f"@{self.version}"
         return result
@@ -1048,9 +1077,9 @@ T = Technical
 
 FORMAT
 ------
-NANO:    N5+F+E
-MICRO:   N5+F+E:ELEM@1.2.0
-COMPACT: CS1|nanny|5|family.safe.guide|F,E
+NANO:    N5+E+F
+MICRO:   N5+E+F:ELEM@1.2.0
+COMPACT: CS1|nanny|5|family.safe.guide|E,F
 ```
 
 ### B. Compatibility with VCP Bundle

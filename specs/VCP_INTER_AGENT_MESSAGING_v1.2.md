@@ -105,7 +105,7 @@ Every inter-agent message MUST be a JSON object conforming to the following stru
 | `recipient` | string | REQUIRED | Target agent identifier, or the literal string `"broadcast"` for broadcast delivery. |
 | `timestamp` | string | REQUIRED | ISO 8601 UTC timestamp of message creation. MUST include timezone designator `Z`. |
 | `payload` | object | REQUIRED | Type-specific payload object. Structure is defined per message type in [Section 4](#4-message-types). |
-| `signature` | string | OPTIONAL | Ed25519 signature of the canonical payload. Format: `"base64:<base64-encoded-bytes>"`. See [Section 7](#7-security). |
+| `signature` | string | OPTIONAL | Ed25519 signature of the canonical envelope excluding `signature`. It MUST be a 64-byte signature encoded as 88 canonical standard-base64 characters and prefixed with `"base64:"`. See [Section 7](#7-security). |
 
 ### 3.3 Message ID Requirements
 
@@ -126,6 +126,10 @@ Agent identifiers SHOULD use the URI scheme `agent://<host>/<agent-id>`, where:
 When all communicating agents reside within a single process, opaque string identifiers (e.g. `"parent-001"`, `"child-003"`) MAY be used.
 
 The special recipient value `"broadcast"` indicates the message is intended for all known peers of the sender. See [Section 5.3](#53-broadcast-delivery) for broadcast delivery semantics.
+
+### 3.5 Resource Bounds
+
+Receivers MUST reject an encoded message larger than 64 KiB before schema validation or cryptographic work. Sender and recipient identifiers and constitution references MUST NOT exceed 2,048 characters. Context strings MUST NOT exceed 8,192 characters. Each scope list MUST contain at most 50 unique entries, and `constraints` MUST contain at most 100 entries. Implementations SHOULD impose stricter deployment-specific limits when appropriate, but MUST NOT silently truncate signed data.
 
 ---
 
@@ -428,28 +432,22 @@ After resolving an escalation, the parent MAY resume the child by sending a `con
 | Between agents operated by different organizations | MUST sign messages |
 | Between agents within a single process sharing memory | MAY omit signatures |
 
-When present, the `signature` field MUST contain a valid Ed25519 signature encoded as `"base64:<base64-encoded-bytes>"`.
+When present, the `signature` field MUST contain a 64-byte Ed25519 signature encoded as 88 canonical standard-base64 characters and prefixed with `"base64:"`.
 
 ### 7.2 Signature Computation
 
 The signature covers the canonical form of the message envelope **excluding** the `signature` field itself. Canonicalization follows RFC 8785 (JSON Canonicalization Scheme), consistent with the manifest canonicalization defined in VCP v1.0 Section 5.
 
 ```python
-import json
 import base64
+import re
 
 def sign_message(message: dict, private_key) -> str:
     """Sign a VCP inter-agent message."""
     # Remove signature before canonicalizing
     to_sign = {k: v for k, v in message.items() if k != 'signature'}
 
-    # RFC 8785 JCS: sorted keys, no whitespace, UTF-8
-    canonical = json.dumps(
-        to_sign,
-        sort_keys=True,
-        separators=(',', ':'),
-        ensure_ascii=False
-    ).encode('utf-8')
+    canonical = rfc8785_canonicalize(to_sign)
 
     signature = ed25519_sign(private_key, canonical)
     return f"base64:{base64.b64encode(signature).decode('ascii')}"
@@ -459,15 +457,17 @@ def verify_message(message: dict, public_key) -> bool:
     """Verify a VCP inter-agent message signature."""
     to_verify = {k: v for k, v in message.items() if k != 'signature'}
 
-    canonical = json.dumps(
-        to_verify,
-        sort_keys=True,
-        separators=(',', ':'),
-        ensure_ascii=False
-    ).encode('utf-8')
+    canonical = rfc8785_canonicalize(to_verify)
 
-    signature_b64 = message['signature'].removeprefix('base64:')
-    signature = base64.b64decode(signature_b64)
+    encoded = message.get('signature', '')
+    if re.fullmatch(r'base64:[A-Za-z0-9+/]{85}[AQgw]==', encoded) is None:
+        return False
+    signature_b64 = encoded[7:]
+    signature = base64.b64decode(signature_b64, validate=True)
+    if len(signature) != 64:
+        return False
+    if base64.b64encode(signature).decode('ascii') != signature_b64:
+        return False
     return ed25519_verify(public_key, canonical, signature)
 ```
 

@@ -25,7 +25,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 6. [Escalation Protocol](#6-escalation-protocol)
 7. [Transport Bindings](#7-transport-bindings)
 8. [Security Considerations](#8-security-considerations)
-9. [JSON Schema Reference](#9-json-schema-reference)
+9. [Schema Validation](#9-schema-validation)
 10. [Changelog](#10-changelog)
 
 ---
@@ -360,7 +360,7 @@ Every inter-agent message MUST be a JSON object conforming to the following stru
 | `recipient` | string | REQUIRED | Target agent identifier, or the literal string `"broadcast"` for broadcast delivery. |
 | `timestamp` | string | REQUIRED | ISO 8601 UTC timestamp of message creation. MUST include timezone designator `Z`. |
 | `payload` | object | REQUIRED | Type-specific payload object. Structure is defined per message type in [Section 3](#3-message-types). |
-| `signature` | string | OPTIONAL | Ed25519 signature of the canonical payload. Format: `"base64:<base64-encoded-bytes>"`. See [Section 8](#8-security-considerations). |
+| `signature` | string | OPTIONAL | Ed25519 signature of the canonical message envelope excluding `signature`. Format: `"base64:<88-character standard-base64 signature>"`. See [Section 8](#8-security-considerations). |
 
 ### 4.3 Message ID Requirements
 
@@ -393,6 +393,10 @@ When agents using different VCP/M versions exchange messages:
 4. If MINOR version differs (sender newer): the receiver SHOULD ignore unknown fields.
 5. If MINOR version differs (sender older): the receiver SHOULD use defaults for missing fields.
 6. PATCH differences are transparent.
+
+### 4.6 Resource Bounds
+
+Receivers MUST reject an encoded message larger than 64 KiB before schema validation or cryptographic work. Sender and recipient identifiers and constitution references MUST NOT exceed 2,048 characters. Context strings MUST NOT exceed 8,192 characters. Each scope list MUST contain at most 50 unique entries, and `constraints` MUST contain at most 100 entries. Implementations SHOULD impose stricter deployment-specific limits when appropriate, but MUST NOT silently truncate signed data.
 
 ---
 
@@ -532,15 +536,15 @@ For agents requiring low-latency bidirectional communication:
 | Between agents operated by different organizations | MUST sign messages |
 | Between agents within a single process sharing memory | MAY omit signatures |
 
-When present, the `signature` field MUST contain a valid Ed25519 signature encoded as `"base64:<base64-encoded-bytes>"`.
+When present, the `signature` field MUST contain a 64-byte Ed25519 signature encoded as 88 characters of standard base64 and prefixed with `"base64:"`.
 
 ### 8.2 Signature Computation
 
 The signature covers the canonical form of the message envelope **excluding** the `signature` field itself. Canonicalization follows RFC 8785 (JSON Canonicalization Scheme), consistent with the manifest canonicalization defined in VCP Core v2.0.
 
 ```python
-import json
 import base64
+import re
 
 def sign_message(message: dict, private_key) -> str:
     """Sign a VCP inter-agent message."""
@@ -548,12 +552,7 @@ def sign_message(message: dict, private_key) -> str:
     to_sign = {k: v for k, v in message.items() if k != 'signature'}
 
     # RFC 8785 JCS: sorted keys, no whitespace, UTF-8
-    canonical = json.dumps(
-        to_sign,
-        sort_keys=True,
-        separators=(',', ':'),
-        ensure_ascii=False
-    ).encode('utf-8')
+    canonical = rfc8785_canonicalize(to_sign)
 
     signature = ed25519_sign(private_key, canonical)
     return f"base64:{base64.b64encode(signature).decode('ascii')}"
@@ -563,15 +562,17 @@ def verify_message(message: dict, public_key) -> bool:
     """Verify a VCP inter-agent message signature."""
     to_verify = {k: v for k, v in message.items() if k != 'signature'}
 
-    canonical = json.dumps(
-        to_verify,
-        sort_keys=True,
-        separators=(',', ':'),
-        ensure_ascii=False
-    ).encode('utf-8')
+    canonical = rfc8785_canonicalize(to_verify)
 
-    signature_b64 = message['signature'].removeprefix('base64:')
-    signature = base64.b64decode(signature_b64)
+    encoded = message.get('signature', '')
+    if re.fullmatch(r'base64:[A-Za-z0-9+/]{85}[AQgw]==', encoded) is None:
+        return False
+    signature_b64 = encoded[7:]
+    signature = base64.b64decode(signature_b64, validate=True)
+    if len(signature) != 64:
+        return False
+    if base64.b64encode(signature).decode('ascii') != signature_b64:
+        return False
     return ed25519_verify(public_key, canonical, signature)
 ```
 
@@ -665,20 +666,11 @@ VCP/M messages carry context and state information that, while emoji-encoded, ma
 
 ---
 
-## 9. JSON Schema Reference
+## 9. Schema Validation
 
-The normative JSON Schema for the message envelope and all payload types is provided at:
+This document is the normative protocol authority for VCP/M v2.0. Implementations SHOULD validate messages against a machine-readable schema that faithfully enforces these requirements before processing. Implementations MUST NOT accept messages that fail that validation.
 
-```
-schemas/vcp-messaging-v2.0.schema.json
-```
-
-Implementations SHOULD validate messages against this schema before processing. Implementations MUST NOT accept messages that fail schema validation.
-
-The schema is also available at the canonical URI:
-```
-https://vcp.creed.space/schema/messaging/v2.0.json
-```
+The VCP-SDK repository maintains the v2.0 implementation-candidate schema under its cross-repository ownership record. The candidate is not duplicated in this repository and does not supersede this specification.
 
 ---
 

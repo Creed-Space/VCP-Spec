@@ -21,18 +21,18 @@
     "tokenizer": "cl100k_base"
   },
   "composition": {
-    "layer": 5
+    "layer": 4,
+    "mode": "extend"
   },
   "safety_attestation": {
     "auditor": "review.example.org",
     "auditor_key_id": "review-2026",
     "reviewed_at": "2026-01-01T00:00:00Z",
-    "attestation_type": "injection-safe",
+    "attestation_type": "competence-calibration",
     "signature": "base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
   },
   "signature": {
-    "algorithm": "ed25519",
-    "value": "base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+    "algorithm": "ed25519-multisig",
     "signed_fields": [
       "vcp_version",
       "bundle",
@@ -40,6 +40,17 @@
       "timestamps",
       "budget",
       "safety_attestation"
+    ],
+    "threshold": 2,
+    "signers": [
+      {
+        "id": "signer-a",
+        "signature": "base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      },
+      {
+        "id": "signer-b",
+        "signature": "base64:AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ=="
+      }
     ]
   }
 }

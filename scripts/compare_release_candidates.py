@@ -4,17 +4,38 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import sys
 from pathlib import Path
 
+from validation_utils import regular_file_snapshots_below, sha256_regular
+
+MAX_FILES = 10_000
+MAX_FILE_BYTES = 50 * 1024 * 1024
+MAX_TOTAL_BYTES = 1024 * 1024 * 1024
+
 
 def inventory(root: Path) -> dict[str, str]:
-    return {
-        path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in sorted(root.rglob("*"))
-        if path.is_file()
-    }
+    result: dict[str, str] = {}
+    snapshots = regular_file_snapshots_below(
+        root,
+        max_files=MAX_FILES,
+        max_file_bytes=MAX_FILE_BYTES,
+        max_total_bytes=MAX_TOTAL_BYTES,
+        purpose="candidate",
+    )
+    for snapshot in snapshots:
+        path = snapshot.path
+        digest, _ = sha256_regular(
+            path,
+            max_bytes=MAX_FILE_BYTES,
+            root=root,
+            purpose="candidate file",
+            expected=snapshot,
+        )
+        result[path.relative_to(root).as_posix()] = digest
+    if not result:
+        raise ValueError(f"candidate directory contains no files: {root}")
+    return result
 
 
 def main() -> int:
@@ -22,8 +43,12 @@ def main() -> int:
     parser.add_argument("first", type=Path)
     parser.add_argument("second", type=Path)
     args = parser.parse_args()
-    first = inventory(args.first)
-    second = inventory(args.second)
+    try:
+        first = inventory(args.first)
+        second = inventory(args.second)
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
     changed = sorted(
         name for name in first.keys() & second if first[name] != second[name]
     )

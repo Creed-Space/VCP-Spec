@@ -3,7 +3,12 @@
   "persona": "N",
   "persona_name": "nanny",
   "adherence": 5,
-  "scopes": ["F", "E"],
+  "scopes": [
+    "F",
+    "E"
+  ],
   "namespace": null,
-  "version": null
+  "version": null,
+  "canonical": "N5+E+F",
+  "compact": "CS1|nanny|5|family.safe.guide|F,E"
 }
