@@ -1,0 +1,106 @@
+{
+  "as_of": "2026-08-31",
+  "authority": "VEP-0006 candidate terminology registry",
+  "claim_boundary": "Terminology for a non-ratified candidate. Host authority and deployed behavior remain outside this registry.",
+  "profile_version": "0.1.0",
+  "terms": [
+    {
+      "term": "SituationView",
+      "owner": "VCP-Spec Agent Runtime Profile",
+      "meaning": "Bounded immutable orientation root for a principal, goal, current evidence, normative context, authority, resources, active work, controls, omissions, and deltas.",
+      "authority": "projection",
+      "compatibility": "new candidate artifact"
+    },
+    {
+      "term": "CapabilityDescriptor",
+      "owner": "capability provider adapter",
+      "meaning": "Stable generic declaration of a capability, its effects, requirements, evidence outputs, recovery, and cost model.",
+      "authority": "declaration",
+      "compatibility": "adapts existing capability metadata"
+    },
+    {
+      "term": "Affordance",
+      "owner": "Agent Runtime host projection",
+      "meaning": "Contextual availability of one CapabilityDescriptor for one SituationView under current authority, resource, privacy, and runtime state.",
+      "authority": "time-bounded projection",
+      "compatibility": "new candidate artifact"
+    },
+    {
+      "term": "EvidenceClaim",
+      "owner": "named evidence authority",
+      "meaning": "Typed claim whose source, basis, freshness, confidence, authority class, scope, and privacy class remain explicit.",
+      "authority": "claim, never self-authenticating fact",
+      "compatibility": "adapts current receipts and observations"
+    },
+    {
+      "term": "Run",
+      "owner": "host workflow authority",
+      "meaning": "Goal-bounded work with a RunSpec, resource ceiling, proof plan, event history, and portable status.",
+      "authority": "host workflow state",
+      "compatibility": "must adapt rather than duplicate existing host runs"
+    },
+    {
+      "term": "ActionIntent",
+      "owner": "requesting principal",
+      "meaning": "Exact proposed action binding arguments, destination, context, policy, and descriptor digests before authority is decided.",
+      "authority": "proposal only",
+      "compatibility": "adapts existing action requests"
+    },
+    {
+      "term": "DecisionReceipt",
+      "owner": "policy decision authority",
+      "meaning": "Inspectable allow, deny, review, or abstain judgment over an exact ActionIntent.",
+      "authority": "policy judgment, not execution authority",
+      "compatibility": "adapts existing PDP receipts"
+    },
+    {
+      "term": "AuthorityGrantRef",
+      "owner": "host authority store",
+      "meaning": "Opaque reference to consumable execution authority bound to an exact decision and intent.",
+      "authority": "host execution authority",
+      "compatibility": "SDK cannot construct or widen it"
+    },
+    {
+      "term": "ExecutionAttempt",
+      "owner": "host policy enforcement point",
+      "meaning": "Atomic claim and dispatch record for one grant-bound attempt.",
+      "authority": "execution lineage",
+      "compatibility": "adapts current grant consumption"
+    },
+    {
+      "term": "ExecutionReceipt",
+      "owner": "execution adapter plus evidence authority",
+      "meaning": "Record of dispatch and observed effect status, retaining possible and indeterminate outcomes.",
+      "authority": "observation, not completion by itself",
+      "compatibility": "adapts provider receipts"
+    },
+    {
+      "term": "RunProof",
+      "owner": "proof service",
+      "meaning": "Predicate-by-predicate completion evidence separated by authority class.",
+      "authority": "proof projection",
+      "compatibility": "new candidate artifact"
+    },
+    {
+      "term": "AccretionCandidate",
+      "owner": "candidate generator and validator",
+      "meaning": "Immutable proposed reusable asset derived from evidence-bound experience and held outside promoted memory.",
+      "authority": "candidate only",
+      "compatibility": "cannot mutate promoted memory"
+    },
+    {
+      "term": "PromotionRecord",
+      "owner": "domain memory authority",
+      "meaning": "Authorized transition of a validated candidate into a revocable promoted asset.",
+      "authority": "promotion authority",
+      "compatibility": "adapts existing memory stores"
+    },
+    {
+      "term": "InfluenceReceipt",
+      "owner": "retrieval or decision service",
+      "meaning": "Trace of how a promoted asset was retrieved, ranked, included, rejected, or decisive.",
+      "authority": "influence lineage",
+      "compatibility": "new candidate artifact"
+    }
+  ]
+}

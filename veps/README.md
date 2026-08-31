@@ -16,6 +16,7 @@ evidence-boundary: Proposal numbering and status tracking, not proposal ratifica
 | [0003](./VEP-0003-mcp-bridge.md) | VCP-over-MCP Bridge | Recorded pre-charter acceptance | v3.1 |
 | [0004](./VEP-0004-extended-vcpa-dimensions.md) | Extended VCP/A Dimensions | Experimental | v3.2 pre-release |
 | [0005](./VEP-0005-stateless-mcp.md) | Stateless MCP Adaptation | Draft | v3.3 candidate |
+| [0006](./VEP-0006-agent-runtime-profile.md) | Agent Runtime Profile | Draft | separate 0.1 candidate |
 
 The interim lifecycle and authority boundaries are defined in
 [`GOVERNANCE.md`](../GOVERNANCE.md). The first three labels preserve historical

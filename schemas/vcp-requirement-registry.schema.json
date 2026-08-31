@@ -30,9 +30,9 @@
         "additionalProperties": false,
         "required": ["id", "title", "area", "actor", "testability", "preconditions", "requirement_text", "failure_semantics", "source", "evidence"],
         "properties": {
-          "id": { "type": "string", "pattern": "^VCP-OP-[A-Z]{3}-[0-9]{3}$" },
+          "id": { "type": "string", "pattern": "^VCP-(?:OP|ARP)-[A-Z]{3}-[0-9]{3}$" },
           "title": { "type": "string", "minLength": 1 },
-          "area": { "enum": ["negotiation", "revocation", "scope", "state-machine", "registry"] },
+          "area": { "enum": ["negotiation", "revocation", "scope", "state-machine", "registry", "status", "result", "situation", "evidence", "normative-context", "capability", "affordance", "run", "proof", "action", "control", "event", "accretion", "resource", "security"] },
           "actor": { "type": "string", "minLength": 1 },
           "testability": { "enum": ["machine", "human", "mixed", "not-yet-mapped"] },
           "preconditions": { "type": "array", "items": { "type": "string" } },
