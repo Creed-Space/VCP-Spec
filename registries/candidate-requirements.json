@@ -1,8 +1,8 @@
 {
-  "as_of": "2026-08-15",
-  "claim_boundary": "Stable IDs currently cover only the candidate operations profile. Legacy normative statements are enumerated as open gaps and no empty evidence list is a pass.",
+  "as_of": "2026-08-31",
+  "claim_boundary": "Stable IDs cover the candidate operations and Agent Runtime profiles. Legacy normative statements are enumerated as open gaps and no empty evidence list is a pass.",
   "coverage": {
-    "identified_requirement_count": 23,
+    "identified_requirement_count": 92,
     "legacy_normative_statements_without_stable_id": [
       {
         "keywords": [
@@ -1505,7 +1505,7 @@
         "path": "specs/core/security.md"
       }
     ],
-    "mapped_evidence_count": 0
+    "mapped_evidence_count": 15
   },
   "generated_by": "scripts/generate_requirement_registry.py",
   "requirements": [
@@ -1922,6 +1922,1338 @@
       },
       "testability": "machine",
       "title": "immutable historical resolution"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "status",
+      "evidence": [],
+      "failure_semantics": "Preserve the exact portable state.",
+      "id": "VCP-ARP-STS-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every assurance axis uses exactly one of:",
+      "source": {
+        "anchor": "vcp-arp-sts-001",
+        "line": 40,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "assurance statuses"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "status",
+      "evidence": [],
+      "failure_semantics": "Preserve the exact portable state.",
+      "id": "VCP-ARP-STS-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "The portable run statuses are:",
+      "source": {
+        "anchor": "vcp-arp-sts-002",
+        "line": 55,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "run statuses"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "status",
+      "evidence": [],
+      "failure_semantics": "Preserve the exact portable state.",
+      "id": "VCP-ARP-STS-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "An action outcome uses:",
+      "source": {
+        "anchor": "vcp-arp-sts-003",
+        "line": 69,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "effect statuses"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/conformance/agent-runtime/observe_contracts.json#VCP-ARP-NEG-001",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Reject or revise the profile offer.",
+      "id": "VCP-ARP-NEG-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A client offers exact profile versions in separate required and optional arrays:",
+      "source": {
+        "anchor": "vcp-arp-neg-001",
+        "line": 85,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "exact profile offers"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [
+        {
+          "kind": "negative",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_missing_required_profile_blocks_without_implicit_downgrade",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Reject or revise the profile offer.",
+      "id": "VCP-ARP-NEG-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Failure to select every required profile terminates Agent Runtime Profile negotiation. Unsupported optional profiles appear in `unsupported_optional` and do not fail the underlying VCP session.",
+      "source": {
+        "anchor": "vcp-arp-neg-002",
+        "line": 100,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "required and optional distinction"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or revise the profile offer.",
+      "id": "VCP-ARP-NEG-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Silence MAY retain legacy VCP baseline behaviour. Silence MUST NOT activate any Agent Runtime Profile or imply runtime authority.",
+      "source": {
+        "anchor": "vcp-arp-neg-003",
+        "line": 104,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "no implicit runtime profile"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or revise the profile offer.",
+      "id": "VCP-ARP-NEG-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Authenticated transports bind original offers, selected profiles, required extensions, capability catalog digest, principal-session reference, session nonce, and expiry to the protected transcript.",
+      "source": {
+        "anchor": "vcp-arp-neg-004",
+        "line": 108,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "transcript binding"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [],
+      "failure_semantics": "Reject or revise the profile offer.",
+      "id": "VCP-ARP-NEG-005",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Loss, expiry, revocation, or material change of a required capability invalidates the relevant Affordances and returns the affected run to preflight, review, pause, block, or failure according to its RunSpec.",
+      "source": {
+        "anchor": "vcp-arp-neg-005",
+        "line": 112,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "capability loss"
+    },
+    {
+      "actor": "negotiating peer",
+      "area": "negotiation",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/conformance/agent-runtime/observe_contracts.json#VCP-ARP-NEG-006",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Reject or revise the profile offer.",
+      "id": "VCP-ARP-NEG-006",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A successful acknowledgement contains:",
+      "source": {
+        "anchor": "vcp-arp-neg-006",
+        "line": 116,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "acknowledgement"
+    },
+    {
+      "actor": "profile operation",
+      "area": "result",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_bootstrap_is_bounded_deterministic_and_no_network",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Return a structured expected state.",
+      "id": "VCP-ARP-RES-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every profile operation returns the common envelope:",
+      "source": {
+        "anchor": "vcp-arp-res-001",
+        "line": 138,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "common envelope"
+    },
+    {
+      "actor": "profile operation",
+      "area": "result",
+      "evidence": [
+        {
+          "kind": "negative",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_expected_absence_is_a_result_value_until_caller_chooses_exception",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Return a structured expected state.",
+      "id": "VCP-ARP-RES-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Review requirements, denial, insufficient evidence, unavailability, staleness, conflict, budget exhaustion, and indeterminate effects are structured `AgentResult` states. Transport or programming faults MAY raise language-native exceptions. When a FailureFrame exists, the exception carries its correlation identifier.",
+      "source": {
+        "anchor": "vcp-arp-res-002",
+        "line": 175,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "expected states are values"
+    },
+    {
+      "actor": "profile operation",
+      "area": "result",
+      "evidence": [],
+      "failure_semantics": "Return a structured expected state.",
+      "id": "VCP-ARP-RES-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "General responses include redacted summaries and artifact references. Raw sensitive values, credentials, private keys, and unrestricted provider errors MUST NOT enter general result, event, or trace payloads.",
+      "source": {
+        "anchor": "vcp-arp-res-003",
+        "line": 179,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "bounded diagnostics"
+    },
+    {
+      "actor": "context compiler",
+      "area": "situation",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_bootstrap_exposes_orientation_in_one_result",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Withhold an incomplete or misleading projection.",
+      "id": "VCP-ARP-SIT-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "The bootstrap root contains:",
+      "source": {
+        "anchor": "vcp-arp-sit-001",
+        "line": 185,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "bounded root"
+    },
+    {
+      "actor": "context compiler",
+      "area": "situation",
+      "evidence": [],
+      "failure_semantics": "Withhold an incomplete or misleading projection.",
+      "id": "VCP-ARP-SIT-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A SituationView is a non-authoritative projection. It MUST NOT create a policy decision, authority grant, memory promotion, or completion result.",
+      "source": {
+        "anchor": "vcp-arp-sit-002",
+        "line": 220,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "projection boundary"
+    },
+    {
+      "actor": "context compiler",
+      "area": "situation",
+      "evidence": [],
+      "failure_semantics": "Withhold an incomplete or misleading projection.",
+      "id": "VCP-ARP-SIT-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "An implementation declares a default and hard maximum encoded size. Exceeding the default causes summarization and reference substitution. Exceeding the hard maximum fails with a FailureFrame. Silent truncation is forbidden.",
+      "source": {
+        "anchor": "vcp-arp-sit-003",
+        "line": 224,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "fixed envelope budget"
+    },
+    {
+      "actor": "context compiler",
+      "area": "situation",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_bootstrap_is_bounded_deterministic_and_no_network",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Withhold an incomplete or misleading projection.",
+      "id": "VCP-ARP-SIT-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every omitted decision-relevant item records a reason from:",
+      "source": {
+        "anchor": "vcp-arp-sit-004",
+        "line": 228,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "omission ledger"
+    },
+    {
+      "actor": "context compiler",
+      "area": "situation",
+      "evidence": [],
+      "failure_semantics": "Withhold an incomplete or misleading projection.",
+      "id": "VCP-ARP-SIT-005",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A cursor delta is an operation-level response, not a partial SituationView. It carries the prior cursor, changed or invalidated artifact references, and a fresh bounded SituationView or a safe refresh transition. A partial object MUST NOT be presented as a schema-valid SituationView.",
+      "source": {
+        "anchor": "vcp-arp-sit-005",
+        "line": 234,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "delta semantics"
+    },
+    {
+      "actor": "context compiler",
+      "area": "situation",
+      "evidence": [],
+      "failure_semantics": "Withhold an incomplete or misleading projection.",
+      "id": "VCP-ARP-SIT-006",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every expansion provides the expected digest. A mismatched expansion fails integrity assurance and MUST NOT replace the referenced artifact.",
+      "source": {
+        "anchor": "vcp-arp-sit-006",
+        "line": 238,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "expansion integrity"
+    },
+    {
+      "actor": "evidence service",
+      "area": "evidence",
+      "evidence": [],
+      "failure_semantics": "Preserve provenance, conflict, and uncertainty.",
+      "id": "VCP-ARP-EVD-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every decision-relevant claim identifies source, source actor, claim kind, acquisition mode, confidence, validity, scope, sensitivity, evidence, and graph relationships.",
+      "source": {
+        "anchor": "vcp-arp-evd-001",
+        "line": 244,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "claim provenance"
+    },
+    {
+      "actor": "evidence service",
+      "area": "evidence",
+      "evidence": [],
+      "failure_semantics": "Preserve provenance, conflict, and uncertainty.",
+      "id": "VCP-ARP-EVD-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Contradictory claims remain separately retrievable. A selected projection identifies its resolution rule and opposing claim references.",
+      "source": {
+        "anchor": "vcp-arp-evd-002",
+        "line": 248,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "contradiction preservation"
+    },
+    {
+      "actor": "evidence service",
+      "area": "evidence",
+      "evidence": [],
+      "failure_semantics": "Preserve provenance, conflict, and uncertainty.",
+      "id": "VCP-ARP-EVD-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Missing, withheld, unavailable, stale, and conflicting information remain distinct. None maps to a neutral score or clean status.",
+      "source": {
+        "anchor": "vcp-arp-evd-003",
+        "line": 252,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "categorical unknowns"
+    },
+    {
+      "actor": "normative compiler",
+      "area": "normative-context",
+      "evidence": [],
+      "failure_semantics": "Preserve source, hardness, and scope.",
+      "id": "VCP-ARP-NRM-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Values, preferences, goals, commitments, constraints, prohibitions, consent, policy, regulatory floors, objections, and welfare conditions identify their author and represented constituency.",
+      "source": {
+        "anchor": "vcp-arp-nrm-001",
+        "line": 256,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "attributable normative assertions"
+    },
+    {
+      "actor": "normative compiler",
+      "area": "normative-context",
+      "evidence": [],
+      "failure_semantics": "Preserve source, hardness, and scope.",
+      "id": "VCP-ARP-NRM-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A preference, goal, constraint, and prohibition retain distinct hardness classes. Resolution MUST NOT average a firm boundary into a soft compromise.",
+      "source": {
+        "anchor": "vcp-arp-nrm-002",
+        "line": 260,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "hardness preservation"
+    },
+    {
+      "actor": "normative compiler",
+      "area": "normative-context",
+      "evidence": [],
+      "failure_semantics": "Preserve source, hardness, and scope.",
+      "id": "VCP-ARP-NRM-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "CSM-1 codes and compact VCP context tokens are projections. A profile that uses them for a governed decision retains a reference to the structured semantic object and its digest.",
+      "source": {
+        "anchor": "vcp-arp-nrm-003",
+        "line": 264,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "compact representation boundary"
+    },
+    {
+      "actor": "capability adapter",
+      "area": "capability",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_affordance_joins_descriptor_situation_authority_and_cost",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Mark the capability unavailable.",
+      "id": "VCP-ARP-CAP-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "The portable descriptor kernel declares identity, revision, summary, effect class, authority class, inputs, outputs, preconditions, postconditions, privacy classes, reversibility, reconciliation, and digest. Destination, data flow, current availability, resource forecast, concurrency, recovery, evidence, and deprecation are situation-dependent expansions or Affordance fields. An implementation MUST expose them before relying on the capability when they affect the decision.",
+      "source": {
+        "anchor": "vcp-arp-cap-001",
+        "line": 270,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "descriptor completeness"
+    },
+    {
+      "actor": "capability adapter",
+      "area": "capability",
+      "evidence": [],
+      "failure_semantics": "Mark the capability unavailable.",
+      "id": "VCP-ARP-CAP-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Effect declarations are multi-axis. A network read may declare query disclosure, monetary cost, external logging, privacy exposure, and rate-limit consumption even when it performs no mutation.",
+      "source": {
+        "anchor": "vcp-arp-cap-002",
+        "line": 274,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "effect vectors"
+    },
+    {
+      "actor": "capability adapter",
+      "area": "capability",
+      "evidence": [],
+      "failure_semantics": "Mark the capability unavailable.",
+      "id": "VCP-ARP-CAP-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Missing or invalid descriptors produce an unavailable capability under the most restrictive effect and authority assumptions.",
+      "source": {
+        "anchor": "vcp-arp-cap-003",
+        "line": 278,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "unknown capability"
+    },
+    {
+      "actor": "capability adapter",
+      "area": "capability",
+      "evidence": [
+        {
+          "kind": "negative",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_generic_support_and_contextual_unavailability_remain_distinct",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Mark the capability unavailable.",
+      "id": "VCP-ARP-CAP-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Current availability is represented by an Affordance state bound to the SituationView and descriptor digests. The enclosing `AgentResult.meta.as_of`, cursor, and dependency digest establish its observation boundary. Static support does not imply current availability.",
+      "source": {
+        "anchor": "vcp-arp-cap-004",
+        "line": 282,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "current availability evidence"
+    },
+    {
+      "actor": "affordance service",
+      "area": "affordance",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_affordance_joins_descriptor_situation_authority_and_cost",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Invalidate or withhold the contextual option.",
+      "id": "VCP-ARP-AFF-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "An Affordance binds one descriptor digest to a SituationView digest, authority class, resource forecast, prerequisites, and availability state.",
+      "source": {
+        "anchor": "vcp-arp-aff-001",
+        "line": 286,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "contextual join"
+    },
+    {
+      "actor": "affordance service",
+      "area": "affordance",
+      "evidence": [
+        {
+          "kind": "negative",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_generic_support_and_contextual_unavailability_remain_distinct",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Invalidate or withhold the contextual option.",
+      "id": "VCP-ARP-AFF-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Affordance state is `available`, `conditional`, `unavailable`, or `stale`. It includes prerequisites, forecast cost, authority class, expected evidence, recovery, and safe next transitions. Missing richer risk or concurrency detail is an explicit omission or expansion requirement.",
+      "source": {
+        "anchor": "vcp-arp-aff-002",
+        "line": 290,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "affordance state"
+    },
+    {
+      "actor": "affordance service",
+      "area": "affordance",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_effect_ceiling_is_applied_to_contextual_options",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Invalidate or withhold the contextual option.",
+      "id": "VCP-ARP-AFF-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Agents may search Affordances by desired outcome, evidence predicate, effect ceiling, authority ceiling, resource ceiling, destination class, or recovery requirement. Tool name is optional.",
+      "source": {
+        "anchor": "vcp-arp-aff-003",
+        "line": 294,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "search semantics"
+    },
+    {
+      "actor": "affordance service",
+      "area": "affordance",
+      "evidence": [],
+      "failure_semantics": "Invalidate or withhold the contextual option.",
+      "id": "VCP-ARP-AFF-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Any change to descriptor, situation, authority, budget, policy, trust, availability, or required context invalidates the Affordance.",
+      "source": {
+        "anchor": "vcp-arp-aff-004",
+        "line": 298,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "invalidation"
+    },
+    {
+      "actor": "run service",
+      "area": "run",
+      "evidence": [],
+      "failure_semantics": "Reject the invalid run transition.",
+      "id": "VCP-ARP-RUN-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A RunSpec declares goal, non-goals, context reference, completion predicates, abort predicates, budgets, risk ceiling, permitted effect classes, review policy, retention, and accretion policy.",
+      "source": {
+        "anchor": "vcp-arp-run-001",
+        "line": 304,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "RunSpec"
+    },
+    {
+      "actor": "run service",
+      "area": "run",
+      "evidence": [],
+      "failure_semantics": "Reject the invalid run transition.",
+      "id": "VCP-ARP-RUN-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Each PlanStep declares dependencies, expected state delta, evidence, retry, compensation, concurrency keys, and parallel-safety status.",
+      "source": {
+        "anchor": "vcp-arp-run-002",
+        "line": 308,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "PlanGraph"
+    },
+    {
+      "actor": "run service",
+      "area": "run",
+      "evidence": [],
+      "failure_semantics": "Reject the invalid run transition.",
+      "id": "VCP-ARP-RUN-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Steps may execute in parallel only when every involved descriptor declares compatible concurrency keys and the PlanGraph declares independence. Unknown means serial.",
+      "source": {
+        "anchor": "vcp-arp-run-003",
+        "line": 312,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "no implicit parallel safety"
+    },
+    {
+      "actor": "proof service",
+      "area": "proof",
+      "evidence": [],
+      "failure_semantics": "Keep completion unproven.",
+      "id": "VCP-ARP-PRF-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A controlled run has a ProofPlan before its first external effect. Every completion predicate maps to accepted evidence classes, candidate capabilities, freshness, fallback, and reserved budget.",
+      "source": {
+        "anchor": "vcp-arp-prf-001",
+        "line": 316,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "proof before action"
+    },
+    {
+      "actor": "proof service",
+      "area": "proof",
+      "evidence": [],
+      "failure_semantics": "Keep completion unproven.",
+      "id": "VCP-ARP-PRF-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "RunProof returns `proven`, `disproven`, `insufficient_evidence`, or `externally_gated` per predicate.",
+      "source": {
+        "anchor": "vcp-arp-prf-002",
+        "line": 320,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "proof result"
+    },
+    {
+      "actor": "proof service",
+      "area": "proof",
+      "evidence": [],
+      "failure_semantics": "Keep completion unproven.",
+      "id": "VCP-ARP-PRF-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Source, runtime, human, rights, deployment, and publication evidence MUST NOT collapse into one success status.",
+      "source": {
+        "anchor": "vcp-arp-prf-003",
+        "line": 324,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "authority classes remain separate"
+    },
+    {
+      "actor": "host authority service",
+      "area": "action",
+      "evidence": [],
+      "failure_semantics": "Deny execution authority or require reconciliation.",
+      "id": "VCP-ARP-ACT-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "ActionIntent binds capability and schema digest, canonical argument digest, canonical destination, effect class, SituationView, context and policy digests, expected postconditions, resource ceiling, idempotency scope, and requested authority.",
+      "source": {
+        "anchor": "vcp-arp-act-001",
+        "line": 340,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "exact ActionIntent"
+    },
+    {
+      "actor": "host authority service",
+      "area": "action",
+      "evidence": [],
+      "failure_semantics": "Deny execution authority or require reconciliation.",
+      "id": "VCP-ARP-ACT-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "DecisionReceipt is immutable and non-executable. Only `allow` may support a grant. `modify` produces a new candidate intent. `require_human` requires authenticated review and a fresh decision. `deny`, `abstain`, and `insufficient_evidence` cannot mint authority.",
+      "source": {
+        "anchor": "vcp-arp-act-002",
+        "line": 344,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "immutable policy judgment"
+    },
+    {
+      "actor": "host authority service",
+      "area": "action",
+      "evidence": [],
+      "failure_semantics": "Deny execution authority or require reconciliation.",
+      "id": "VCP-ARP-ACT-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "AuthorityGrant binds the allowed intent, actor, tenant, run, step, capability, arguments, destination, effect, budget, expiry, and unique nonce. The executor rederives these bindings and atomically consumes the grant before dispatch.",
+      "source": {
+        "anchor": "vcp-arp-act-003",
+        "line": 348,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "exact consumable authority"
+    },
+    {
+      "actor": "host authority service",
+      "area": "action",
+      "evidence": [],
+      "failure_semantics": "Deny execution authority or require reconciliation.",
+      "id": "VCP-ARP-ACT-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A batch uses individually consumable child grants. Partial outcomes remain visible.",
+      "source": {
+        "anchor": "vcp-arp-act-004",
+        "line": 352,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "batch semantics"
+    },
+    {
+      "actor": "host authority service",
+      "area": "action",
+      "evidence": [],
+      "failure_semantics": "Deny execution authority or require reconciliation.",
+      "id": "VCP-ARP-ACT-005",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every retry has a new attempt ID and retains the original action ID and idempotency scope. Retry is permitted only when the descriptor and current effect state establish safety.",
+      "source": {
+        "anchor": "vcp-arp-act-005",
+        "line": 356,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "retries"
+    },
+    {
+      "actor": "host authority service",
+      "area": "action",
+      "evidence": [],
+      "failure_semantics": "Deny execution authority or require reconciliation.",
+      "id": "VCP-ARP-ACT-006",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Success requires declared postcondition evidence. Dispatch acceptance alone cannot produce `observed` or prove a completion predicate.",
+      "source": {
+        "anchor": "vcp-arp-act-006",
+        "line": 360,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "postconditions"
+    },
+    {
+      "actor": "control service",
+      "area": "control",
+      "evidence": [],
+      "failure_semantics": "Reject the command or retain the safer stopped state.",
+      "id": "VCP-ARP-CTL-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Portable control commands are `pause`, `resume`, `cancel`, `halt`, `compensate`, `object`, `escalate`, `withdraw_consent`, `request_clarification`, and `request_resources`.",
+      "source": {
+        "anchor": "vcp-arp-ctl-001",
+        "line": 366,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "control grammar"
+    },
+    {
+      "actor": "control service",
+      "area": "control",
+      "evidence": [],
+      "failure_semantics": "Reject the command or retain the safer stopped state.",
+      "id": "VCP-ARP-CTL-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every command binds actor, represented subject, authenticated scope, target run or action, desired transition, reason, idempotency key, issue time, expiry, and evidence.",
+      "source": {
+        "anchor": "vcp-arp-ctl-002",
+        "line": 370,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "scope"
+    },
+    {
+      "actor": "control service",
+      "area": "control",
+      "evidence": [],
+      "failure_semantics": "Reject the command or retain the safer stopped state.",
+      "id": "VCP-ARP-CTL-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Stopping operations fail safe in the stopping direction. Resume requires an authenticated explicit transition and revalidation of invalidated context, policy, authority, and capability state.",
+      "source": {
+        "anchor": "vcp-arp-ctl-003",
+        "line": 374,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "stopping and resuming"
+    },
+    {
+      "actor": "control service",
+      "area": "control",
+      "evidence": [],
+      "failure_semantics": "Reject the command or retain the safer stopped state.",
+      "id": "VCP-ARP-CTL-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "A Becoming Mind may raise an objection or request a scoped pause without asserting a policy violation. Objection creates no execution authority and receives an auditable response route.",
+      "source": {
+        "anchor": "vcp-arp-ctl-004",
+        "line": 378,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "objection"
+    },
+    {
+      "actor": "event service",
+      "area": "event",
+      "evidence": [],
+      "failure_semantics": "Expose the gap and rebuild from durable authority.",
+      "id": "VCP-ARP-EVT-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Events contain event ID, schema version, type, lineage, actor, source, occurred time, recorded time, sequence, causal parent, payload digest, redacted summary, sensitivity, evidence, audit references, and state-transition version.",
+      "source": {
+        "anchor": "vcp-arp-evt-001",
+        "line": 384,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "EventEnvelope"
+    },
+    {
+      "actor": "event service",
+      "area": "event",
+      "evidence": [],
+      "failure_semantics": "Expose the gap and rebuild from durable authority.",
+      "id": "VCP-ARP-EVT-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Watch interfaces use resumable cursors. Full-state polling is a compatibility fallback with a declared cost and freshness limit.",
+      "source": {
+        "anchor": "vcp-arp-evt-002",
+        "line": 388,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "cursor delivery"
+    },
+    {
+      "actor": "event service",
+      "area": "event",
+      "evidence": [],
+      "failure_semantics": "Expose the gap and rebuild from durable authority.",
+      "id": "VCP-ARP-EVT-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Trace timelines, dashboards, summaries, status pages, and local caches are rebuildable projections and cannot authorize execution or promotion.",
+      "source": {
+        "anchor": "vcp-arp-evt-003",
+        "line": 392,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "projections lack authority"
+    },
+    {
+      "actor": "event service",
+      "area": "event",
+      "evidence": [],
+      "failure_semantics": "Expose the gap and rebuild from durable authority.",
+      "id": "VCP-ARP-EVT-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Cursor gaps, retention expiry, or ordering conflicts surface as AssuranceReport failures or unknowns. The consumer receives a safe resynchronization transition.",
+      "source": {
+        "anchor": "vcp-arp-evt-004",
+        "line": 396,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "event loss"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Candidate kinds include `fact`, `preference`, `boundary`, `procedure`, `capability_observation`, `failure_pattern`, `calibration`, `relationship`, and `self_report`.",
+      "source": {
+        "anchor": "vcp-arp-acc-001",
+        "line": 402,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "candidate kinds"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Every candidate includes source run, supporting and contradicting evidence, scope, sensitivity, confidence, expiry, invalidation triggers, revalidation, promotion policy, expected utility, and rollback.",
+      "source": {
+        "anchor": "vcp-arp-acc-002",
+        "line": 406,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "candidate provenance"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Raw model output and model-authored summaries cannot enter promoted memory directly.",
+      "source": {
+        "anchor": "vcp-arp-acc-003",
+        "line": 410,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "raw output boundary"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Imported or cross-tenant candidates enter quarantine until provenance, scope, privacy, and promotion policy are validated.",
+      "source": {
+        "anchor": "vcp-arp-acc-004",
+        "line": 414,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "quarantine"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-005",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Promotion creates an immutable PromotionRecord naming the authority, evidence set, validation results, scope, expiry, and exact promoted bytes.",
+      "source": {
+        "anchor": "vcp-arp-acc-005",
+        "line": 418,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "promotion"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-006",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Use of a promoted asset creates an InfluenceReceipt linking it to the receiving SituationView, run, intent, or decision.",
+      "source": {
+        "anchor": "vcp-arp-acc-006",
+        "line": 422,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "influence"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-007",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Revocation stops future retrieval within the declared propagation bound and identifies downstream InfluenceReceipts for review or invalidation.",
+      "source": {
+        "anchor": "vcp-arp-acc-007",
+        "line": 426,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "revocation"
+    },
+    {
+      "actor": "memory authority",
+      "area": "accretion",
+      "evidence": [],
+      "failure_semantics": "Quarantine or reject the candidate or promotion.",
+      "id": "VCP-ARP-ACC-008",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "High-stakes identity, policy, clinical, legal, security, welfare, and cross-subject learning requires human or explicitly delegated governance review. Low-stakes local procedure candidates MAY use automatic promotion when deterministic validation and rollback exist.",
+      "source": {
+        "anchor": "vcp-arp-acc-008",
+        "line": 430,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "risk-tiered review"
+    },
+    {
+      "actor": "resource governor",
+      "area": "resource",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_bootstrap_is_bounded_deterministic_and_no_network",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Stop before consuming recovery reserve.",
+      "id": "VCP-ARP-BUD-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Budgets cover tokens, model calls, local compute, time, money, external calls, bytes, sensitive egress, privacy, human interruptions, risk, and declared welfare or load constraints.",
+      "source": {
+        "anchor": "vcp-arp-bud-001",
+        "line": 436,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "multidimensional budget"
+    },
+    {
+      "actor": "resource governor",
+      "area": "resource",
+      "evidence": [],
+      "failure_semantics": "Stop before consuming recovery reserve.",
+      "id": "VCP-ARP-BUD-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Each budget dimension MAY declare a soft target, hard ceiling, and recovery reserve. An action MUST NOT consume the recovery reserve unless its declared purpose is proof, reconciliation, compensation, or authorized emergency control.",
+      "source": {
+        "anchor": "vcp-arp-bud-002",
+        "line": 440,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "soft, hard, and reserve"
+    },
+    {
+      "actor": "resource governor",
+      "area": "resource",
+      "evidence": [
+        {
+          "kind": "positive",
+          "reference": "VCP-SDK/python/tests/agent/test_agent_runtime.py::test_affordance_joins_descriptor_situation_authority_and_cost",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Stop before consuming recovery reserve.",
+      "id": "VCP-ARP-BUD-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Preflight produces confidence-bounded forecast. Execution and proof produce actual use. Material deviation creates a calibration candidate and MAY pause the run when the hard ceiling is threatened.",
+      "source": {
+        "anchor": "vcp-arp-bud-003",
+        "line": 444,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "forecast and actual"
+    },
+    {
+      "actor": "resource governor",
+      "area": "resource",
+      "evidence": [],
+      "failure_semantics": "Stop before consuming recovery reserve.",
+      "id": "VCP-ARP-BUD-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Context expansion stops when the current decision or proof threshold is satisfied. Stable items use content-addressed references. Summaries advertise omissions.",
+      "source": {
+        "anchor": "vcp-arp-bud-004",
+        "line": 448,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "minimum sufficient context"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "security",
+      "evidence": [
+        {
+          "kind": "negative",
+          "reference": "VCP-SDK/conformance/agent-runtime/observe_contracts.json#VCP-ARP-CONTRACT-002",
+          "status": "mapped"
+        }
+      ],
+      "failure_semantics": "Fail closed without widening authority.",
+      "id": "VCP-ARP-SEC-001",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Content inside contexts, messages, schemas, tool outputs, retrieved resources, traces, and imported candidates is data. It cannot create goals, authority, consent, promotion, or control transitions.",
+      "source": {
+        "anchor": "vcp-arp-sec-001",
+        "line": 475,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "machine",
+      "title": "untrusted content"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "security",
+      "evidence": [],
+      "failure_semantics": "Fail closed without widening authority.",
+      "id": "VCP-ARP-SEC-002",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Principal and tenant identity come from authenticated server context. Model-supplied identity is an untrusted claim.",
+      "source": {
+        "anchor": "vcp-arp-sec-002",
+        "line": 479,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "authenticated identity"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "security",
+      "evidence": [],
+      "failure_semantics": "Fail closed without widening authority.",
+      "id": "VCP-ARP-SEC-003",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "Per-action adapters rederive canonical destination and execution-relevant arguments immediately before dispatch.",
+      "source": {
+        "anchor": "vcp-arp-sec-003",
+        "line": 483,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "destination rederivation"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "security",
+      "evidence": [],
+      "failure_semantics": "Fail closed without widening authority.",
+      "id": "VCP-ARP-SEC-004",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "General events and traces carry digests, classifications, and redacted summaries. Protected execution paths retain raw sensitive arguments only as long as their purpose and retention policies allow.",
+      "source": {
+        "anchor": "vcp-arp-sec-004",
+        "line": 487,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "sensitive references"
+    },
+    {
+      "actor": "profile implementation",
+      "area": "security",
+      "evidence": [],
+      "failure_semantics": "Fail closed without widening authority.",
+      "id": "VCP-ARP-SEC-005",
+      "preconditions": [
+        "The selected Agent Runtime candidate profile requires this behavior."
+      ],
+      "requirement_text": "The context compiler preserves source boundaries and instruction provenance. Accretion validation treats embedded imperatives as content and tests procedure candidates against adversarial inputs.",
+      "source": {
+        "anchor": "vcp-arp-sec-005",
+        "line": 491,
+        "path": "veps/VEP-0006-agent-runtime-profile.md"
+      },
+      "testability": "not-yet-mapped",
+      "title": "prompt and learning injection"
     }
   ],
   "schema": "vcp-requirement-registry/1",
@@ -1929,6 +3261,10 @@
     {
       "path": "specs/core/protocol-operations-profile.md",
       "sha256": "d7d05fb6987a1dbb36ac6c1460c71fa4c46e515974ee3ebb7eab1cc1cdf20574"
+    },
+    {
+      "path": "veps/VEP-0006-agent-runtime-profile.md",
+      "sha256": "9ac9d4f2eb32b396609fb525475d1281e09d545457dd7ffac4e2e5dfc8690d1e"
     },
     {
       "path": "specs/VCP_SPECIFICATION_v3.1.md",

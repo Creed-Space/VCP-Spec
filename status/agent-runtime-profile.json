@@ -1,0 +1,33 @@
+{
+  "as_of": "2026-08-31",
+  "profile": "VCP Agent Runtime Profile 0.1.0",
+  "status": "draft-candidate",
+  "ratified": false,
+  "published": false,
+  "deployed": false,
+  "independently_reviewed": false,
+  "implemented": {
+    "spec_schema": "candidate",
+    "python_observe_facade": "candidate-partial-tested",
+    "host_adapter": "local-reference-only",
+    "controlled_actions": "unimplemented",
+    "safe_accretion": "unimplemented",
+    "rust_facade": "unimplemented",
+    "typescript_facade": "unimplemented",
+    "inspector": "candidate-tested",
+    "demo": "candidate-tested"
+  },
+  "known_gaps": [
+    "cursor delta transport and invalidation are specified but not implemented in the local Python facade",
+    "contradictory normative context requires a host-provided objection and resolution route",
+    "controlled and accretive profile levels have schemas but no executor or promotion implementation",
+    "cross-language Agent Runtime facades remain unimplemented"
+  ],
+  "authority_boundaries": {
+    "source": "this repository candidate branch",
+    "runtime": "local-reference test evidence only",
+    "deployment": "unverified",
+    "governance": "unratified",
+    "publication": "unpublished"
+  }
+}
