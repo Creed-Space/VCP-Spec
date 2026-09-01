@@ -101,7 +101,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "436a28719e18082365a6d288bb398e774a1e2ee1ede631b84791f809a221bb81",
+      "sha256": "fcdc2eace2d5febc0d796e4e9e079e4e46f51852c8b1ec896f2d2922b7a3ea61",
       "status": "active-source-candidate"
     },
     {
@@ -335,7 +335,33 @@
       "publication_class": "illustrative",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "b6602c7f7b74edb09e37ae4628bdc1c0a08f8bf2bfcfe8ee9498f72326324bf9",
+      "sha256": "6bdcfab0a18dd6a0e799b51fd9cb4fbd7002237d75735f7ffbcfca867ff4a37b",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-agent-runtime-profile-v0.1.valid-accretive.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "aa1e6de751cc9f4422367fd0898398c452f2736ef1319b0f6ec457b771bfa538",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-agent-runtime-profile-v0.1.valid-controlled.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "4f6e4c730b0d01f539940662782eb0932f663f41afcac00391f0bf06ac804ae2",
       "status": "illustrative"
     },
     {
@@ -348,7 +374,7 @@
       "publication_class": "illustrative",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "39bdc6f5131eacedc2efd7d79654ba7289005ec83921e1d6293fc72a244206d5",
+      "sha256": "d029c469b21b51e743df78e3de9226915f140ce65308424e1721de6f9a806804",
       "status": "illustrative"
     },
     {
@@ -452,7 +478,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "b341c3619fffcbdc7b0ef981e49066bd09804611fcd7ac003a3d411726eb9c13",
+      "sha256": "920b308c2438d47ac234240fc35e088afa4dd6621e3e1884da993db9dbce1e01",
       "status": "source-schema-candidate"
     },
     {
@@ -1284,7 +1310,7 @@
       "publication_class": "proposal",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "9ac9d4f2eb32b396609fb525475d1281e09d545457dd7ffac4e2e5dfc8690d1e",
+      "sha256": "ba60057872f19855fabc5ad7bc50a1889e29adec7b280188c16d24b959626458",
       "status": "draft"
     }
   ],
