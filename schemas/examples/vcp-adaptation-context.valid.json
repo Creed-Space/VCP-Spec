@@ -2,9 +2,15 @@
   "context": "⏰🌅|📍🏡|👥👶‖🧠focused:4",
   "parsed": {
     "situational": {
-      "time": ["🌅"],
-      "space": ["🏡"],
-      "company": ["👶"]
+      "time": [
+        "🌅"
+      ],
+      "space": [
+        "🏡"
+      ],
+      "company": [
+        "👶"
+      ]
     },
     "personal": {
       "cognitive_state": {

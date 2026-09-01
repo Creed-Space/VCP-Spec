@@ -1,10 +1,16 @@
 {
   "type": "vcp-ack",
   "version": "3.1",
-  "supported": ["VCP-X-Personal"],
-  "unsupported": ["VCP-X-Relational"],
+  "supported": [
+    "VCP-X-Personal"
+  ],
+  "unsupported": [
+    "VCP-X-Relational"
+  ],
   "capabilities": {
-    "VCP-X-Personal": {"decay": true}
+    "VCP-X-Personal": {
+      "decay": true
+    }
   },
   "core_features": {
     "encryption": true,

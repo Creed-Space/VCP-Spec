@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-08-31",
+  "as_of": "2026-09-01",
   "profile": "VCP Agent Runtime Profile 0.1.0",
   "status": "draft-candidate",
   "ratified": false,
@@ -7,21 +7,24 @@
   "deployed": false,
   "independently_reviewed": false,
   "implemented": {
-    "spec_schema": "candidate",
-    "python_observe_facade": "candidate-partial-tested",
-    "host_adapter": "local-reference-only",
-    "controlled_actions": "unimplemented",
-    "safe_accretion": "unimplemented",
-    "rust_facade": "unimplemented",
-    "typescript_facade": "unimplemented",
+    "spec_schema": "candidate-tested",
+    "python_observe_facade": "candidate-tested",
+    "python_controlled_facade": "local-reference-tested",
+    "python_accretive_facade": "local-reference-tested",
+    "host_adapter": "rewind-source-candidate-tested",
+    "controlled_actions": "reversible-local-reference-tested",
+    "safe_accretion": "in-memory-reference-tested",
+    "rust_facade": "portable-contracts-tested",
+    "typescript_facade": "portable-contracts-tested",
     "inspector": "candidate-tested",
-    "demo": "candidate-tested"
+    "demo": "effect-free-reference-tested"
   },
   "known_gaps": [
-    "cursor delta transport and invalidation are specified but not implemented in the local Python facade",
-    "contradictory normative context requires a host-provided objection and resolution route",
-    "controlled and accretive profile levels have schemas but no executor or promotion implementation",
-    "cross-language Agent Runtime facades remain unimplemented"
+    "HTTP, MCP, and CLI projections are specified but are not implemented for the complete profile",
+    "the Rewind adapter binds verified gateway claims and atomic use, but production dispatch wiring is not enabled by this candidate",
+    "safe accretion storage is an in-memory reference and is not a durable production memory authority",
+    "cross-language facades cover portable contracts and local orientation; controlled host execution remains Python-only",
+    "independent interoperability, governance ratification, package publication, deployment, and human accessibility review remain open"
   ],
   "authority_boundaries": {
     "source": "this repository candidate branch",
