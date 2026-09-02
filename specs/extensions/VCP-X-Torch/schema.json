@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://creed.space/schemas/vcp/extensions/VCP-X-Torch/v1.0.0",
   "title": "VCP-X-Torch Extension Schema",
-  "description": "Session handoff extension for the Verifiable Context Protocol. Carries relational state, trajectory, and key norms across agent session boundaries.",
+  "description": "Session handoff extension for the Value-Context Protocol (VCP). Carries relational state, trajectory, and key norms across agent session boundaries.",
 
   "definitions": {
     "TorchState": {

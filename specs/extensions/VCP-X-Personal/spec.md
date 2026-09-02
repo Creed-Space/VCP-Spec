@@ -5,7 +5,7 @@
 | Field              | Value                                               |
 |--------------------|-----------------------------------------------------|
 | Name               | VCP-X-Personal                                      |
-| Version            | 1.0.0                                               |
+| Version            | 1.1.0                                               |
 | Status             | Stable                                              |
 | Introduced in      | VCP 3.1.0                                           |
 | Replaces           | VCP 3.0 Prosaic Signals (4 float dimensions)        |
@@ -852,3 +852,4 @@ Example preset "deep_work":
 | Version | Date       | Changes                                          |
 |---------|------------|--------------------------------------------------|
 | 1.0.0   | 2026-02-28 | Initial stable release, replaces VCP 3.0 prosaic |
+| 1.1.0   | 2026-03-17 | Added `measured` SignalSource; §7.6 cross-substrate credibility; §7.7 industrial/multi-party consent (recorded in `specs/CHANGELOG.md` 3.1.2) |

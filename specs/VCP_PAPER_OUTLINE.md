@@ -1,3 +1,12 @@
+> **SUPERSEDED — HISTORICAL DRAFT**
+>
+> This outline accompanies the superseded JAIC-targeted draft
+> [`value_context_protocols_paper_v1.md`](./value_context_protocols_paper_v1.md).
+> Its "three-layer stack" framing predates the six-layer I-T-S-A-M-E model, and
+> the semantic-fidelity figures it repeats were never backed by underlying data.
+> Do not cite numeric fidelity figures from this outline. Retained for
+> historical reference only.
+
 # Value Context Protocols: Paper Outline and Extraction Guide
 
 **Target Journal:** Journal of Artificial Intelligence and Consciousness (JAIC)
@@ -6,7 +15,7 @@
 **Secondary Output:** IEEE/RFC Standards Proposal
 
 **Status:** ✅ COMPLETE (2025-12-28)
-**Final Paper:** `_papers/value_context_protocols_paper_v1.md` (11,918 words)
+**Final Paper:** [`specs/value_context_protocols_paper_v1.md`](./value_context_protocols_paper_v1.md) (superseded; 11,918 words)
 **Version:** VCP 2.2 with three-mode reporting, persistence layer, pattern recognition
 
 ---

@@ -32,6 +32,7 @@
     "enforce_admins": true,
     "required_checks": [
       "Specification validation",
+      "DCO sign-off",
       "Dependency review",
       "CodeQL (actions)",
       "CodeQL (javascript-typescript)",

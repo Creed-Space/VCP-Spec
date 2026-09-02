@@ -1,4 +1,4 @@
-# VCP/E — Economic Governance Specification v0.1
+# VCP/E — Economic Governance Specification v2.0
 
 **Status**: Draft
 **Version**: 2.0.0

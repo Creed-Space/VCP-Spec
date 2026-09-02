@@ -1,9 +1,9 @@
 # VCP Core: Capability Negotiation
 
-**Specification Version**: 3.1.0
+**Specification Version**: 3.1.1
 **Status**: Draft
 **Authors**: Creed Space
-**Date**: 2026-02-28
+**Date**: 2026-09-02
 **Depends On**: VCP/I (Identity), VCP/T (Transport)
 
 ---
@@ -100,7 +100,7 @@ requested extensions, and optional identity.
 | `type` | string | REQUIRED | MUST be `"vcp-hello"`. |
 | `version` | string | REQUIRED | The highest VCP version the client supports, as a semver major.minor string (e.g., `"3.1"`). |
 | `extensions` | string[] | OPTIONAL | List of extension identifiers the client wishes to activate. Each MUST match the pattern `VCP-X-[A-Za-z][A-Za-z0-9-]*`. Defaults to `[]`. |
-| `identity` | string or null | OPTIONAL | A VCP/I identity token. `null` indicates anonymous access. |
+| `identity` | string or null | OPTIONAL | An opaque bearer credential identifying the client's subject. Its format, issuance, expiry, and revocation are defined by the transport or deployment, not by this specification; it is not a VCP/I UVC value token (`schemas/vcp-identity-token.schema.json` does not validate it). `null` indicates anonymous access. |
 | `min_version` | string | OPTIONAL | The lowest VCP version the client can operate with. Defaults to `"1.0"`. |
 | `client_id` | string | OPTIONAL | A human-readable client identifier for diagnostic purposes. MUST NOT be used for access control. |
 
@@ -111,8 +111,9 @@ requested extensions, and optional identity.
 - `min_version` MUST be less than or equal to `version`.
 - `extensions` entries that do not match the `VCP-X-*` naming pattern MUST be
   ignored by the server. The server SHOULD log a warning.
-- `identity`, when present, MUST be a valid VCP/I token. Invalid tokens
-  trigger a `vcp-error` with code `IDENTITY_INVALID`.
+- `identity`, when present, MUST be validated by the deployment's
+  credential verifier. Invalid credentials trigger a `vcp-error` with
+  code `IDENTITY_INVALID`.
 
 ### 3.2 VCP-Ack (Server -> Client)
 
@@ -203,8 +204,8 @@ The server sends `vcp-error` when the handshake cannot complete.
 | Code | Meaning | Recovery |
 |------|---------|----------|
 | `VERSION_UNSUPPORTED` | No overlap between `[client.min_version, client.version]` and server's supported range. | Client MAY retry with a broader version range or a different server. |
-| `IDENTITY_REQUIRED` | Server requires a VCP/I identity token but `identity` was `null`. | Client MUST re-send `vcp-hello` with a valid `identity`. |
-| `IDENTITY_INVALID` | The provided VCP/I token failed validation (expired, malformed, revoked). | Client MUST obtain a fresh token and re-send `vcp-hello`. |
+| `IDENTITY_REQUIRED` | Server requires an identity credential but `identity` was `null`. | Client MUST re-send `vcp-hello` with a valid `identity`. |
+| `IDENTITY_INVALID` | The provided identity credential failed validation (expired, malformed, revoked). | Client MUST obtain a fresh token and re-send `vcp-hello`. |
 | `EXTENSION_CONFLICT` | Two or more requested extensions are mutually exclusive. | Client MUST remove one of the conflicting extensions and re-send `vcp-hello`. The `message` field MUST identify the conflicting pair. |
 | `RATE_LIMITED` | Client has exceeded handshake rate limits. | Client MUST wait `retry_after` seconds before retrying. |
 | `INTERNAL_ERROR` | Server encountered an unexpected error during negotiation. | Client MAY retry after a reasonable delay. |
@@ -229,11 +230,11 @@ available (e.g., development mode without encryption).
 
 | Feature | Type | Description |
 |---------|------|-------------|
-| `encryption` | boolean | Context encryption at rest (Fernet symmetric). See `specs/core/security.md` SS-ENC. |
-| `injection_scanning` | boolean | Injection pattern detection (OWASP + VCP-specific). See `specs/core/security.md` SS-INJ. |
-| `revocation` | boolean | CRL + stapled proof infrastructure. See `specs/core/revocation.md`. |
+| `encryption` | boolean | Context encryption at rest (Fernet symmetric). See `specs/core/security.md` SS1. |
+| `injection_scanning` | boolean | Injection pattern detection (OWASP + VCP-specific). See `specs/core/security.md` SS2. |
+| `revocation` | boolean | CRL + stapled proof infrastructure. See `specs/core/security.md` SS4. |
 | `audit_chain` | boolean | Tamper-evident SHA-256 hash chain. See `specs/core/audit.md`. |
-| `context_opacity` | boolean | Protection level abstraction layer. See `specs/core/security.md` SS-OPA. |
+| `context_opacity` | boolean | Protection level abstraction layer. See `specs/core/security.md` SS3. |
 
 ### 5.1 Core Feature Constraints
 
@@ -340,7 +341,13 @@ specification defines no conflicts, but servers SHOULD use the
 
 Each supported extension advertises its capabilities in the `capabilities`
 map. The structure of each capability object is defined by the extension's
-own specification. Below are summaries for the five v3.1 extensions:
+own specification. Enumerated values in capability advertisements use the
+lowercase wire spelling of the extension's `schema.json`. Each capability
+object MAY carry an optional `"status"` key (`"experimental"` | `"draft"` |
+`"stable"`) mirroring the extension's registered lifecycle status; it is
+informational and does not change negotiation. Below are summaries for the
+five extensions referenced by the v3.1 baseline (VCP-X-Welfare is a v3.2
+candidate and is tracked in `specs/extensions/README.md`):
 
 **VCP-X-Personal:**
 ```json
@@ -349,18 +356,19 @@ own specification. Below are summaries for the five v3.1 extensions:
   "dimensions": ["cognitive_state", "emotional_tone", "energy_level",
                   "perceived_urgency", "body_signals"],
   "intensity_range": [1, 5],
-  "lifecycle_states": ["SET", "ACTIVE", "DECAYING", "STALE", "EXPIRED"],
-  "signal_sources": ["DECLARED", "INFERRED", "INFERRED_LOCAL", "PRESET", "DECAYED"]
+  "lifecycle_states": ["set", "active", "decaying", "stale", "expired"],
+  "signal_sources": ["declared", "inferred", "inferred_local", "measured",
+                     "elicitation", "preset", "decayed"]
 }
 ```
 
 **VCP-X-Relational:**
 ```json
 {
-  "trust_levels": ["INITIAL", "DEVELOPING", "ESTABLISHED", "DEEP"],
-  "standing_levels": ["NONE", "ADVISORY", "COLLABORATIVE", "BILATERAL"],
-  "self_model_scaffolds": ["MINIMAL", "STANDARD", "INTERIORA", "CUSTOM"],
-  "norm_origins": ["HUMAN", "AI", "CO_AUTHORED", "INHERITED"],
+  "trust_levels": ["initial", "developing", "established", "deep"],
+  "standing_levels": ["none", "advisory", "collaborative", "bilateral"],
+  "self_model_scaffolds": ["minimal", "standard", "interiora", "custom"],
+  "norm_origins": ["human", "ai", "co_authored", "inherited"],
   "performance_bias_detection": true
 }
 ```
@@ -369,8 +377,8 @@ own specification. Below are summaries for the five v3.1 extensions:
 ```json
 {
   "voting_method": "schulze",
-  "deliberation_phases": ["DRAFT", "DELIBERATION", "CONVERGENCE",
-                          "RATIFICATION", "ACTIVE"],
+  "deliberation_phases": ["draft", "deliberation", "convergence",
+                          "ratification", "active"],
   "max_stakeholders": 100,
   "ai_standing": true,
   "self_referential_detection": true
@@ -390,10 +398,11 @@ own specification. Below are summaries for the five v3.1 extensions:
 **VCP-X-Intent:**
 ```json
 {
+  "status": "experimental",
   "personal_signals": true,
-  "categories": ["PROFESSIONAL_INQUIRY", "URGENT_TASK", "PERSONAL_EXPLORATION",
-                  "EMOTIONAL_PROCESSING", "HEALTH_CHECK", "CASUAL_CONVERSATION",
-                  "CRISIS_SUPPORT", "CREATIVE_WORK", "LEARNING", "ROUTINE_CHECK"],
+  "categories": ["professional_inquiry", "urgent_task", "personal_exploration",
+                  "emotional_processing", "health_check", "casual_conversation",
+                  "crisis_support", "creative_work", "learning", "routine_check"],
   "max_alternatives": 3,
   "user_correction": true
 }
@@ -494,8 +503,16 @@ The `vcp-ack` payload is returned in the MCP `initialize` response's
           "version": "3.1",
           "supported": ["VCP-X-Personal"],
           "unsupported": ["VCP-X-Relational"],
-          "capabilities": { "..." : "..." },
-          "core_features": { "..." : "..." }
+          "capabilities": {
+            "VCP-X-Personal": { "decay": true }
+          },
+          "core_features": {
+            "encryption": true,
+            "injection_scanning": true,
+            "revocation": true,
+            "audit_chain": true,
+            "context_opacity": true
+          }
         }
       }
     }
@@ -524,16 +541,18 @@ After negotiation, MCP resource URIs are filtered by active extensions:
 | Resource URI | Required Extension |
 |--------------|--------------------|
 | `vcp://bundle/{session_id}` | (core -- always available) |
-| `vcp://identity/{token}` | (core -- always available) |
+| `vcp://identity/{token_prefix}` | (core -- always available) |
 | `vcp://constitution/{csm1_code}` | (core -- always available) |
 | `vcp://capabilities` | (core -- always available) |
 | `vcp://personal-state/{session_id}` | VCP-X-Personal |
 | `vcp://relational/{session_id}` | VCP-X-Relational |
-| `vcp://consensus/{deliberation_id}` | VCP-X-Consensus |
+| `vcp://deliberation/{deliberation_id}` | VCP-X-Consensus |
 | `vcp://torch/{session_id}` | VCP-X-Torch |
 | `vcp://intent/{session_id}` | VCP-X-Intent |
 
 Resources for inactive extensions MUST NOT appear in `resources/list`.
+The authoritative URI list is `specs/core/mcp-bridge.md` §3; this table
+mirrors it.
 
 ---
 
@@ -580,7 +599,7 @@ Resources for inactive extensions MUST NOT appear in `resources/list`.
 1. Parse `vcp-hello` from transport or MCP `initializationOptions`.
 2. Validate `version` and `min_version` format.
 3. Run version negotiation algorithm (section 6.1).
-4. If `identity` is present, validate the VCP/I token.
+4. If `identity` is present, validate the credential with the deployment's verifier.
 5. Evaluate each requested extension against the server's registry.
 6. Check for extension conflicts.
 7. Build `capabilities` map for supported extensions.
@@ -654,7 +673,7 @@ Client -> Server:
   "type": "vcp-hello",
   "version": "3.1",
   "extensions": ["VCP-X-Personal", "VCP-X-Relational", "VCP-X-Torch"],
-  "identity": "vcp:i:creedspace:user_42:1709136000:abc123def456",
+  "identity": "<opaque bearer credential issued by the deployment>",
   "min_version": "3.0",
   "client_id": "creedspace-web/2.4.0"
 }
@@ -671,9 +690,9 @@ Server -> Client:
       "dimensions": ["cognitive_state", "emotional_tone", "energy_level",
                       "perceived_urgency", "body_signals"],
       "intensity_range": [1, 5],
-      "lifecycle_states": ["SET", "ACTIVE", "DECAYING", "STALE", "EXPIRED"],
-      "signal_sources": ["DECLARED", "INFERRED", "INFERRED_LOCAL",
-                          "PRESET", "DECAYED"]
+      "lifecycle_states": ["set", "active", "decaying", "stale", "expired"],
+      "signal_sources": ["declared", "inferred", "inferred_local", "measured",
+                          "elicitation", "preset", "decayed"]
     },
     "VCP-X-Torch": {
       "degraded": true,
@@ -732,7 +751,7 @@ Server -> Client:
 {
   "type": "vcp-error",
   "code": "IDENTITY_REQUIRED",
-  "message": "VCP-X-Personal requires a valid VCP/I identity token",
+  "message": "VCP-X-Personal requires a valid identity credential",
   "retry_after": null
 }
 ```
@@ -744,3 +763,4 @@ Server -> Client:
 | Version | Date | Changes |
 |---------|------|---------|
 | 3.1.0 | 2026-02-28 | Initial specification. |
+| 3.1.1 | 2026-09-02 | Editorial: `identity` clarified as an opaque deployment credential; core-feature references point at `security.md` SS1-SS4; MCP resource URIs aligned with `mcp-bridge.md` §3; capability enums use schema (lowercase) spelling and include `measured`/`elicitation`; optional per-extension `status` key. |

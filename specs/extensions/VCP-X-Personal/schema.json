@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://creed.space/schemas/vcp/extensions/personal/v1.0.0",
+  "$id": "https://creed.space/schemas/vcp/extensions/personal/v1.1.0",
   "title": "VCP-X-Personal Extension Schema",
   "description": "JSON Schema for VCP-X-Personal personal state signaling extension (VCP 3.1). Validates PersonalSignal, PersonalContext, DecayConfig, and GenerationPreferences.",
 

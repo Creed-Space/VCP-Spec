@@ -114,7 +114,7 @@ Modifications to JSON Schema files in `schemas/`.
 New VCP-X extensions that add capability to the protocol.
 
 - Requires a VEP using the extension proposal template (see section 3)
-- Extensions start in EXPERIMENTAL status
+- Extensions enter this repository at Experimental status once `spec.md` and `schema.json` exist; the earlier `proposed` state of [specs/core/extension-lifecycle.md](./specs/core/extension-lifecycle.md) precedes repository presence
 - Each extension MUST have a designated maintainer
 
 ### SDK contributions
@@ -287,8 +287,10 @@ Open a pull request against `main`. In the PR description:
 
 ### After merge
 
-- The VEP issue is updated to reflect IMPLEMENTED status
-- The author is added to CONTRIBUTORS.md (if not already listed)
+- The VEP file and tracker are updated to `Implemented in source` per the
+  vocabulary in [GOVERNANCE.md](./GOVERNANCE.md)
+- The author is credited in the PR and release notes (no CONTRIBUTORS.md is
+  maintained yet)
 
 ---
 

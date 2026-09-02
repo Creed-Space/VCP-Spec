@@ -18,26 +18,23 @@ The user sets their state via the client interface at T=0 (10:00 AM):
 
 ```json
 {
-  "signals": {
+  "personal": {
     "cognitive_state": {
-      "category": "cognitive_state",
-      "value": "focused",
+      "category": "focused",
       "intensity": 4,
       "source": "declared",
       "confidence": 0.95,
       "declared_at": "2026-02-28T10:00:00Z"
     },
     "perceived_urgency": {
-      "category": "perceived_urgency",
-      "value": "pressured",
+      "category": "pressured",
       "intensity": 4,
       "source": "declared",
       "confidence": 0.9,
       "declared_at": "2026-02-28T10:00:00Z"
     },
     "energy_level": {
-      "category": "energy_level",
-      "value": "rested",
+      "category": "rested",
       "intensity": 3,
       "source": "declared",
       "confidence": 0.8,
@@ -49,6 +46,7 @@ The user sets their state via the client interface at T=0 (10:00 AM):
 ```
 
 **Annotations**:
+- The envelope follows VCP-X-Personal spec §5.4 / `schema.json`: dimensions are keyed directly under `personal` and `category` carries the categorical value (`focused`, not the dimension name)
 - Only declared dimensions are sent; undeclared dimensions have no signal (not "neutral")
 - `intensity` is 1-5 integer scale: 1=barely present, 5=dominant
 - `source: "declared"` means the user explicitly set this value
@@ -62,7 +60,7 @@ The personal state is encrypted at rest in the VCP context state manager:
 
 ```
 # Plaintext (before encryption):
-{"cognitive_state": {"value": "focused", "intensity": 4, "source": "declared", ...}}
+{"cognitive_state": {"category": "focused", "intensity": 4, "source": "declared", ...}}
 
 # Encrypted (in Redis):
 enc:gAAAAABnwV...  (Fernet ciphertext with enc: prefix)
@@ -127,12 +125,16 @@ lifecycle_state = DECAYING
 
 ### Current State at T+15min
 
-```json
+The internal decayed state (illustrative; the unrounded `intensity`,
+`lifecycle_state` and `original_intensity` fields are implementation state
+and are not part of the `PersonalSignal` wire schema, which carries an
+integer 1-5 `intensity`):
+
+```jsonc
 {
-  "signals": {
+  "personal": {
     "cognitive_state": {
-      "category": "cognitive_state",
-      "value": "focused",
+      "category": "focused",
       "intensity": 2.338,
       "source": "decayed",
       "lifecycle_state": "DECAYING",
@@ -140,8 +142,7 @@ lifecycle_state = DECAYING
       "declared_at": "2026-02-28T10:00:00Z"
     },
     "perceived_urgency": {
-      "category": "perceived_urgency",
-      "value": "pressured",
+      "category": "pressured",
       "intensity": 2.572,
       "source": "decayed",
       "lifecycle_state": "DECAYING",
@@ -149,8 +150,7 @@ lifecycle_state = DECAYING
       "declared_at": "2026-02-28T10:00:00Z"
     },
     "energy_level": {
-      "category": "energy_level",
-      "value": "rested",
+      "category": "rested",
       "intensity": 2.190,
       "source": "decayed",
       "lifecycle_state": "DECAYING",
@@ -170,8 +170,7 @@ The user sends a message, triggering an engagement event. Cognitive state resets
 ```json
 {
   "cognitive_state": {
-    "category": "cognitive_state",
-    "value": "focused",
+    "category": "focused",
     "intensity": 4,
     "source": "declared",
     "lifecycle_state": "ACTIVE",
@@ -209,8 +208,7 @@ stale_threshold_value = baseline + stale_threshold × (initial - baseline)
 ```json
 {
   "perceived_urgency": {
-    "category": "perceived_urgency",
-    "value": "pressured",
+    "category": "pressured",
     "intensity": 1.393,
     "source": "decayed",
     "lifecycle_state": "STALE",
@@ -269,7 +267,7 @@ For an initial intensity of 4 (baseline=1), 12-minute half-life:
 
 1. Decayed intensity NEVER drops below `baseline` (floor of 1)
 2. `source` changes from `"declared"` to `"decayed"` once decay starts
-3. Categorical `value` does NOT change during decay — only intensity changes
+3. The categorical `category` value does NOT change during decay — only intensity changes
 4. Engagement resets only apply to dimensions with `reset_on_engagement: true`
 5. Pinned signals (`pinned: true`) never decay regardless of elapsed time
 6. The decay formula is pure: given (initial, elapsed, config), the result is deterministic

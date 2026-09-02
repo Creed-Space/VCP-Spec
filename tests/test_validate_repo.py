@@ -389,6 +389,45 @@ class SchemaAndMarkdownValidatorTests(unittest.TestCase):
         self.assertTrue(any("source is missing" in error for error in protocol_prose_errors(missing)))
 
 
+    def test_spec_json_examples_find_nested_handshake_and_personal_blocks(self) -> None:
+        text = (
+            "intro\n```json\n{\"result\": {\"vcp\": {\"type\": \"vcp-ack\", "
+            "\"version\": \"3.1\"}}}\n```\n"
+            "```json\nnot json ...\n```\n"
+            "```jsonc\n{\"type\": \"vcp-error\"}\n```\n"
+            "```json\n{\"personal\": {\"cognitive_state\": {\"category\": \"bogus\"}}}\n```\n"
+        )
+        blocks = validate_repo._fenced_json_blocks(text)
+        self.assertEqual([line for line, _ in blocks], [2, 5, 11])
+        first = json.loads(blocks[0][1])
+        self.assertEqual(len(validate_repo._handshake_messages(first)), 1)
+        self.assertEqual(validate_repo._handshake_messages([first, {"type": "vcp-error"}]), [
+            first["result"]["vcp"],
+            {"type": "vcp-error"},
+        ])
+        problems = Problems()
+        schemas = {}
+        for name in ("schemas/vcp-capability-handshake.schema.json", "specs/extensions/VCP-X-Personal/schema.json"):
+            path = ROOT / name
+            loaded = json.loads(path.read_text(encoding="utf-8"))
+            validator_class = validate_repo.validator_for(loaded)
+            schemas[validate_repo.schema_name(path)] = (
+                loaded,
+                validator_class(loaded, format_checker=strict_format_checker()),
+            )
+        with tempfile.TemporaryDirectory(dir=ROOT / "specs") as directory:
+            sample = Path(directory) / "sample.md"
+            sample.write_text(text, encoding="utf-8")
+            validate_repo.validate_spec_json_examples(schemas, problems)
+        rendered = "\n".join(problems.items)
+        self.assertIn("sample.md:2 handshake example is invalid", rendered)
+        self.assertIn("sample.md:11 personal example is invalid", rendered)
+        self.assertNotIn("sample.md:8", rendered)
+        empty = Problems()
+        validate_repo.validate_spec_json_examples({}, empty)
+        self.assertTrue(any("requires the handshake" in m for m in empty.items))
+
+
 class GeneratorSafetyTests(unittest.TestCase):
     def test_document_inventory_is_globally_bounded_and_snapshot_consistent(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

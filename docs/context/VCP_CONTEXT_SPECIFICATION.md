@@ -9,6 +9,12 @@ owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
 
+> **Merged copy.** This document duplicates
+> [`docs/adaptation/VCP_ADAPTATION.md`](../adaptation/VCP_ADAPTATION.md) and
+> both were consolidated into
+> [`specs/VCP_ADAPTATION_v2.0.md`](../../specs/VCP_ADAPTATION_v2.0.md); where
+> they disagree, the layer specification controls. Retained for link stability.
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: 4 (VCP Context)
@@ -1242,7 +1248,7 @@ The wire format separates situational and personal bands with U+2016 (‖).
 | `📍🏢` + `👥👔` | `A3+W+P` (Ambassador, work) |
 | `🎭🚨` (emergency) | Override to emergency mode |
 | `🧠🥺` (vulnerable state) | `G4+V` (Godparent, vulnerable) |
-| `📍🏥` (medical setting) | `R4+H+P` (Anchor, health) |
+| `📍🏥` (medical setting) | `D3+H+P` (Mediator, health) |
 | `🎭🎪` (entertainment) | `M2` (Muse, creative) |
 
 ---

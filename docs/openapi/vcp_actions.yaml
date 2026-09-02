@@ -115,7 +115,7 @@ paths:
       operationId: parseCSM1Code
       summary: Parse a CSM1 constitutional code
       description: |
-        Parses a CSM1 (Constitutional Semantics Mark 1) code string.
+        Parses a CSM1 (Constitutional Safety Minicode) code string.
 
         Code format: `persona + level + scopes[:namespace][@version]`
 

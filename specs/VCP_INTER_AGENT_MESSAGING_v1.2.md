@@ -90,7 +90,7 @@ Every inter-agent message MUST be a JSON object conforming to the following stru
   "recipient": "agent://orchestrator.local/child-003",
   "timestamp": "2026-02-15T10:30:00Z",
   "payload": { },
-  "signature": "base64:MEUCIQD..."
+  "signature": "base64:AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+Pw=="
 }
 ```
 

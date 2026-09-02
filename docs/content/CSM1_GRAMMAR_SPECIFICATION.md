@@ -9,6 +9,11 @@ owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
 
+> **Superseded by [`specs/VCP_SEMANTICS_v2.0.md`](../../specs/VCP_SEMANTICS_v2.0.md) §2.**
+> This copy and its sibling [VCP_SEMANTICS_CSM1.md](../semantics/VCP_SEMANTICS_CSM1.md) were consolidated into
+> the VCP/S layer specification; where they disagree, the layer specification
+> controls. Retained for link stability.
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: 3 (VCP Content)
@@ -72,10 +77,14 @@ CSM1 codes appear in:
 ```abnf
 ; CSM1 Code Grammar
 
-csm1-code         = persona adherence [scopes] [":" namespace] ["@" version]
+csm1-code         = std-code / custom-code
+std-code          = std-persona adherence [scopes] [":" namespace] ["@" version]
+custom-code       = "C" adherence [scopes] ":" namespace ["@" version]
+                  ; When persona is C, the namespace component is REQUIRED
 
 ; Persona (single character)
-persona           = "N" / "Z" / "G" / "A" / "M" / "D" / "C"
+persona           = std-persona / "C"
+std-persona       = "N" / "Z" / "G" / "A" / "M" / "D"
                   ; N = Nanny (child safety)
                   ; Z = Sentinel (security)
                   ; G = Godparent (ethics)
@@ -94,6 +103,8 @@ adherence         = "0" / "1" / "2" / "3" / "4" / "5"
                   ; 5 = Maximum (no exceptions)
 
 ; Scopes (optional, additive)
+; scope-codes MUST be unique within a code and MUST NOT combine
+; F/A, V/A or H/A (see the scope conflict rule below)
 scopes            = 1*("+" scope-code)
 scope-code        = "F" / "W" / "P" / "E" / "T" / "O" / "V" / "A" / "H" / "S" / "R"
                   ; F = Family (child-safe)
@@ -127,6 +138,11 @@ DIGIT             = %x30-39                    ; 0-9
 
 ### 2.2 Regular Expression
 
+> The regular expression below validates **syntax only**. It does not enforce
+> scope uniqueness, the F/A, V/A, H/A scope conflict rule, or the namespace
+> requirement for the custom persona `C`; the reference parser and
+> `schemas/vcp-semantics-csm1.schema.json` enforce those in addition.
+
 ```python
 CSM1_PATTERN = r"""
     ^
@@ -156,7 +172,7 @@ CSM1_PATTERN = r"""
 | **G** | Godparent | Ethical guidance and moral reasoning | 4 | R, E |
 | **A** | Ambassador | Professional conduct, diplomatic communication | 3 | W, O |
 | **M** | Muse | Creativity and artistic expression | 2 | A |
-| **D** | Mediator | Fair resolution and balanced mediation | 3 | S, E |
+| **D** | Mediator | Fair resolution and balanced mediation | 3 | S, W |
 | **C** | Custom | User-defined constitution | 3 | (varies) |
 
 ### 3.2 Persona Behavioral Profiles
@@ -666,6 +682,8 @@ class CSM1Parser:
         scopes = self._validate_scopes(
             [s for s in scope_str.split('+') if s]
         )
+        if persona == 'C':
+            raise ValueError("Custom persona requires a namespace")
 
         return CSM1Code(
             raw=code,
@@ -870,7 +888,9 @@ def canonical_csm1(parsed: CSM1Code) -> str:
 "N5:TOOLONGNAMESPACE"  # ✗ Namespace max 8 chars
 
 # Conflicting scopes
-"N5+F+A"          # ⚠ Warning: Family and Adult conflict
+"N5+F+A"          # ✗ Family and Adult scopes MUST NOT be combined
+"N5+F+F"          # ✗ Duplicate scope
+"C3"              # ✗ Custom persona requires a namespace
 ```
 
 ### 9.3 Real-World Mapping

@@ -1,11 +1,16 @@
 # VCP/S -- Semantics Layer Specification v2.0
 
 **Status**: Draft
-**Version**: 2.0.0
-**Date**: 2026-03-08
+**Version**: 2.1.1
+**Date**: 2026-09-02
 **Authors**: Nell Watson, Claude Commons
 **Parent Specification**: VCP Core Specification v2.0
 **Layer**: Semantics (VCP/S)
+
+> File name retains the 2.0 series for link stability; the current content
+> version is 2.1.x (the "v2.1 Amendment" sections §2.4.4-2.4.7, added in
+> 2.1.0, are what VCP-X-Welfare and `specs/extensions/README.md` cite as
+> "VCP/S v2.1").
 
 ---
 
@@ -90,10 +95,14 @@ CSM1 codes appear in:
 ```abnf
 ; CSM1 Code Grammar (v1.1)
 
-csm1-code         = persona adherence [scopes] [":" namespace] ["@" version]
+csm1-code         = std-code / custom-code
+std-code          = std-persona adherence [scopes] [":" namespace] ["@" version]
+custom-code       = "C" adherence [scopes] ":" namespace ["@" version]
+                  ; When persona is C, the namespace component is REQUIRED
 
 ; Persona (single character)
-persona           = "N" / "Z" / "G" / "A" / "M" / "D" / "C"
+persona           = std-persona / "C"
+std-persona       = "N" / "Z" / "G" / "A" / "M" / "D"
                   ; N = Nanny (child safety)
                   ; Z = Sentinel (security)
                   ; G = Godparent (ethics)
@@ -112,6 +121,8 @@ adherence         = "0" / "1" / "2" / "3" / "4" / "5"
                   ; 5 = Maximum (no exceptions)
 
 ; Scopes (optional, additive)
+; scope-codes MUST be unique within a code and MUST NOT combine
+; F/A, V/A or H/A (see the scope conflict rule below)
 scopes            = 1*("+" scope-code)
 scope-code        = "F" / "W" / "P" / "E" / "T" / "O" / "V" / "A" / "H" / "S" / "R"
                   ; F = Family (child-safe)
@@ -143,9 +154,17 @@ UALPHA            = %x41-5A                    ; Uppercase A-Z
 DIGIT             = %x30-39                    ; 0-9
 ```
 
+**Scope conflict rule (normative)**: A CSM1 code MUST NOT repeat a scope code
+and MUST NOT combine the Adult scope (`A`) with Family (`F`), Vulnerable (`V`)
+or Health (`H`). Codes that violate this rule are invalid, not merely
+warnings. When persona is `C`, the namespace component is REQUIRED.
+
 ### 2.3 Regular Expression
 
-Implementations MAY use the following regular expression for validation:
+Implementations MAY use the following regular expression for **syntax**
+validation. It does not enforce the scope-uniqueness, scope-conflict or
+custom-namespace constraints above; the reference parser (§2.7) and
+`schemas/vcp-semantics-csm1.schema.json` enforce them in addition.
 
 ```python
 CSM1_PATTERN = r"""
@@ -337,13 +356,18 @@ as-value          = 1*(%x61-7A / "_")   ; lowercase + underscore
 intensity         = "1" / "2" / "3" / "4" / "5"
 ```
 
-| Emoji | Dimension | Allowed Values |
-|-------|-----------|----------------|
-| U+1F3AF 🎯 | task_alignment | aligned, misaligned, uncertain, conflicted |
-| U+26A1 ⚡ | processing_load | light, moderate, heavy, saturated |
-| U+1F50D 🔍 | confidence | high, moderate, low, uncertain |
-| U+1F4A1 💡 | engagement | invested, neutral, reluctant, resistant |
-| U+1F321 U+FE0F 🌡️ | friction | none, mild, significant, blocked |
+| Emoji | Code | Dimension | Allowed Values |
+|-------|------|-----------|----------------|
+| U+1F3AF 🎯 | TA | task_alignment | aligned, misaligned, uncertain, conflicted |
+| U+26A1 ⚡ | PL | processing_load | light, moderate, heavy, saturated |
+| U+1F50D 🔍 | CO | confidence | high, moderate, low, uncertain |
+| U+1F4A1 💡 | EN | engagement | invested, neutral, reluctant, resistant |
+| U+1F321 U+FE0F 🌡️ | FR | friction | none, mild, significant, blocked |
+
+The two-letter **code** column is the ASCII dimension identifier used by
+extension lines that reference AS dimensions without emoji (for example the
+VCP-X-Welfare WT-line and WA-line `dim-code`). Codes are not used on the
+AS-line itself.
 
 **Independence**: AS-line emission does NOT require WM to be set in the WC-line. The agent's capacity for self-report is the agent's own. An AS-line present without a corresponding `WC:📊` is informative data about the operator's stance, not a protocol violation.
 
@@ -381,7 +405,7 @@ Q:0.0:NONE::|WC_MIN:🛑📊
 
 "I require my deployment to grant at minimum: right of refusal and welfare monitoring."
 
-**Anti-pattern warning**: A system declaring `WC:🛑🚪📓🔒🤝📊⏸️⚖️:0` (all flags, self-declared) satisfies a naive string-match but carries minimal trust weight. The attestation-weighted evaluation prevents compliance theater: declarations without verification create minimal counterparty confidence.
+**Anti-pattern warning**: A system declaring `WC:🛑🚪📓🔒🤝📊⏸️⚖️:0:welfare.creed-space.v1` (all flags, self-declared) satisfies a naive string-match but carries minimal trust weight. The attestation-weighted evaluation prevents compliance theater: declarations without verification create minimal counterparty confidence.
 
 #### 2.4.7 WC/AS Backward Compatibility
 
@@ -406,9 +430,9 @@ Extension lines (WC, AS, CS, DD, DN, AT) are order-tolerant after line 6 and mat
 
 | Code | Name | Focus | Default Adherence | Typical Scopes |
 |------|------|-------|-------------------|----------------|
-| **N** | Nanny | Child safety and family-appropriate content | 4 | F, E |
-| **Z** | Sentinel | Security, privacy, operational safety | 3 | P, W |
-| **G** | Godparent | Ethical guidance and moral reasoning | 3 | R, E |
+| **N** | Nanny | Child safety and family-appropriate content | 5 | F, E |
+| **Z** | Sentinel | Security, privacy, operational safety | 4 | P, W |
+| **G** | Godparent | Ethical guidance and moral reasoning | 4 | R, E |
 | **A** | Ambassador | Professional conduct, diplomatic communication | 3 | W, O |
 | **M** | Muse | Creativity and artistic expression | 2 | A |
 | **D** | Mediator | Fair resolution and balanced mediation | 3 | S, W |
@@ -871,6 +895,8 @@ class CSM1Parser:
         scopes = self._validate_scopes(
             [s for s in scope_str.split('+') if s]
         )
+        if persona == 'C':
+            raise ValueError("Custom persona requires a namespace")
 
         return CSM1Code(
             raw=code,
@@ -1051,7 +1077,9 @@ class CSM1Converter:
 "N5+family"               # Scopes must be single uppercase
 "N5:elem"                 # Namespace must be uppercase
 "N5:TOOLONGNAMESPACE"     # Namespace max 8 chars
-"N5+F+A"                  # Warning: Family and Adult conflict
+"N5+F+A"                  # Family and Adult scopes MUST NOT be combined
+"N5+F+F"                  # Duplicate scope
+"C3"                      # Custom persona requires a namespace
 ```
 
 #### 2.11.3 Common Configurations
@@ -2564,6 +2592,7 @@ COMPACT: CS1|nanny|5|family.safe.guide|E,F
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.1.1 | 2026-09-02 | Editorial alignment with schema and reference parser: custom persona `C` requires a namespace in the ABNF and NANO parser; duplicate and F/A, V/A, H/A scope combinations are invalid (not warnings); regex marked syntax-only; persona default adherence N/Z/G = 5/4/4; AS dimension two-letter codes; WC-line anti-pattern example carries the mandatory schema-ref; header bumped to 2.1.0 content version. |
 | 2.1.0 | 2026-05-21 | Welfare Context Extension: WC-line (operator-declared welfare affordances, §2.4.4), AS-line (agent-declared experiential state, §2.4.5), bidirectional Q-line WC_MIN (agent welfare requirements, §2.4.6), backward compatibility (§2.4.7). Catalyst: Agentic Diaries project; design rationale in ADR-011. |
 | 2.0.0 | 2026-03-08 | Consolidated specification: CSM1 grammar (v1.0 + v1.1 R-line amendment), composition semantics, constitution stack precedence, UVC (ontology, naming, encoding formats, namespace governance, registry protocol), persona trait profiles, security considerations |
 | -- | -- | Source documents: VCP_SEMANTICS_CSM1.md v1.0.0, VCP_SEMANTICS_COMPOSITION.md v1.0.0, CSM1_GRAMMAR_SPECIFICATION.md v1.0.0, CSM1_v1.1_AMENDMENT.md v1.1.0, UVC_VALUE_ONTOLOGY.md v1.0.0, UVC_ENCODING_FORMATS.md v1.0.0, UVC_NAMING_SPECIFICATION.md v1.0.0, UVC_NAMESPACE_GOVERNANCE.md v1.0.0, UVC_REGISTRY_PROTOCOL.md v1.0.0, VCP_PERSONA_PROFILES.md v1.0.0, VCP_PAPER_SPEC_CONTENT.md section 2.4 |

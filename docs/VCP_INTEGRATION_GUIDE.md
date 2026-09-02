@@ -25,8 +25,10 @@ The VCP-SDK artifacts are **source-only candidates**. No PyPI, npm, or
 crates.io release is currently claimed. Candidate package names describe local
 metadata and do not establish registry availability.
 
-Use an immutable VCP-SDK checkout whose commit appears in the coordinated
-candidate manifest. From its repository root:
+Use an immutable VCP-SDK checkout at the `source_commit` recorded in
+[`status/publication-state.json`](../status/publication-state.json)
+(currently `null`, meaning no commit has been pinned yet). From its
+repository root:
 
 ```bash
 # Python source package
@@ -43,7 +45,9 @@ cargo build --manifest-path ./rust/Cargo.toml -p vcp-core
 ```
 
 The machine-readable publication gate is
-`VCP-SDK/release/publication-state.json`. Public registry commands become valid
+`VCP-SDK/release/publication-state.json`, mirrored in this repository as
+[`status/publication-state.json`](../status/publication-state.json)
+(as_of 2026-08-15). Public registry commands become valid
 only after that record contains a ratified name, an immutable source commit, an
 artifact digest or attestation, a registry receipt, and a successful installed
 artifact smoke test.
@@ -223,4 +227,4 @@ suite passes rather than ecosystem-wide VCP compliance or certification.
 4. Checked examples: `VCP-SDK/examples/`.
 5. Conformance corpus and runners: `VCP-SDK/conformance/`.
 6. Current WebMCP API: `https://developer.chrome.com/docs/ai/webmcp/imperative-api`.
-7. Publication state: `VCP-SDK/release/publication-state.json`.
+7. Publication state: `VCP-SDK/release/publication-state.json`, mirrored as [`status/publication-state.json`](../status/publication-state.json).

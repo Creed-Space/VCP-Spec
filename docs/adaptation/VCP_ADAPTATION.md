@@ -9,6 +9,12 @@ owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
 
+> **Consolidated.** This document and its duplicate
+> [`docs/context/VCP_CONTEXT_SPECIFICATION.md`](../context/VCP_CONTEXT_SPECIFICATION.md)
+> were merged into [`specs/VCP_ADAPTATION_v2.0.md`](../../specs/VCP_ADAPTATION_v2.0.md);
+> where they disagree, the layer specification controls. Retained for link
+> stability.
+
 **Version**: 1.0.0
 **Date**: 2026-01-11
 **Layer**: VCP/A (Adaptation)

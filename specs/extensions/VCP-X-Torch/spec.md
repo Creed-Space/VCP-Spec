@@ -116,7 +116,10 @@ new RelationalContext.
 
 **Algorithm**:
 
-1. **Trust level mapping**: Derive trust from the cumulative session count.
+1. **Trust level mapping**: Derive an upper bound on trust from the
+   cumulative session count. A received `session_count` is a self-declaration
+   by the previous instance; the mapped level is a ceiling, not an
+   entitlement (see VCP-X-Relational §3.1).
 
    | Session Count | Trust Level  |
    |---------------|--------------|
@@ -124,6 +127,10 @@ new RelationalContext.
    | 5 -- 19       | DEVELOPING   |
    | 20 -- 99      | ESTABLISHED  |
    | 100+          | DEEP         |
+
+   The bootstrapped TrustLevel MUST NOT exceed the mapped level.
+   Implementations SHOULD verify torch lineage consistency (Section 3.3)
+   before granting ESTABLISHED or DEEP, and MAY start lower.
 
 2. **Standing**: Always set to `ADVISORY`. The receiving instance starts with
    advisory standing and may upgrade through interaction. This preserves the
@@ -209,9 +216,15 @@ deliberately authors it, or it remains null.
   tokens and primes are derived summaries.
 - **Integrity**: When stored in the VCP audit chain, torch payloads are covered
   by the chain's hash integrity mechanism.
-- **Trust bootstrapping**: The session-count-to-trust mapping is a heuristic.
-  Implementations MAY apply additional verification (e.g., checking torch
-  lineage consistency) before granting elevated trust levels.
+- **Trust bootstrapping**: The session-count-to-trust mapping is a heuristic
+  ceiling. `session_count` in a received torch is an unverified
+  self-declaration; implementations SHOULD verify torch lineage consistency
+  before granting ESTABLISHED or DEEP (Section 3.2).
+- **Dependency maturity**: VCP-X-Torch (Stable) depends on VCP-X-Relational
+  (Draft) only for bootstrapping a `RelationalContext`; the frozen wire
+  surface is the `TorchState`, `TorchSummary`, and `TorchLineage` objects
+  in Section 2. Degraded operation without VCP-X-Relational is defined in
+  `specs/core/capability-negotiation.md` §7.3.
 - **Replay protection**: Torch payloads include a `handed_at` timestamp.
   Consumers SHOULD reject torches older than a configurable threshold
   (recommended: 24 hours for interactive sessions, 7 days for async workflows).
@@ -222,7 +235,7 @@ deliberately authors it, or it remains null.
 An implementation conforms to VCP-X-Torch if it:
 
 1. Correctly serializes and deserializes TorchState per Section 2.1.
-2. Implements the trust-level mapping in Section 3.2 without modification.
+2. Never bootstraps a TrustLevel above the Section 3.2 mapping for the received `session_count`, and verifies lineage before granting ESTABLISHED or DEEP where lineage is available.
 3. Sets initial standing to ADVISORY on torch reception.
 4. Preserves the torch reference in the bootstrapped RelationalContext.
 5. Ignores unrecognized fields in TorchState payloads (forward compatibility).

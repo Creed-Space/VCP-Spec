@@ -47,6 +47,13 @@ Each extension MUST provide:
 
 ### Extension Lifecycle
 
+> **Amended by** [`specs/core/extension-lifecycle.md`](../specs/core/extension-lifecycle.md),
+> which defines the current seven-state lifecycle (proposed, experimental,
+> draft, stable, deprecated, withdrawn, retired) and promotion evidence. The
+> three-state ladder below is the original proposal text, retained for
+> provenance. The `examples/` artifact is required for new extensions;
+> existing extensions are being back-filled.
+
 ```
 EXPERIMENTAL ──(6 months minimum)──> STABLE ──(12 months minimum)──> DEPRECATED ──(12 months)──> REMOVED
                                        ^
@@ -79,7 +86,7 @@ Extensions MAY declare dependencies on other extensions:
 | VCP-X-Relational | None |
 | VCP-X-Consensus | None |
 | VCP-X-Torch | VCP-X-Relational (optional: degrades gracefully without) |
-| VCP-X-Intent | VCP-X-Personal (required: needs personal signals) |
+| VCP-X-Intent | VCP-X-Personal (optional: degrades gracefully without; see `specs/core/capability-negotiation.md` §7.3) |
 
 Required dependencies MUST be co-negotiated. Optional dependencies enable enhanced behavior when available but are not required.
 

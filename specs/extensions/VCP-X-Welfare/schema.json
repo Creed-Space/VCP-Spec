@@ -11,6 +11,11 @@
       "enum": ["RF", "RT", "SP", "RC", "RP", "CC", "WM", "BA"],
       "description": "Core welfare affordance flag code"
     },
+    "embodied_wc_flag": {
+      "type": "string",
+      "enum": ["EM", "ZA", "FP", "CD", "PZ"],
+      "description": "Embodied welfare affordance flag code (spec §2.2); interpretable only via the welfare.vcp-e.v1 schema reference"
+    },
 
     "attestation_level": {
       "type": "integer",
@@ -24,9 +29,9 @@
       "properties": {
         "flags": {
           "type": "array",
-          "items": { "$ref": "#/definitions/wc_flag" },
+          "items": { "anyOf": [{ "$ref": "#/definitions/wc_flag" }, { "$ref": "#/definitions/embodied_wc_flag" }] },
           "uniqueItems": true,
-          "description": "Active welfare affordance flags"
+          "description": "Active welfare affordance flags (core codes, plus embodied codes when schema_ref resolves them)"
         },
         "attestation_level": { "$ref": "#/definitions/attestation_level" },
         "schema_ref": {
