@@ -274,14 +274,19 @@ receiving instance has standing to continue OR renegotiate what it inherits.
 |-----------------------|------------------|----------|------------------------------------------|
 | `quality_description` | string           | Yes      | Natural language description of relationship quality |
 | `trajectory`          | string or null   | No       | Direction the partnership is moving      |
-| `primes`              | list of strings  | No       | Context activators for the next instance |
+| `primes`              | list of strings  | Yes      | Context activators for the next instance (at most 3, each at most 80 characters; MAY be empty) |
 | `gift`                | string or null   | No       | Something the previous instance wanted to pass forward |
 | `handed_at`           | string (ISO8601) | Yes      | Timestamp of handoff                     |
-| `session_count`       | integer or null  | No       | Cumulative session count at handoff      |
+| `session_count`       | integer          | Yes      | Cumulative session count at handoff (minimum 1) |
 | `gestalt_token`       | string or null   | No       | Compact self-model summary string        |
 
 The `gift` field is human/AI-authored, not auto-generated. Implementations
 MUST NOT populate this field algorithmically.
+
+The TorchState wire format is defined by VCP-X-Torch §2.1; this extension's
+`schema.json` carries a verbatim copy of the VCP-X-Torch `TorchState`
+definition so that `RelationalContext.torch` validates identically under both
+schemas.
 
 ### 4.5 RelationalContext
 

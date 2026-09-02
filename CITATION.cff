@@ -3,12 +3,23 @@ message: "If you use the Value-Context Protocol, cite this specification."
 title: "Value-Context Protocol Specification"
 type: software
 version: "3.1"
-license: MIT
+license-url: "https://github.com/Creed-Space/VCP-Spec/blob/main/LICENSING_STATUS.md"
 authors:
   - family-names: Watson
     given-names: Nell
+  - family-names: Ajayi
+    given-names: Elena
+  - family-names: Alimpić
+    given-names: Filip
+  - family-names: Mahdi
+    given-names: Awwab
+  - family-names: Wells
+    given-names: Blake
+  - name: "Claude (Anthropic)"
 repository-code: "https://github.com/Creed-Space/VCP-Spec"
 url: "https://valuecontextprotocol.org/"
 abstract: >-
   An open specification for transporting signed constitutional values,
   behavioral rules, and contextual signals to computational agents.
+  Version 3.1 is the current source baseline; licensing of individual
+  file classes is under review (see LICENSING_STATUS.md).

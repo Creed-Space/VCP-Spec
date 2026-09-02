@@ -24,13 +24,17 @@ The core VCP/S v2.1 welfare lines define the protocol surface. This extension ad
 
 For agents operating in physical contexts (robotics, autonomous vehicles, industrial automation), the standard 5-dimension AS-line is insufficient. The following extended dimensions are available via schema reference:
 
-| Emoji | Dimension | Values | Context |
-|-------|-----------|--------|---------|
-| U+1F9BE 🦾 | actuator_stress | nominal, elevated, strained, critical | Physical manipulation load |
-| U+1F30D 🌍 | environmental_fit | adapted, adjusting, mismatched, hostile | Environment compatibility |
-| U+1F465 🏃 | interaction_pressure | calm, attentive, pressured, overwhelmed | Human proximity/demand density |
-| U+26A0 U+FE0F ⚠️ | safety_margin | wide, adequate, narrow, critical | Distance from safety boundaries |
-| U+1F504 🔄 | operational_continuity | fresh, sustained, fatigued, degraded | Uptime and maintenance state |
+| Emoji | Code | Dimension | Values | Context |
+|-------|------|-----------|--------|---------|
+| U+1F9BE 🦾 | AC | actuator_stress | nominal, elevated, strained, critical | Physical manipulation load |
+| U+1F30D 🌍 | EF | environmental_fit | adapted, adjusting, mismatched, hostile | Environment compatibility |
+| U+1F465 🏃 | IP | interaction_pressure | calm, attentive, pressured, overwhelmed | Human proximity/demand density |
+| U+26A0 U+FE0F ⚠️ | SM | safety_margin | wide, adequate, narrow, critical | Distance from safety boundaries |
+| U+1F504 🔄 | OC | operational_continuity | fresh, sustained, fatigued, degraded | Uptime and maintenance state |
+
+The two-letter **code** is the ASCII `dim-code` used by the WT-line and WA-line
+(§3.1, §4.1). The five core AS dimension codes (TA, PL, CO, EN, FR) are defined
+in VCP/S §2.4.5.
 
 ### 2.2 Extended WC Flags (VCP-E)
 
@@ -42,7 +46,7 @@ For agents operating in physical contexts (robotics, autonomous vehicles, indust
 | CD | U+1F4F7 📷 | Contact detection (agent monitors physical contact) |
 | PZ | U+1F512 🔒 + U+1F30D 🌍 | Privacy zones (agent respects spatial privacy) |
 
-These flags extend the core 8 flags and are only interpretable by consumers who resolve the `welfare.vcp-e.v1` schema reference.
+These flags extend the core 8 flags and are only interpretable by consumers who resolve the `welfare.vcp-e.v1` schema reference. In JSON form they appear in `welfare_context.flags` alongside the core codes (`schema.json` `embodied_wc_flag`).
 
 ### 2.3 Encoding
 
@@ -64,7 +68,8 @@ wt-line     = "WT:" direction ":" window ":" trend-dims
 direction   = "improving" / "stable" / "declining" / "volatile"
 window      = 1*DIGIT "s"    ; observation window in seconds
 trend-dims  = dim-code *( "," dim-code )
-dim-code    = 2ALPHA          ; dimension code (TA, PL, CO, EN, FR, or extended)
+dim-code    = 2ALPHA          ; core codes TA, PL, CO, EN, FR (VCP/S §2.4.5)
+                              ; or embodied codes AC, EF, IP, SM, OC (§2.1)
 ```
 
 **Example**:
@@ -119,13 +124,26 @@ The WA-line is a summary. Individual agent AS-lines are available via the agent'
 
 ### 5.1 Chained Attestation
 
-For welfare claims that cross trust boundaries (agent deployed by platform A, consumed by platform B), the WC-line attestation level alone is insufficient. The welfare attestation chain extends the AT-line:
+For welfare claims that cross trust boundaries (agent deployed by platform A, consumed by platform B), the WC-line attestation level alone is insufficient. The welfare attestation chain uses the AT-line, an extension line that VCP/S
+§2.4.7 names but does not define; this extension defines the `welfare` form:
+
+```abnf
+at-line       = "AT:" at-type ":" chain-hash ":" attestation-level ":" expiry ":" authority
+at-type       = "welfare"
+chain-hash    = "sha256-" 1*64(HEXDIG / %x61-66)   ; hex digest of the attested WC-line
+attestation-level = "0" / "1" / "2"                 ; as in VCP/S §2.4.4
+expiry        = date-fullyear "-" date-month "-" date-mday   ; RFC 3339 full-date, UTC
+authority     = 1*(%x21-39 / %x3B-7E)               ; attesting authority identifier, no ":"
+```
 
 ```
 AT:welfare:sha256-abc123:2:2026-05-21:welfare-auditor.example.com
 ```
 
-Fields: `welfare` (attestation type), chain hash, attestation level, expiry date, attestation authority.
+Fields: `welfare` (attestation type), chain hash over the attested WC-line,
+attestation level being asserted, expiry date, attestation authority. The
+line is order-tolerant after line 6 and matched by prefix like the other
+extension lines.
 
 ### 5.2 Attestation Decay
 

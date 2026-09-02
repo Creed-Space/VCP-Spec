@@ -18,10 +18,10 @@ a release blocker rather than an implicit precedence rule.
 
 ## Generated and copied material
 
-The root DOCX files are editorial working artifacts. None is declared the
+The DOCX files under [`artifacts/rendered-candidates/`](./artifacts/rendered-candidates/) are editorial working artifacts. None is declared the
 publication-canonical rendering. Their internal DOCX package integrity is
 machine-checked, while their layout, accessibility, rights, and publication
-fitness require human review. The current files are:
+fitness require human review. The current files (all under `artifacts/rendered-candidates/`) are:
 
 | File | Bytes | SHA-256 |
 |:---|---:|:---|

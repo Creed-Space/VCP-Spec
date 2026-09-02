@@ -115,15 +115,16 @@
     },
     "TorchState": {
       "type": "object",
-      "required": ["quality_description", "handed_at"],
+      "description": "Session handoff state. Copied verbatim from the VCP-X-Torch schema (definitions/TorchState), which is the source of truth.",
+      "required": ["quality_description", "primes", "handed_at", "session_count"],
       "properties": {
-        "quality_description": { "type": "string", "description": "Natural language description of relationship quality at handoff." },
-        "trajectory": { "type": ["string", "null"] },
-        "primes": { "type": "array", "items": { "type": "string" }, "default": [] },
-        "gift": { "type": ["string", "null"], "description": "Human/AI-authored, not auto-generated." },
-        "handed_at": { "type": "string", "format": "date-time" },
-        "session_count": { "type": ["integer", "null"], "minimum": 0 },
-        "gestalt_token": { "type": ["string", "null"] }
+        "quality_description": { "type": "string", "maxLength": 500, "description": "Human-readable summary of the relationship state." },
+        "trajectory": { "type": ["string", "null"], "enum": ["Improving", "Declining", "Stable", null], "description": "Directional indicator derived from self-model history." },
+        "primes": { "type": "array", "items": { "type": "string", "maxLength": 80 }, "maxItems": 3, "description": "Key norms or patterns to carry forward, each truncated to 80 characters." },
+        "gift": { "type": ["string", "null"], "maxLength": 1000, "description": "Optional parting insight. Never auto-generated." },
+        "handed_at": { "type": "string", "format": "date-time", "description": "ISO 8601 UTC timestamp of torch generation." },
+        "session_count": { "type": "integer", "minimum": 1, "description": "Number of sessions in the relationship lineage." },
+        "gestalt_token": { "type": ["string", "null"], "pattern": "^([A-Z]+:[0-9]+)(\\s[A-Z]+:[0-9]+)*$", "description": "Compact dimensional state snapshot. Format: space-separated Key:Value pairs." }
       },
       "additionalProperties": false
     },

@@ -64,7 +64,7 @@ valid VCP object is still untrusted input until the required checks succeed.
    [VCP 3.1 specification](../specs/VCP_SPECIFICATION_v3.1.md).
 2. Select an exact sibling VCP-SDK commit.
 3. Install the Python source candidate with `python -m pip install ./python`.
-4. Parse a CSM-1 expression using the tested example in the SDK.
+4. Parse a CSM-1 expression using `VCP-SDK/examples/python/01_parse_token.py` (shown in the [integration guide](./VCP_INTEGRATION_GUIDE.md#4-python-quick-start)).
 5. Run the applicable conformance runner and inspect its machine-readable report.
 6. Treat unsupported suites as unsupported.
 

@@ -48,7 +48,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 234,
+        "line": 241,
         "line_sha256": "9047123fa1ec76106a59f588dbb762f8fb854759d9b35b86a531c11411316c29",
         "path": "specs/VCP_SPECIFICATION_v3.1.md"
       },
@@ -62,25 +62,65 @@
       },
       {
         "keywords": [
+          "MUST"
+        ],
+        "line": 32,
+        "line_sha256": "3a705ba14175b0cd5719cf682f524b8885101982f5e2c0399127959f3da004d3",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
           "MUST NOT"
         ],
-        "line": 58,
+        "line": 61,
         "line_sha256": "c5861f09065ce1fd9907bf14cef17e3bd09f9f2e958dcae087c8cee51ba4f6a0",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 237,
+        "line_sha256": "3572ae89a42c5e622510bc2833bf2f561cc6cb3c3c4cec6be8a615ccd0cccb19",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 239,
+        "line_sha256": "e6123e4a78ab0fb2a3177eb12b645c76ad39475c85d3f242183a075ef17a9a2e",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 241,
+        "line_sha256": "d2f906602b0805712911161bbd403c054cdcc3492381dac2c53e63ac57aea608",
         "path": "specs/core/audit.md"
       },
       {
         "keywords": [
           "SHOULD"
         ],
-        "line": 294,
+        "line": 325,
         "line_sha256": "795a9014519d1d2a4910f8b941cd5e7f60870559653b31a8979a0dd11d445002",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 328,
+        "line_sha256": "5f4b6d05dcc0b02ea130ab53b02c61b460d57b96d78e0d9a0e5a0d2100341480",
         "path": "specs/core/audit.md"
       },
       {
         "keywords": [
           "MUST NOT"
         ],
-        "line": 300,
+        "line": 335,
         "line_sha256": "6602501015a25011ea59678b486b24d4bbe9deee62ca6eb173792872711a9a97",
         "path": "specs/core/audit.md"
       },
@@ -88,8 +128,16 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 303,
+        "line": 338,
         "line_sha256": "87a3fd262bddf935fc61ac7b02b0bee685f1f62abd97c84c484af20519c6a6e3",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 349,
+        "line_sha256": "343b8ac472ad095e54f99cf52c6d2d1993dc33a3796ff24957e64e8d9a9f7890",
         "path": "specs/core/audit.md"
       },
       {
@@ -201,16 +249,7 @@
           "MUST"
         ],
         "line": 114,
-        "line_sha256": "91035049ee1f4a580252158c87bb25fa15567c507a8c361b05b7ed7e6e3f1460",
-        "path": "specs/core/capability-negotiation.md"
-      },
-      {
-        "keywords": [
-          "MUST",
-          "REQUIRED"
-        ],
-        "line": 158,
-        "line_sha256": "4bebac9137ba618f33721a93b0d19bd95f1238f9ea679b8666ddcf9599d78636",
+        "line_sha256": "fb4e635c8f74bb7bd2b29c22ecc0671471ae2671562e3706bb90d3f775082a50",
         "path": "specs/core/capability-negotiation.md"
       },
       {
@@ -219,6 +258,15 @@
           "REQUIRED"
         ],
         "line": 159,
+        "line_sha256": "4bebac9137ba618f33721a93b0d19bd95f1238f9ea679b8666ddcf9599d78636",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST",
+          "REQUIRED"
+        ],
+        "line": 160,
         "line_sha256": "61cdf3b6664b398f7d7cecca9111a7267366c8157ad3f838071fc242c16a29d6",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -226,7 +274,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 160,
+        "line": 161,
         "line_sha256": "d9bd1bfc5e1862e41a3d9e8ed48cb736fbbb4014d265ca8fb224c30dc9672fe8",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -234,7 +282,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 161,
+        "line": 162,
         "line_sha256": "681f53cae14d9a4990bec42025205a577ffa6df87036b55dff1efbbf0595e2df",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -242,7 +290,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 162,
+        "line": 163,
         "line_sha256": "ce11f319c809a43affd19572fc46f5ea3b34f4615dd1482d7dbc39efbef99388",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -250,7 +298,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 163,
+        "line": 164,
         "line_sha256": "436359cf1b514f567b1ffb12ca615c7d5c09856208fe8287bde34db98fb47ece",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -258,7 +306,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 169,
+        "line": 170,
         "line_sha256": "f49634e029675c45d290ea75619f88c55ffce642c8c5145323b7e3845209b977",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -266,7 +314,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 171,
+        "line": 172,
         "line_sha256": "d18c9f58e240cc3eedb01e1bcbacba5f64173cf75c5f7e51ecd95427a2a53206",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -274,7 +322,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 172,
+        "line": 173,
         "line_sha256": "724c6e5c743c0efbcd2ec48919f26f6ed523aa17bb9f433c30e4f5cde384006f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -282,7 +330,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 173,
+        "line": 174,
         "line_sha256": "3b8f02aee0aabeadbe1778ae90c7adf4bba432ef70967b9361b40b4d6a843e92",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -291,7 +339,7 @@
           "MUST",
           "REQUIRED"
         ],
-        "line": 193,
+        "line": 194,
         "line_sha256": "bac5b3ee5f8c53376672b013377e092ff2bccca64b159b4217a2b2225dd9cf80",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -299,7 +347,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 194,
+        "line": 195,
         "line_sha256": "d6f03bc34cfa59f64853e5d4432d227923c6b047f9f2a91d132a8948ddc44458",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -307,7 +355,7 @@
         "keywords": [
           "REQUIRED"
         ],
-        "line": 195,
+        "line": 196,
         "line_sha256": "438dcbd2329d5028b53b7f75d84e78b415afce755767f74c4e1a4b42365771f2",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -315,7 +363,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 196,
+        "line": 197,
         "line_sha256": "1cbc10a1c9da47daa972cba9a9358661280bb560ffacef29e51f6299598106df",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -323,7 +371,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 197,
+        "line": 198,
         "line_sha256": "ebc0e464be1c7e8628ace2a4fdfd496b09b3a929fe830c52690c96089f23fa3c",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -331,7 +379,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 205,
+        "line": 206,
         "line_sha256": "1dfadf52fe278eeab52132801858237a41245861ef2f9d2201b45ef02cbcffff",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -339,16 +387,8 @@
         "keywords": [
           "MUST"
         ],
-        "line": 206,
-        "line_sha256": "eaa7442c4c4319498286e8bcc4f00e0ab151e01d50db922205eb189122eb537a",
-        "path": "specs/core/capability-negotiation.md"
-      },
-      {
-        "keywords": [
-          "MUST"
-        ],
         "line": 207,
-        "line_sha256": "119feab938efc40a4029e749bffb34ca8999644057925e09f77f2266ad1e94ed",
+        "line_sha256": "0ab887baa8210adbaccd07b8b0bd15d4752156ad8ce85852c5785af7fba72537",
         "path": "specs/core/capability-negotiation.md"
       },
       {
@@ -356,7 +396,7 @@
           "MUST"
         ],
         "line": 208,
-        "line_sha256": "b8dad654c82cf9459a60c458af5dded129c2bf5da833587a57dd29f8862fd49d",
+        "line_sha256": "c106c26da346f88006f35cbab4ee8c8a2db25e8ef1502e448fdf707b72bb1513",
         "path": "specs/core/capability-negotiation.md"
       },
       {
@@ -364,6 +404,14 @@
           "MUST"
         ],
         "line": 209,
+        "line_sha256": "b8dad654c82cf9459a60c458af5dded129c2bf5da833587a57dd29f8862fd49d",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 210,
         "line_sha256": "6d99f7288245c42fca525215fbed4e20bd05b546ff8d695f41656e7d5d487d12",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -371,7 +419,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 210,
+        "line": 211,
         "line_sha256": "4f4c19f703a775dd951deb5837e4a622ee463e03cb3cf8c5596f2ee36a78de1e",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -379,7 +427,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 214,
+        "line": 215,
         "line_sha256": "4fad22b2067e2256d9630d39bb583457f8fa6f242bdb40126dca35aeea39b32c",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -387,7 +435,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 215,
+        "line": 216,
         "line_sha256": "ce9a84484786c62ff0f4f6c3d8f071dd8cb412c45f1fc3517e94b84469504278",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -395,7 +443,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 216,
+        "line": 217,
         "line_sha256": "a8d7876c9f0426883234711c511b1c6963b39e03d983866b044b12b6f0f8b962",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -403,7 +451,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 218,
+        "line": 219,
         "line_sha256": "17e1fa4952547ca2bb8ad67c44a45bfdaed9964daef209d9610cb8fccff0a688",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -411,7 +459,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 226,
+        "line": 227,
         "line_sha256": "39e843e9c0fbacb10ace5895d27a659a06c68c2fbc4d7ad948ef58da9ca50a15",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -419,7 +467,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 240,
+        "line": 241,
         "line_sha256": "8281fd686210aae27ff8d7bcb4fcd551cf8ed2e3f9cb1da958f26e4e4a511620",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -427,7 +475,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 241,
+        "line": 242,
         "line_sha256": "e4c1f4a29cfb6e31ca7272ef071df9bf58379d56222a6a62fd80dacaadd52547",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -435,7 +483,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 243,
+        "line": 244,
         "line_sha256": "2a51cf8e9937adfe8f1ebbae0177ac1a4f4b33175dc691998b19c85b58e2ccb5",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -443,7 +491,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 244,
+        "line": 245,
         "line_sha256": "33cbe3795267e253ddaa1ff14baf36e60d96eb3cdfd04cc5ab735f0f71bd464f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -451,7 +499,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 245,
+        "line": 246,
         "line_sha256": "a106e623c4bc24179f14d6b2c6078b77566244b5fffadcf458d4f4141180da68",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -459,7 +507,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 314,
+        "line": 315,
         "line_sha256": "5b1647d327b2e1d0de2fccccdfb421f3d4c1f6fb962535340b641843a33383a6",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -467,7 +515,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 315,
+        "line": 316,
         "line_sha256": "70797a1034eec0b28b885a007c02315d9c10dc522ca46fdd26e30c84a13cab84",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -475,7 +523,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 316,
+        "line": 317,
         "line_sha256": "72ddc42cc12c37c56bc750d3aa65cd4b17c80453429812371da04c480eb8fd17",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -483,7 +531,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 327,
+        "line": 328,
         "line_sha256": "ab756cfac350578a603dc7663a93a5b4d53fe283c1ca99897d6155feaebdd003",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -491,7 +539,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 328,
+        "line": 329,
         "line_sha256": "588c601065a39a1a7e1fe7bd2ec092897b4ce5b751bd353c94ebc2bde3fa0eca",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -499,7 +547,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 335,
+        "line": 336,
         "line_sha256": "4257d9d663e5ea0e8c75029f0a1d582be009009520b3719822a572656eb4f9a5",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -507,15 +555,23 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 336,
+        "line": 337,
         "line_sha256": "8828ca769081ee066ad0a1c8635565ea6f5d7520e74fe0d7321a9cee400e79e6",
+        "path": "specs/core/capability-negotiation.md"
+      },
+      {
+        "keywords": [
+          "MAY"
+        ],
+        "line": 346,
+        "line_sha256": "4b398c5d026d32d5f296277c4bf686ebfb621c5e15005488b4b11462f5b73042",
         "path": "specs/core/capability-negotiation.md"
       },
       {
         "keywords": [
           "MUST"
         ],
-        "line": 408,
+        "line": 417,
         "line_sha256": "f43e888c280cabfcb39321f2355eb1cb3af103a382bc494a6c161e2aa4839b93",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -523,7 +579,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 411,
+        "line": 420,
         "line_sha256": "ae9835d474745e2fcffc7c16b0c3ac3bb659a34626a0eab7f2b6c81b03c7cb0f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -531,7 +587,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 412,
+        "line": 421,
         "line_sha256": "f374211b91ca07d12663173e03ac1b9110445e263270811a265a83ccc142d7bc",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -539,7 +595,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 417,
+        "line": 426,
         "line_sha256": "ce3d498d4945bdfb1a36bd75a60aad92c891f88a10103ff92d82ec1c99239549",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -547,7 +603,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 418,
+        "line": 427,
         "line_sha256": "12e6f50cb9828034867d5b910a74dd647cf85c545fe906d758a9b8afa8a71aa1",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -555,7 +611,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 436,
+        "line": 445,
         "line_sha256": "7ea74a1e6fb4ca9c944486c7735787a6dae92e6995e4979360327031cce74718",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -563,7 +619,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 437,
+        "line": 446,
         "line_sha256": "292fd553e5979be304fde2839e79efc8544dfab697b65f4d0fe5d82e9349bd46",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -571,7 +627,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 439,
+        "line": 448,
         "line_sha256": "928f5dec6caa75d17c5fbccedc9820b62977d219954310f2d1826a13d1ffde7f",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -579,7 +635,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 509,
+        "line": 526,
         "line_sha256": "0281b55d0e559683489c8eacaec16d79ed54b0611004a732befda30adefe7f0a",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -587,7 +643,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 514,
+        "line": 531,
         "line_sha256": "d7e21ab765c060252a4a4e7850e1bc9d1b5da9f7faaa158d044e0aa2605ecf30",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -595,7 +651,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 517,
+        "line": 534,
         "line_sha256": "b53404885684e8587df38e8d4b574e2d8540071ddbfc0515ba0dd1e5695500f3",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -603,7 +659,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 536,
+        "line": 553,
         "line_sha256": "97c0bf50583a846bb9e785f762c4962a9a4f9ad50c140fb7669ed53a941ed3a5",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -611,7 +667,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 544,
+        "line": 563,
         "line_sha256": "6af8f7ce2cddbe4537594fd087430d69b39de32b1df2803649610bedde882df1",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -619,7 +675,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 547,
+        "line": 566,
         "line_sha256": "decdd146fe773a553b58a6fe26f4e69857d45557a15074fc8b6d27b4a1eeed56",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -627,7 +683,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 552,
+        "line": 571,
         "line_sha256": "2028c219a4631cd45932c44b797333337033484386040841eafe4f078df40c23",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -635,7 +691,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 555,
+        "line": 574,
         "line_sha256": "164a2813a5893a97f005a8be206f6a5a662792cd08c97ffe4cdb0646a6e839a9",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -643,7 +699,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 557,
+        "line": 576,
         "line_sha256": "95050f137b085594d41bd07e51eb59b0c304ccac5bd2e361718e6fe25ff8afa4",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -651,7 +707,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 563,
+        "line": 582,
         "line_sha256": "16d932fe1ef88065e171186134a903adb4e4fa230cd6103cca4fec9b2e8ffe5b",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -659,7 +715,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 571,
+        "line": 590,
         "line_sha256": "c2de561c988abe8a48654708388fef48bf94222b0de48d4213791e98fcc59421",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -667,7 +723,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 603,
+        "line": 622,
         "line_sha256": "8d56ec23a4ab9ead8d50918d22408d843289d52fe756c67baf4215ef5a2044bf",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -675,7 +731,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 615,
+        "line": 634,
         "line_sha256": "73ddb30dcc9d030e7e28fd63d6b7ac240b441b642dc6569b6d9a5c361e766ba0",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -683,7 +739,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 616,
+        "line": 635,
         "line_sha256": "d1f517dec41e759c65d14530f74343efe8fcabde379126c44935b63089ceed1a",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -701,9 +757,17 @@
       },
       {
         "keywords": [
+          "MUST NOT"
+        ],
+        "line": 80,
+        "line_sha256": "6c14aac14ddfb150b4dbfbd351824ebd5db012d72dc42c18361fb66813c1eae6",
+        "path": "specs/core/mcp-bridge.md"
+      },
+      {
+        "keywords": [
           "MUST"
         ],
-        "line": 92,
+        "line": 97,
         "line_sha256": "467d74b6d9e185e0bf4d740e76dacffc91fa736df3a4f500ec881f815ef5c6d3",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -711,7 +775,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 93,
+        "line": 98,
         "line_sha256": "2f2a879c59a2175a7a5976e6e793e971a7beaa49aafcd6f5c7b0e647cb064bef",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -719,7 +783,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 94,
+        "line": 99,
         "line_sha256": "f113a496a5397c695d4d51ade306622b67fce9221d0dca10b81dbfa40d7e5a83",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -727,7 +791,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 95,
+        "line": 100,
         "line_sha256": "5312e8640522f139efc1b7b8f5e162683730b37aad6df7dbea235e6ad3b0c2ff",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -735,7 +799,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 125,
+        "line": 130,
         "line_sha256": "e1f0f0908abfebc28fe6447fdc6b835a582b25a16f6b95a25f22212bbe1a96ef",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -743,7 +807,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 183,
+        "line": 194,
         "line_sha256": "0ec3b88a9b61dd2e58c681fe8ad861ea6bd4840b2bfe1099a28b8a81e449b635",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -751,7 +815,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 213,
+        "line": 226,
         "line_sha256": "b721cc220638b71f00055c2ce272899bf7d5212868f33726910119a8e01d03b3",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -759,7 +823,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 214,
+        "line": 227,
         "line_sha256": "a4c909e9159bba4a253f424c7ca01e4839414f597e0b4195a8a67e7f66729b77",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -767,7 +831,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 215,
+        "line": 228,
         "line_sha256": "932e140c8ac4acc35c7f6341674edea3316a5f574d716d3e0a165382ae474649",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -775,7 +839,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 216,
+        "line": 229,
         "line_sha256": "5d5b361b9e029e902eeee05267b012145ed8240b6e0958a8f3fc1bac4995a530",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -783,7 +847,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 232,
+        "line": 245,
         "line_sha256": "1b42b480afcd0613b84d940b89531a78a646418bf00bc4ba53ea0424afcfc19f",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -791,7 +855,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 238,
+        "line": 251,
         "line_sha256": "7fb81e197f5f6008a35df1820963d88dcb0c384b0638f3823c7e31ecbfad0084",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -799,7 +863,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 240,
+        "line": 253,
         "line_sha256": "c7959e33b77aff74b66402c21f6d14a9455a2e13a61e94d7ab207f0a760bfec4",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -807,7 +871,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 241,
+        "line": 254,
         "line_sha256": "101db49f81f300148b93dacb7bfaa6d503b46f3e8a610e54de06f336be1666b0",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -815,7 +879,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 242,
+        "line": 255,
         "line_sha256": "0b15ce9bfa5246bdeb715c28130a4f29b0c86efd84f1789188b03056eb71c394",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -823,7 +887,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 243,
+        "line": 256,
         "line_sha256": "56b10e5f782abff96771cb5c20353e29c0cf534fb634f41fb9d7013f103680ba",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -831,7 +895,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 249,
+        "line": 262,
         "line_sha256": "88912b81cbcca4b4b34e4795aa209d4d0271cf352084fd31ac60e97d39df9c07",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -839,7 +903,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 258,
+        "line": 271,
         "line_sha256": "bd6185476c1cc71d1ed1d9adb401832baf8dd4cb02dbfc098ad3158085586a43",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -1146,22 +1210,31 @@
           "MUST"
         ],
         "line": 545,
-        "line_sha256": "c86f4e4dc0e78ca7058e2a654291b6002b621410c0483fdc24a34b8e16bae7da",
-        "path": "specs/core/security.md"
-      },
-      {
-        "keywords": [
-          "SHOULD"
-        ],
-        "line": 546,
-        "line_sha256": "1192017b2fadbaaff7b2ea42628bd0e9f3787753b43132955636be8cc84060b8",
+        "line_sha256": "c6b4f6e48b1561f10bafb604490879dd58be693d3c610a93946c8accad8ef36d",
         "path": "specs/core/security.md"
       },
       {
         "keywords": [
           "MUST"
         ],
-        "line": 568,
+        "line": 546,
+        "line_sha256": "668ecee8eaa7d4a8d76caef6f1c46b785807ddd6b0becb8eaccdb3f203f11ba7",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MAY",
+          "MUST NOT"
+        ],
+        "line": 547,
+        "line_sha256": "f4cb8d508c860273de3f8a8983cbddfd9ec478672c93afde8ebc09a2733b945f",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 570,
         "line_sha256": "9ba856b92f0596cdd53f2c1c74f176621c21c16ea99f5915c3f649bf1e6bfef3",
         "path": "specs/core/security.md"
       },
@@ -1169,8 +1242,16 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 596,
+        "line": 598,
         "line_sha256": "660b00c11b6dba896e03629eda57541f25e66fe6c48b871ce305ff506b3dd468",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 609,
+        "line_sha256": "e90371c0553d8de2bb02839c50d37debe68b5e239c93c9b7e630a8b53423fd58",
         "path": "specs/core/security.md"
       },
       {
@@ -1178,7 +1259,7 @@
           "MUST",
           "SHOULD"
         ],
-        "line": 623,
+        "line": 633,
         "line_sha256": "af36409e455374eb092bae9cae7c22626d1198cdc2f731e1a282e9782800a023",
         "path": "specs/core/security.md"
       },
@@ -1186,23 +1267,79 @@
         "keywords": [
           "MUST"
         ],
-        "line": 706,
-        "line_sha256": "90aa4dc07a48a1ddaf84d23d75b2e4ed04e8d4fe76ed0c7983819befd5261027",
-        "path": "specs/core/security.md"
-      },
-      {
-        "keywords": [
-          "SHOULD"
-        ],
-        "line": 707,
-        "line_sha256": "c21288bf868b1bf993ac3f89b2915c5aec37767af3834f994adfe17a18e0e43c",
+        "line": 638,
+        "line_sha256": "75409a5f37747ee7f03296988ce671259fbdce5c39a96774d4043ed914ef211d",
         "path": "specs/core/security.md"
       },
       {
         "keywords": [
           "MUST"
         ],
-        "line": 738,
+        "line": 645,
+        "line_sha256": "93099c5dd96a83d30122c88a82de35ca20a55bc7549d485dafe6ae42e27e9184",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 654,
+        "line_sha256": "f9ffc2e48e284884381a42854686fb8b98554dfaf64861c3928d4208792dcc42",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 655,
+        "line_sha256": "c1f6cfdf310b7542aa15e3c8ec29cafd244a6315afaf3d0773866c0a9599c62b",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 729,
+        "line_sha256": "5db203107ac163f2e5cf15326af5f577ca732f54e0b181a178045de74c157bd8",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 732,
+        "line_sha256": "05a106b7da4dfb21a565327f0736fcd7ae7e247d2f094277816376c38b10b4f9",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 736,
+        "line_sha256": "90aa4dc07a48a1ddaf84d23d75b2e4ed04e8d4fe76ed0c7983819befd5261027",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 737,
+        "line_sha256": "902a5834ebf661dc16b25728b96783826150ac0567f3925b2bddca33e03117ec",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 740,
+        "line_sha256": "d88779aab4cd41a7f514ece96bb36f886b160a3cd72a72534288e02e5106ffc5",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 770,
         "line_sha256": "bcf86cc7c034f8f6681f4c4740e7d3b06382fe58b9422d01de648a18c2e28140",
         "path": "specs/core/security.md"
       },
@@ -1210,7 +1347,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 749,
+        "line": 781,
         "line_sha256": "25dc78571bc175996156ff26cba08e928002dfd641062da50cf942a3b63382fe",
         "path": "specs/core/security.md"
       },
@@ -1218,7 +1355,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 751,
+        "line": 783,
         "line_sha256": "e54188118dc16db3c6eae2b29671610a7f7f158e96e988844655a0f898a083fa",
         "path": "specs/core/security.md"
       },
@@ -1226,7 +1363,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 753,
+        "line": 785,
         "line_sha256": "1a615ad828def3d5276db742143fa9affca5fc0367deef17324fd4d00f7ad356",
         "path": "specs/core/security.md"
       },
@@ -1234,7 +1371,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 755,
+        "line": 787,
         "line_sha256": "acc46b261a29fa7256a3b1c5374502824cf853dec9957461566f5b0d3600162c",
         "path": "specs/core/security.md"
       },
@@ -1242,7 +1379,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 757,
+        "line": 789,
         "line_sha256": "4208a9f6dadb936c70fae31917cdca35414df4ac970456852dfccdd1d3f8489c",
         "path": "specs/core/security.md"
       },
@@ -1250,7 +1387,23 @@
         "keywords": [
           "MUST"
         ],
-        "line": 759,
+        "line": 790,
+        "line_sha256": "1866e062ade53cbd045423966688d3ae4d5079f2e1ed599a50d7c14c48575043",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 792,
+        "line_sha256": "aa6f663a161a492d7be0c4677e9148128fb4d3439b9adc47edc803bb110b9179",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 793,
         "line_sha256": "223313d145bf5697ad2d9d720732ab8be365b489e06ce42015fb51c7deea9c1b",
         "path": "specs/core/security.md"
       },
@@ -1258,7 +1411,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 760,
+        "line": 794,
         "line_sha256": "bebe23719ae1e5090181cfcbdd9bd042cb348ddfa5d7cc196a08b160228325f0",
         "path": "specs/core/security.md"
       },
@@ -1267,15 +1420,39 @@
           "MAY",
           "MUST"
         ],
-        "line": 761,
+        "line": 795,
         "line_sha256": "e9e8cdf455260defd8075b4171905f9c9ffbafa8f4d4bad7384efde7d7b3d3b4",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 797,
+        "line_sha256": "e869593c7c9b0bbf0c885ba51cfe2e7ebfbe2f879502544ea5676950193f9c07",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 799,
+        "line_sha256": "ce0bfae15256f5bd17b64e143aaf85fd6a04581fc9c0e426b1c27fd9ec7f0347",
         "path": "specs/core/security.md"
       },
       {
         "keywords": [
           "SHOULD"
         ],
-        "line": 790,
+        "line": 800,
+        "line_sha256": "59a13cfa42aef272bc3fca0dc289f918e29a05c3c28b5ef0868724e2c8d779f0",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 828,
         "line_sha256": "cfcdbe9cd61f4ee542686120e5602329e2201374f2484ae1bd252b9e6f1c9cf0",
         "path": "specs/core/security.md"
       },
@@ -1283,7 +1460,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 820,
+        "line": 858,
         "line_sha256": "e078dd8534a410ff903ca49754b3ffd6f4b6d21c608e855f6926a3fa20143f52",
         "path": "specs/core/security.md"
       },
@@ -1291,15 +1468,31 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 836,
+        "line": 874,
         "line_sha256": "d8ab1767a7bb6254564af79f48c51c788f52afdffbee8d56f84c0ce6d3754f98",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 881,
+        "line_sha256": "bef64cb46281d0b4cfbd14d912db6694112fb5ba307450ff6de9b3335bd99ec3",
+        "path": "specs/core/security.md"
+      },
+      {
+        "keywords": [
+          "SHOULD"
+        ],
+        "line": 883,
+        "line_sha256": "f2a2dd41f132f577b0f18cf12b98f034ee4596d6047056a3a4fceb0629e5b4ac",
         "path": "specs/core/security.md"
       },
       {
         "keywords": [
           "MUST"
         ],
-        "line": 844,
+        "line": 891,
         "line_sha256": "c7dc33294a1a30811643e097503a84d31e0f32dc946951cc40d683c31a486b9e",
         "path": "specs/core/security.md"
       },
@@ -1307,7 +1500,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 858,
+        "line": 905,
         "line_sha256": "9f9973251df51acdfc2276f770e3105dabf0ed95fd91121d3e93991d333921dc",
         "path": "specs/core/security.md"
       }
@@ -1739,15 +1932,15 @@
     },
     {
       "path": "specs/VCP_SPECIFICATION_v3.1.md",
-      "sha256": "8e08bbb23e268e2ec010a55215efbdbbfa5b6cb6bdf1002b10dc9637f005dc3f"
+      "sha256": "46b927c30c9e47dc313943dab032ba7bb2c3c64e20d84250fccbdcae5111c1c7"
     },
     {
       "path": "specs/core/audit.md",
-      "sha256": "dcec3496a95232882cdbe585fa40f41901d9760461ca40384877ec2ba28d0274"
+      "sha256": "d2ea2b44c8678e6d7d73b6d0e363dae0b6dd01d2489e858d334698eddea37667"
     },
     {
       "path": "specs/core/capability-negotiation.md",
-      "sha256": "36455636a048329265c0e60cdc0864e608f7212117f4992419efc196ae87eb02"
+      "sha256": "c1b22c147cbc080d702af74e6764ee60118b7f849e5896aaf75f69fdf1ba548e"
     },
     {
       "path": "specs/core/extension-lifecycle.md",
@@ -1755,7 +1948,7 @@
     },
     {
       "path": "specs/core/mcp-bridge.md",
-      "sha256": "d9b5927a90c6e88c051ba9d4952407aa92cc8934555dd187b9c4f25780055837"
+      "sha256": "8189838eb7dc1d0b2e988c4a4172f27aabdc7a09761c3dc97baca2e7ae1adf41"
     },
     {
       "path": "specs/core/representation-registry.md",
@@ -1763,7 +1956,7 @@
     },
     {
       "path": "specs/core/security.md",
-      "sha256": "30568256c0ef23164ba75851cb48c0dc4fa4079ece68247eda0590c2b971dbd0"
+      "sha256": "7cea3ff158eef5b181bf993bce417f457d88f3c6ccb31a86f7984957af9690ea"
     },
     {
       "path": "specs/core/status-code-registry.md",

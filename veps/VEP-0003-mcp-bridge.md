@@ -25,12 +25,14 @@ By bridging VCP over MCP, any MCP-compatible client gains access to VCP's value 
 
 ### Resource URIs
 
-VCP state is exposed as MCP resources using the `vcp://` URI scheme:
+VCP state is exposed as MCP resources using the project-local `vcp://` URI
+scheme (no IANA scheme is claimed). The authoritative URI list is
+`specs/core/mcp-bridge.md` §3; this table is a summary:
 
 | Resource URI | Content | Update Frequency |
 |-------------|---------|-----------------|
 | `vcp://bundle/{session_id}` | Full VCP bundle (manifest + content) | Per-session |
-| `vcp://identity/{token}` | Parsed identity token + verification status | Static |
+| `vcp://identity/{token_prefix}` | Parsed identity token + verification status (prefix only; a full credential never appears in a URI) | Static |
 | `vcp://constitution/{csm1_code}` | Decoded constitutional profile | Static |
 | `vcp://capabilities` | Server's supported VCP extensions | Static |
 | `vcp://personal-state/{session_id}` | Current personal state (VCP-X-Personal) | Real-time |

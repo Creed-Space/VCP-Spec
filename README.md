@@ -18,7 +18,7 @@ MCP moves data. VCP encodes what matters about that data.
 [![Specification](https://img.shields.io/badge/spec-v3.1-blue?style=flat-square)](./specs/VCP_SPECIFICATION_v3.1.md)
 [![Extensions](https://img.shields.io/badge/extensions-6-purple?style=flat-square)](./specs/extensions/README.md)
 [![Rights review](https://img.shields.io/badge/rights-review_pending-orange?style=flat-square)](./LICENSING_STATUS.md)
-[![VEPs](https://img.shields.io/badge/VEPs-4_filed-orange?style=flat-square)](./veps/README.md)
+[![VEPs](https://img.shields.io/badge/VEPs-5_filed-orange?style=flat-square)](./veps/README.md)
 
 [Overview](#overview) | [Architecture](#architecture) | [Quick Start](#quick-start) | [Extensions](#extensions) | [MCP Bridge](#mcp-bridge) | [Governance](#governance) | [SDKs](#sdks)
 
@@ -85,7 +85,8 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 
 **Core security** (v3.1): The specification defines context encryption, injection scanning, context opacity, revocation, and tamper-evident audit controls. Their presence in a document does not establish correct deployment; implementations need direct security and privacy evidence.
 
-**Extensions**: Six opt-in protocol extensions are present. The v3.1 core is
+**Extensions**: Six opt-in protocol extensions are present: five are referenced
+by the v3.1 baseline and VCP-X-Welfare is a v3.2 candidate. The v3.1 core is
 the current source baseline. VEP-0004 and the v3.2 amendments remain pre-release;
 their presence in this repository does not promote them to an accepted release.
 
@@ -96,7 +97,9 @@ their presence in this repository does not promote them to an accepted release.
 > **SDK publication state:** source-only candidate. No PyPI, npm, or crates.io
 > release is currently claimed. Candidate names identify repository metadata,
 > not registry availability. Run build commands from an immutable VCP-SDK
-> checkout recorded in the coordinated candidate manifest.
+> checkout at the `source_commit` recorded in
+> [`status/publication-state.json`](./status/publication-state.json)
+> (currently `null`, meaning no commit has been pinned yet).
 
 ### 1. Read the Newcomer Guide
 **[VCP Newcomer Guide](./docs/VCP_NEWCOMER_GUIDE.md)** — What VCP is and why it exists.
@@ -106,8 +109,17 @@ See how VCP works end-to-end with annotated examples:
 - [CSM-1 Encode/Decode](./specs/examples/csm1-encode-decode.md) — Token lifecycle
 - [Personal State Roundtrip](./specs/examples/personal-state-roundtrip.md) — Signal encoding + decay
 - [Capability Handshake](./specs/examples/capability-handshake.md) — Extension negotiation
+- [Consensus Deliberation](./specs/examples/consensus-deliberation.md) — Schulze voting round-trip (VCP-X-Consensus, Draft)
 
 ### 3. Build the SDK Source Candidate
+
+Clone the SDK and pin the commit first; the commands below run from the
+VCP-SDK checkout root:
+
+```bash
+git clone https://github.com/Creed-Space/vcp-sdk VCP-SDK && cd VCP-SDK
+git checkout <commit>   # use the source_commit in VCP-Spec/status/publication-state.json once set
+```
 
 **Python**:
 ```bash
@@ -148,9 +160,9 @@ statuses are independent of the v3.1 core release label:
 | [VCP-X-Consensus](./specs/extensions/VCP-X-Consensus/spec.md) | Draft | Schulze voting for multi-stakeholder constitutional deliberation |
 | [VCP-X-Torch](./specs/extensions/VCP-X-Torch/spec.md) | Stable | Session handoff for relational continuity across agents |
 | [VCP-X-Intent](./specs/extensions/VCP-X-Intent/spec.md) | Experimental | Transparent, correctable intent inference from personal state |
-| [VCP-X-Welfare](./specs/extensions/VCP-X-Welfare/spec.md) | Experimental | Welfare affordances, signals, temporal patterns, and attestation chains |
+| [VCP-X-Welfare](./specs/extensions/VCP-X-Welfare/spec.md) | Experimental | Welfare affordances, signals, temporal patterns, and attestation chains (v3.2 pre-release candidate; not part of the v3.1 baseline) |
 
-Extensions are opt-in and negotiated per session via [capability handshake](./specs/core/capability-negotiation.md). Each extension has a spec, JSON schema, and wire format examples.
+Extensions are opt-in and negotiated per session via [capability handshake](./specs/core/capability-negotiation.md). Each extension has a spec and JSON schema; VCP-X-Welfare additionally ships wire-format examples, and the repo-level annotated examples live in [specs/examples/](./specs/examples/).
 
 See the [Extension Model overview](./specs/extensions/README.md) for architecture details.
 
@@ -199,7 +211,12 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | [VCP Specification v1.0](./specs/VCP_SPECIFICATION_v1.0.md) | Full protocol specification |
 | [VCP v1.1 Amendments](./specs/VCP_SPECIFICATION_v1.1_AMENDMENTS.md) | R-line, personal state additions |
 | [Historical paper draft](./specs/value_context_protocols_paper_v1.md) | Superseded draft retained for lineage; not a publication source |
-| [VCP/M Messaging v2.0](./specs/VCP_MESSAGING_v2.0.md) | Inter-agent messaging and escalation |
+| [VCP Specification v2.0 (Draft)](./specs/VCP_SPECIFICATION_v2.0.md) | Consolidated six-layer draft; not ratified |
+| [VCP/I Identity v2.0 (Draft)](./specs/VCP_IDENTITY_v2.0.md) | Consolidates the identity docs (naming, namespaces, encoding) |
+| [VCP/S Semantics v2.0 (Draft, content 2.1.x)](./specs/VCP_SEMANTICS_v2.0.md) | Consolidates the CSM-1 and UVC docs; adds WC/AS welfare lines |
+| [VCP/A Adaptation v2.1 (Draft)](./specs/VCP_ADAPTATION_v2.0.md) | Consolidates the adaptation/context docs; VEP-0004 dimensions marked experimental |
+| [Inter-Agent Messaging v1.2](./specs/VCP_INTER_AGENT_MESSAGING_v1.2.md) | Schema-backed messaging wire format |
+| [VCP/M Messaging v2.0](./specs/VCP_MESSAGING_v2.0.md) | Inter-agent messaging and escalation (Draft) |
 | [VCP/E Economic Governance v2.0](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) | Economic governance layer |
 | [VCP/C Competence v2.0](./specs/VCP_COMPETENCE_v2.0.md) | Competence assessment and adaptive friction (Supplementary) |
 
@@ -207,11 +224,11 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 
 | Layer | Documentation |
 |:---|:---|
-| VCP/I — Identity | [Naming](./docs/identity/VCP_IDENTITY_NAMING.md), [Namespace](./docs/identity/VCP_IDENTITY_NAMESPACE.md), [Encoding](./docs/identity/VCP_IDENTITY_ENCODING.md) |
-| VCP/T — Transport | [v1.0 Spec SS6](./specs/VCP_SPECIFICATION_v1.0.md) |
-| VCP/S — Semantics | [CSM-1 Grammar](./docs/content/CSM1_GRAMMAR_SPECIFICATION.md), [Composition](./docs/semantics/VCP_SEMANTICS_COMPOSITION.md) |
-| VCP/A — Adaptation | [Adaptation](./docs/adaptation/VCP_ADAPTATION.md), [Context](./docs/context/VCP_CONTEXT_SPECIFICATION.md) |
-| VCP/M — Messaging | [Specification](./specs/VCP_MESSAGING_v2.0.md) |
+| VCP/I — Identity | [VCP/I v2.0 spec](./specs/VCP_IDENTITY_v2.0.md), [Naming](./docs/identity/VCP_IDENTITY_NAMING.md), [Namespace](./docs/identity/VCP_IDENTITY_NAMESPACE.md), [Encoding](./docs/identity/VCP_IDENTITY_ENCODING.md) |
+| VCP/T — Transport | [v1.0 §4 Bundle Format and §7 Transport Protocol](./specs/VCP_SPECIFICATION_v1.0.md#4-bundle-format) |
+| VCP/S — Semantics | [VCP/S v2.0 spec](./specs/VCP_SEMANTICS_v2.0.md), [CSM-1 Grammar (historical copy)](./docs/semantics/VCP_SEMANTICS_CSM1.md), [Composition](./docs/semantics/VCP_SEMANTICS_COMPOSITION.md) |
+| VCP/A — Adaptation | [VCP/A v2.1 spec](./specs/VCP_ADAPTATION_v2.0.md), [Adaptation (historical copy)](./docs/adaptation/VCP_ADAPTATION.md), [Context (duplicate of Adaptation)](./docs/context/VCP_CONTEXT_SPECIFICATION.md) |
+| VCP/M — Messaging | [v1.2 (schema-backed)](./specs/VCP_INTER_AGENT_MESSAGING_v1.2.md), [v2.0 Draft](./specs/VCP_MESSAGING_v2.0.md) |
 | VCP/E — Economic Governance | [Specification](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) |
 
 ### Core Security
@@ -261,7 +278,7 @@ See [CHANGELOG](./specs/CHANGELOG.md).
 | Schema | Validates | Version |
 |:---|:---|:---|
 | [vcp-manifest-v1](./schemas/vcp-manifest-v1.schema.json) | Bundle manifests | v1.0 |
-| [vcp-identity-token](./schemas/vcp-identity-token.schema.json) | Identity tokens | v1.0 |
+| [vcp-identity-token](./schemas/vcp-identity-token.schema.json) | UVC value tokens (VCP/I dotted identifiers) | v1.0 |
 | [vcp-semantics-csm1](./schemas/vcp-semantics-csm1.schema.json) | CSM-1 tokens | v1.0 |
 | [vcp-adaptation-context](./schemas/vcp-adaptation-context.schema.json) | Adaptation context | v1.0 |
 | [vcp-capability-handshake](./schemas/vcp-capability-handshake.schema.json) | Capability negotiation | **v3.1** |

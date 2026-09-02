@@ -7,6 +7,13 @@
 **Parent Specification**: VCP Core Specification v2.0
 **Layer**: Adaptation (VCP/A)
 
+> Filename retains `v2.0` for link stability; this is revision 2.1.0.
+> The VEP-0004 material (dimensions 10-13 EMBODIMENT, PROXIMITY, RELATIONSHIP,
+> FORMALITY; the `vcp-a-ext-v1` capability token; schema positions 10-13) is
+> **Experimental (VEP-0004, not yet accepted)**: VEP-0004 is recorded as
+> Experimental with acceptance open in `veps/README.md`, and no authorized
+> decision has promoted it. Dimensions 1-9 remain the v3.1 baseline.
+
 ---
 
 ## Abstract
@@ -361,6 +368,17 @@ RELATIONSHIP is High weaponization risk (see §2.7) and subject to the Direction
 #### FORMALITY (🎩) — VEP-0004
 
 Encodes the formality register of the current interaction. Independent of AGENCY (power relation) and CULTURE (communication-style baseline).
+
+**Precedence**: 🎩 is also the emoji of the CULTURE value `formal` (`🌍🎩`). The two are distinguished by position: as a dimension symbol 🎩 begins a group, as a value it follows 🌍. When both `CULTURE.formal`/`informal` and a FORMALITY group are present, FORMALITY governs the register of the response; CULTURE governs communication style (directness, hierarchy, context). A future revision of VEP-0004 MAY reassign the FORMALITY symbol to avoid the overload.
+
+**Mapping to other formality encodings** (single source; `specs/core/security.md` SS3.3 `formality_level` and `specs/core/mcp-bridge.md` §6.1 cite this table):
+
+| FORMALITY value | `formality_level` (security.md SS3.3) | Numeric scale (mcp-bridge §6.1, 1-5) |
+|-----------------|---------------------------------------|--------------------------------------|
+| casual          | casual                                | 1-2                                  |
+| professional    | professional                          | 3                                    |
+| formal          | formal                                | 4                                    |
+| ceremonial      | formal                                | 5                                    |
 
 | Emoji | Value | Description |
 |-------|-------|-------------|

@@ -63,7 +63,11 @@ The key words "MUST", "SHOULD", "MAY", "MUST NOT", and "SHOULD NOT" in this docu
 
 ## 3. Resource URI Scheme
 
-VCP resources use the `vcp://` URI scheme.
+VCP resources use the `vcp://` URI scheme. `vcp://` is a project-local MCP
+resource scheme; no IANA URI scheme is claimed (see
+[representation-registry.md](./representation-registry.md)). This section is
+the single source for VCP resource URIs; `capability-negotiation.md` §9.3 and
+VEP-0003 mirror it.
 
 ### 3.1. Core Resources
 
@@ -73,7 +77,7 @@ These resources are always available:
 |-----|-------------|-------------|
 | `vcp://capabilities` | `application/json` | Server's VCP version, supported extensions, core features |
 | `vcp://bundle/{session_id}` | `application/json` | Full VCP bundle (manifest + signed content) |
-| `vcp://identity/{token_prefix}` | `application/json` | Parsed identity token with verification status |
+| `vcp://identity/{token_prefix}` | `application/json` | Parsed identity token with verification status. Only a token prefix appears in the URI; a full credential MUST NOT be placed in a resource URI (it would leak into logs). |
 | `vcp://constitution/{csm1_code}` | `application/json` | Decoded constitutional profile from CSM-1 code |
 
 ### 3.2. Extension Resources
@@ -84,8 +88,9 @@ Available only when the corresponding extension is negotiated:
 |-----|-----------|-------------|
 | `vcp://personal-state/{session_id}` | VCP-X-Personal | Current personal state with decay applied |
 | `vcp://relational/{session_id}` | VCP-X-Relational | Relational context (trust, standing, norms) |
-| `vcp://deliberation/{delib_id}` | VCP-X-Consensus | Deliberation state and results |
+| `vcp://deliberation/{deliberation_id}` | VCP-X-Consensus | Deliberation state and results |
 | `vcp://torch/{session_id}` | VCP-X-Torch | Session handoff torch |
+| `vcp://intent/{session_id}` | VCP-X-Intent | Current intent interpretation |
 
 ### 3.3. Resource Requirements
 
@@ -157,9 +162,15 @@ The VCP capability handshake piggybacks on MCP's `initialize` method:
         "version": "3.1",
         "supported": ["VCP-X-Personal"],
         "unsupported": ["VCP-X-Relational"],
+        "capabilities": {
+          "VCP-X-Personal": { "decay": true }
+        },
         "core_features": {
           "encryption": true,
-          "injection_scanning": true
+          "injection_scanning": true,
+          "revocation": true,
+          "audit_chain": true,
+          "context_opacity": true
         }
       }
     }
@@ -207,6 +218,8 @@ Active constraints: {list of constraints}
 
 {original system prompt}
 ```
+
+The numeric formality scale maps to the VCP/A FORMALITY dimension and to `security.md` SS3.3 `formality_level` via the single mapping table in `specs/VCP_ADAPTATION_v2.0.md` §2.2 (FORMALITY).
 
 ### 6.2. Requirements
 

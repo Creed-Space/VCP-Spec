@@ -656,6 +656,88 @@ def validate_fixtures(
             )
 
 
+HANDSHAKE_MESSAGE_TYPES = frozenset({"vcp-hello", "vcp-ack", "vcp-error"})
+JSON_FENCE_RE = re.compile(r"^\s{0,3}```json\s*$")
+
+
+def _fenced_json_blocks(text: str) -> list[tuple[int, str]]:
+    """Return (line_number, body) for every ```json fenced block in Markdown text."""
+    blocks: list[tuple[int, str]] = []
+    body: list[str] = []
+    start: int | None = None
+    for number, line in enumerate(text.splitlines(), 1):
+        if start is None:
+            if JSON_FENCE_RE.match(line):
+                start = number
+                body = []
+        elif FENCE_RE.match(line) and not line[FENCE_RE.match(line).end() :].strip():
+            blocks.append((start, "\n".join(body)))
+            start = None
+        else:
+            body.append(line)
+    return blocks
+
+
+def _handshake_messages(value: object) -> list[object]:
+    """Return every nested object whose `type` is a capability-handshake message type."""
+    found: list[object] = []
+    if isinstance(value, dict):
+        if value.get("type") in HANDSHAKE_MESSAGE_TYPES:
+            found.append(value)
+        else:
+            for child in value.values():
+                found.extend(_handshake_messages(child))
+    elif isinstance(value, list):
+        for child in value:
+            found.extend(_handshake_messages(child))
+    return found
+
+
+def validate_spec_json_examples(
+    schemas: dict[str, tuple[dict[str, object], object]], problems: Problems
+) -> None:
+    """Validate handshake and personal-state examples embedded in specs/**/*.md."""
+    targets = {
+        "handshake": schemas.get("vcp-capability-handshake"),
+        "personal": schemas.get("VCP-X-Personal"),
+    }
+    if any(entry is None for entry in targets.values()):
+        problems.add("spec example validation requires the handshake and Personal schemas")
+        return
+    try:
+        paths = [
+            path
+            for path in repository_source_files(".md")
+            if path.is_relative_to(ROOT / "specs")
+        ]
+    except (OSError, ValueError) as exc:
+        problems.add(f"spec example source inventory failed: {exc}")
+        return
+    for path in paths:
+        text = _read_bounded_markdown(path, problems)
+        if text is None:
+            continue
+        for line, body in _fenced_json_blocks(text):
+            try:
+                value = json.loads(body, object_pairs_hook=_unique_json_object)
+            except ValueError:
+                continue  # annotated or elided examples are not machine-checked
+            checks: list[tuple[str, object]] = [
+                ("handshake", message) for message in _handshake_messages(value)
+            ]
+            if isinstance(value, dict) and isinstance(value.get("personal"), dict):
+                checks.append(("personal", value))
+            for kind, instance in checks:
+                validator = targets[kind][1]
+                errors = list(validator.iter_errors(instance))
+                if errors:
+                    location = "/".join(str(part) for part in errors[0].absolute_path)
+                    problems.add(
+                        f"{relative(path)}:{line} {kind} example is invalid"
+                        f"{' at ' + location if location else ''}: {errors[0].message}"
+                    )
+
+
 def validate_status_registry(
     schemas: dict[str, tuple[dict[str, object], object]], problems: Problems
 ) -> None:
@@ -1584,6 +1666,7 @@ def main() -> int:
     if args.only in {"schemas", "all"}:
         schemas = validate_schemas(problems)
         validate_fixtures(schemas, problems)
+        validate_spec_json_examples(schemas, problems)
         validate_status_registry(schemas, problems)
     if args.only in {"links", "all"}:
         validate_markdown(problems)

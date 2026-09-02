@@ -12,7 +12,7 @@ certification, or independent conformance report.
 
 ## Abstract
 
-The Value-Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference.
+The Value-Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference. A sixth, experimental extension (VCP-X-Welfare) was registered after the 3.1 baseline and is tracked as a 3.2 candidate.
 
 ---
 
@@ -50,7 +50,7 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 │  Encryption | Scanning | Opacity | Revocation | Audit               │
 ├─────────────────────────────────────────────────────────────────────┤
 │                   Extensions (VCP-X-*)                              │
-│  Personal | Relational | Consensus | Torch | Intent                 │
+│  Personal | Relational | Consensus | Torch | Intent | (Welfare 3.2) │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -93,11 +93,11 @@ Defines token format, namespace tiers (personal, organizational, platform), and 
 
 ### 2.2. VCP/T — Transport
 
-Defines the signed bundle format: manifests, content hashes, trust anchors, and signature verification. See [v1.0 SS6](./VCP_SPECIFICATION_v1.0.md).
+Defines the signed bundle format: manifests, content hashes, trust anchors, and signature verification. See [v1.0 §4 Bundle Format](./VCP_SPECIFICATION_v1.0.md#4-bundle-format), [§7 Transport Protocol](./VCP_SPECIFICATION_v1.0.md#7-transport-protocol) and [§8 Verification Protocol](./VCP_SPECIFICATION_v1.0.md#8-verification-protocol).
 
 ### 2.3. VCP/S — Semantics
 
-Defines CSM-1 grammar for constitutional profile encoding, persona profiles, and composition semantics. See [CSM-1 Grammar](../docs/content/CSM1_GRAMMAR_SPECIFICATION.md).
+Defines CSM-1 grammar for constitutional profile encoding, persona profiles, and composition semantics. See [VCP/S Semantics v2.0 (Draft) §2](./VCP_SEMANTICS_v2.0.md), which consolidates the historical [CSM-1 Grammar](../docs/content/CSM1_GRAMMAR_SPECIFICATION.md) companion.
 
 ### 2.4. VCP/A — Adaptation
 
@@ -105,7 +105,7 @@ Defines context dimensions, state machine, hooks, and context specification. See
 
 ### 2.5. VCP/M — Messaging
 
-Defines inter-agent message types, escalation severity levels, and delivery semantics. See [Messaging specification](./VCP_MESSAGING_v2.0.md).
+Defines inter-agent message types, escalation severity levels, and delivery semantics. The schema-backed baseline is [Inter-Agent Messaging v1.2](./VCP_INTER_AGENT_MESSAGING_v1.2.md) (validated by `schemas/vcp-messaging-v1.2.schema.json`); [Messaging v2.0](./VCP_MESSAGING_v2.0.md) is a Draft whose implementation-candidate schema is maintained in the VCP-SDK repository, not here.
 
 ### 2.6. VCP/E — Economic Governance
 
@@ -164,6 +164,10 @@ Extensions follow the `VCP-X-{Name}` naming pattern. Each registered extension p
 | VCP-X-Torch | Stable | Session handoff between agents | [spec](./extensions/VCP-X-Torch/spec.md) |
 | VCP-X-Intent | Experimental | Heuristic intent inference | [spec](./extensions/VCP-X-Intent/spec.md) |
 
+> VCP-X-Welfare (Experimental) was registered after the 3.1 baseline and is
+> tracked in [specs/extensions/README.md](./extensions/README.md) as a 3.2
+> candidate. It is not part of this baseline.
+
 ---
 
 ## 7. MCP Bridge (v3.1 addition)
@@ -192,10 +196,10 @@ Annotated walkthroughs demonstrating VCP operations end-to-end:
 | Schema | Validates | New in v3.1 |
 |--------|----------|-------------|
 | [vcp-manifest-v1](../schemas/vcp-manifest-v1.schema.json) | Signed bundle manifests | No |
-| [vcp-identity-token](../schemas/vcp-identity-token.schema.json) | Identity tokens | No |
+| [vcp-identity-token](../schemas/vcp-identity-token.schema.json) | UVC value tokens (VCP/I dotted identifiers); not the handshake `identity` credential | No |
 | [vcp-semantics-csm1](../schemas/vcp-semantics-csm1.schema.json) | CSM-1 compact tokens | No |
 | [vcp-adaptation-context](../schemas/vcp-adaptation-context.schema.json) | Adaptation context | No |
-| [vcp-messaging-v1.2](../schemas/vcp-messaging-v1.2.schema.json) | Inter-agent messaging | No |
+| [vcp-messaging-v1.2](../schemas/vcp-messaging-v1.2.schema.json) | Inter-agent messaging v1.2 (`vcp_message: "1.2"`); v2.0 Draft messages are not covered here | No |
 | [vcp-capability-handshake](../schemas/vcp-capability-handshake.schema.json) | Capability negotiation | **Yes** |
 
 Extension schemas are co-located with their specifications in `specs/extensions/VCP-X-*/schema.json`.
@@ -210,11 +214,14 @@ VCP uses semantic versioning at the minor level. Version history:
 |---------|------|-------|
 | 1.0 | 2025-12-15 | Initial specification |
 | 1.1 | 2026-01-11 | Security amendments, inter-agent messaging |
-| 2.0 | Internal | Relational context, consensus (reference implementation only) |
-| 3.0 | Internal | Personal state with float signals (reference implementation only) |
-| 3.1 | 2026-02-28 | Extension model, capability negotiation, 5 extensions, core security |
+| 1.2 | 2026-03-08 | Architectural refusal token types (§O-R); folded into the v2.0 draft, no standalone amendments file |
+| 2.0 | Internal | Relational context, consensus (reference implementation milestone) |
+| 2.0 (Draft) | 2026-03-08 | Consolidated core draft ([VCP_SPECIFICATION_v2.0.md](./VCP_SPECIFICATION_v2.0.md)) and separately versioned layer documents (VCP/I, VCP/S, VCP/A, VCP/M, VCP/E); not ratified |
+| 3.0 | Internal | Personal state with float signals (reference implementation milestone) |
+| 3.1 | 2026-02-28 | Extension model, capability negotiation, 5 extensions + 1 experimental (Welfare, registered later as a 3.2 candidate), core security |
+| 3.2 | Unreleased | Candidate: VEP-0004 dimensions and VCP/S WC/AS welfare lines; see [CHANGELOG](./CHANGELOG.md) Unreleased |
 
-Versions 2.0 and 3.0 shipped in the reference implementation before the public specification caught up. They are documented in the [CHANGELOG](./CHANGELOG.md) for lineage transparency.
+The 2.0 and 3.0 milestones shipped in the reference implementation before the public specification caught up; the v2.0 Draft document is a later consolidation and is not the same artifact. All entries are documented in the [CHANGELOG](./CHANGELOG.md) for lineage transparency.
 
 ---
 

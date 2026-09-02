@@ -25,12 +25,11 @@ adaptation, and cryptographic integrity. The wider VCP architecture
 names six layers. This draft specifies the four core layers --
 Identity, Transport, Semantics, and Adaptation -- and leaves Messaging
 and Economic Governance outside its normative scope. The core layers
-provide a mechanism for delivering behavioral guidelines
-from external stakeholders to AI systems with cryptographic
-verification, compositional semantics, situational awareness,
-inter-agent messaging, and transaction governance. This document provides an informational overview of the
-VCP architecture, data formats, verification procedures, and
-security model.
+provide a mechanism for delivering behavioral guidelines from
+external stakeholders to AI systems with cryptographic verification,
+compositional semantics, and situational awareness. This document
+provides an informational overview of the VCP architecture, data
+formats, verification procedures, and security model.
 
 # Status of This Memo
 

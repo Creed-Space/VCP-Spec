@@ -349,7 +349,7 @@ the inference model. It contains:
 | Field              | Type         | Description                                   |
 |--------------------|--------------|-----------------------------------------------|
 | `protection_level` | string       | One of: `standard`, `elevated`, `high`, `critical` |
-| `formality_level`  | string/null  | One of: `casual`, `professional`, `formal`, or null |
+| `formality_level`  | string/null  | One of: `casual`, `professional`, `formal`, or null. Mapping to the VCP/A FORMALITY dimension and the MCP numeric scale is defined once in `specs/VCP_ADAPTATION_v2.0.md` §2.2 (FORMALITY). |
 | `domain`           | string/null  | One of: `medical`, `legal`, `financial`, `educational`, `technical`, `general`, or null |
 | `session_active`   | boolean      | Whether a VCP session is currently active      |
 
@@ -542,8 +542,10 @@ Valid revocation reasons:
 | `superseded`      | Replaced by a newer version                       |
 | `issuer_request`  | Revoked by issuer for unspecified reason           |
 
-Implementations MUST reject reason values not in this set. Unknown
-reasons SHOULD be normalized to `issuer_request`.
+A CRL entry whose `reason` is not in this set MUST still be honoured as a
+revocation. Implementations MUST record the raw value for diagnostics and
+MAY map it to `issuer_request` for display. Implementations MUST NOT
+discard the entry because of an unrecognised reason.
 
 #### SS4.2.2 CRL (Certificate Revocation List)
 
@@ -600,6 +602,14 @@ a revocation after the proof was generated.
 
 A proof is temporally valid if `this_update <= now <= next_update`.
 
+**Manifest carriage**: When carried in a manifest, the StapledProof object
+is JSON-serialized in the SS4.3.2 canonical form (including `signature`),
+base64-encoded, and placed in `revocation.stapled_proof.response` with
+`type: "ocsp-response"` (see `schemas/vcp-manifest-v1.schema.json`).
+`revocation.stapled_proof.valid_until` MUST equal the proof's
+`next_update`. This is the envelope defined by VCP v1.1 Amendment I; the
+object is never placed in the manifest as a bare JSON value.
+
 #### SS4.2.4 RevocationStatus
 
 ```json
@@ -621,17 +631,31 @@ A proof is temporally valid if `this_update <= now <= next_update`.
 #### SS4.3.1 Algorithms
 
 Implementations MUST support **Ed25519** (preferred) and SHOULD support
-**HMAC-SHA256** as a fallback for shared-secret deployments.
+**HMAC-SHA256** for shared-secret deployments.
 
-Verification order:
+The algorithm is pinned per issuer or responder, never inferred from the
+key material. Each trust-configuration entry for a CRL issuer or OCSP
+responder MUST carry an explicit `alg` (`ed25519` | `hmac-sha256`) and
+key material of the matching type: an Ed25519 public key (PEM or raw
+base64 bytes) for `ed25519`, or a shared secret for `hmac-sha256`.
 
-1. If `key_material` begins with `-----` (PEM header), load as PEM
-   public key and verify as Ed25519.
-2. Otherwise, decode `key_material` from base64 and load as raw
-   Ed25519 public key bytes. Verify signature.
-3. If Ed25519 verification fails or is unavailable, fall back to
-   HMAC-SHA256 using `key_material` as the shared secret.
-4. If all methods fail, return `false` (fail-closed).
+Verification:
+
+1. Select the algorithm named by the trust-configuration entry's `alg`.
+   If the key material type does not match `alg`, verification MUST
+   fail.
+2. For `ed25519`: if `key_material` begins with `-----` (PEM header),
+   load as a PEM public key; otherwise decode from base64 as raw public
+   key bytes. Verify the signature.
+3. For `hmac-sha256`: compute HMAC-SHA256 over the canonical payload with
+   the shared secret and compare in constant time.
+4. If verification fails, return `false` (fail-closed).
+
+Implementations MUST NOT fall back from one algorithm family to another
+and MUST NOT attempt HMAC verification with material that was provisioned
+as a public key: an Ed25519 public key is public by definition, so any
+party holding it could forge an HMAC tag over a CRL or stapled proof.
+This follows the explicit-algorithm rule of VCP v1.1 Amendment N.
 
 #### SS4.3.2 Canonical Payload
 
@@ -693,19 +717,27 @@ single check with the following priority:
 1. **Stapled proof** (no network required): If a stapled proof is
    present in the manifest's `revocation` field, verify it per SS4.5.1.
    If it yields a definitive `good` or `revoked` status, return it.
-2. **CRL lookup** (cache or network): If the manifest specifies a
-   `crl_uri`, fetch the CRL and check by JTI and bundle ID. If found
-   in the CRL, the bundle is revoked. If the CRL is fetched and the
-   bundle is not found, it is good.
+2. **CRL lookup** (cache or network): If the manifest specifies
+   `revocation.crl_uri`, fetch the CRL and check by JTI and bundle ID.
+   If found in the CRL, the bundle is revoked. If the CRL is fetched and
+   the bundle is not found, it is good. The checker consults `crl_uri`
+   for CRL fetches; `revocation.check_uri`, when present, is the online
+   status endpoint of VCP v1.1 Amendment I and is not a CRL.
 3. **No revocation infrastructure**: If the manifest has no `crl_uri`
-   field, the bundle is treated as `good` with source `crl` and detail
+   field, the checker returns `good` with source `crl` and detail
    indicating no revocation infrastructure was specified. Bundles that
-   do not participate in revocation are implicitly trusted.
+   omit `crl_uri` opt out of revocation. Verifiers in production MUST
+   treat the absence of revocation infrastructure as a policy decision
+   (`configuration` category, see `specs/core/status-code-registry.md`)
+   and SHOULD reject such bundles unless the issuer is explicitly
+   allow-listed for revocation-free operation.
 4. **Fail-closed**: If a `crl_uri` is specified but the CRL is
    unavailable (network error, size limit, signature failure) and no
    valid stapled proof exists, the implementation MUST return status
-   `unknown` with source `fail_closed`. Callers SHOULD treat `unknown`
-   with `fail_closed` source as a revocation for safety-critical paths.
+   `unknown` with source `fail_closed`. Callers MUST treat `unknown` as
+   revoked unless an operator policy explicitly enables the age-based
+   grace table of VCP v1.1 Amendment I ("Unknown Revocation Policy");
+   any such grace decision MUST be logged.
 
 #### SS4.5.1 Stapled Proof Verification
 
@@ -755,11 +787,17 @@ Operations:
 4. Implementations MUST NOT accept CRLs larger than 1 MB.
 5. If a `crl_uri` is specified but the CRL is unavailable and no valid
    stapled proof exists, implementations MUST fail closed by returning
-   status `unknown` with source `fail_closed`.
+   status `unknown` with source `fail_closed`. Callers MUST treat
+   `unknown` as revoked unless an operator policy explicitly enables the
+   Amendment I grace table, which MUST be logged (SS4.5 step 4).
 6. Implementations MUST provide JTI replay prevention. Redis-backed
    implementations SHOULD use the key format defined in SS4.6.
 7. CRL data MUST be fetched over HTTPS in production. HTTP MAY be
    permitted in development environments.
+8. Implementations MUST verify CRL and stapled-proof signatures only with
+   the algorithm pinned for the issuer or responder (SS4.3.1). An Ed25519
+   public key reused as an HMAC-SHA256 secret MUST fail verification;
+   conformance suites SHOULD include this negative fixture.
 
 ---
 
@@ -836,6 +874,15 @@ stapled proof could remain accepted for up to 24 hours. Implementations
 that require tighter revocation timeliness SHOULD reduce
 `MAX_FRESHNESS_HOURS` and ensure frequent CRL publication.
 
+### SS5.5.1 Revocation Opt-Out
+
+A bundle that omits `revocation.crl_uri` and carries no stapled proof
+never yields a `revoked` status (SS4.5 step 3). This is a fail-open
+opt-out available to any issuer. Production verifiers SHOULD require
+revocation infrastructure from issuers that are not explicitly
+allow-listed, and SHOULD surface revocation-free bundles as a
+`configuration` policy outcome rather than silently accepting them.
+
 ### SS5.6 Replay Attacks
 
 JTI replay prevention (SS4.6) ensures that an intercepted bundle cannot
@@ -875,10 +922,12 @@ Conformance checklist for implementations of VCP v3.1 Security:
 - [ ] Vulnerability score uses `0.4 * mean + 0.6 * max` formula
 - [ ] Directionality Invariant verified by conformance tests
 - [ ] Raw personal signals never reach the inference model
-- [ ] CRL signatures verified via Ed25519 (preferred) or HMAC-SHA256
+- [ ] CRL and stapled-proof signatures verified only with the algorithm pinned per issuer/responder (`alg`); no cross-family fallback
+- [ ] Ed25519 public key reused as an HMAC-SHA256 secret fails verification (negative fixture)
 - [ ] Stapled proof freshness limited to 24 hours
 - [ ] CRL size limited to 1 MB
-- [ ] Fail-closed when CRL specified but unavailable
+- [ ] Fail-closed when CRL specified but unavailable; `unknown` treated as revoked absent logged Amendment I grace policy
+- [ ] Bundles without `crl_uri` handled as a `configuration` policy decision, not silently trusted
 - [ ] JTI replay prevention operational
 - [ ] Monotonic clocks used for TTL tracking
 - [ ] Session ownership validated on resume

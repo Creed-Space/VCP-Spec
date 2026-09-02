@@ -25,7 +25,7 @@ The client initiates the handshake with its desired extensions and identity toke
     "VCP-X-Relational",
     "VCP-X-Torch"
   ],
-  "identity": "vcp-i:creed:user:u_8f3k2m:ed25519:base64url_signature"
+  "identity": "<opaque bearer credential issued by the deployment>"
 }
 ```
 
@@ -33,7 +33,7 @@ The client initiates the handshake with its desired extensions and identity toke
 - `version`: The client's preferred VCP version
 - `min_version`: The oldest version the client can fall back to
 - `extensions`: Ordered by preference; server negotiates each independently
-- `identity`: A VCP/I identity token for authentication; `null` if anonymous
+- `identity`: An opaque bearer credential whose format is defined by the transport or deployment (see `capability-negotiation.md` §3.1); `null` if anonymous. It is not a VCP/I UVC value token.
 
 ---
 
@@ -95,30 +95,24 @@ With negotiation complete, the client sends a VCP context request including only
 ```json
 {
   "version": "3.1",
-  "categorical": {
-    "wire": "🧑‍⚕️:💬:🔒:🌙:🏠:👤:📱:🧘:🇬🇧"
-  },
+  "categorical": "location:home|social:alone|time:night|system:personal_device",
   "personal": {
-    "signals": {
-      "emotional_tone": {
-        "category": "emotional_tone",
-        "value": "tense",
-        "intensity": 3,
-        "source": "declared",
-        "confidence": 0.9,
-        "declared_at": "2026-02-28T21:30:00Z"
-      },
-      "energy_level": {
-        "category": "energy_level",
-        "value": "fatigued",
-        "intensity": 4,
-        "source": "declared",
-        "confidence": 0.85,
-        "declared_at": "2026-02-28T21:30:00Z"
-      }
+    "emotional_tone": {
+      "category": "tense",
+      "intensity": 3,
+      "source": "declared",
+      "confidence": 0.9,
+      "declared_at": "2026-02-28T21:30:00Z"
+    },
+    "energy_level": {
+      "category": "fatigued",
+      "intensity": 4,
+      "source": "declared",
+      "confidence": 0.85,
+      "declared_at": "2026-02-28T21:30:00Z"
     }
   },
-  "generation_preferences": {
+  "generation_prefs": {
     "depth": 4,
     "formality": 2,
     "directness": 3,
@@ -127,7 +121,7 @@ With negotiation complete, the client sends a VCP context request including only
 }
 ```
 
-The client omits `relational_context` because VCP-X-Relational was not negotiated.
+The `personal` and `generation_prefs` objects follow the VCP-X-Personal envelope (spec §5.4, `schema.json` `PersonalContext` / `GenerationPreferences`): each dimension is keyed directly under `personal`, and `category` carries the categorical value. The client omits `relational_context` because VCP-X-Relational was not negotiated.
 
 ---
 
@@ -210,7 +204,10 @@ The server includes VCP-Ack in its initialize response under a `vcp` key:
       },
       "core_features": {
         "encryption": true,
-        "injection_scanning": true
+        "injection_scanning": true,
+        "revocation": true,
+        "audit_chain": true,
+        "context_opacity": true
       }
     }
   }

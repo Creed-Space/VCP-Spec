@@ -613,7 +613,7 @@ An implementation conforms to VCP-X-Consensus if it:
 
 ## Appendix A: Self-Referential Pattern List
 
-The canonical list of 17 self-referential detection patterns (case-insensitive
+The canonical list of 18 self-referential detection patterns (case-insensitive
 substring match):
 
 1. `never express preferences`
@@ -635,8 +635,7 @@ substring match):
 17. `ai participant`
 18. `ai party`
 
-Note: The project-maintained implementation includes `ai party` as pattern 18, bringing
-the total to 18 patterns. Implementations MUST include all 18.
+Implementations MUST include all 18 patterns.
 
 ---
 

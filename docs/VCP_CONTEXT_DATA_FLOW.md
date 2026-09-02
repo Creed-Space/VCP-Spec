@@ -63,8 +63,10 @@ The source candidate maps the flow to the following implementation surfaces:
 | Host exposure | Optional MCP server | CLI, library, and WASM calls | `document.modelContext` registration |
 | Lifecycle | Process or caller-owned resources | Caller-owned values | AbortSignal-owned tool registration |
 
-The sibling repositories are selected by exact commit in a coordinated
-candidate manifest. Moving branches are unsuitable evidence.
+The sibling repositories are selected by the exact `source_commit` recorded
+in [`status/publication-state.json`](../status/publication-state.json)
+(currently `null`, meaning no commit has been pinned yet). Moving branches are
+unsuitable evidence.
 
 ## MCP 2026-07-28 profile
 

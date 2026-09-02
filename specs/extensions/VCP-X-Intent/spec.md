@@ -55,7 +55,7 @@ A single intent reading with confidence and reasoning.
 | `category`                 | IntentCategory      | Yes      | The inferred intent category.                                   |
 | `confidence`               | number (0.0 -- 1.0) | Yes      | Confidence in this classification. Higher is more confident.    |
 | `reasoning`                | string              | Yes      | Human-readable explanation of why this intent was inferred. Maximum 200 characters. |
-| `contributing_dimensions`  | array of string     | Yes      | List of PersonalDimension names that contributed to this inference. May be empty for default/fallback classifications. |
+| `contributing_dimensions`  | array of string     | Yes      | List of PersonalDimension names or VCP/A situational dimension names (e.g., `location`, `activity`) that contributed to this inference. May be empty for default/fallback classifications. |
 
 ### 2.3 InterpretiveFrame
 
@@ -221,11 +221,11 @@ intent, supporting both user understanding and system debugging.
 
 An implementation conforms to VCP-X-Intent if it:
 
-1. Implements all 10 inference rules per Section 3.1.
+1. Implements all 14 rules (10 categories) in the Section 3.1 table.
 2. Correctly deduplicates candidates per Section 3.3.
 3. Returns at most 3 alternatives in addition to the primary.
 4. Preserves user corrections without discarding original classifications.
-5. Marks the extension as EXPERIMENTAL in capability negotiation.
+5. Advertises `"status": "experimental"` in its VCP-X-Intent capability object (the optional per-extension `status` key of `specs/core/capability-negotiation.md` §7.5).
 6. Ignores unrecognized fields in InterpretiveFrame payloads.
 
 
