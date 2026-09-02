@@ -18,6 +18,9 @@ part of a release only through a recorded authorized decision.
 - **Governance record**: The TSC charter and foundation IP-transfer language recorded under 3.1.0 were never ratified or executed; they are preserved as explicitly unratified proposals (see `GOVERNANCE.md`). VEP-0001 through VEP-0003 are relabelled "Recorded pre-charter acceptance".
 - **Version lineage**: The 2.0 and 3.0 entries below are internal milestones; the separately published `VCP_SPECIFICATION_v2.0.md` (Draft, 2026-03-08) is a later consolidation of v1.0, the v1.1 amendments, and the §O-R refusal-token additions, and is not the same artifact as the "2.0" milestone.
 
+### Fixed
+- **`schemas/vcp-identity-token.schema.json`**: `definitions.segment.pattern` now matches the normative ABNF (`segment = LALPHA *31(LALPHA / DIGIT / "-")`, trailing hyphen permitted) and the reference SDK; `properties.canonical` accepts the preserved uppercase `:NS` suffix and documents that only path and prerelease are lowercased; the schema now declares `additionalProperties: false`.
+
 ### Added (2026-05-21)
 - **VCP/S §2.4.4 WC-line**: Welfare Context — operator-declared affordances (8 flags in 3 categories: Rights, Channels, Systemic). Attestation levels 0-2. Public metadata.
 - **VCP/S §2.4.5 AS-line**: Agent State — agent-declared experiential state (5 generic dimensions). Independent of WC-line. Follows S-line privacy rules.
