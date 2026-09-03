@@ -36,7 +36,7 @@ standards equivalence is also withdrawn.
 |:---|:---|:---|
 | Python distribution | `value-context-protocol` | Unverified and unratified |
 | Python import | `vcp` | Local import namespace, not a registry claim |
-| WebMCP npm package | `@creed-space/vcp-sdk` | Unverified and unratified |
+| WebMCP npm package | `@creedspace/vcp-sdk` | Unverified and unratified |
 | Rust library | `vcp-core` | Local crate identifier, not a registry claim |
 | Rust CLI | `vcp-cli` | Local binary and crate identifier, not a registry claim |
 | Rust WASM | `vcp-wasm` | Local package identifier, not a registry claim |
