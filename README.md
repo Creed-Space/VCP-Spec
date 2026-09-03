@@ -94,12 +94,12 @@ their presence in this repository does not promote them to an accepted release.
 
 ## Quick Start
 
-> **SDK publication state:** source-only candidate. No PyPI, npm, or crates.io
-> release is currently claimed. Candidate names identify repository metadata,
-> not registry availability. Run build commands from an immutable VCP-SDK
-> checkout at the `source_commit` recorded in
-> [`status/publication-state.json`](./status/publication-state.json)
-> (currently `null`, meaning no commit has been pinned yet).
+> **SDK publication state:** published. Version 4.2.0 of `value-context-protocol`
+> (PyPI), `@creedspace/vcp-sdk` (npm) and `vcp-core`, `vcp-cli`, `vcp-wasm`
+> (crates.io) was released on 2026-09-03 from the `source_commit` recorded in
+> [`status/publication-state.json`](./status/publication-state.json), which also
+> carries each registry receipt. Building from an immutable VCP-SDK checkout at
+> that commit remains supported.
 
 ### 1. Read the Newcomer Guide
 **[VCP Newcomer Guide](./docs/VCP_NEWCOMER_GUIDE.md)** — What VCP is and why it exists.

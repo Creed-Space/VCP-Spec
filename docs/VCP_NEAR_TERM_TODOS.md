@@ -23,11 +23,12 @@ evidence-boundary: Plans and gates only
 - VCP 3.1 is the repository protocol baseline.
 - VCP 3.2 material remains pre-release.
 - VEP-0005 is a draft response to MCP 2026-07-28.
-- SDK artifacts remain source-only candidates.
+- SDK artifacts are published at 4.2.0; the next registry release needs a new
+  coordinated review ledger.
 - The Demo is not conformance evidence.
-- Registry publication, production deployment, independent review, governance
-  ratification, licensing decisions, and canonical rendered documents require
-  separate authority and receipts.
+- Independent review, governance ratification, and canonical rendered documents
+  still require separate authority and receipts; 4.2.0 shipped with X017, S033
+  and K045 visibly waived under the runbook's first-publication exemption.
 
 ## Machine work before an immutable candidate
 

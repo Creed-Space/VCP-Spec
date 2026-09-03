@@ -21,13 +21,14 @@ evidence-boundary: Source integration checks only
 
 ## 1. Publication State
 
-The VCP-SDK artifacts are **source-only candidates**. No PyPI, npm, or
-crates.io release is currently claimed. Candidate package names describe local
-metadata and do not establish registry availability.
+The VCP-SDK artifacts are **published** at version 4.2.0: `value-context-protocol`
+on PyPI, `@creedspace/vcp-sdk` on npm, and `vcp-core`, `vcp-cli` and `vcp-wasm`
+on crates.io. [`status/publication-state.json`](../status/publication-state.json)
+records the registry receipt and the pinned `source_commit` for each artifact.
 
-Use an immutable VCP-SDK checkout at the `source_commit` recorded in
-[`status/publication-state.json`](../status/publication-state.json)
-(currently `null`, meaning no commit has been pinned yet). From its
+Install from the registries (`pip install value-context-protocol==4.2.0`,
+`npm install @creedspace/vcp-sdk@4.2.0`, `cargo add vcp-core@4.2.0`), or use an
+immutable VCP-SDK checkout at the recorded `source_commit`. From its
 repository root:
 
 ```bash
