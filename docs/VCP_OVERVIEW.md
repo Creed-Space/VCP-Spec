@@ -249,7 +249,7 @@ Repository → Orchestrator → LLM
 
 | Document | Description |
 |----------|-------------|
-| [VCP_TRANSPORT.md](../_papers/VCP_SPECIFICATION_v1.0.md) | Full transport protocol |
+| [VCP Transport specification](../specs/VCP_SPECIFICATION_v1.0.md) | Full transport protocol |
 
 ---
 
@@ -334,7 +334,7 @@ Examples:
 | 1 | ⏰ | TIME | 🌅morning, 🌙night, 📅weekday |
 | 2 | 📍 | SPACE | 🏡home, 🏢office, 🏫school |
 | 3 | 👥 | COMPANY | 👤alone, 👶children, 👔colleagues |
-| 4 | 🌍 | CULTURE | 🇺🇸american, 🇯🇵japanese, 🌍global |
+| 4 | 🌍 | CULTURE | 🔇high_context, 📢low_context, 🎩formal |
 | 5 | 🎭 | OCCASION | ➖normal, 🎂celebration, 🚨emergency |
 | 6 | 🧠 | STATE | 😊happy, 😰anxious, 😴tired |
 | 7 | 🌡️ | ENVIRONMENT | ☀️comfortable, 🥵hot, 🔇quiet |
@@ -732,8 +732,8 @@ The **Torch System** provides session continuity for sequential AI instances. It
 
 **Documentation**:
 - Architecture decision: [`docs/VCP_TORCH_ARCHITECTURE.md`](VCP_TORCH_ARCHITECTURE.md)
-- Torch system: [`~/.claude/docs/INTERIORA_TORCH_SYSTEM.md`](~/.claude/docs/INTERIORA_TORCH_SYSTEM.md)
-- Quick reference: [`docs/INTERIORA_CONTINUITY.md`](INTERIORA_CONTINUITY.md)
+- Torch extension: [`specs/extensions/VCP-X-Torch/spec.md`](../specs/extensions/VCP-X-Torch/spec.md)
+- Torch schema: [`specs/extensions/VCP-X-Torch/schema.json`](../specs/extensions/VCP-X-Torch/schema.json)
 
 ### Dimensional Systems
 

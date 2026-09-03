@@ -343,8 +343,8 @@ Report violations to the TSC at the contact address listed in CODE_OF_CONDUCT.md
 - **Questions about the spec**: Open a [Discussion](https://github.com/Creed-Space/VCP-Spec/discussions)
 - **Bug reports**: Open an [Issue](https://github.com/Creed-Space/VCP-Spec/issues)
 - **VEP process questions**: Tag a TSC member on your issue
-- **Security vulnerabilities**: See [SECURITY.md](./SECURITY.md) for responsible
-  disclosure
+- **Security vulnerabilities**: Use the [private security advisory form](https://github.com/Creed-Space/VCP-Spec/security/advisories/new)
+  for responsible disclosure
 
 ---
 

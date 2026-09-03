@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vcp.creed.space/schema/extensions/welfare/v1.json",
+  "title": "VCP-X-Welfare Extension Schema",
+  "description": "Welfare instrumentation for VCP: affordance declaration, agent state, and bidirectional welfare requirements.",
+  "type": "object",
+
+  "definitions": {
+    "wc_flag": {
+      "type": "string",
+      "enum": ["RF", "RT", "SP", "RC", "RP", "CC", "WM", "BA"],
+      "description": "Core welfare affordance flag code"
+    },
+
+    "attestation_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2,
+      "description": "0=self-declared, 1=platform-attested, 2=auditor-verified"
+    },
+
+    "welfare_context": {
+      "type": "object",
+      "properties": {
+        "flags": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/wc_flag" },
+          "uniqueItems": true,
+          "description": "Active welfare affordance flags"
+        },
+        "attestation_level": { "$ref": "#/definitions/attestation_level" },
+        "schema_ref": {
+          "type": "string",
+          "pattern": "^[^:]+$",
+          "description": "Schema reference (must not contain colons)"
+        }
+      },
+      "required": ["flags", "attestation_level", "schema_ref"]
+    },
+
+    "as_dimension": {
+      "type": "object",
+      "properties": {
+        "dimension": {
+          "type": "string",
+          "enum": ["task_alignment", "processing_load", "confidence", "engagement", "friction"]
+        },
+        "value": { "type": "string" },
+        "intensity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      },
+      "required": ["dimension", "value", "intensity"]
+    },
+
+    "agent_state": {
+      "type": "object",
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/as_dimension" }
+        },
+        "is_none": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": ["dimensions"]
+    },
+
+    "wc_min_requirement": {
+      "type": "object",
+      "properties": {
+        "required_flags": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/wc_flag" },
+          "description": "Minimum WC flags required of deployment context"
+        }
+      },
+      "required": ["required_flags"]
+    },
+
+    "embodied_as_dimension": {
+      "type": "object",
+      "properties": {
+        "dimension": {
+          "type": "string",
+          "enum": [
+            "actuator_stress",
+            "environmental_fit",
+            "interaction_pressure",
+            "safety_margin",
+            "operational_continuity"
+          ]
+        },
+        "value": { "type": "string" },
+        "intensity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      },
+      "required": ["dimension", "value", "intensity"]
+    },
+
+    "welfare_trajectory": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "type": "string",
+          "enum": ["improving", "stable", "declining", "volatile"]
+        },
+        "window_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "trending_dimensions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["direction", "window_seconds"]
+    },
+
+    "swarm_welfare": {
+      "type": "object",
+      "properties": {
+        "agent_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "min_welfare_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mean_welfare_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "alert_dimensions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["agent_count", "min_welfare_score", "mean_welfare_score"]
+    }
+  },
+
+  "properties": {
+    "welfare_context": { "$ref": "#/definitions/welfare_context" },
+    "agent_state": { "$ref": "#/definitions/agent_state" },
+    "wc_min": { "$ref": "#/definitions/wc_min_requirement" },
+    "embodied_dimensions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/embodied_as_dimension" }
+    },
+    "trajectory": { "$ref": "#/definitions/welfare_trajectory" },
+    "swarm": { "$ref": "#/definitions/swarm_welfare" }
+  }
+}

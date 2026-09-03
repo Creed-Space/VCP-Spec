@@ -33,7 +33,7 @@ not authorize any form of intervention, triage, or clinical recommendation.
 Personal signals occupy Layer 3 of the VCP context stack:
 
 ```
-Layer 1: Categorical context (9 situational dimensions)
+Layer 1: Categorical context (13 situational dimensions)
 Layer 2: Constitutional context (creed / constitution references)
 Layer 3: Personal context   <-- THIS EXTENSION
 Layer 4: Generation preferences (Priori-style sliders)
