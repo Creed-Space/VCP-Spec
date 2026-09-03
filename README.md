@@ -319,7 +319,7 @@ Project-maintained implementations live in the [VCP-SDK repository](https://gith
 |:---|:---|:---|
 | **Python** | 4.2.0 | Project-maintained implementation, package `value-context-protocol` |
 | **Rust** | 4.2.0 | Core, WASM, and CLI workspace; crate `vcp-core` |
-| **TypeScript** | 4.2.0 | WebMCP browser integration package `@creed-space/vcp-sdk` |
+| **TypeScript** | 4.2.0 | WebMCP browser integration package `@creedspace/vcp-sdk` |
 
 ---
 

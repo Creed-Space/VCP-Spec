@@ -19,7 +19,7 @@ new protocol release.
 | VEP-0004 | Experimental | Extended VCP/A dimensions, not promoted by SDK support |
 | Python SDK | 4.2.0, `value-context-protocol` | SDK semver, implements v3.2 candidate features |
 | Rust SDK | 4.2.0 workspace, `vcp-core` | SDK semver, implements v3.2 candidate features |
-| WebMCP SDK | 4.2.0, `@creed-space/vcp-sdk` | Browser integration, not a full TypeScript protocol implementation |
+| WebMCP SDK | 4.2.0, `@creedspace/vcp-sdk` | Browser integration, not a full TypeScript protocol implementation |
 | Demo | 0.1.0 application | Demonstration release, not conformance evidence |
 
 ## Compatibility rules

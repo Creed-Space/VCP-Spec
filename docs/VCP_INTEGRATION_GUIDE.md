@@ -140,7 +140,7 @@ Python and Rust protocol classes. In particular, it does not export `Bundle`,
 After building and installing the local `webmcp` directory:
 
 ```typescript
-import { registerVCPTools } from '@creed-space/vcp-sdk';
+import { registerVCPTools } from '@creedspace/vcp-sdk';
 
 const registration = await registerVCPTools({
   enableChat: false,
