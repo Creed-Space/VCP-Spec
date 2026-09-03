@@ -84,11 +84,24 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "machine-readable-artifact",
       "owner": "VCP-Spec maintainers",
+      "path": "registries/agent-runtime-terms.json",
+      "publication_class": "normative-candidate",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "652436d271f384b9b139822ee14cba1f1c3c73cdbaffa90328b04704b2c6ec4d",
+      "status": "active-source-candidate"
+    },
+    {
+      "authority": "Interim VCP-Spec maintainers; immutable release authority remains open",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "machine-readable-artifact",
+      "owner": "VCP-Spec maintainers",
       "path": "registries/candidate-requirements.json",
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "58ca0ebada81e957f59f67def266e91411a4d3103cb2bd444fa797effa5d8217",
+      "sha256": "fcdc2eace2d5febc0d796e4e9e079e4e46f51852c8b1ec896f2d2922b7a3ea61",
       "status": "active-source-candidate"
     },
     {
@@ -318,6 +331,58 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "example",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-agent-runtime-profile-v0.1.invalid-authority-field.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "6bdcfab0a18dd6a0e799b51fd9cb4fbd7002237d75735f7ffbcfca867ff4a37b",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-agent-runtime-profile-v0.1.valid-accretive.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "aa1e6de751cc9f4422367fd0898398c452f2736ef1319b0f6ec457b771bfa538",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-agent-runtime-profile-v0.1.valid-controlled.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "4f6e4c730b0d01f539940662782eb0932f663f41afcac00391f0bf06ac804ae2",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-agent-runtime-profile-v0.1.valid-observe.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "d029c469b21b51e743df78e3de9226915f140ce65308424e1721de6f9a806804",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/examples/vcp-capability-handshake.valid-ack.json",
       "publication_class": "illustrative",
       "replacement": null,
@@ -409,6 +474,19 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "schema",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/vcp-agent-runtime-profile-v0.1.schema.json",
+      "publication_class": "normative-candidate",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "920b308c2438d47ac234240fc35e088afa4dd6621e3e1884da993db9dbce1e01",
+      "status": "source-schema-candidate"
+    },
+    {
+      "authority": "Interim VCP-Spec maintainers; immutable release authority remains open",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "schema",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/vcp-capability-handshake.schema.json",
       "publication_class": "normative-candidate",
       "replacement": null,
@@ -491,7 +569,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "96f59975b8d47f6967157801fcbf61b7a06f23dc099475b262c159f92602d3cf",
+      "sha256": "5aaabbd294f88c808c29b227437aa06cd1e9575bfa5b16dd4c9b3003b8690d9f",
       "status": "source-schema-candidate"
     },
     {
@@ -1154,7 +1232,7 @@
       "publication_class": "proposal",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "a037fe0d18f90b2c70a5240e2348036415efc2cdaeb923ec37269a82075871be",
+      "sha256": "25664d72639941152ef9e22cc2abc6e671018b0f6d811b2bca9a045c845783b8",
       "status": "proposal-status-undeclared"
     },
     {
@@ -1220,6 +1298,19 @@
       "replacement": null,
       "review_date": "2026-08-15",
       "sha256": "2f252adb166757100d2c738770479b5f6c5bcfc963bea048d7922e3e0f88f844",
+      "status": "draft"
+    },
+    {
+      "authority": "VEP proposal process; acceptance requires an authorized decision",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "vep",
+      "owner": "VCP-Spec maintainers",
+      "path": "veps/VEP-0006-agent-runtime-profile.md",
+      "publication_class": "proposal",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "ba60057872f19855fabc5ad7bc50a1889e29adec7b280188c16d24b959626458",
       "status": "draft"
     }
   ],
