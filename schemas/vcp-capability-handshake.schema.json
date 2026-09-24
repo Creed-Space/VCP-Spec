@@ -85,7 +85,7 @@
         },
         "context_opacity": {
           "type": "boolean",
-          "description": "Protection level abstraction layer."
+          "description": "Protection-level abstraction (context opacity)."
         }
       },
       "required": [

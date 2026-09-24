@@ -1,6 +1,6 @@
 {
   "schema": "vcp-residual-risk-register/1",
-  "as_of": "2026-08-15",
+  "as_of": "2026-09-24",
   "claim_boundary": "Open risks and required decision roles. Source mitigations do not close human-authority or independent-evidence gates.",
   "risks": [
     {
@@ -17,7 +17,7 @@
       "severity": "critical",
       "status": "open-authority",
       "risk": "Licensing, authorship, patent, trademark, generated-output, logo, schema, example, and withdrawn-draft rights are not fully approved for publication.",
-      "current_mitigation": "Publication remains source-only and licensing status is explicit.",
+      "current_mitigation": "SDK 4.2.0 was published under the MIT license declared in each package; the full rights matrix review remains open.",
       "closure_evidence": "Qualified rights review and signed licensing matrix covering every file class and contributor path.",
       "owner_role": "authorized rights counsel and project principals"
     },
@@ -26,7 +26,7 @@
       "severity": "critical",
       "status": "open-independent",
       "risk": "Cryptographic, protocol, privacy, safety, welfare, and cultural claims have not received independent review sufficient for release reliance.",
-      "current_mitigation": "Candidate claims are bounded to project-controlled tests and self-review is disclosed.",
+      "current_mitigation": "SDK 4.2.0 was published with the independent-review gates X017, S033, and K045 visibly waived; public claims are bounded to project-controlled tests and self-review is disclosed.",
       "closure_evidence": "Independent reports bound to exact source and artifact digests, with findings resolved or accepted by named authority.",
       "owner_role": "independent reviewers and release authority"
     },
@@ -43,8 +43,8 @@
       "id": "VCP-RISK-005",
       "severity": "high",
       "status": "open-authority",
-      "risk": "Package names, registry ownership, recovery, trusted publishing, and provenance have not been authorized and proven on public registries.",
-      "current_mitigation": "All install guidance remains source-only and release workflows fail closed on authority records.",
+      "risk": "Registry ownership, account recovery, trusted publishing, and artifact provenance for the published packages have not been proven to the closure standard.",
+      "current_mitigation": "Package names are ratified, and SDK 4.2.0 was published through the ledger-bound release workflow with registry receipts and the pinned source commit recorded in status/publication-state.json; install guidance uses version-pinned registry commands, and release workflows fail closed on authority records.",
       "closure_evidence": "Authorized names, protected registry accounts, trusted-publishing receipts, immutable digests, and clean-host installation evidence.",
       "owner_role": "release authority and registry owners"
     },
@@ -62,7 +62,7 @@
       "severity": "high",
       "status": "open-independent",
       "risk": "Two project-controlled implementations may share assumptions and therefore do not establish independent interoperability.",
-      "current_mitigation": "Feature and publication records state zero independent implementations and label parity as same-programme evidence.",
+      "current_mitigation": "Feature and publication records state zero independent implementations and label parity as same-program evidence.",
       "closure_evidence": "A separately maintained implementation passes opaque core-profile fixtures and publishes its own immutable report.",
       "owner_role": "independent implementer and conformance authority"
     },
