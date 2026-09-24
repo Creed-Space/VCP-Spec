@@ -3,28 +3,25 @@
 <!-- wiki:type = system -->
 <!-- wiki:scope = vcp-spec -->
 <!-- wiki:created = 2026-05-23 -->
-<!-- wiki:updated = 2026-05-23 -->
+<!-- wiki:updated = 2026-09-24 -->
 <!-- wiki:status = active -->
 
 ## Summary
 
-VCP/S (Semantics, Layer 3) defines how values are encoded as machine-readable tokens. The primary encoding format is CSM-1 (Creed Structured Model 1), a compact grammar for expressing constitutional personas, behavioral dimensions, and value constraints. (VCP-SDK/CLAUDE.md, "Quick Reference")
+VCP/S (Semantics, Layer 3) defines how values are encoded in machine-readable form. It encodes constitutional configurations as CSM-1 (Constitutional Safety Minicode). A CSM-1 code packs persona, adherence level, scopes, namespace and version into one line, and CSM-1 v1.1 adds a multi-line token that carries constitutional and personal state. (specs/VCP_SEMANTICS_v2.0.md §2.1, §2.4)
 
-## CSM-1 Token Format
+## CSM-1 code and token
 
-A CSM-1 token encodes a persona and its value dimensions in compact form.
+A CSM-1 code is one line: persona, adherence level, then optional scopes, namespace and version.
 
 Example: `N5+F+E`
-- `N` — persona code (NANNY)
-- `5` — adherence level
-- `+F+E` — domain flags (Family, Education)
+- `N` — persona code (Nanny)
+- `5` — adherence level (0-5)
+- `+F+E` — scopes (Family, Education)
 
-(VCP-SDK/CLAUDE.md, "Quick Reference" table)
+(VCP-SDK/CLAUDE.md, "Quick Reference" table.) The canonical form sorts scopes, so this code serializes as `N5+E+F`. (specs/VCP_SEMANTICS_v2.0.md §2.10.1)
 
-Additional examples from the VCP-Spec README (README.md, "Quick Start"):
-```python
-token.csm1  # e.g. csm1:supportive_companion:EH-TH-...
-```
+A CSM-1 token is the multi-line v1.1 form: seven required lines (`VCP:`, `C:`, `P:`, `G:`, `X:`, `F:`, `S:`), then an optional `R:` personal-state line and optional extension lines. (specs/VCP_SEMANTICS_v2.0.md §2.4)
 
 ## Key Concepts
 
@@ -50,8 +47,8 @@ Also referenced in Rewind codebase: `services/vcp/semantics/csm1.py` (Rewind git
 
 ## Provenance
 
-- Sources consulted: VCP-Spec/README.md, VCP-SDK/CLAUDE.md
-- Last verified against sources: 2026-05-23
+- Sources consulted: VCP-Spec/README.md, VCP-SDK/CLAUDE.md, specs/VCP_SEMANTICS_v2.0.md
+- Last verified against sources: 2026-05-23; the CSM-1 summary and the code and token section rechecked against specs/VCP_SEMANTICS_v2.0.md on 2026-09-24
 
 ## See Also
 

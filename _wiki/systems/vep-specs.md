@@ -64,7 +64,7 @@ New dimensions:
 |---|------|--------|-----------|--------|
 | 10 | EMBODIMENT 🧍 | Motor state | Robotics safety-critical | `stationary`, `navigating`, `manipulating`, `carrying`, `emergency_stop` |
 | 11 | PROXIMITY ↔️ | Spatial distance | Physical space interaction protocols | [spec in VEP-0004] |
-| 12 | RELATIONSHIP | Relational tie | Bilateral relational modelling, two-sided signal | [spec in VEP-0004] |
+| 12 | RELATIONSHIP | Relational tie | Bilateral relational modeling, two-sided signal | [spec in VEP-0004] |
 | 13 | FORMALITY | Register | Resolves inconsistency across core/vcp-lite/SDK | `casual`, `professional`, `formal`, `ceremonial` |
 
 EMBODIMENT defaults to `stationary` for text-only agents (may be omitted from wire encoding). FORMALITY resolves three-way inconsistency: previously defined in core/security.md, vcp-lite schema, and vcp-sdk-python v0.2.0 as different fields. (`veps/VEP-0004-extended-vcpa-dimensions.md`, §1–3)

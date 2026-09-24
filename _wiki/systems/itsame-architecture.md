@@ -3,7 +3,7 @@
 <!-- wiki:type = system -->
 <!-- wiki:scope = vcp-spec -->
 <!-- wiki:created = 2026-05-23 -->
-<!-- wiki:updated = 2026-05-23 -->
+<!-- wiki:updated = 2026-09-24 -->
 <!-- wiki:status = active -->
 
 ## Summary
@@ -40,8 +40,8 @@ Six opt-in protocol extensions negotiated per session via capability handshake (
 | Extension | Status |
 |-----------|--------|
 | VCP-X-Personal | Stable — 5 personal state dimensions with decay |
-| VCP-X-Relational | Stable — trust, standing, AI self-model |
-| VCP-X-Consensus | Stable — Schulze voting for multi-stakeholder deliberation |
+| VCP-X-Relational | Draft — trust, standing, AI self-model |
+| VCP-X-Consensus | Draft — Schulze voting for multi-stakeholder deliberation |
 | VCP-X-Torch | Stable — session handoff for relational continuity |
 | VCP-X-Intent | Experimental — transparent intent inference from personal state |
 | VCP-X-Welfare | Experimental — embodied welfare instrumentation (extended AS-line for robotics, temporal patterns, multi-agent aggregation, attestation chain) (`specs/extensions/VCP-X-Welfare/spec.md` v1.0.0) |
@@ -54,21 +54,22 @@ VCP layers map to MCP primitives (VCP-Spec/README.md, "MCP Bridge"):
 |-----------|--------------|
 | Identity | Tools (`vcp_validate_token`) |
 | Transport | Resources (`vcp://bundle/*`) |
-| Semantics | Tools + Resources |
-| Adaptation | Resources + Sampling integration |
-| Messaging | Tools (`vcp_send_message`, `vcp_escalate`) |
-| Economic Gov | Tools (`vcp_authorize_transaction`) + Resources |
+| Semantics | Tools (`vcp_parse_csm1`) + Resources (`vcp://constitution/*`) |
+| Adaptation | Resources (`vcp://personal-state/*`) + Sampling integration |
+| Extensions | Negotiation-filtered tools + resources |
+
+No MCP mapping exists for VCP/M or VCP/E. (`specs/core/mcp-bridge.md`, §2.1)
 
 ## Specification Status
 
-All six layers: Stable as of v3.1. (VCP-Spec/README.md, "Specification Status")
+VCP/I, T, S and A are the current v3.1 source baseline; VCP/M and VCP/E have a v3.1 summary, with detailed material in separately versioned Draft documents. No layer is "Stable". (VCP-Spec/README.md, "Specification Status")
 
-Filed VEPs: VEP-0001 (Extension Model, Accepted), VEP-0002 (Capability Negotiation, Accepted), VEP-0003 (VCP-over-MCP Bridge, Accepted). (VCP-Spec/README.md, "Filed VEPs")
+Filed VEPs: VEP-0001 (Extension Model), VEP-0002 (Capability Negotiation) and VEP-0003 (VCP-over-MCP Bridge), each a recorded pre-charter acceptance; VEP-0004 (Extended VCP/A Dimensions, Experimental, v3.2 pre-release); VEP-0005 (Stateless MCP Adaptation, Draft, v3.3 candidate); VEP-0006 (Agent Runtime Profile, Draft, separate 0.1 candidate). (VCP-Spec/README.md, "Filed VEPs"; `veps/README.md`)
 
 ## Provenance
 
-- Sources consulted: VCP-Spec/README.md, VCP-SDK/CLAUDE.md, VCP-Spec/specs/extensions/VCP-X-Welfare/spec.md
-- Last verified against sources: 2026-05-23
+- Sources consulted: VCP-Spec/README.md, VCP-SDK/CLAUDE.md, VCP-Spec/specs/extensions/VCP-X-Welfare/spec.md, `specs/core/mcp-bridge.md`, `veps/README.md`
+- Last verified against sources: 2026-09-24 (MCP mapping, specification status, extension statuses and VEPs); other claims 2026-05-23
 
 ## See Also
 

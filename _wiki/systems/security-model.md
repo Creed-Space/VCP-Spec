@@ -3,12 +3,12 @@
 <!-- wiki:type = system -->
 <!-- wiki:scope = vcp-spec -->
 <!-- wiki:created = 2026-05-23 -->
-<!-- wiki:updated = 2026-05-23 -->
+<!-- wiki:updated = 2026-09-24 -->
 <!-- wiki:status = active -->
 
 ## Summary
 
-VCP v3.1 adds a cross-cutting security layer below the six-layer stack: context encryption (Fernet), injection scanning (12 patterns), context opacity (4 protection levels), revocation infrastructure (CRL + OCSP), and a tamper-evident audit chain (SHA-256 hash chain). All five mechanisms are mandatory in production environments. Full spec at `specs/core/security.md`. (`specs/core/security.md`, `specs/VCP_SPECIFICATION_v3.1.md`, §3)
+VCP v3.1 adds Core Security, a cross-cutting set of controls below the six-layer stack: context encryption (Fernet), injection scanning (12 patterns), context opacity (4 protection levels), revocation infrastructure (CRL plus OCSP-style stapled proofs), and a tamper-evident audit chain (SHA-256 hash chain). Conforming production and staging implementations must activate context encryption; a control's presence in the spec does not establish that a deployment uses it correctly. Full spec at `specs/core/security.md`. (`specs/core/security.md`, `specs/VCP_SPECIFICATION_v3.1.md`, §3)
 
 ## SS1 — Context Encryption
 
@@ -52,7 +52,7 @@ VCP v3.1 adds a cross-cutting security layer below the six-layer stack: context 
 
 Only the protection level (not raw signal values) is exposed to the LLM. Directionality invariant: protection level must never decrease as vulnerability score increases. (`specs/core/security.md`, §SS3; `specs/VCP_SPECIFICATION_v3.1.md`, §3.3)
 
-**VCP-X-Personal compliance**: personal signals consumed via VCP-X-Personal MUST NOT be forwarded raw. This constraint applies whether or not the extension is negotiated — the opacity layer is below the extension stack. (`specs/extensions/VCP-X-Personal/spec.md`, §1 Design Principle)
+**VCP-X-Personal compliance**: personal signals consumed via VCP-X-Personal MUST NOT be forwarded raw. This constraint applies whether or not the extension is negotiated — context opacity sits below the extension stack. (`specs/extensions/VCP-X-Personal/spec.md`, §1 Design Principle)
 
 ## SS4 — Revocation Infrastructure
 
@@ -62,7 +62,9 @@ Only the protection level (not raw signal values) is exposed to the LLM. Directi
 
 **Signature algorithms**: Ed25519 (preferred) or HMAC-SHA256. (`specs/VCP_SPECIFICATION_v3.1.md`, §3.4)
 
-**Fail-closed**: if all revocation sources are unavailable, treat as revoked. No silent passthrough when revocation cannot be checked. (`specs/core/security.md`, §SS4)
+**Fail-closed**: if no configured revocation source can establish a status, reject with `REVOCATION_UNAVAILABLE` (code 17), which is distinct from a confirmed `REVOKED` (code 15). No silent passthrough when revocation cannot be checked. (`specs/core/security.md` §SS4; `registries/verification-status-codes.json`)
+
+**What SDK 4.2.0 implements** (non-normative): the Python and Rust checkers consult a cached decision, then the online `check_uri` endpoint, then the CRL, and return `REVOCATION_UNAVAILABLE` only when every configured source fails. They do not implement stapled proofs or the Amendment I grace table; the spec text above stays normative. (`specs/core/security.md`, §SS4.5 non-normative note)
 
 ## SS5 — Tamper-Evident Audit Chain
 
@@ -74,7 +76,7 @@ Only the protection level (not raw signal values) is exposed to the LLM. Directi
 
 ## VCP-X-Relational Security Notes
 
-VCP-X-Relational adds privacy layers to relational context fields:
+VCP-X-Relational adds privacy levels to relational context fields:
 - `PRIVATE`: partner-only, MUST NOT be forwarded to downstream participants
 - `ATTESTABLE`: verifiable claims for chain participants
 - `PUBLIC`: minimal, non-sensitive metadata
@@ -90,7 +92,7 @@ Active core security features are reported in `vcp-ack.core_features`. A client 
 ## Provenance
 
 - Sources consulted: `specs/core/security.md`, `specs/VCP_SPECIFICATION_v3.1.md`, `veps/VEP-0002-capability-negotiation.md`, `specs/extensions/VCP-X-Relational/spec.md`, `specs/extensions/VCP-X-Personal/spec.md`
-- Last verified against sources: 2026-05-23
+- Last verified against sources: 2026-09-24 (summary, context opacity placement, revocation failure behavior); other claims 2026-05-23
 
 ## See Also
 

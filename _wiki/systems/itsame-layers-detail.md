@@ -3,7 +3,7 @@
 <!-- wiki:type = system -->
 <!-- wiki:scope = vcp-spec -->
 <!-- wiki:created = 2026-05-23 -->
-<!-- wiki:updated = 2026-05-23 -->
+<!-- wiki:updated = 2026-09-24 -->
 <!-- wiki:status = active -->
 
 ## Summary
@@ -12,21 +12,21 @@ Each of the six VCP layers has its own spec document, wire format, and extension
 
 ## VCP/I — Identity (Layer 1): WHO/WHAT
 
-Namespace tiers: personal, organizational, platform. UVC (Universal Value Code) naming scheme: `family.safe.guide@1.2.0` — namespaced, versioned. Token format defined in `docs/identity/`. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.1; [[vcp-spec:systems/csm1-semantics]])
+Namespace tiers: core, organizational, community, personal (`specs/VCP_IDENTITY_v2.0.md`, §4.2). UVC (Universal Value Code) naming scheme: `family.safe.guide@1.2.0` — namespaced, versioned. Token format defined in `docs/identity/`. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.1; [[vcp-spec:systems/csm1-semantics]])
 
 VCP/I token optionally sent in `VCP-Hello.identity` during capability negotiation. (`veps/VEP-0002-capability-negotiation.md`, §3.1)
 
 ## VCP/T — Transport (Layer 2): HOW
 
-Signed bundle format: `{manifest, content, signature}`. Signature: Ed25519 (preferred) or HMAC-SHA256. Content hashes verified before use. Revocation checked against CRL/OCSP. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.2; `specs/core/security.md`, §SS4)
+Signed bundle format: `{manifest, content, signature}`. Signature: Ed25519 (preferred) or HMAC-SHA256. Content hashes verified before use. Revocation checked against a CRL or an OCSP-style stapled proof. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.2; `specs/core/security.md`, §SS4)
 
 The bundle is the unit of transport — extensions send their payloads within the bundle's `extensions` map. (`specs/extensions/README.md`)
 
 ## VCP/S — Semantics (Layer 3): WHAT
 
-CSM-1 grammar for constitutional profile encoding. Compact token format: `N5+F+E` = NANNY persona, adherence 5, domains Family+Education. Full grammar in `docs/content/CSM1_GRAMMAR_SPECIFICATION.md`. (`specs/VCP_SEMANTICS_v2.0.md`; [[vcp-spec:systems/csm1-semantics]])
+CSM-1 grammar for constitutional profile encoding. One-line CSM-1 code: `N5+E+F` = NANNY persona, adherence 5, scopes Education and Family. Full grammar in `docs/content/CSM1_GRAMMAR_SPECIFICATION.md`. (`specs/VCP_SEMANTICS_v2.0.md`; [[vcp-spec:systems/csm1-semantics]])
 
-VCP-X-Personal occupies a sub-layer within Layer 3. Five personal state dimensions, each categorical + intensity (1–5):
+VCP-X-Personal carries the personal context tier (encoded by VCP/A, with the CSM-1 R-line in VCP/S as its wire encoding); it is an extension, not a sub-layer. Five personal state dimensions, each categorical + intensity (1–5):
 
 | Dimension | Wire key | Example values |
 |-----------|----------|----------------|
@@ -61,17 +61,23 @@ Hooks: deterministic rules of the form `CSM1:PERSONA[Z] SCOPE[H] IF embodiment=m
 
 ## VCP/M — Messaging (Layer 5): WHO TALKS
 
-Inter-agent message types, escalation severity levels, and delivery semantics. Full spec: `specs/VCP_MESSAGING_v2.0.md`. MCP tools: `vcp_send_message`, `vcp_escalate`. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.5)
-
-VCP-X-Consensus occupies this layer for multi-stakeholder deliberation. Lifecycle phases: draft → deliberation → convergence → ratification → active. Schulze ranked-choice voting for clause convergence. AI parties are first-class stakeholders with standing to submit clauses, propose amendments, and record welfare signals. (`specs/extensions/VCP-X-Consensus/spec.md`, §1–2)
+Inter-agent message types, escalation severity levels, and delivery semantics. Full spec: `specs/VCP_MESSAGING_v2.0.md` (Draft). No MCP mapping exists for VCP/M. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.5; `specs/core/mcp-bridge.md`, §2.1)
 
 ## VCP/E — Economic Governance (Layer 6): WHO PAYS
 
-Fiduciary constraints, authorization gaps (capability, accountability, compatibility), transaction governance. Full spec: `specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md`. MCP tool: `vcp_authorize_transaction`. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.6)
+Fiduciary constraints, authorization gaps (capability, accountability, compatibility), transaction governance. Full spec: `specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md` (Draft); the v3.1 baseline carries only a summary, and no MCP mapping exists for VCP/E. (`specs/VCP_SPECIFICATION_v3.1.md`, §2.6; `specs/core/mcp-bridge.md`, §2.1)
 
-## VCP-X-Torch and VCP-X-Relational — Cross-Layer
+## Extensions
 
-VCP-X-Relational spans Layers 3–5: trust/standing (semantic), session continuity (adaptive), AI self-model (messaging). VCP-X-Torch depends on VCP-X-Relational and generates `TorchState` containing `quality_description`, `trajectory`, `primes` (max 3 norms, 80 chars each), `gift`, and `gestalt_token` (compact dimensional state in `Key:Value` format). (`specs/extensions/VCP-X-Torch/spec.md`, §2.1; `specs/extensions/VCP-X-Relational/spec.md`, §1.1)
+Extensions are opt-in and negotiated per session. They do not occupy or span protocol layers. (`specs/VCP_SPECIFICATION_v3.1.md`, §1.2)
+
+### VCP-X-Consensus
+
+An opt-in extension for multi-stakeholder deliberation. Lifecycle phases: draft → deliberation → convergence → ratification → active. Schulze ranked-choice voting for clause convergence. AI parties are first-class stakeholders with standing to submit clauses, propose amendments, and record welfare signals. (`specs/extensions/VCP-X-Consensus/spec.md`, §1–2)
+
+### VCP-X-Torch and VCP-X-Relational
+
+VCP-X-Relational is an opt-in extension carrying trust/standing, session continuity and AI self-model state. VCP-X-Torch depends on VCP-X-Relational and generates `TorchState` containing `quality_description`, `trajectory`, `primes` (max 3 norms, 80 chars each), `gift`, and `gestalt_token` (compact dimensional state in `Key:Value` format). (`specs/extensions/VCP-X-Torch/spec.md`, §2.1; `specs/extensions/VCP-X-Relational/spec.md`, §1.1)
 
 The torch's `gestalt_token` is architecturally linked to the Interiora gestalt token in Creed Space's Rewind and AI Guardian implementations. ([[ai-guardian:systems/trust-welfare-state-machines]], [[shared:bilateral-alignment]])
 
@@ -80,7 +86,7 @@ The torch's `gestalt_token` is architecturally linked to the Interiora gestalt t
 ## Provenance
 
 - Sources consulted: `specs/VCP_SPECIFICATION_v3.1.md`, `veps/VEP-0004-extended-vcpa-dimensions.md`, `specs/extensions/VCP-X-Personal/spec.md`, `specs/extensions/VCP-X-Relational/spec.md`, `specs/extensions/VCP-X-Torch/spec.md`, `specs/extensions/VCP-X-Consensus/spec.md`, `specs/extensions/VCP-X-Welfare/spec.md`
-- Last verified against sources: 2026-05-23
+- Last verified against sources: 2026-09-24 (namespace tiers, CSM-1 example, MCP mappings, extension placement); other claims 2026-05-23
 
 ## See Also
 
@@ -88,4 +94,4 @@ The torch's `gestalt_token` is architecturally linked to the Interiora gestalt t
 - [[vcp-spec:systems/csm1-semantics]] — Layer 3 (VCP/S) detail
 - [[vcp-spec:systems/vep-specs]] — VEP details
 - [[vcp-spec:systems/security-model]] — cross-cutting security below all layers
-- [[vcp-spec:systems/capability-negotiation]] — how layers are negotiated per session
+- [[vcp-spec:systems/capability-negotiation]] — how extensions are negotiated per session
