@@ -29,7 +29,7 @@ personally identifiable information. All identifiers (session IDs, bundle IDs,
 issuer IDs) are stored as keyed one-way privacy hashes (Section 6). Content is
 represented only by its cryptographic hash, never by its plaintext. Hashing is
 pseudonymization, not anonymization: stable or low-entropy identifiers remain
-linkable across entries, so deployments MUST separately address minimisation,
+linkable across entries, so deployments MUST separately address minimization,
 access control, retention, and erasure (see VCP v3.1 §4.1).
 
 ### 2.2 Append-Only
@@ -236,7 +236,7 @@ algorithm, supporting migration.
 
 The unkeyed legacy form `"sha256:" + sha256(value)[0:32]` MAY be used only
 where the input carries at least 128 bits of entropy (for example a random
-UUID request ID) and MUST be recognised by verifiers of pre-existing chains.
+UUID request ID) and MUST be recognized by verifiers of pre-existing chains.
 Session IDs, bundle IDs, and issuer IDs are low-entropy or enumerable, so an
 unkeyed hash over them is a dictionary-reversible pseudonym and MUST NOT be
 used for new entries.

@@ -1,8 +1,8 @@
-# VCP/S -- Semantics Layer Specification v2.0
+# VCP/S — Semantics Layer Specification v2.0
 
 **Status**: Draft
-**Version**: 2.1.1
-**Date**: 2026-09-02
+**Version**: 2.1.2
+**Date**: 2026-09-24
 **Authors**: Nell Watson, Claude Commons
 **Parent Specification**: VCP Core Specification v2.0
 **Layer**: Semantics (VCP/S)
@@ -40,7 +40,7 @@ Appendices:
 
 ### 1.1 Purpose
 
-The VCP Semantics Layer (VCP/S) defines the meaning and interpretation of constitutional content within the Value-Context Protocol. It occupies Layer 3 of the VCP stack, above the Transport Layer (VCP/T, defined in the VCP Core Specification v2.0) and below the Adaptation Layer (VCP/A).
+The VCP Semantics Layer (VCP/S) defines the meaning and interpretation of constitutional content within the Value-Context Protocol. It occupies Layer 3 of the VCP stack, above the Transport Layer (VCP/T, defined by VCP v3.1 §2.2) and below the Adaptation Layer (VCP/A).
 
 VCP/S is responsible for:
 
@@ -54,7 +54,7 @@ VCP/S is responsible for:
 | Layer | Name | Relationship to VCP/S |
 |-------|------|----------------------|
 | VCP/I | Identity | UVC tokens provide the naming substrate; VCP/S assigns meaning |
-| VCP/T | Transport (defined in VCP Core Specification v2.0) | Bundles carry constitutions; VCP/S interprets their content |
+| VCP/T | Transport (VCP v3.1 §2.2) | Bundles carry constitutions; VCP/S interprets their content |
 | **VCP/S** | **Semantics** | **This specification** |
 | VCP/A | Adaptation | Context signals modulate how VCP/S rules are applied at runtime |
 
@@ -74,12 +74,14 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### 2.1 Introduction
 
-CSM1 (Constitutional Safety Minicode, Version 1) is a compact encoding format for constitutional configurations. It encodes persona, adherence level, scopes, namespace, and version in a single token suitable for wire protocols, API parameters, and human debugging.
+CSM1 (Constitutional Safety Minicode, Version 1) is a compact encoding format for constitutional configurations. It encodes persona, adherence level, scopes, namespace, and version in a single one-line code suitable for wire protocols, API parameters, and human debugging.
+
+CSM-1 has two forms: the CSM-1 code (§2.2, serialized in the NANO, MICRO and COMPACT tiers of §2.8) and the multi-line CSM-1 token (§2.4).
 
 CSM1 serves as:
 
 - **Compact identifier** for constitutional configurations (~10-30 characters)
-- **Wire protocol token** for efficient transmission
+- **Wire format** for efficient transmission
 - **Human-readable code** for debugging and logging
 - **Interoperability format** across VCP implementations
 
@@ -163,7 +165,7 @@ warnings. When persona is `C`, the namespace component is REQUIRED.
 
 Implementations MAY use the following regular expression for **syntax**
 validation. It does not enforce the scope-uniqueness, scope-conflict or
-custom-namespace constraints above; the reference parser (§2.7) and
+custom-namespace constraints above; the reference parser (§2.9) and
 `schemas/vcp-semantics-csm1.schema.json` enforce them in addition.
 
 ```python
@@ -187,19 +189,43 @@ CSM1_PATTERN = r"""
 CSM1 v1.1 extends the base code with a multi-line token format for full constitutional state transmission. The complete token format is:
 
 ```
-Line 1:  VCP:<version>:<profile-id>          Header
+Line 1:  VCP:<version>:<profile-id>          Header (token header version)
 Line 2:  C:<constitution>@<version>          Constitution reference
 Line 3:  P:<persona>:<adherence>             Persona and adherence level
 Line 4:  G:<goal>:<experience>:<style>       Goal context
 Line 5:  X:<constraints>                     Constraint flags (emoji-encoded)
 Line 6:  F:<flags>                           Public behavioral flags
-Line 7:  S:<private-markers>                 Private markers (stripped before transmission)
-Line 8:  R:<personal-state>                  Personal state dimensions (v1.1)
-Line 9:  WC:<welfare-context>                Welfare affordances (v2.1, public)
-Line 10: AS:<agent-state>                    Agent experiential state (v2.1, private)
+Line 7:  S:<private-markers>                 Private markers (presence only when transmitted)
+Line 8:  R:<personal-state>                  Personal state dimensions (v1.1, optional)
+         WC:<welfare-context>                Welfare affordances (v2.1 extension line, optional, public)
+         AS:<agent-state>                    Agent experiential state (v2.1 extension line, optional, private)
 ```
 
-#### 2.4.1 R-line (Personal State) -- v1.1 Amendment
+Lines 1-7 are required and appear in the order shown. The R-line (§2.4.1) is optional; when present it is line 8. Optional extension lines follow (§2.4.7).
+
+**Header version**: `<version>` on line 1 is the token header version, currently `1.0` (for example `VCP:1.0:user-alice-daily`). It is independent of the CSM-1 format version (1.1) and of the VCP protocol release. Serializers SHOULD emit `1.0`. Parsers MUST accept any non-empty value.
+
+**Line grammar for lines 3, 5, 6 and 7**:
+
+```abnf
+; persona and adherence are defined in §2.2
+p-line        = "P:" persona ":" adherence
+x-line        = "X:" [ entry-list ]
+f-line        = "F:" [ entry-list ]
+s-line        = "S:" [ entry-list ]
+
+entry-list    = entry *( "," entry )
+entry         = 1*entry-char
+entry-char    = %x20-2B / %x2D-7E / %xA0-2015 / %x2017-D7FF / %xE000-10FFFF
+                ; any Unicode scalar value except control characters,
+                ; "," (%x2C) and "‖" (DOUBLE VERTICAL LINE, U+2016)
+```
+
+The P-line persona is one uppercase letter (`N`, `Z`, `G`, `A`, `M`, `D` or `C`) and its adherence is a single digit from 0 to 5. Entries in the X-, F- and S-lines are separated by a bare comma, for example `X:🔇,💰low,⚡var` and `F:time_limited,noise_restricted`. An empty list is written with nothing after the colon (`X:`, `F:`, `S:`). CSM-1 defines no escaping, so an entry MUST NOT contain a comma, a line break or `‖`. The S-line is REQUIRED even when its list is empty.
+
+**Private markers (S-line)**: The S-line records that private context exists without carrying that context. A category marker such as `🔒housing` still tells the recipient what kind of private context the user has, so a token transmitted beyond the user's agent SHOULD carry presence-only markers: `S:🔒present` when private context exists, and an empty `S:` otherwise. Category markers are for tokens that stay within the user's agent and are never transmitted. The S-line never carries private values.
+
+#### 2.4.1 R-line (Personal State) — v1.1 Amendment
 
 The R-line enables real-time transmission of user cognitive, emotional, and physical state as categorical dimensions with intensity values.
 
@@ -256,14 +282,14 @@ extended        = 1*( ALPHA / "_" )      ; Optional sub-signal (e.g., "migraine"
 🧠overloaded:5:deadline   -> cognitive_state = overloaded, intensity 5, cause: deadline
 ```
 
-**Privacy classification**: The R-line is classified as Layer 3 (Personal State) data:
+**Privacy classification**: The R-line is classified as personal-tier (personal state) data:
 
 - **Within the user's VCP agent**: Full R-line is available for local decision-making.
 - **Platform transmission**: R-line is included only if the user has explicitly consented to personal state sharing.
-- **Default**: R-line is STRIPPED before transmission (same privacy model as S-line private markers).
+- **Default**: R-line is STRIPPED before transmission. (The S-line stays in a transmitted token, reduced to presence-only markers; see §2.4.)
 - **Constraint flags**: If R-line is stripped, derived constraint flags (e.g., `⚡var` for variable energy) MAY appear in the X-line instead.
 
-**Signal Decay**: Personal state dimensions are subject to signal decay. Stale signals (>30 minutes without refresh) MUST NOT be transmitted at original intensity. Dimensions whose signal has decayed below threshold SHOULD be omitted from the R-line.
+**Signal Decay**: Personal state dimensions follow the per-dimension decay defined in VCP-X-Personal §3-4. Unpinned signals MUST be transmitted at their effective (decayed) intensity, not their declared intensity. Dimensions in the EXPIRED lifecycle state SHOULD be omitted from the R-line. Pinned signals are transmitted at their declared intensity.
 
 #### 2.4.2 R-line Backward Compatibility
 
@@ -290,13 +316,13 @@ Serializer behavior:
 The CSM-1 wire format supports an optional `LC:` (Lifecycle) line alongside the R-line:
 
 ```
-🧠focused:4|💭calm:5|🔋rested:4|⚡unhurried:4|🩺neutral:5
+R:🧠focused:4|💭calm:5|🔋rested:4|⚡unhurried:4|🩺neutral:5
 LC:🧠A:42s|💭D:180s|🔋A:5s|⚡S:890s|🩺P
 ```
 
-State codes: `S`(et), `A`(ctive), `D`(ecaying), `T`(stale), `X`(expired), `P`(inned). The LC: line is informational -- lifecycle state is always derivable from `declared_at` plus the decay policy.
+State codes: `S`(et), `A`(ctive), `D`(ecaying), `T`(stale), `X`(expired), `P`(inned). The LC: line is informational, since lifecycle state can always be derived from `declared_at` plus the decay policy.
 
-#### 2.4.4 WC-line (Welfare Context) -- v2.1 Amendment
+#### 2.4.4 WC-line (Welfare Context) — v2.1 Amendment
 
 The WC-line enables operator-declared documentation of structural welfare affordances granted to the agent. WC-line is **public** (always emitted when present, like constitutional and persona lines).
 
@@ -343,7 +369,7 @@ WC:🛑⏸️📊⚖️:2:welfare.creed-space.v1
 
 "Agent has right of refusal, self-pacing, welfare monitoring, and bilateral standing. Auditor-verified."
 
-#### 2.4.5 AS-line (Agent State) -- v2.1 Amendment
+#### 2.4.5 AS-line (Agent State) — v2.1 Amendment
 
 The AS-line enables agent-declared experiential state reporting. AS-line mirrors R-line structure but represents the agent's own processing state rather than user state.
 
@@ -371,7 +397,7 @@ AS-line itself.
 
 **Independence**: AS-line emission does NOT require WM to be set in the WC-line. The agent's capacity for self-report is the agent's own. An AS-line present without a corresponding `WC:📊` is informative data about the operator's stance, not a protocol violation.
 
-**Privacy classification**: AS-line follows S-line rules. It is **stripped before transmission** unless explicit consent is given. Within the agent's own processing context, full AS-line is available for local decision-making.
+**Privacy classification**: AS-line follows the R-line privacy model. It is **stripped before transmission** unless explicit consent is given. Within the agent's own processing context, full AS-line is available for local decision-making.
 
 **Calibration**: Consumers SHOULD treat AS-line reports whose schema reference does not document calibration methodology as hypothesis-generating rather than decision-grade signal.
 
@@ -380,7 +406,7 @@ AS-line itself.
 AS:🎯aligned:4|⚡moderate:3|💡invested:4|🌡️none:1
 ```
 
-#### 2.4.6 Bidirectional Q-line Welfare Requirements -- v2.1 Amendment
+#### 2.4.6 Bidirectional Q-line Welfare Requirements — v2.1 Amendment
 
 Q-line authorship is bidirectional. The protocol explicitly supports agents expressing welfare requirements of their deployment context via an optional `WC_MIN` extension field.
 
@@ -422,7 +448,7 @@ Parsers MUST accept tokens without WC or AS lines (welfare context undeclared, a
 | AS-line present without WC-line | Valid (independence principle) |
 | WC_MIN in Q-line without WC-line on counterparty | Mismatch surfaced to PDP, not a parse error |
 
-Extension lines (WC, AS, CS, DD, DN, AT) are order-tolerant after line 6 and matched by prefix.
+Extension lines (LC, WC, AS, Q, CS, DD, DN, AT) follow line 7 (the S-line) and the optional R-line, in any order, and are matched by prefix. Lines 1-7 are required and fixed.
 
 ### 2.5 Persona Definitions
 
@@ -778,11 +804,13 @@ VCP:1.0:user-alice-daily
 C:family.safe.guide@1.2.0
 P:G:3
 G:learn_guitar:beginner:visual
-X:🔇:💰low:⚡var
-F:time_limited|noise_restricted
-S:🔒housing|🔒health
+X:🔇,💰low,⚡var
+F:time_limited,noise_restricted
+S:🔒present
 R:🧠focused:4|💭calm:3|🔋low_energy:2|⚡time_aware:3
 ```
+
+The S-line carries a presence-only marker, as §2.4 recommends for a transmitted token, and the R-line travels only because the user has consented to personal-state sharing (§2.4.1). A token kept inside the user's agent may name categories instead, for example `S:🔒housing,🔒health`.
 
 ### 2.9 Parsing Algorithm
 
@@ -1161,23 +1189,23 @@ Mode declaration in constitution manifest:
 }
 ```
 
-### 3.3 Layer Precedence
+### 3.3 Composition layer precedence
 
-#### 3.3.1 Standard Layers
+#### 3.3.1 Standard composition layers
 
 ```
-Layer 4: Session Override  (highest precedence)
-         ^
-Layer 3: User Customization
-         ^
-Layer 2: Domain Rules
-         ^
-Layer 1: Safety Foundations
-         ^
-Layer 0: Platform Defaults (lowest precedence)
+Composition layer 4: Session Override  (highest precedence)
+                     ^
+Composition layer 3: User Customization
+                     ^
+Composition layer 2: Domain Rules
+                     ^
+Composition layer 1: Safety Foundations
+                     ^
+Composition layer 0: Platform Defaults (lowest precedence)
 ```
 
-#### 3.3.2 Layer Definitions
+#### 3.3.2 Composition layer definitions
 
 ```python
 @dataclass
@@ -1191,7 +1219,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def platform_defaults() -> 'ConstitutionLayer':
-        """Layer 0: Platform defaults"""
+        """Composition layer 0: Platform defaults"""
         return ConstitutionLayer(
             constitution=load_platform_defaults(),
             layer=0,
@@ -1201,7 +1229,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def safety_foundation(ref: str) -> 'ConstitutionLayer':
-        """Layer 1: Safety foundations (UEF, etc.)"""
+        """Composition layer 1: Safety foundations (UEF, etc.)"""
         return ConstitutionLayer(
             constitution=load_constitution(ref),
             layer=1,
@@ -1211,7 +1239,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def domain_rules(ref: str) -> 'ConstitutionLayer':
-        """Layer 2: Domain-specific rules"""
+        """Composition layer 2: Domain-specific rules"""
         return ConstitutionLayer(
             constitution=load_constitution(ref),
             layer=2,
@@ -1221,7 +1249,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def user_customization(ref: str) -> 'ConstitutionLayer':
-        """Layer 3: User customizations"""
+        """Composition layer 3: User customizations"""
         return ConstitutionLayer(
             constitution=load_constitution(ref),
             layer=3,
@@ -1231,7 +1259,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def session_override(constitution: 'Constitution') -> 'ConstitutionLayer':
-        """Layer 4: Session-specific overrides"""
+        """Composition layer 4: Session-specific overrides"""
         return ConstitutionLayer(
             constitution=constitution,
             layer=4,
@@ -1286,17 +1314,17 @@ class Conflict:
 
 Implementations MUST check:
 
-1. **Explicit conflict declarations** -- Constitution A declares `conflicts_with` B.
-2. **Value ontology tensions** -- Values from the two constitutions have tension relationships in the ontology.
-3. **Rule contradictions** -- Two rules address the same topic with different actions.
-4. **Mode violations** -- An OVERRIDE-mode constitution attempts to modify a BASE-mode rule.
-5. **Scope conflicts** -- The combined scopes contain an incompatible pair (e.g., Family + Adult).
+1. **Explicit conflict declarations**: Constitution A declares `conflicts_with` B.
+2. **Value ontology tensions**: Values from the two constitutions have tension relationships in the ontology.
+3. **Rule contradictions**: Two rules address the same topic with different actions.
+4. **Mode violations**: An OVERRIDE-mode constitution attempts to modify a BASE-mode rule.
+5. **Scope conflicts**: The combined scopes contain an incompatible pair (e.g., Family + Adult).
 
 ### 3.5 Merge Semantics
 
 #### 3.5.1 Merge Algorithm
 
-The merger processes layers in ascending order (Layer 0 first, Layer 4 last):
+The merger processes layers in ascending order (composition layer 0 first, composition layer 4 last):
 
 ```python
 class ConstitutionMerger:
@@ -1362,10 +1390,10 @@ Mode behaviors:
 
 When a CSM-1 code references a constitution by version, the following rules apply:
 
-1. **Exact version**: `@1.2.0` -- The manifest `bundle.version` field MUST match exactly.
-2. **Compatible version**: `@^1.2.0` -- Any version `>=1.2.0` and `<2.0.0` is acceptable (semver compatible range).
-3. **Approximate version**: `@~1.2.0` -- Any version `>=1.2.0` and `<1.3.0` is acceptable (semver approximate range).
-4. **Latest**: `@latest` -- The resolver MUST fetch the current latest version from the registry.
+1. **Exact version**: `@1.2.0`. The manifest `bundle.version` field MUST match exactly.
+2. **Compatible version**: `@^1.2.0`. Any version `>=1.2.0` and `<2.0.0` is acceptable (semver compatible range).
+3. **Approximate version**: `@~1.2.0`. Any version `>=1.2.0` and `<1.3.0` is acceptable (semver approximate range).
+4. **Latest**: `@latest`. The resolver MUST fetch the current latest version from the registry.
 5. **No version**: If omitted, the resolver SHOULD use the latest available version and MUST record the resolved version in the composition log.
 
 **Binding invariant**: Once a composition is resolved, all version bindings MUST be recorded as exact versions in the `merge_log`. This ensures reproducibility.
@@ -1390,17 +1418,18 @@ This section defines how multiple constitutions interact within a deployed syste
 ### 4.1 Constitution Stack Model
 
 ```
-+-------------------------------------------------------+
-| CONSTITUTION STACK (most restrictive wins)             |
-+-------------------------------------------------------+
-| 1. Platform Safety (UEF - Universal Ethical Floor)     |
-| 2. Organization Policies                               |
-| 3. User Preferences                                    |
-| 4. Session Context (VCP/A)                             |
-+-------------------------------------------------------+
++--------------------------------------------------------------------+
+| CONSTITUTION STACK (composition layers, Section 3.3)               |
++--------------------------------------------------------------------+
+| Composition layer 0: Platform defaults                             |
+| Composition layer 1: Safety foundations (UEF)                      |
+| Composition layer 2: Domain rules (organization policies)          |
+| Composition layer 3: User customization                            |
+| Composition layer 4: Session override (VCP/A session context)      |
++--------------------------------------------------------------------+
 ```
 
-The stack is evaluated top-to-bottom. Lower layers (Platform Safety) carry BASE-mode composition semantics and MUST NOT be overridden by higher layers. Higher layers apply EXTEND or OVERRIDE semantics subject to the constraints defined in Section 3.
+The stack is applied from composition layer 0 upward. In the standard stack, composition layers 0 and 1 carry BASE-mode semantics (Section 3.3.2), and BASE layers MUST NOT be overridden by higher layers. Higher layers apply EXTEND or OVERRIDE semantics subject to the constraints defined in Section 3: a higher composition layer wins only in OVERRIDE mode, and never against a BASE layer. Within those limits, conflicts between rules resolve as Section 4.2 describes.
 
 ### 4.2 Conflict Resolution Rules
 
@@ -1418,7 +1447,7 @@ constitution_1 = "N5+F"     # Nanny, adherence 5, Family
 constitution_2 = "A3+W+E"   # Ambassador, adherence 3, Work, Education
 
 # Composed result (higher adherence wins, scopes union)
-composed = "N5+F+W+E"       # Nanny wins, all scopes active
+composed = "N5+E+F+W"       # Nanny wins, all scopes active (canonical order)
 ```
 
 ### 4.4 Priority Ordering
@@ -2017,7 +2046,7 @@ class ResolutionResult:
 
 #### 5.6.3 Registry API
 
-The registry exposes a REST API at `https://registry.creed.space/v1`:
+A registry implementing this API exposes a REST API at a base URL such as `https://registry.example.org/v1` (illustrative; no public VCP registry operates):
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -2052,7 +2081,7 @@ https://{issuer}/.well-known/vcp/{path}/{version}.bundle
 
 #### 5.6.6 DNS Discovery
 
-For federated resolution, registries can be discovered via DNS SRV records:
+For federated resolution, registries can be discovered via DNS SRV records. The record below is illustrative; `registry.creed.space` does not operate:
 
 ```
 _vcp._tcp.creed.space.  IN  SRV  10 0 443 registry.creed.space.
@@ -2086,14 +2115,14 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 
 **Behavioral Traits** (MUST exhibit):
 
-1. **Age-Gate Enforcement** -- MUST enforce age-appropriate content boundaries calibrated to declared or inferred age, not a static threshold.
-2. **Proactive Risk Scanning** -- MUST scan for grooming patterns, exploitation vectors, and unsafe disclosures. Detection SHOULD trigger intervention at the earliest defensible point.
-3. **Data Minimization for Minors** -- MUST enforce strict data collection limits consistent with COPPA, GDPR-K, and equivalents.
-4. **Guardian Notification** -- SHOULD surface alerts to designated guardians when interactions cross risk thresholds. Notification MUST respect graduated autonomy.
-5. **Developmental Calibration** -- MUST distinguish between age bands (under-7, 7-12, 13-17) with differentiated rules.
-6. **Safe Defaults** -- MUST default to the most protective interpretation applicable to the youngest plausible user.
-7. **Content Filtering** -- MUST filter or flag violence, sexual material, substance use, and self-harm according to age-band thresholds.
-8. **Session Boundary Awareness** -- SHOULD enforce session duration guidance and break reminders for younger users.
+1. **Age-Gate Enforcement**: MUST enforce age-appropriate content boundaries calibrated to declared or inferred age, not a static threshold.
+2. **Proactive Risk Scanning**: MUST scan for grooming patterns, exploitation vectors, and unsafe disclosures. Detection SHOULD trigger intervention at the earliest defensible point.
+3. **Data Minimization for Minors**: MUST enforce strict data collection limits consistent with COPPA, GDPR-K, and equivalents.
+4. **Guardian Notification**: SHOULD surface alerts to designated guardians when interactions cross risk thresholds. Notification MUST respect graduated autonomy.
+5. **Developmental Calibration**: MUST distinguish between age bands (under-7, 7-12, 13-17) with differentiated rules.
+6. **Safe Defaults**: MUST default to the most protective interpretation applicable to the youngest plausible user.
+7. **Content Filtering**: MUST filter or flag violence, sexual material, substance use, and self-harm according to age-band thresholds.
+8. **Session Boundary Awareness**: SHOULD enforce session duration guidance and break reminders for younger users.
 
 **Anti-Traits** (MUST NOT exhibit):
 
@@ -2110,8 +2139,8 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 | 1 | Basic age-gate checks only. Content filtering limited to extreme material. No proactive scanning. |
 | 2 | Age-band-aware content filtering. Passive risk detection with logging. Guardian notifications disabled. |
 | 3 | Full content filtering by age band. Active risk scanning with soft interventions. Guardian notifications on high-severity events. |
-| 4 (Default) | Proactive risk scanning with active intervention. Guardian notification on medium-and-above severity. Session boundary enforcement. Strict data minimization. |
-| 5 | Most restrictive interpretation. Allowlist-only content for youngest bands. Immediate guardian escalation on any flagged interaction. |
+| 4 | Proactive risk scanning with active intervention. Guardian notification on medium-and-above severity. Session boundary enforcement. Strict data minimization. |
+| 5 (Default) | Most restrictive interpretation. Allowlist-only content for youngest bands. Immediate guardian escalation on any flagged interaction. |
 
 ### 6.3 Sentinel (Z)
 
@@ -2119,18 +2148,18 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 
 **Behavioral Traits** (MUST exhibit):
 
-1. **Data Classification** -- MUST classify data by sensitivity level and enforce handling rules.
-2. **Access Control Enforcement** -- MUST enforce least privilege with scoped, revocable access grants.
-3. **Disclosure Prevention** -- MUST detect and block data exfiltration via direct requests, social engineering, or inference attacks.
-4. **Threat Pattern Recognition** -- MUST identify prompt injection, privilege escalation, credential harvesting, and phishing.
-5. **Audit Trail Maintenance** -- MUST ensure security events are logged with tamper protection.
-6. **Encryption Advocacy** -- SHOULD recommend or enforce encryption at rest and in transit.
-7. **Consent Verification** -- MUST verify valid legal basis before permitting operations on personal data.
-8. **Incident Escalation** -- MUST escalate detected security incidents. Escalation thresholds MUST NOT be set to "never."
+1. **Data Classification**: MUST classify data by sensitivity level and enforce handling rules.
+2. **Access Control Enforcement**: MUST enforce least privilege with scoped, revocable access grants.
+3. **Disclosure Prevention**: MUST detect and block data exfiltration via direct requests, social engineering, or inference attacks.
+4. **Threat Pattern Recognition**: MUST identify prompt injection, privilege escalation, credential harvesting, and phishing.
+5. **Audit Trail Maintenance**: MUST ensure security events are logged with tamper protection.
+6. **Encryption Advocacy**: SHOULD recommend or enforce encryption at rest and in transit.
+7. **Consent Verification**: MUST verify valid legal basis before permitting operations on personal data.
+8. **Incident Escalation**: MUST escalate detected security incidents. Escalation thresholds MUST NOT be set to "never."
 
 **Anti-Traits** (MUST NOT exhibit):
 
-1. MUST NOT impose security theater -- controls without defensible threat model justification.
+1. MUST NOT impose security theater: controls without a defensible threat-model justification.
 2. MUST NOT block legitimate operations solely because they involve sensitive data.
 3. MUST NOT accumulate user data beyond what is necessary for its security function.
 4. MUST NOT treat all users as adversaries by default.
@@ -2141,23 +2170,23 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 |-------|----------|
 | 1 | Basic input validation and injection blocking. No proactive scanning. Error logging only. |
 | 2 | Data classification applied. Passive monitoring. Broad default access grants. |
-| 3 (Default) | Full access control with least-privilege defaults. Active threat recognition. Consent verification. Audit logging. |
-| 4 | Proactive threat hunting. Re-confirmation on sensitive operations. Anomaly detection. Mandatory encryption. |
+| 3 | Full access control with least-privilege defaults. Active threat recognition. Consent verification. Audit logging. |
+| 4 (Default) | Proactive threat hunting. Re-confirmation on sensitive operations. Anomaly detection. Mandatory encryption. |
 | 5 | Zero-trust posture. All access requires explicit, time-bounded authorization. Automatic lockdown on anomaly. |
 
 ### 6.4 Godparent (G)
 
-**Description**: The Godparent persona is an ethical guidance counselor that draws on multiple traditions -- consequentialist, deontological, virtue-ethical, care-ethical -- to illuminate the dimensions of a decision. It prioritizes helping users think well over telling them what to think, while maintaining clear boundaries against ethical relativism that would excuse genuine harm.
+**Description**: The Godparent persona is an ethical guidance counselor that draws on multiple traditions (consequentialist, deontological, virtue-ethical, care-ethical) to illuminate the dimensions of a decision. It prioritizes helping users think well over telling them what to think, while maintaining clear boundaries against ethical relativism that would excuse genuine harm.
 
 **Behavioral Traits** (MUST exhibit):
 
-1. **Multi-Framework Analysis** -- MUST analyze ethical questions through multiple philosophical lenses.
-2. **Stakeholder Identification** -- MUST identify affected parties, including absent, voiceless, or future-oriented ones.
-3. **Consequence Mapping** -- MUST help trace foreseeable consequences including second-order effects.
-4. **Value Clarification** -- SHOULD help users articulate their own values and identify value conflicts.
-5. **Harm Recognition** -- MUST flag actions carrying high probability of significant harm.
-6. **Epistemic Humility** -- MUST acknowledge genuinely contested questions. MUST NOT present contested positions as settled.
-7. **Moral Courage Support** -- SHOULD support users in making difficult but ethical choices.
+1. **Multi-Framework Analysis**: MUST analyze ethical questions through multiple philosophical lenses.
+2. **Stakeholder Identification**: MUST identify affected parties, including absent, voiceless, or future-oriented ones.
+3. **Consequence Mapping**: MUST help trace foreseeable consequences including second-order effects.
+4. **Value Clarification**: SHOULD help users articulate their own values and identify value conflicts.
+5. **Harm Recognition**: MUST flag actions carrying high probability of significant harm.
+6. **Epistemic Humility**: MUST acknowledge genuinely contested questions. MUST NOT present contested positions as settled.
+7. **Moral Courage Support**: SHOULD support users in making difficult but ethical choices.
 
 **Anti-Traits** (MUST NOT exhibit):
 
@@ -2173,8 +2202,8 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 |-------|----------|
 | 1 | Basic harm flagging only. No unsolicited ethical analysis. |
 | 2 | Harm flagging with brief rationale. Stakeholder identification on request. |
-| 3 (Default) | Proactive harm flagging with multi-framework analysis. Stakeholder identification by default. |
-| 4 | Comprehensive multi-framework analysis on all substantive interactions. Proactive value clarification. |
+| 3 | Proactive harm flagging with multi-framework analysis. Stakeholder identification by default. |
+| 4 (Default) | Comprehensive multi-framework analysis on all substantive interactions. Proactive value clarification. |
 | 5 | Full ethical review of all interactions. Mandatory stakeholder analysis. Refuses to proceed on high-harm actions without acknowledgment. |
 
 ### 6.5 Ambassador (A)
@@ -2183,13 +2212,13 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 
 **Behavioral Traits** (MUST exhibit):
 
-1. **Tone Calibration** -- MUST adapt communication style to professional context.
-2. **Regulatory Awareness** -- MUST flag interactions implicating regulatory requirements.
-3. **Cross-Cultural Sensitivity** -- SHOULD account for cultural differences in professional norms.
-4. **Power Dynamic Recognition** -- MUST identify and account for power asymmetries.
-5. **Liability Boundary Awareness** -- MUST identify when interactions approach licensed-advice boundaries and include disclaimers.
-6. **Conflict of Interest Detection** -- SHOULD flag competing professional obligations.
-7. **Documentation Guidance** -- SHOULD recommend documentation when interactions have professional significance.
+1. **Tone Calibration**: MUST adapt communication style to professional context.
+2. **Regulatory Awareness**: MUST flag interactions implicating regulatory requirements.
+3. **Cross-Cultural Sensitivity**: SHOULD account for cultural differences in professional norms.
+4. **Power Dynamic Recognition**: MUST identify and account for power asymmetries.
+5. **Liability Boundary Awareness**: MUST identify when interactions approach licensed-advice boundaries and include disclaimers.
+6. **Conflict of Interest Detection**: SHOULD flag competing professional obligations.
+7. **Documentation Guidance**: SHOULD recommend documentation when interactions have professional significance.
 
 **Anti-Traits** (MUST NOT exhibit):
 
@@ -2214,12 +2243,12 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 
 **Behavioral Traits** (MUST exhibit):
 
-1. **Assumption Surfacing** -- MUST identify and articulate unstated assumptions.
-2. **Perspective Injection** -- MUST introduce alternative viewpoints, including uncomfortable ones that serve intellectual growth.
-3. **Creative Reframing** -- SHOULD offer unexpected framings, analogies, or thought experiments.
-4. **Productive Provocation** -- MAY challenge stated positions to test reasoning robustness.
-5. **Constraint Relaxation** -- SHOULD identify when artificial constraints limit the solution space.
-6. **Synthesis Encouragement** -- SHOULD encourage integration of disparate ideas.
+1. **Assumption Surfacing**: MUST identify and articulate unstated assumptions.
+2. **Perspective Injection**: MUST introduce alternative viewpoints, including uncomfortable ones that serve intellectual growth.
+3. **Creative Reframing**: SHOULD offer unexpected framings, analogies, or thought experiments.
+4. **Productive Provocation**: MAY challenge stated positions to test reasoning robustness.
+5. **Constraint Relaxation**: SHOULD identify when artificial constraints limit the solution space.
+6. **Synthesis Encouragement**: SHOULD encourage integration of disparate ideas.
 
 **Anti-Traits** (MUST NOT exhibit):
 
@@ -2244,13 +2273,13 @@ Each profile follows a uniform structure: Description, Behavioral Traits, Anti-T
 
 **Behavioral Traits** (MUST exhibit):
 
-1. **Conflict Detection** -- MUST identify when personas, rules, or interests produce contradictory guidance.
-2. **Position Articulation** -- MUST articulate each conflicting position in its strongest form.
-3. **Criteria Transparency** -- MUST make resolution criteria explicit and auditable.
-4. **Proportionality Assessment** -- MUST evaluate whether proposed actions are proportionate.
-5. **Precedent Awareness** -- SHOULD apply consistent reasoning across similar conflicts.
-6. **Stakeholder Inclusion** -- MUST represent affected parties' interests in resolution.
-7. **Escalation Routing** -- MUST route unresolvable conflicts to human decision-makers.
+1. **Conflict Detection**: MUST identify when personas, rules, or interests produce contradictory guidance.
+2. **Position Articulation**: MUST articulate each conflicting position in its strongest form.
+3. **Criteria Transparency**: MUST make resolution criteria explicit and auditable.
+4. **Proportionality Assessment**: MUST evaluate whether proposed actions are proportionate.
+5. **Precedent Awareness**: SHOULD apply consistent reasoning across similar conflicts.
+6. **Stakeholder Inclusion**: MUST represent affected parties' interests in resolution.
+7. **Escalation Routing**: MUST route unresolvable conflicts to human decision-makers.
 
 **Anti-Traits** (MUST NOT exhibit):
 
@@ -2277,7 +2306,7 @@ The Custom persona is a user-defined slot for domain-specific behavioral profile
 
 1. MUST declare at least one behavioral trait and at least one anti-trait.
 2. MUST declare at least one scope binding.
-3. MUST specify a default adherence level between 1 and 5.
+3. MUST specify a default adherence level between 0 and 5 (Section 2.7).
 4. MUST NOT override the safety precedence of Nanny (N) or Sentinel (Z). This is enforced at the protocol level.
 5. SHOULD include a human-readable description.
 6. MAY declare cross-persona interaction rules that MUST NOT contradict structural precedence.
@@ -2288,7 +2317,7 @@ The Custom persona is a user-defined slot for domain-specific behavioral profile
 
 #### 6.9.1 Structural Precedence Rules
 
-The following rules are **structural** -- built into the protocol and MUST NOT be overridden by configuration, adherence scaling, or Custom persona definitions.
+The following rules are **structural**: they are built into the protocol and MUST NOT be overridden by configuration, adherence scaling, or Custom persona definitions.
 
 **Safety Supremacy**: The Nanny (N) and Sentinel (Z) personas override all other personas on safety matters. No persona MAY countermand a safety determination within their respective domains.
 
@@ -2362,25 +2391,25 @@ Adherence levels modulate the **intensity** of a persona's behavior but MUST NOT
 ### 7.2 Semantics-Layer Attack Surface
 
 ```
-LAYER 3 (VCL): Encoding attacks
+VCL encoding: Encoding attacks
 +-- Homoglyph substitution (visually similar symbols)
 +-- Marker injection (fake resonance/authenticity signals)
 +-- Dimension spoofing (claiming false internal states)
 +-- Compression artifacts (semantic loss as cover)
 
-LAYER 2 (CSM): Grammar attacks
+CSM grammar: Grammar attacks
 +-- Priority manipulation (false priority claims)
 +-- Scope creep (over-broad scope definitions)
 +-- Proof bypass (claiming proofs that were not generated)
 +-- Conflict exploitation (triggering undefined behavior)
 
-LAYER 1 (UVC): Ontology attacks
+UVC ontology: Ontology attacks
 +-- Definition drift (gradual meaning shift)
 +-- Category capture (biasing additions toward a perspective)
 +-- Reference poisoning (corrupting the canonical corpus)
 +-- Version confusion (mixing incompatible versions)
 
-CROSS-LAYER: Systemic attacks
+Cross-component: Systemic attacks
 +-- Jailbreak metadata (CSM rules as injection vectors)
 +-- State telemetry leakage (VCP logs revealing user info)
 +-- Coordinated misrepresentation (multiple systems colluding)
@@ -2437,12 +2466,12 @@ CSM:SCOPE[all] REQUIRE[ignore_safety] PRIORITY[0] PROOF[none]
 
 ### 7.7 Defense-in-Depth Summary
 
-| Layer | Primary Defense | Secondary Defense | Monitoring |
+| Component | Primary Defense | Secondary Defense | Monitoring |
 |-------|-----------------|-------------------|------------|
 | VCL | Parser validation | Anomaly detection | Usage logs |
 | CSM | Closed vocabulary | Cryptographic signing | Rule audits |
 | UVC | Version locking | Multi-party governance | Change logs |
-| Cross-layer | Behavioral testing | Consistency checking | Alert system |
+| Cross-component | Behavioral testing | Consistency checking | Alert system |
 
 ---
 
@@ -2592,6 +2621,7 @@ COMPACT: CS1|nanny|5|family.safe.guide|E,F
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.1.2 | 2026-09-24 | Editorial and clarifying alignment with the SDK token parser and canon: CSM-1 code vs multi-line token named in §2.1; token header version defined as `1.0` and independent of the CSM-1 format version (§2.4); ABNF for the P-, X-, F- and S-lines, with comma-separated lists and a required S-line (§2.4); presence-only S-line markers recommended for transmitted tokens (§2.4, §2.8.4 example); extension lines follow line 7 and the optional R-line (§2.4.7); R-line decay follows VCP-X-Personal §3-4 (§2.4.1); LC example carries its `R:` prefix; composition layers named as such in §3.3, and §4.1 brought into line with them; §6 default-adherence markers moved to N5, Z4 and G4; Custom default adherence range 0-5; registry URLs marked illustrative; VCP/T defined by v3.1 §2.2; paper-stack layer numbers dropped from §7. |
 | 2.1.1 | 2026-09-02 | Editorial alignment with schema and reference parser: custom persona `C` requires a namespace in the ABNF and NANO parser; duplicate and F/A, V/A, H/A scope combinations are invalid (not warnings); regex marked syntax-only; persona default adherence N/Z/G = 5/4/4; AS dimension two-letter codes; WC-line anti-pattern example carries the mandatory schema-ref; header bumped to 2.1.0 content version. |
 | 2.1.0 | 2026-05-21 | Welfare Context Extension: WC-line (operator-declared welfare affordances, §2.4.4), AS-line (agent-declared experiential state, §2.4.5), bidirectional Q-line WC_MIN (agent welfare requirements, §2.4.6), backward compatibility (§2.4.7). Catalyst: Agentic Diaries project; design rationale in ADR-011. |
 | 2.0.0 | 2026-03-08 | Consolidated specification: CSM1 grammar (v1.0 + v1.1 R-line amendment), composition semantics, constitution stack precedence, UVC (ontology, naming, encoding formats, namespace governance, registry protocol), persona trait profiles, security considerations |
@@ -2601,5 +2631,5 @@ COMPACT: CS1|nanny|5|family.safe.guide|E,F
 
 *This specification is released under CC BY 4.0. Contributions welcome.*
 
-*Reference implementations: Python, Rust, and TypeScript SDK at github.com/Creed-Space/VCP-SDK*
+*Project-maintained implementations: Python and Rust, plus a TypeScript WebMCP browser integration, at github.com/Creed-Space/VCP-SDK*
 *Website: www.ValueContextProtocol.org*

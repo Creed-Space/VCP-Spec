@@ -15,30 +15,34 @@
 
 ## 1. Overview
 
-VCP-X-Personal defines a structured, categorical signaling layer for communicating
-the user's self-reported personal state within a VCP context envelope. It addresses
-five dimensions of human experience -- cognitive state, emotional tone, energy level,
-perceived urgency, and body signals -- each expressed as a categorical value paired
+VCP-X-Personal defines structured, categorical signals for communicating the
+user's self-reported personal state within a VCP context envelope. It addresses
+five dimensions of human experience (cognitive state, emotional tone, energy level,
+perceived urgency, and body signals), each expressed as a categorical value paired
 with an integer intensity (1-5).
 
-**Design Principle.** Layer 3 is not diagnostic or therapeutic; it reflects
+**Design Principle.** The personal tier is not diagnostic or therapeutic; it reflects
 self-reported state for adaptation only. Systems consuming personal signals MUST NOT
 treat them as medical assessments, emotional diagnoses, or clinical indicators.
-Personal signals exist so that an Becoming Mind can adjust its response style (e.g.,
+Personal signals exist so that a Becoming Mind can adjust its response style (e.g.,
 shorter answers when the user is fatigued, gentler tone when frustrated). They do
 not authorize any form of intervention, triage, or clinical recommendation.
 
 ### 1.1 Relationship to VCP Core
 
-Personal signals occupy Layer 3 of the VCP context stack:
+Personal signals occupy the personal tier of the VCP context model
+([VCP/A §6.4](../../VCP_ADAPTATION_v2.0.md#64-deterministic-hooks-at-three-tiers)):
 
 ```
-Layer 1: Categorical context (13 situational dimensions)
-Layer 2: Constitutional context (creed / constitution references)
-Layer 3: Personal context   <-- THIS EXTENSION
-Layer 4: Generation preferences (Priori-style sliders)
-Layer 5: Relational context (VCP 3.1 relational extensions)
+Constitutional tier: creed / constitution references (VCP/S)
+Situational tier:    13 situational dimensions (VCP/A)
+Personal tier:       personal state   <-- THIS EXTENSION
 ```
+
+This extension also carries optional generation preferences (`generation_prefs`,
+Priori-style sliders; see Section 2.6). Relational context is carried by the
+[VCP-X-Relational](../VCP-X-Relational/spec.md) extension. Neither is a context
+tier or a protocol layer.
 
 Personal signals are OPTIONAL. A VCP context envelope with no `personal` field
 is valid and indicates that no personal state information is available.
@@ -168,7 +172,7 @@ A single signal for one personal dimension.
 ### 2.5 PersonalContext
 
 The container object holding signals for all five dimensions. Each dimension is
-independently nullable -- a `PersonalContext` with only `cognitive_state` set and
+independently nullable: a `PersonalContext` with only `cognitive_state` set and
 all others null is valid.
 
 | Field               | Type                  | Required | Description                  |
@@ -181,9 +185,9 @@ all others null is valid.
 
 **Serialization Methods:**
 
-- `to_simple_dict()` -- Produces a flat dictionary of `{dimension: {category, intensity} | null}` pairs, stripping metadata (source, confidence, declared_at, extended).
-- `from_simple_dict(data)` -- Constructs a `PersonalContext` from a simple dictionary. Accepts both full `PersonalSignal` objects and `{category, intensity}` shorthand.
-- `has_any_signal()` -- Returns true if any dimension has a non-null signal.
+- `to_simple_dict()` — Produces a flat dictionary of `{dimension: {category, intensity} | null}` pairs, stripping metadata (source, confidence, declared_at, extended).
+- `from_simple_dict(data)` — Constructs a `PersonalContext` from a simple dictionary. Accepts both full `PersonalSignal` objects and `{category, intensity}` shorthand.
+- `has_any_signal()` — Returns true if any dimension has a non-null signal.
 
 ### 2.6 GenerationPreferences
 
@@ -470,12 +474,13 @@ Personal signals travel inside the `personal` field of a VCP context request:
 
 ### 5.5 Decayed Signal Example
 
-After 20 minutes with `cognitive_state` half-life of 720s:
+A `cognitive_state` signal declared at intensity 4, read 6 minutes (360 seconds)
+later with the default 720s half-life:
 
 ```json
 {
   "category": "overloaded",
-  "intensity": 2,
+  "intensity": 3,
   "source": "decayed",
   "confidence": 1.0,
   "declared_at": "2026-02-28T14:30:00Z",
@@ -483,32 +488,28 @@ After 20 minutes with `cognitive_state` half-life of 720s:
 }
 ```
 
-Calculation: `baseline(1) + (4-1) * 0.5^(1200/720) = 1 + 3 * 0.5^1.667 = 1 + 3 * 0.315 = 1.945 -> floor -> 1`
-
-Wait -- that would be 1. Let us recalculate more carefully:
+Calculation:
 
 ```
-elapsed = 1200 seconds (20 minutes)
-half_life = 720 seconds
 lambda = ln(2) / 720 = 0.000963
-decayed = 1 + (4 - 1) * e^(-0.000963 * 1200) = 1 + 3 * e^(-1.155)
-        = 1 + 3 * 0.3149 = 1.945
-floor(1.945) = 1
-```
-
-So after 20 minutes, a cognitive_state signal of intensity 4 has decayed to 1
-(baseline), meaning it has EXPIRED. This is by design: cognitive state is
-volatile and should refresh frequently.
-
-A more illustrative example at 6 minutes (360 seconds):
-
-```
 decayed = 1 + (4 - 1) * e^(-0.000963 * 360) = 1 + 3 * e^(-0.3466)
         = 1 + 3 * 0.707 = 3.12
 floor(3.12) = 3
 ```
 
-After 6 minutes: intensity 4 has decayed to 3. Lifecycle state: DECAYING.
+Intensity 3 is above the stale level of 1 + (4 - 1) * 0.3 = 1.9, so the
+lifecycle state is DECAYING.
+
+The same signal read after 20 minutes (1200 seconds) has reached baseline:
+
+```
+decayed = 1 + (4 - 1) * e^(-0.000963 * 1200) = 1 + 3 * e^(-1.155)
+        = 1 + 3 * 0.3149 = 1.945
+floor(1.945) = 1
+```
+
+At intensity 1 (baseline) the signal is EXPIRED. This is by design: cognitive
+state is volatile and should refresh frequently.
 
 ### 5.6 DecayConfig Wire Format
 
@@ -532,8 +533,10 @@ After 6 minutes: intensity 4 has decayed to 3. Lifecycle state: DECAYING.
 
 ### 6.1 Protection Level Mapping
 
-Downstream systems SHOULD NOT consume raw personal signals directly. Instead,
-the VCP opacity layer maps personal signals to a protection level:
+Inference models MUST NOT receive raw personal signals
+([Core Security](../../core/security.md) SS3.7; VCP v3.1 §3.3); other downstream
+systems SHOULD NOT consume them directly. Instead, context opacity (Core
+Security SS3) maps personal signals to a protection level:
 
 | Protection Level | Criteria                                                                    | Temperature | Safety Floor |
 |------------------|-----------------------------------------------------------------------------|-------------|--------------|
@@ -573,17 +576,18 @@ similar frameworks. Specifically:
 Implementers MUST:
 
 1. Obtain explicit consent before collecting personal signals.
-2. Apply data minimization -- only request dimensions that are needed.
-3. Implement purpose limitation -- use signals only for response adaptation.
+2. Apply data minimization: request only the dimensions that are needed.
+3. Implement purpose limitation: use signals only for response adaptation.
 4. Provide deletion capabilities (right to erasure).
 5. Encrypt personal signals at rest and in transit.
 
 ### 7.2 Opacity Principle
 
-The opacity layer (Section 6) exists specifically to prevent unnecessary exposure
-of raw personal signals to downstream systems. Implementers SHOULD:
+Context opacity (Section 6) exists specifically to prevent unnecessary exposure
+of raw personal signals to downstream systems. Implementers MUST pass protection
+levels, not raw signals, to LLM providers ([Core Security](../../core/security.md)
+SS3.7). Implementers SHOULD:
 
-- Pass protection levels, not raw signals, to LLM providers.
 - Log protection levels, not raw signal values, in audit trails.
 - Aggregate signals before sharing with third parties.
 
@@ -767,11 +771,11 @@ These aliases are deprecated and will be removed in VCP 4.0.
 
 ### 9.1 Conformance Levels
 
-| Level    | Requirements                                                              |
-|----------|---------------------------------------------------------------------------|
-| Minimal  | Accept and pass through PersonalContext without processing                |
-| Standard | Apply decay, compute lifecycle states, map to protection levels           |
-| Full     | Standard + generation parameter computation, opacity layer, audit logging |
+| Level    | Requirements                                                                |
+|----------|-----------------------------------------------------------------------------|
+| Minimal  | Accept and pass through PersonalContext without processing                  |
+| Standard | Apply decay, compute lifecycle states, map to protection levels             |
+| Full     | Standard + generation parameter computation, context opacity, audit logging |
 
 ### 9.2 Required Behaviors
 
@@ -782,6 +786,7 @@ All conforming implementations MUST:
 3. Reject `confidence` values outside the [0.0, 1.0] range.
 4. Treat null dimension fields as "no signal" (not as "signal with default value").
 5. Honor the non-diagnostic principle (Section 7.4).
+6. Withhold raw personal signals from inference models (Section 6.1).
 
 ### 9.3 Optional Behaviors
 
@@ -800,7 +805,7 @@ Conforming implementations MAY:
 |--------------------------|------------------------------------------------------------|
 | VCP Core 3.1.0           | Base protocol specification                                |
 | `services/vcp/models.py` | Project-maintained implementation (Python / Pydantic)               |
-| VCP-X-Relational         | Companion extension for relational context (Layer 5)       |
+| VCP-X-Relational         | Companion extension for relational context                 |
 | GDPR Article 9           | Special categories of personal data                        |
 | Priori                   | Inspiration for GenerationPreferences slider model         |
 
@@ -853,3 +858,4 @@ Example preset "deep_work":
 |---------|------------|--------------------------------------------------|
 | 1.0.0   | 2026-02-28 | Initial stable release, replaces VCP 3.0 prosaic |
 | 1.1.0   | 2026-03-17 | Added `measured` SignalSource; §7.6 cross-substrate credibility; §7.7 industrial/multi-party consent (recorded in `specs/CHANGELOG.md` 3.1.2) |
+| —       | 2026-09-24 | Editorial, no wire or version change: context tiers replace the old layer numbering (§1.1); the §5.5 decay example is corrected; §6 and §7 now restate the Core Security SS3.7 rule that inference models MUST NOT receive raw personal signals, and §9 lists it as conformance item 6. The rule already bound every VCP 3.1 implementation through Core Security. |

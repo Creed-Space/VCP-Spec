@@ -8,10 +8,11 @@ These core primitives are sufficient for many deployments and are expected to
 remain backward-compatible across major versions.
 
 **Extensions** are opt-in additions that build on the core protocol. They add
-domain-specific capabilities -- personal state modeling, relational continuity,
-consensus mechanisms -- without modifying the core wire format. An implementation
-that does not negotiate a given extension simply ignores the corresponding fields,
-and a compliant core verifier continues to function without change.
+domain-specific capabilities, such as personal state modeling, relational
+continuity and consensus mechanisms, without modifying the core wire format.
+An implementation that does not negotiate a given extension simply ignores the
+corresponding fields, and a compliant core verifier continues to function
+without change.
 
 
 ## Extension Naming
@@ -50,12 +51,12 @@ Extensions are negotiated during session establishment using the mechanism defin
 in `specs/core/capability-negotiation.md`. The negotiation follows a three-step
 handshake:
 
-1. **Advertise** -- The client lists the extensions it wishes to activate in
+1. **Advertise** — The client lists the extensions it wishes to activate in
    the `extensions` array of the `vcp-hello` message.
-2. **Accept** -- The server replies with `vcp-ack` listing each requested
+2. **Accept** — The server replies with `vcp-ack` listing each requested
    extension in exactly one of `supported` or `unsupported`, with a
    per-extension capability object for each supported one.
-3. **Confirm** -- Both parties activate only the `supported` set. Unrecognized
+3. **Confirm** — Both parties activate only the `supported` set. Unrecognized
    extensions are reported as `unsupported`, never silently activated.
 
 See [capability-negotiation.md](../core/capability-negotiation.md) for the
@@ -95,7 +96,7 @@ authorized decision (see [GOVERNANCE.md](../../GOVERNANCE.md)).
 | Extension        | Status       | Description                                                       |
 |------------------|--------------|-------------------------------------------------------------------|
 | VCP-X-Personal   | Stable       | Personal state modeling: 5 categorical dimensions with intensity (1-5) and configurable decay. Dimensions: cognitive_state, emotional_tone, energy_level, perceived_urgency, body_signals. |
-| VCP-X-Relational | Draft        | Relational continuity layer: trust levels (initial/developing/established/deep), standing (observer/advisory/collaborative/autonomous), established norms, AI self-model, and session continuity depth. |
+| VCP-X-Relational | Draft        | Relational continuity extension: trust levels (initial/developing/established/deep), standing (none/advisory/collaborative/bilateral), established norms, AI self-model, and session continuity depth. |
 | VCP-X-Consensus  | Draft        | Constitutional consensus primitive: Schulze-method voting over constitution sets with structured deliberation rounds, quorum requirements, and amendment proposals. |
 | VCP-X-Torch      | Stable       | Session handoff between agents: captures relationship quality, trajectory, primes (key norms), and gestalt tokens. Enables continuity across instance boundaries. |
 | VCP-X-Intent     | Experimental | Heuristic intent inference from VCP context signals. Rule-based classification into 10 intent categories with confidence scores and transparent reasoning. Correctable by users. |

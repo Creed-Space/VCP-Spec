@@ -234,7 +234,7 @@ available (e.g., development mode without encryption).
 | `injection_scanning` | boolean | Injection pattern detection (OWASP + VCP-specific). See `specs/core/security.md` SS2. |
 | `revocation` | boolean | CRL + stapled proof infrastructure. See `specs/core/security.md` SS4. |
 | `audit_chain` | boolean | Tamper-evident SHA-256 hash chain. See `specs/core/audit.md`. |
-| `context_opacity` | boolean | Protection level abstraction layer. See `specs/core/security.md` SS3. |
+| `context_opacity` | boolean | Protection-level abstraction (context opacity). See `specs/core/security.md` SS3. |
 
 ### 5.1 Core Feature Constraints
 
@@ -277,8 +277,8 @@ return vcp-ack(version = negotiated)
 | 3.1 (min 3.0) | [1.0, 2.0, 3.0, 3.1] | 3.1 | Full feature set |
 | 3.1 (min 3.0) | [1.0, 2.0, 3.0] | 3.0 | Extensions unavailable |
 | 2.0 (min 2.0) | [1.0, 2.0, 3.0, 3.1] | 2.0 | No extensions, no personal state |
-| 3.5 (min 3.5) | [1.0, 2.0, 3.0, 3.1] | -- | VERSION_UNSUPPORTED |
-| 1.0 (min 1.0) | [2.0, 3.0, 3.1] | -- | VERSION_UNSUPPORTED |
+| 3.5 (min 3.5) | [1.0, 2.0, 3.0, 3.1] | — | VERSION_UNSUPPORTED |
+| 1.0 (min 1.0) | [2.0, 3.0, 3.1] | — | VERSION_UNSUPPORTED |
 
 ### 6.3 Version-Dependent Behavior
 
@@ -526,8 +526,8 @@ The `vcp-ack` payload is returned in the MCP `initialize` response's
   MUST assume VCP 1.0 (same as no `vcp-hello`).
 - MCP `vcp-error` responses are embedded in the `initialize` response as
   `serverInfo.metadata.vcp` with `type: "vcp-error"`. The MCP response
-  itself still succeeds (HTTP 200 / JSON-RPC success) -- the VCP error is
-  at the application layer.
+  itself still succeeds (HTTP 200 / JSON-RPC success); the VCP error is
+  carried at the application layer.
 - MCP servers MUST still expose VCP tools (`vcp_validate_token`,
   `vcp_parse_csm1`, `vcp_encode_context`, `vcp_status`) regardless of
   negotiation outcome. Extension-specific tools (e.g., consensus voting)
@@ -540,10 +540,10 @@ After negotiation, MCP resource URIs are filtered by active extensions:
 
 | Resource URI | Required Extension |
 |--------------|--------------------|
-| `vcp://bundle/{session_id}` | (core -- always available) |
-| `vcp://identity/{token_prefix}` | (core -- always available) |
-| `vcp://constitution/{csm1_code}` | (core -- always available) |
-| `vcp://capabilities` | (core -- always available) |
+| `vcp://bundle/{session_id}` | (core, always available) |
+| `vcp://identity/{token_prefix}` | (core, always available) |
+| `vcp://constitution/{csm1_code}` | (core, always available) |
+| `vcp://capabilities` | (core, always available) |
 | `vcp://personal-state/{session_id}` | VCP-X-Personal |
 | `vcp://relational/{session_id}` | VCP-X-Relational |
 | `vcp://deliberation/{deliberation_id}` | VCP-X-Consensus |

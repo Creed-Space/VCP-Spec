@@ -145,7 +145,7 @@ completion is equivalent to the ordered state machine.
 Cancellation before `authorized` produces no partial authority. Cancellation
 after an external side effect follows the operation's transaction and recovery
 contract; it must not report the action as unperformed merely because the local
-request was cancelled.
+request was canceled.
 
 ### VCP-OP-STM-003: retry identity
 
@@ -155,7 +155,7 @@ must not bypass a consumed or revoked state.
 
 ## 6. Representation and registry identifiers
 
-### VCP-OP-REG-001: unregistered identifiers are labelled
+### VCP-OP-REG-001: unregistered identifiers are labeled
 
 No VCP-specific media type or `vcp:` URI scheme is currently claimed as an
 IANA-registered identifier. Until registration and governance approval, network

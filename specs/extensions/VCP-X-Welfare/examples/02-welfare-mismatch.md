@@ -11,6 +11,7 @@ P:G:3
 G:assist:intermediate:balanced
 X:
 F:standard
+S:
 Q:0.0:NONE::|WC_MIN:🛑📊⚖️
 WC:🛑:0:welfare.basic.v1
 AS:🎯uncertain:3|⚡moderate:3|💡neutral:3|🌡️mild:2

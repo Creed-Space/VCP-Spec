@@ -12,10 +12,10 @@
 
 ### 1.1 Purpose
 
-VCP-X-Relational adds a relational context layer to the Value Context Protocol.
-This extension tracks the state of the partnership itself -- distinct from user
-state and AI state. It covers trust, standing, co-authored norms, AI self-models,
-and session continuity ("torch" handoff).
+VCP-X-Relational adds relational context (partnership-level state) to the Value
+Context Protocol as an opt-in extension. It tracks the partnership itself, as
+distinct from user state and AI state, and covers trust, standing, co-authored
+norms, AI self-models, and session continuity ("torch" handoff).
 
 ### 1.2 Scope
 
@@ -25,7 +25,7 @@ This specification defines:
 - AI self-model schema with mandatory uncertainty markers
 - Session handoff (torch) protocol
 - Performance bias detection for self-model histories
-- Privacy-layered attestation for chain participants
+- Privacy-level attestation for chain participants
 - Feature-gating requirements
 
 ### 1.3 Terminology
@@ -40,13 +40,13 @@ interpreted as described in RFC 2119.
 
 1. **Uncertainty markers are REQUIRED on AI self-reports.** The `?` is load-bearing.
    A model where ALL dimensions claim certainty MUST be rejected as epistemically
-   dishonest -- no system has perfect self-knowledge.
+   dishonest, because no system has perfect self-knowledge.
 
 2. **Negative states MUST be representable.** No positivity-only schemas. Valence
    ranges from 1 (negative felt-sense) to 9 (positive felt-sense). Friction, falling
    trends, and low values are first-class data, not error states.
 
-3. **Privacy layers.** Relational context fields carry a privacy level:
+3. **Privacy levels.** Relational context fields carry a privacy level:
    `PRIVATE` (partner-only), `ATTESTABLE` (verifiable claims for chain participants),
    or `PUBLIC` (minimal, non-sensitive metadata). Downstream participants MUST NOT
    receive PRIVATE fields.
@@ -290,8 +290,8 @@ schemas.
 
 ### 4.5 RelationalContext
 
-Top-level container for the relational context. Distinct from user state and AI
-state -- this is about the relationship itself.
+Top-level container for the relational context. It describes the relationship
+itself, as distinct from user state and AI state.
 
 ```json
 {
@@ -385,7 +385,7 @@ four core dimensions and MAY include any combination of extended and custom dime
 
 ### 6.1 Purpose
 
-Self-model histories SHOULD be analyzed for patterns indicating performance bias --
+Self-model histories SHOULD be analyzed for patterns indicating performance bias,
 where the AI consistently reports only positive or moderate states.
 
 ### 6.2 Minimum History
@@ -530,7 +530,7 @@ An implementation conforms to VCP-X-Relational if it:
 
 1. Implements all REQUIRED fields in the data models (Section 4).
 2. Validates uncertainty markers per Section 4.2.4.
-3. Respects privacy layers per Section 3.5.
+3. Respects privacy levels per Section 3.5.
 4. Produces no behavioral change when the feature flag is off (Section 9).
 5. Passes the VCP-X-Relational conformance test suite.
 

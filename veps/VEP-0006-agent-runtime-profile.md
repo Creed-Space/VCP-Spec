@@ -103,7 +103,7 @@ Failure to select every required profile terminates Agent Runtime Profile negoti
 
 ### VCP-ARP-NEG-003: no implicit runtime profile
 
-Silence MAY retain legacy VCP baseline behaviour. Silence MUST NOT activate any Agent Runtime Profile or imply runtime authority.
+Silence MAY retain legacy VCP baseline behavior. Silence MUST NOT activate any Agent Runtime Profile or imply runtime authority.
 
 ### VCP-ARP-NEG-004: transcript binding
 
@@ -113,9 +113,9 @@ Authenticated transports bind original offers, selected profiles, required exten
 
 Loss, expiry, revocation, or material change of a required capability invalidates the relevant Affordances and returns the affected run to preflight, review, pause, block, or failure according to its RunSpec.
 
-### VCP-ARP-NEG-006: acknowledgement
+### VCP-ARP-NEG-006: acknowledgment
 
-A successful acknowledgement contains:
+A successful acknowledgment contains:
 
 ~~~json
 {

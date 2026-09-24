@@ -37,7 +37,7 @@ Promotion requires a threat model, privacy analysis, complete examples,
 negative fixtures, cross-language candidate behavior, migration analysis,
 editorial review, and an explicit authority record. Stable promotion also
 requires independent implementation or review evidence appropriate to the
-risk. Same-programme parity alone is insufficient.
+risk. Same-program parity alone is insufficient.
 
 ## Deprecation and removal
 

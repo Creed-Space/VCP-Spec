@@ -108,7 +108,7 @@ Available only when the corresponding extension is negotiated:
 | Tool | Parameters | Returns |
 |------|-----------|---------|
 | `vcp_validate_token` | `token: string` | Parsed token fields, verification result, trust chain |
-| `vcp_parse_csm1` | `code: string` | Decoded dimensional values, persona, scope |
+| `vcp_parse_csm1` | `code: string` | Decoded persona, adherence level, scopes, namespace and version |
 | `vcp_encode_context` | `dimensions: object, personal?: object` | Encoded VCP/A context string |
 | `vcp_status` | (none) | Server version, active extensions, core features, uptime |
 
@@ -225,7 +225,7 @@ The numeric formality scale maps to the VCP/A FORMALITY dimension and to `securi
 
 - The VCP context prefix MUST be prepended, not appended (it sets the behavioral frame)
 - Injection MUST be recorded in the VCP audit chain
-- The protection level comes from the context opacity layer — raw personal signals MUST NOT be included
+- The protection level comes from context opacity (specs/core/security.md SS3) — raw personal signals MUST NOT be included
 - If the bundle is revoked, sampling MUST be rejected with an error
 
 ---

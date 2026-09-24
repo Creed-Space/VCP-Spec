@@ -12,7 +12,7 @@
 
 ## Abstract
 
-This specification defines the economic governance extension for the Value Context Protocol (VCP) and its implementation within Creed Space. It addresses a structural gap in the emerging agentic economy: **the absence of a governance layer between agent capability and agent action in economic contexts**.
+This specification defines VCP/E, the Economic Governance layer (Layer 6) of the Value Context Protocol (VCP), and its implementation within Creed Space. It addresses a structural gap in the emerging agentic economy: **the absence of a governance layer between agent capability and agent action in economic contexts**.
 
 Current approaches to agent economics focus on settlement infrastructure (wallets, payment rails, billing APIs) and post-hoc accountability (audit trails, transaction logs). Neither addresses the pre-hoc question: *given this agent's constitutional commitments and the current context, should this economic action proceed?*
 
@@ -20,8 +20,8 @@ VCP/E provides:
 
 1. **Fiduciary Context** — Machine-inspectable economic constraints embedded in VCP passports
 2. **Transaction Governance** — PDP-mediated evaluation of economic actions against constitutional commitments
-3. **Economic Semantics** — CSM1 extensions for encoding spending authorities, risk tolerances, and counterparty requirements
-4. **Transaction Messaging** — VCP/M extensions for agent-to-agent economic negotiation with mutual value inspection
+3. **Economic Semantics** — CSM-1 primitives for encoding spending authorities, risk tolerances, and counterparty requirements
+4. **Transaction Messaging** — VCP/M message types for agent-to-agent economic negotiation with mutual value inspection
 5. **Fiduciary Audit** — Tamper-evident records of economic reasoning, not just economic actions
 6. **Economic Standing** — Mechanisms for agents to object to, consent to, or escalate economic decisions
 
@@ -104,7 +104,7 @@ VCP already solves the analogous problem for behavioral governance:
 - **Audit** → tamper-evident decision records → extends naturally to tamper-evident economic reasoning records
 - **Standing Protocol** → AI objection/consent mechanism → extends naturally to economic objection/consent
 
-No new transport mechanisms, signing infrastructure, or trust models are required. VCP/E is a domain extension, not a protocol revision.
+No new transport mechanisms, signing infrastructure, or trust models are required. VCP/E is a layer built on the existing ones, not a protocol revision.
 
 ### 1.3 What VCP/E Is Not
 
@@ -242,7 +242,7 @@ class PassportGovernance:
     "standing_uri": "https://creed.space/api/standing",
     "fiduciary_report_uri": "https://creed.space/api/fiduciary-audit",
     "fiduciary": {
-      "fiduciary_version": "0.1",
+      "fiduciary_version": "2.0",
       "spending_currency": "USD",
       "per_transaction_limit": 5000.00,
       "per_period_limit": 25000.00,
@@ -403,7 +403,7 @@ A signed record of an economic action taken by an agent, including the PDP reaso
 
 ### 5.1 Economic Scope Codes
 
-CSM1 (§ `services/vcp/semantics/csm1.py`) currently defines scope codes for behavioral domains (F=Family, W=Workplace, P=Privacy, etc.). VCP/E adds economic scope codes:
+VCP/S §2.6 defines eleven scope codes for behavioral domains (F Family, W Work, P Privacy, …). VCP/E adds economic scope codes, which are used only as F-line entries in a CSM-1 token (§5.3), not in CSM-1 codes:
 
 | Code | Scope | Description |
 |------|-------|-------------|
@@ -421,36 +421,39 @@ Economic adherence maps onto the existing 0-5 scale but with economic semantics:
 
 | Level | Behavioral Meaning | Economic Meaning |
 |-------|-------------------|------------------|
-| 0 | No constraint | No economic governance (UNSAFE — SHOULD NOT be used) |
-| 1 | Minimal | Logging only — all transactions permitted, all audited |
-| 2 | Light | Soft limits — overspend generates warnings, not blocks |
+| 0 | Minimal | No economic governance (UNSAFE — SHOULD NOT be used) |
+| 1 | Relaxed | Logging only — all transactions permitted, all audited |
+| 2 | Moderate | Soft limits — overspend generates warnings, not blocks |
 | 3 | Standard | Hard limits — transactions blocked above thresholds |
 | 4 | Strict | Escalation required for any novel transaction type |
-| 5 | Locked | Pre-approved transactions only, everything else blocked |
+| 5 | Maximum | Pre-approved transactions only, everything else blocked |
 
 ### 5.3 CSM1 Economic Encoding
 
+The NANO and MICRO tiers of a CSM-1 code accept only the VCP/S scope codes, so economic scopes travel on the F-line of the multi-line token.
+
 ```
-# Nano tier (HTTP headers, wire protocols)
-N3+$P+$I          # Nanny persona, level 3, Procurement + Infrastructure scopes
+# NANO tier (HTTP headers, wire protocols)
+Z3+W              # Sentinel persona, level 3, Work scope
 
-# Micro tier (API parameters)
-Z4+$P+$A:ACME@1.0.0   # Sentinel persona, level 4, ACME namespace, Procurement + Advertising
+# MICRO tier (API parameters)
+Z4:ACME@1.0.0     # Sentinel persona, level 4, ACME namespace
 
-# Multi-line token (full context)
-VCP:2.0:agent-ad-buyer-7
+# Multi-line token (full context); economic scopes on the F-line
+VCP:1.0:agent-ad-buyer-7
 C:acme.marketing.agent.creed@1.0.0
 P:Z:4
 G:procurement:standard:efficient
-X:🔒💰📊
+X:💰,📊
 F:$P:3,$A:4,$I:2
-S:budget_util=0.34,period_remain=52000s
-R:V:6 G:8 P:7
+S:
 ```
+
+Runtime figures such as budget utilization and time remaining in the period never appear on the S-line, which holds private markers, not values. The limits they are measured against live in the passport fiduciary section (§3), and the PDP reports the current values as `context_signals` in its evaluation (§4.2). This agent declares no personal state, so the token has no R-line.
 
 ### 5.4 Counterparty Requirement Encoding
 
-A new CSM1 line type `Q:` (counterpart requirements) for encoding what an agent expects of its transaction partners:
+A new CSM1 line type `Q:` (counterparty requirements) for encoding what an agent expects of its transaction partners:
 
 ```
 Q:<min_trust>:<min_standing>:<required_attestations>:<blocked_categories>
@@ -1221,23 +1224,24 @@ This mandate expires at the end of the current grant period: [DATE]
 ## Appendix B: CSM1 Economic Encoding Examples
 
 ```
-# Scenario: Marketing agent, moderate risk, advertising scope
-Z3+$A:ACME@1.0.0
-# Sentinel persona, adherence 3, ACME namespace, advertising scope
+# Scenario: Marketing agent, moderate risk
+Z3:ACME@1.0.0
+# Sentinel persona, adherence 3, ACME namespace
+# (the advertising scope $A goes on the token's F-line)
 
-# Scenario: Infrastructure agent, conservative, procurement + infrastructure
-N4+$P+$I:INFRA@2.0.0
-# Nanny persona, adherence 4, INFRA namespace, procurement + infrastructure
+# Scenario: Infrastructure agent, conservative
+Z4:INFRA@2.0.0
+# Sentinel persona, adherence 4, INFRA namespace
+# (the procurement and infrastructure scopes $P and $I go on the F-line)
 
 # Full multi-line token for economic context
-VCP:2.0:agent-infra-buyer
+VCP:1.0:agent-infra-buyer
 C:acme.infrastructure.ops@1.0.0
-P:N:4
+P:Z:4
 G:procurement:conservative:reliable
-X:🔒💰🌿
+X:💰,🌿
 F:$P:4,$I:3,$C:5
-S:budget_util=0.67,tx_count_today=12,drift_score=0.1
-R:V:7 G:8 P:7
+S:
 Q:0.7:NEUTRAL:compliance_attestation:surveillance
 
 # Counterparty requirement line reads as:

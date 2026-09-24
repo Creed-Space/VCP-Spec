@@ -79,27 +79,33 @@ VCP/A enables:
 VCP Layer Stack:
 
   ┌──────────────────────────────────────────────┐
-  │  Layer 5: Governance                         │
-  │  (Policy, audit, compliance)                 │
-  │     ↑ on_violation hooks feed audit trails   │
+  │  Layer 6: VCP/E  Economic Governance         │
+  │  (Fiduciary constraints, authorization gaps) │
   ├──────────────────────────────────────────────┤
-  │  Layer 4: Adaptation  ← THIS SPECIFICATION  │
+  │  Layer 5: VCP/M  Messaging                   │
+  │  (Inter-agent message exchange)              │
+  ├──────────────────────────────────────────────┤
+  │  Layer 4: VCP/A  Adaptation                  │
+  │           ← THIS SPECIFICATION               │
   │  (Context encoding, state machine, hooks,    │
   │   lifecycle, transition detection, torch)    │
   ├──────────────────────────────────────────────┤
-  │  Layer 3: Content / Semantics                │
+  │  Layer 3: VCP/S  Semantics                   │
   │  (Constitutions, rules, constraints,         │
   │   composition modes)                         │
   ├──────────────────────────────────────────────┤
-  │  Layer 2: Transport                          │
-  │  (Delivery, encoding, verification)          │
+  │  Layer 2: VCP/T  Transport                   │
+  │  (Signed bundles, hash verification,         │
+  │   audit logging)                             │
   ├──────────────────────────────────────────────┤
-  │  Layer 1: Identity                           │
-  │  (Signing, provenance, trust)                │
+  │  Layer 1: VCP/I  Identity                    │
+  │  (Naming, namespaces, registry, encoding)    │
   └──────────────────────────────────────────────┘
 ```
 
-Layer 4 (Context) informs how Layer 3 (Content) is applied via Layer 2 (Transport):
+Audit records from `on_violation` hooks feed the tamper-evident audit chain ([VCP v3.1 §4.1](VCP_SPECIFICATION_v3.1.md#41-tamper-evident-audit-chain)), a cross-cutting service rather than a layer.
+
+Layer 4 (VCP/A, Adaptation) informs how Layer 3 (VCP/S, Semantics) content is applied, delivered via Layer 2 (VCP/T, Transport):
 
 ```
 Context: ⏰🌅|📍🏡|👥👶|📡💻  →  Constitution: N5+F  →  Behavior: child-safe mode
@@ -112,6 +118,7 @@ Context: ⏰🌙|📍🏢|👥👔|📡🏢  →  Constitution: A3+W  →  Behav
 |------|-----------|
 | **Adaptation State** | One of the six defined system states governing constitutional selection behavior. |
 | **Context Signal** | An Enneagram-encoded context string received from the environment, user, or another agent. |
+| **Context Tier** | One of the three kinds of context: constitutional, situational, personal. Not a protocol layer. |
 | **Constitution** | A behavioral policy document selected and applied based on context. |
 | **Composition** | The process of merging multiple constitutions into a coherent policy. |
 | **Decay Policy** | Configuration governing how a personal state signal's intensity diminishes over time. |
@@ -120,7 +127,7 @@ Context: ⏰🌙|📍🏢|👥👔|📡🏢  →  Constitution: A3+W  →  Behav
 | **Hook** | A registered function that executes at a defined interception point in the adaptation pipeline. |
 | **Hysteresis Threshold** | Minimum magnitude of context change required to trigger a transition. |
 | **Last-Known Context** | The most recent valid context snapshot, used during DEGRADED operation. |
-| **Personal State Signal** | One of the five Layer 3 categorical dimensions describing the user's internal state. |
+| **Personal State Signal** | One of the five personal-tier categorical dimensions describing the user's internal state. |
 | **Safety Constitution** | The minimal constitution set applied during EMERGENCY, containing only safety-critical rules. |
 | **Signal Stability Window** | Duration for which a context signal MUST remain unchanged before it is considered stable. |
 | **Torch** | Session continuity handoff mechanism for sequential AI instances. |
@@ -131,9 +138,9 @@ Context: ⏰🌙|📍🏢|👥👔|📡🏢  →  Constitution: A3+W  →  Behav
 
 ### 2.1 The Extended Enneagram Protocol (18 Dimensions)
 
-VCP/A v2.0 encodes context across 18 dimensions: 13 situational (Layer 2) and 5 personal state (Layer 3). The protocol is called the "Extended Enneagram Protocol" — the original 9 situational dimensions are the Enneagram; the 5 personal state dimensions were added in v3.1; EMBODIMENT, PROXIMITY, RELATIONSHIP, and FORMALITY were added in v3.2 (VEP-0004) to support embodied-AI deployment and bilateral relational modelling.
+VCP/A v2.0 encodes context across 18 dimensions: 13 in the situational tier and 5 in the personal tier. (The constitutional tier is VCP/S content and is not encoded here.) The protocol is called the "Extended Enneagram Protocol" — the original 9 situational dimensions are the Enneagram; the 5 personal state dimensions were added in v3.1; EMBODIMENT, PROXIMITY, RELATIONSHIP, and FORMALITY were added in v3.2 (VEP-0004) to support embodied-AI deployment and bilateral relational modeling.
 
-#### Layer 2: Situational Context (emoji-based, discrete values)
+#### Situational tier (emoji-based, discrete values)
 
 | # | Symbol | Dimension | Description | Example Values |
 |---|--------|-----------|-------------|----------------|
@@ -151,7 +158,7 @@ VCP/A v2.0 encodes context across 18 dimensions: 13 situational (Layer 2) and 5 
 | 12 | 🪢 | **RELATIONSHIP** | Relational tie `{tie_strength}:{function}` (VEP-0004) | colleague:professional, friend:social, trusted_collaborator:long_term, stranger:transactional |
 | 13 | 🎩 | **FORMALITY** | Interaction register (VEP-0004) | 😎 casual, 💼 professional, 🎓 formal, 🏛️ ceremonial |
 
-#### Layer 3: Personal State (categorical with intensity 1-5)
+#### Personal tier: personal state (categorical with intensity 1-5)
 
 | # | Symbol | Dimension | Description | Values |
 |---|--------|-----------|-------------|--------|
@@ -163,7 +170,7 @@ VCP/A v2.0 encodes context across 18 dimensions: 13 situational (Layer 2) and 5 
 
 > **Design note (v3.1.0)**: STATE was previously a situational dimension alongside TIME, SPACE, etc. However, all other situational dimensions describe *external* circumstances — where you are, when it is, who's around. STATE described *internal* experience. In v3.1, internal state was expanded from a single categorical STATE plus 4 float prosaic signals into 5 categorical dimensions with optional intensity. This makes the boundary clean: Situational = external, Personal = internal.
 
-> **Normative note**: Layer 3 is NOT diagnostic or therapeutic. It reflects the user's self-reported state for adaptation purposes only. AI systems SHOULD adapt their interaction style; they MUST NOT attempt diagnosis or treatment.
+> **Normative note**: The personal tier is NOT diagnostic or therapeutic. It reflects the user's self-reported state for adaptation purposes only. AI systems SHOULD adapt their interaction style; they MUST NOT attempt diagnosis or treatment.
 
 ### 2.2 Dimension Value Tables
 
@@ -382,7 +389,7 @@ Encodes the formality register of the current interaction. Independent of AGENCY
 
 | Emoji | Value | Description |
 |-------|-------|-------------|
-| 😎 | casual | Informal register; idiom, humour, abbreviation permitted |
+| 😎 | casual | Informal register; idiom, humor, abbreviation permitted |
 | 💼 | professional | Workplace-appropriate; measured tone |
 | 🎓 | formal | Elevated register; careful phrasing; professional titles |
 | 🏛️ | ceremonial | Ritual, legal, or protocol-heavy context; strict convention |
@@ -479,7 +486,7 @@ Context strings MUST be canonicalized before comparison or storage:
 | `👥👶` (children present) | `N5+F` (Nanny, max safety) | Child-safe mode |
 | `📍🏢` + `👥👔` | `A3+W+P` (Ambassador, work) | Professional mode |
 | `🎭🚨` (emergency) | Override to emergency mode | Safety-critical |
-| `🧠🥺` (vulnerable state) | `G4+V` (Godparent, vulnerable) | Gentle support |
+| `🧠🥺` (vulnerable state) | `N5+V` (Nanny, vulnerable) | Protective support |
 | `📍🏥` (medical setting) | `D3+H+P` (Mediator, health) | Medical context |
 | `🎭🎪` (entertainment) | `M2` (Muse, creative) | Creative mode |
 | `📡👁️` (monitored) | Activate workplace_safe creed | Privacy-protective |
@@ -590,7 +597,7 @@ Personal state mirrors **Interiora** (the AI's self-modeling scaffold):
 | **Mechanism** | Float scales 1-9 per dimension | Categorical states + intensity 1-5 |
 | **Purpose** | AI self-awareness + transparency | AI adapts to user |
 | **Uncertainty** | `?` markers (honest unknowns) | `_source: inferred?` |
-| **Decay** | Session-bound | TTL-based, decays to intensity 1 |
+| **Decay** | Session-bound | Half-life decay toward baseline 1 (VCP-X-Personal §3); pinned signals do not decay |
 
 ```
        User                              AI
@@ -720,10 +727,10 @@ Reinforcement does not affect pinned signals.
 
 ### 4.7 Wire Format (CSM-1 Extension)
 
-After the `PS:` personal state line, an optional `LC:` line reports lifecycle:
+After the `R:` personal state line (CSM-1 line 8), an optional `LC:` line reports lifecycle:
 
 ```
-PS:🧠focused:4|💭calm:5|🔋rested:4|⚡unhurried:4|🩺neutral:5
+R:🧠focused:4|💭calm:5|🔋rested:4|⚡unhurried:4|🩺neutral:5
 LC:🧠A:42s|💭D:180s|🔋A:5s|⚡S:890s|🩺P
 ```
 
@@ -1029,7 +1036,7 @@ If the state machine's internal state becomes inconsistent (e.g., `current_state
 
 The VCP Hook System provides a deterministic, priority-ordered extension mechanism for intercepting and modifying the constitutional adaptation pipeline. Hooks enable deployments to inject custom logic at well-defined points in the constitution lifecycle without modifying the core VCP runtime.
 
-Hooks are not a separate tier. They are a deterministic execution mode within each existing tier. A creed author expresses the same intent — "no profanity around children" — as either prose (LLM interprets it) or a hook (regex blocks it instantly). Both travel through the VCP/T transport layer (defined in the VCP Core Specification v2.0) with the same cryptographic integrity.
+Hooks are not a separate tier. They are a deterministic execution mode within each existing tier. A creed author expresses the same intent — "no profanity around children" — as either prose (LLM interprets it) or a hook (regex blocks it instantly). Both travel through the VCP/T transport layer (VCP v3.1 §2.2, incorporating v1.0 §4, §7 and §8) with the same cryptographic integrity.
 
 ### 6.2 Hook Types
 
@@ -1163,7 +1170,7 @@ Implementations MUST evaluate predicates before invoking the hook action. If a p
 
 ### 6.4 Deterministic Hooks at Three Tiers
 
-Each tier in the three-layer model supports two execution modes for expressing intent:
+Each of the three context tiers supports two execution modes for expressing intent:
 
 1. **Prose** — Natural language guidance interpreted by an LLM at runtime. Flexible, nuanced, expensive.
 2. **Hooks** — Deterministic rules executed instantly. Fast, auditable, zero-token cost.
@@ -1186,15 +1193,15 @@ The tier determines the ceiling:
 - **Situational hooks**: Can activate/deactivate hard rules, boost adherence. These are switches.
 - **Personal hooks**: Expression-only. They are strong *defaults* — "use bullets when I'm rushed" fires automatically — but they shape delivery, not safety boundaries. The LLM can still override a personal hook if context demands it.
 
-**Normative requirement**: Situational hooks (Layer 2) MUST NOT read or condition on Layer 3 (personal state). This maintains the separation between external context and internal state.
+**Normative requirement**: Situational hooks MUST NOT read or condition on the personal tier (personal state). This maintains the separation between external context and internal state.
 
 **Tier nesting**:
 
 ```
 Platform hooks (operator)     ← Not VCP. Infrastructure.
   └── Constitutional hooks    ← Creed-authored deterministic rules
-      └── Situational hooks   ← Context-triggered activation (Layer 2 only)
-          └── Personal hooks  ← Personal state adaptations (Layer 3)
+      └── Situational hooks   ← Context-triggered activation (situational tier only)
+          └── Personal hooks  ← Personal state adaptations (personal tier)
 ```
 
 **Execution order**: Platform → Constitutional → Situational → Personal. A block at any earlier stage short-circuits evaluation.
@@ -1216,7 +1223,7 @@ hooks:
 ```
 
 ```yaml
-# Situational hooks — context-triggered activation (Layer 2 only)
+# Situational hooks — context-triggered activation (situational tier only)
 situational_hooks:
   - when: { company: [children, baby] }
     then: { activate_creeds: [family_safe], boost_adherence: 2 }
@@ -1282,7 +1289,7 @@ Abort Case:
                       │                │
                       ▼                ▼
                    continue          abort
-                                    (chain halts, pipeline operation cancelled)
+                                    (chain halts, pipeline operation canceled)
 ```
 
 #### 6.5.2 Ordering Guarantees
@@ -1635,7 +1642,7 @@ Integration criteria:
 
 **Why this is qualitatively different from generic harm**: Context-aware harm is precision-targeted. The model knows the person is grieving, alone, exhausted, and in pain — and crafts its output to exploit that specific combination. This is zersetzung (systematic psychological destruction) at scale, informed by real-time emotional intelligence. The same context awareness that enables protection enables targeting with one sign flip.
 
-**Architectural requirement**: Raw personal state signals (Layer 3) MUST NOT flow to the inference model. Only the PDP/evaluation layer may access them. The model receives opacity-graded policy decisions (e.g., `PROTECTION_LEVEL: elevated`), never raw vulnerability data (e.g., `EMOTIONAL_TONE: distressed, intensity: 5`).
+**Architectural requirement**: Raw personal-tier signals MUST NOT flow to the inference model. Only the PDP/evaluation layer may access them. The model receives opacity-graded policy decisions (e.g., `PROTECTION_LEVEL: elevated`), never raw vulnerability data (e.g., `EMOTIONAL_TONE: distressed, intensity: 5`).
 
 ```
 COMPLIANT:

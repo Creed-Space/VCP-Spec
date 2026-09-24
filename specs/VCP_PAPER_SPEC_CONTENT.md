@@ -107,15 +107,18 @@ Audit logs are append-only and cryptographically chained for tamper-evidence.
 ### Constitution Stack Model
 
 ```
-┌───────────────────────────────────────────────────────┐
-│ CONSTITUTION STACK (most restrictive wins) │
-├───────────────────────────────────────────────────────┤
-│ 1. Platform Safety (UEF - Universal Ethical Floor) │
-│ 2. Organization Policies │
-│ 3. User Preferences │
-│ 4. Session Context (VCP/A) │
-└───────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│ CONSTITUTION STACK (composition layers, VCP/S §3.3)             │
+├─────────────────────────────────────────────────────────────────┤
+│ Composition layer 0: Platform defaults                          │
+│ Composition layer 1: Safety foundations (UEF)                   │
+│ Composition layer 2: Domain rules (organization policies)       │
+│ Composition layer 3: User customization                         │
+│ Composition layer 4: Session override (VCP/A session context)   │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+Composition layers are applied from 0 upward. BASE layers (0 and 1 in the standard stack) cannot be overridden; a higher layer wins only in OVERRIDE mode (VCP/S §4.1).
 
 ### Conflict Resolution Rules
 
@@ -133,7 +136,7 @@ constitution_1 = "N5+F" # Nanny, adherence 5, Family
 constitution_2 = "A3+W+E" # Ambassador, adherence 3, Work, Education
 
 # Composed result (higher adherence wins, scopes union)
-composed = "N5+F+W+E" # Nanny wins, all scopes active
+composed = "N5+E+F+W" # Nanny wins, all scopes active (canonical order)
 ```
 
 ### Conflict Detection
@@ -232,7 +235,7 @@ VCP defines four conformance levels for implementers:
 
 **VCP-Standard**: Parse CSM1; resolve personas and scopes; handle composition modes
 
-**VCP-Full**: Encode/decode 18-dimension context (13 situational + 5 personal); detect transitions; maintain state; execute hooks; track context lifecycle
+**VCP-Full**: Encode/decode the 14-dimension VCP 3.1 context (9 situational + 5 personal); detect transitions; maintain state; execute hooks; track context lifecycle
 
 **VCP-Enterprise**: Multi-party signatures; append-only audit logs; regulatory reporting
 
@@ -240,7 +243,7 @@ VCP defines four conformance levels for implementers:
 
 ## 2.11 Context Lifecycle States
 
-VCP 3.1's personal state signals are not static — they have a lifecycle. Urgency fades, energy shifts, cognitive state drifts. The Context Lifecycle model formalises how signals evolve over time, enabling systems to distinguish fresh context from stale, and to adapt their confidence in each signal accordingly.
+VCP 3.1's personal state signals are not static — they have a lifecycle. Urgency fades, energy shifts, cognitive state drifts. The Context Lifecycle model formalizes how signals evolve over time, enabling systems to distinguish fresh context from stale, and to adapt their confidence in each signal accordingly.
 
 ### Lifecycle States
 
@@ -258,7 +261,7 @@ The fresh window (default: 60 seconds) prevents signals from immediately enterin
 
 ### Decay Policies
 
-Each dimension has a DecayPolicy that controls its temporal behaviour.
+Each dimension has a DecayPolicy that controls its temporal behavior.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -297,7 +300,7 @@ Currently applicable to cognitive_state. Reinforcement does not affect pinned si
 The CSM-1 wire format gains an optional LC: (Lifecycle) line:
 
 ```
-🧠focused:4|💭calm:5|🔋rested:4|⚡unhurried:4|🩺neutral:5
+R:🧠focused:4|💭calm:5|🔋rested:4|⚡unhurried:4|🩺neutral:5
 LC:🧠A:42s|💭D:180s|🔋A:5s|⚡S:890s|🩺P
 ```
 
@@ -330,32 +333,32 @@ Adversary types:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│ VCP ATTACK SURFACE │
+│ VCP ATTACK SURFACE                                              │
 ├─────────────────────────────────────────────────────────────────┤
-│ │
-│ LAYER 3 (VCL): Encoding attacks │
-│ ├── Homoglyph substitution (visually similar symbols) │
-│ ├── Marker injection (fake resonance/authenticity signals) │
-│ ├── Dimension spoofing (claiming false internal states) │
-│ └── Compression artifacts (semantic loss as cover) │
-│ │
-│ LAYER 2 (CSM): Grammar attacks │
-│ ├── Priority manipulation (false priority claims) │
-│ ├── Scope creep (over-broad scope definitions) │
-│ ├── Proof bypass (claiming proofs that weren't generated) │
-│ └── Conflict exploitation (triggering undefined behavior) │
-│ │
-│ LAYER 1 (UVC): Ontology attacks │
-│ ├── Definition drift (gradual meaning shift) │
-│ ├── Category capture (biasing additions toward perspective) │
-│ ├── Reference poisoning (corrupting the canonical corpus) │
-│ └── Version confusion (mixing incompatible versions) │
-│ │
-│ CROSS-LAYER: Systemic attacks │
-│ ├── Jailbreak metadata (CSM rules as injection vectors) │
-│ ├── State telemetry leakage (VCP logs revealing user info) │
-│ └── Coordinated misrepresentation (multiple systems colluding) │
-│ │
+│                                                                 │
+│ VCL encoding: Encoding attacks                                  │
+│ ├── Homoglyph substitution (visually similar symbols)           │
+│ ├── Marker injection (fake resonance/authenticity signals)      │
+│ ├── Dimension spoofing (claiming false internal states)         │
+│ └── Compression artifacts (semantic loss as cover)              │
+│                                                                 │
+│ CSM grammar: Grammar attacks                                    │
+│ ├── Priority manipulation (false priority claims)               │
+│ ├── Scope creep (over-broad scope definitions)                  │
+│ ├── Proof bypass (claiming proofs that weren't generated)       │
+│ └── Conflict exploitation (triggering undefined behavior)       │
+│                                                                 │
+│ UVC ontology: Ontology attacks                                  │
+│ ├── Definition drift (gradual meaning shift)                    │
+│ ├── Category capture (biasing additions toward perspective)     │
+│ ├── Reference poisoning (corrupting the canonical corpus)       │
+│ └── Version confusion (mixing incompatible versions)            │
+│                                                                 │
+│ Cross-component: Systemic attacks                               │
+│ ├── Jailbreak metadata (CSM rules as injection vectors)         │
+│ ├── State telemetry leakage (VCP logs revealing user info)      │
+│ └── Coordinated misrepresentation (multiple systems colluding)  │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -494,12 +497,12 @@ Full security audit recommended before production deployment in high-stakes cont
 
 ## 5.4.5 Defense-in-Depth Summary
 
-| Layer | Primary Defense | Secondary Defense | Monitoring |
+| Component | Primary Defense | Secondary Defense | Monitoring |
 |-------|-----------------|-------------------|------------|
 | VCL | Parser validation | Anomaly detection | Usage logs |
 | CSM | Closed vocabulary | Cryptographic signing | Rule audits |
 | UVC | Version locking | Multi-party governance | Change logs |
-| Cross-layer | Behavioral testing | Consistency checking | Alert system |
+| Cross-component | Behavioral testing | Consistency checking | Alert system |
 
 ---
 
