@@ -1,10 +1,10 @@
-# VCP-Identity: Value Ontology Specification
+# VCP/I (Identity): Value Ontology Specification
 
 <!-- vcp-document-control
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 layer and governance status
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/I (Identity)
 **Status**: Complete (Specification) | Optional (Data)
 
-> *Part of the Value-Context Protocol (VCP) - Layer 1*
+> *Part of the Value-Context Protocol (VCP), Layer 1*
 
 ---
 
@@ -31,10 +31,10 @@ evidence-boundary: Explanatory material, not implementation conformance
 
 - **VCP/I (Identity)**: Tokens are names that resolve to bundles. No semantic backing required.
 - **VCP/T (Transport)**: Bundles are signed containers. Content-agnostic.
-- **VCP/S (Semantics)**: CSM1 codes and constitutions are self-contained.
+- **VCP/S (Semantics)**: CSM-1 codes and constitutions are self-contained.
 - **VCP/A (Adaptation)**: Context encoding is orthogonal to value semantics.
 - **VCP/M (Messaging)**: Inter-agent communication is content-agnostic, works at all abstraction levels.
-- **VCP/E (Economics)**: Resource allocation and cost tracking are orthogonal to value semantics.
+- **VCP/E (Economic Governance)**: Fiduciary constraints and transaction governance are orthogonal to value semantics.
 
 **The ontology enables optional enhancements:**
 - Semantic search ("find constitutions about fairness")
@@ -50,7 +50,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 
 ## Abstract
 
-This specification defines the Value Ontology - a structured corpus of value statements that form the semantic foundation for UVC tokens. The ontology categorizes values, defines relationships (hierarchy, tension, complement), and provides composition rules.
+This specification defines the Value Ontology, a structured corpus of value statements that form the semantic foundation for UVC tokens. The ontology categorizes values, defines relationships (hierarchy, tension, complement), and provides composition rules.
 
 ---
 

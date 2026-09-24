@@ -4,7 +4,7 @@
 status: Current index
 normative-authority: Index only
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-15 status and authority classification
+last-reviewed: 2026-09-24 publication status
 owner: VCP Spec maintainers
 evidence-boundary: Navigation and classification only
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Navigation and classification only
 | Status | Current index |
 | Normative authority | Index only. Normative requirements live in accepted specifications and schemas. |
 | Protocol baseline | VCP 3.1 |
-| Last reviewed | 2026-08-15 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Navigation and document classification, not implementation conformance |
 
@@ -22,7 +22,7 @@ evidence-boundary: Navigation and classification only
 
 1. [Current overview](./VCP_OVERVIEW.md)
 2. [Newcomer guide](./VCP_NEWCOMER_GUIDE.md)
-3. [Source integration guide](./VCP_INTEGRATION_GUIDE.md)
+3. [Integration guide](./VCP_INTEGRATION_GUIDE.md)
 4. [Ecosystem status](./ECOSYSTEM_STATUS.md)
 5. [Document control](./DOCUMENT_CONTROL.md)
 6. [Conformance claim vocabulary](./CONFORMANCE_CLAIMS.md)
@@ -36,9 +36,10 @@ evidence-boundary: Navigation and classification only
 14. [Issue and decision routing](./ISSUE_AND_DECISION_ROUTING.md)
 15. [Requirement traceability status](./REQUIREMENT_TRACEABILITY.md)
 
-These pages describe the current source candidate. The root
-[publication-state record](../status/publication-state.json) is the machine
-authority for artifact availability. It currently permits source installs only.
+These pages describe the VCP 3.1 source baseline and the published SDK 4.2.0.
+The root [publication-state record](../status/publication-state.json) is the
+machine authority for artifact availability. It records registry receipts for
+all five 4.2.0 artifacts and permits registry install commands.
 
 ## Normative protocol material
 
@@ -57,7 +58,7 @@ review, certification, or registry publication.
 ## Protocol companions
 
 - [Identity](./identity/VCP_IDENTITY_NAMING.md)
-- [Transport and source integration](./VCP_INTEGRATION_GUIDE.md)
+- [Transport and integration](./VCP_INTEGRATION_GUIDE.md)
 - [Semantics and CSM-1](./semantics/VCP_SEMANTICS_CSM1.md)
 - [Adaptation](./adaptation/VCP_ADAPTATION.md)
 - [Context](./context/VCP_CONTEXT_SPECIFICATION.md)
@@ -71,7 +72,7 @@ specification and schema control.
 
 - [Current work register](./VCP_NEAR_TERM_TODOS.md)
 - [Adoption gates](./VCP_ADOPTION_STRATEGY.md)
-- [Unratified package identifiers](./VCP_PACKAGE_NAMING.md)
+- [Package identifier decision record](./VCP_PACKAGE_NAMING.md), ratified and published at 4.2.0
 - [Rendered artifact status](./RENDERED_ARTIFACT_STATUS.md)
 - [Compatibility policy](../COMPATIBILITY.md)
 - [Release checklist](../RELEASE_CHECKLIST.md)

@@ -4,7 +4,7 @@
 status: Current companion
 normative-authority: Accepted specifications and schemas
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 publication status
 owner: VCP Spec maintainers
 evidence-boundary: Architecture summary only
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Architecture summary only
 | Status | Current non-normative overview |
 | Normative authority | [VCP 3.1](../specs/VCP_SPECIFICATION_v3.1.md), accepted VEPs, and versioned schemas |
 | Protocol baseline | VCP 3.1, with VCP 3.2 material remaining pre-release |
-| Last reviewed | 2026-08-13 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Architecture summary. It does not prove implementation, deployment, or conformance. |
 
@@ -50,15 +50,16 @@ the intended stack. It does not imply equal maturity across every layer.
 
 ## Authority and status
 
-The repository baseline is VCP 3.1. VCP 3.2 amendments and VEP-0004 remain
-pre-release or experimental until the interim governance process records an
-authorized decision. VEP-0005 is a draft adaptation to MCP 2026-07-28 and does
-not change VCP 3.1.
+The source baseline is VCP 3.1, not yet issued as an immutable, ratified
+release. VCP 3.2 amendments and VEP-0004 remain pre-release or experimental
+until the interim governance process records an authorized decision. VEP-0005
+is a draft adaptation to MCP 2026-07-28 and does not change VCP 3.1.
 
-The current SDK candidate is source-only. Python, Rust, WASM, CLI, and WebMCP
-metadata names are candidate identifiers. No registry availability follows from
-those identifiers. See the machine-readable
-[publication state](../status/publication-state.json).
+SDK 4.2.0 is published under ratified names: `value-context-protocol` on PyPI,
+`@creedspace/vcp-sdk` on npm, and `vcp-core`, `vcp-cli` and `vcp-wasm` on
+crates.io. The machine-readable
+[publication state](../status/publication-state.json) records a registry
+receipt for each.
 
 ## Trust and enforcement boundary
 

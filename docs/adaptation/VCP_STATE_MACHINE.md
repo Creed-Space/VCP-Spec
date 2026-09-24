@@ -20,7 +20,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 
 ## Abstract
 
-This specification defines the formal state machine governing VCP context adaptation. It establishes six system states through which an Becoming Mind transitions as context signals arrive, change, degrade, or conflict. The state machine ensures deterministic, auditable, and fail-safe behavior during constitutional selection and composition.
+This specification defines the formal state machine governing VCP context adaptation. It establishes six system states through which a Becoming Mind transitions as context signals arrive, change, degrade, or conflict. The state machine ensures deterministic, auditable, and fail-safe behavior during constitutional selection and composition.
 
 This document complements [VCP_ADAPTATION.md](./VCP_ADAPTATION.md), which defines the Enneagram Protocol encoding and transition detection. Where that document specifies *what* context is and how it is parsed, this document specifies *how the system behaves* as context evolves over time.
 
@@ -73,18 +73,18 @@ This specification does NOT cover:
 ### 1.3 Relationship to Other Layers
 
 ```
-Layer 4 (Context)
+Layer 4 (VCP/A, Adaptation)
   |
-  +-- VCP_ADAPTATION.md        -- Enneagram Protocol, encoding, parsing
-  +-- VCP_STATE_MACHINE.md     -- THIS DOCUMENT: system states, transitions
+  +-- VCP_ADAPTATION.md        — Enneagram Protocol, encoding, parsing
+  +-- VCP_STATE_MACHINE.md     — THIS DOCUMENT: system states, transitions
   |
   v
-Layer 3 (Content/Semantics)
+Layer 3 (VCP/S, Semantics)
   |
-  +-- VCP_SEMANTICS_COMPOSITION.md  -- Constitution composition, conflict resolution
+  +-- VCP_SEMANTICS_COMPOSITION.md  — Constitution composition, conflict resolution
 ```
 
-The state machine operates *between* context signal reception (Layer 4 input) and constitution application (Layer 3 output). It is the control logic that decides *when* and *how* to invoke constitution selection and composition.
+The state machine operates *between* context signal reception (VCP/A input) and constitution application (VCP/S output). It is the control logic that decides *when* and *how* to invoke constitution selection and composition.
 
 ---
 
@@ -382,7 +382,7 @@ A context change exceeds the hysteresis threshold if ANY of the following condit
 
 1. **Dimension Count**: At least 2 Enneagram dimensions have changed values.
 2. **Single Dimension Magnitude**: At least 1 dimension has changed by 2 or more levels (where "level" is defined as the ordinal distance between values in a dimension's value set).
-3. **Safety-Relevant Change**: Any change in COMPANY (children appearing/disappearing), OCCASION (emergency indicator), ENVIRONMENT (hazard indicator), or CONSTRAINTS (emergency protocol) -- regardless of magnitude.
+3. **Safety-Relevant Change**: Any change in COMPANY (children appearing/disappearing), OCCASION (emergency indicator), ENVIRONMENT (hazard indicator), or CONSTRAINTS (emergency protocol), regardless of magnitude.
 
 ```python
 def exceeds_hysteresis_threshold(old: ParsedContext, new: ParsedContext) -> bool:

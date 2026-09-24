@@ -3,7 +3,7 @@
 <!-- vcp-document-control
 status: Current repository policy
 normative-authority: Interim source-maintenance policy
-protocol-version: VCP 3.1 source baseline and labelled candidates
+protocol-version: VCP 3.1 source baseline and labeled candidates
 last-reviewed: 2026-08-15
 owner: VCP Spec maintainers
 evidence-boundary: Example interpretation and validation policy, not normative release authority
@@ -47,7 +47,7 @@ updates or supersedes all mirrors plus conformance evidence.
 
 Examples use synthetic identifiers and must not contain credentials, personal
 data, live endpoints that invite unsafe traffic, or realistic secrets. Example
-keys are labelled non-production. Invalid security examples are stored only in
+keys are labeled non-production. Invalid security examples are stored only in
 explicit negative-fixture locations.
 
 ## Working signal

@@ -1,10 +1,10 @@
-# VCP-Identity: Namespace Governance Specification
+# VCP/I (Identity): Namespace Governance Specification
 
 <!-- vcp-document-control
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 layer and governance status
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -14,13 +14,13 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/I (Identity)
 **Status**: Complete
 
-> *Part of the Value-Context Protocol (VCP) - Layer 1*
+> *Part of the Value-Context Protocol (VCP), Layer 1*
 
 ---
 
 ## Abstract
 
-This specification defines governance rules for UVC namespaces - who can create tokens, how namespaces are registered, and delegation policies.
+This specification defines the governance rules for UVC namespaces: who can create tokens, how namespaces are registered, and how delegation works.
 
 ---
 
@@ -74,7 +74,7 @@ Namespace governance ensures:
 - Reserved namespaces, not available for registration
 - Universal semantics (same meaning everywhere)
 - Backward compatibility guaranteed
-- Governed by Creed Space advisory board
+- Proposed: Creed Space advisory board (not constituted; governance is interim, see [GOVERNANCE.md](../../GOVERNANCE.md))
 
 **Reserved Prefixes**:
 ```python

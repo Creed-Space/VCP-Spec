@@ -4,7 +4,7 @@
 status: Current companion
 normative-authority: Accepted specifications and schemas
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 publication status
 owner: VCP Spec maintainers
 evidence-boundary: Source integration checks only
 -->
@@ -13,11 +13,11 @@ evidence-boundary: Source integration checks only
 |---|---|
 | Status | Current, non-normative integration guide |
 | Normative authority | `specs/VCP_SPECIFICATION_v3.1.md` and accepted VEPs |
-| Protocol boundary | v3.1 baseline; v3.2 work is candidate or experimental |
-| SDK boundary | 4.2.0 source candidate |
-| Last reviewed | 2026-08-13 |
+| Protocol boundary | v3.1 source baseline; v3.2 work is candidate or experimental |
+| SDK boundary | 4.2.0, published 3 September 2026 (PyPI, npm, crates.io) |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP-Spec maintainers |
-| Evidence boundary | Commands and imports are checked against the coordinated VCP-SDK source candidate. Registry publication and production behavior require separate evidence. |
+| Evidence boundary | Commands and imports are checked against VCP-SDK tag v4.2.0. Registry receipts are recorded in `status/publication-state.json`; production behavior requires separate evidence. |
 
 ## 1. Publication State
 
@@ -27,9 +27,9 @@ on crates.io. [`status/publication-state.json`](../status/publication-state.json
 records the registry receipt and the pinned `source_commit` for each artifact.
 
 Install from the registries (`pip install value-context-protocol==4.2.0`,
-`npm install @creedspace/vcp-sdk@4.2.0`, `cargo add vcp-core@4.2.0`), or use an
-immutable VCP-SDK checkout at the recorded `source_commit`. From its
-repository root:
+`npm install @creedspace/vcp-sdk@4.2.0`, `cargo add vcp-core@4.2.0`), or build
+from the root of a VCP-SDK checkout at the published commit (tag v4.2.0,
+`c5035e9`):
 
 ```bash
 # Python source package
@@ -48,10 +48,10 @@ cargo build --manifest-path ./rust/Cargo.toml -p vcp-core
 The machine-readable publication gate is
 `VCP-SDK/release/publication-state.json`, mirrored in this repository as
 [`status/publication-state.json`](../status/publication-state.json)
-(as_of 2026-08-15). Public registry commands become valid
-only after that record contains a ratified name, an immutable source commit, an
-artifact digest or attestation, a registry receipt, and a successful installed
-artifact smoke test.
+(as_of 2026-09-03). That record now carries the ratified names, the pinned
+source commit, and a registry receipt for every 4.2.0 artifact, so the registry
+commands above are valid. A future release becomes installable from the
+registries only when its own record meets the same conditions.
 
 ## 2. Integration Boundary
 
@@ -60,7 +60,7 @@ policy components, and context projection helpers. The host application owns:
 
 1. Trust-anchor configuration and key rotation.
 2. Network retrieval policy and revocation availability.
-3. User consent, purpose limitation, minimisation, retention, and deletion.
+3. User consent, purpose limitation, minimization, retention, and deletion.
 4. Enforcement between verification and model-context construction.
 5. Provider credentials, provider calls, budgets, logging, and incident response.
 6. Human review for legal, privacy, accessibility, safety, and deployment claims.
@@ -100,7 +100,7 @@ assert identity.canonical == "family.safe.guide"
 assert identity.role == "guide"
 ```
 
-Run all public Python examples against the installed source package:
+Run all public Python examples from a VCP-SDK checkout against the installed package:
 
 ```bash
 python -m pip install ./python
@@ -127,10 +127,9 @@ cargo run --manifest-path ./rust/Cargo.toml -p vcp-core --example sign_and_verif
 cargo run --manifest-path ./rust/Cargo.toml -p vcp-core --example verify_bundle
 ```
 
-The candidate crate name is `vcp-core`, imported as `vcp_core`. Do not add a
-crates.io dependency until a registry receipt exists. During local coordinated
-development, use the workspace path or a Git dependency pinned to an immutable,
-reviewed commit.
+The crate is `vcp-core` on crates.io, imported as `vcp_core`; add it with
+`cargo add vcp-core@4.2.0`. During local coordinated development, use the
+workspace path or a Git dependency pinned to an immutable, reviewed commit.
 
 ## 6. WebMCP Quick Start
 
@@ -138,7 +137,8 @@ The browser package is a WebMCP integration subset. It does not export the
 Python and Rust protocol classes. In particular, it does not export `Bundle`,
 `CSM1Code`, `ContextEncoder`, or `Token`.
 
-After building and installing the local `webmcp` directory:
+After `npm install @creedspace/vcp-sdk@4.2.0`, or after building and installing
+the local `webmcp` directory:
 
 ```typescript
 import { registerVCPTools } from '@creedspace/vcp-sdk';
@@ -166,14 +166,14 @@ available only in an experimental Chromium lane.
 
 ## 7. Layer Integration Matrix
 
-| Layer | Minimum host responsibility | Primary candidate surface |
+| Layer | Minimum host responsibility | Primary SDK surface |
 |---|---|---|
 | VCP/I Identity | Parse, canonicalize, apply namespace policy, reject invalid boundaries | Python `vcp.identity`, Rust `vcp_core::identity` |
 | VCP/T Transport | Verify content, signature, trust, scope, audience, time, and revocation before use | Python orchestrator and trust modules, Rust transport and orchestrator modules |
 | VCP/S Semantics | Parse CSM-1 and apply only supported semantics | Python semantics modules, Rust CSM-1 modules |
 | VCP/A Adaptation | Treat personal and situational context as potentially sensitive; negotiate candidate features | Python adaptation modules, Rust context modules |
-| VCP/M Messaging | Select one declared messaging version and enforce negotiation | Versioned schemas and SDK messaging modules |
-| VCP/E Economic governance | Require explicit authority for consequential actions | Candidate schema and host policy |
+| VCP/M Messaging | Select one declared messaging version and enforce negotiation | Versioned schemas and the Python `vcp.messaging` module (Messaging v2.0 envelope; no Rust or WebMCP module) |
+| VCP/E Economic governance | Require explicit authority for consequential actions | Draft VCP/E specification and host policy; no SDK module |
 | VCP-X extensions | Negotiate each extension and fail safely when unsupported | Extension-specific SDK modules and conformance cases |
 
 ## 8. Fail-Closed Requirements

@@ -20,7 +20,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 
 ## Abstract
 
-The VCP Hook System defines a deterministic, priority-ordered extension mechanism for intercepting and modifying the constitutional adaptation pipeline. Hooks enable deployments to inject custom logic at well-defined points in the constitution lifecycle -- validation, selection, transition, conflict resolution, violation enforcement, and periodic maintenance -- without modifying the core VCP runtime. This specification defines the hook types, interface contracts, execution semantics, error handling, and security model.
+The VCP Hook System defines a deterministic, priority-ordered extension mechanism for intercepting and modifying the constitutional adaptation pipeline. Hooks enable deployments to inject custom logic at well-defined points in the constitution lifecycle (validation, selection, transition, conflict resolution, violation enforcement, and periodic maintenance) without modifying the core VCP runtime. This specification defines the hook types, interface contracts, execution semantics, error handling, and security model.
 
 ---
 
@@ -61,26 +61,32 @@ The hook system provides this extensibility through a formally defined set of in
 VCP Layer Stack with Hook Interception Points:
 
   ┌──────────────────────────────────────────────┐
-  │  Layer 5: Governance                         │
-  │  (Policy, audit, compliance)                 │
-  │     ↑ on_violation hooks feed audit trails   │
+  │  Layer 6: Economic Governance (VCP/E)        │
+  │  (Fiduciary constraints, authorization gaps) │
   ├──────────────────────────────────────────────┤
-  │  Layer 4: Adaptation  ← THIS SPECIFICATION  │
+  │  Layer 5: Messaging (VCP/M)                  │
+  │  (Inter-agent message exchange)              │
+  ├──────────────────────────────────────────────┤
+  │  Layer 4: Adaptation (VCP/A)                 │
+  │           ← THIS SPECIFICATION               │
   │  (Context, hooks, state machine)             │
   │     hooks: pre_inject, post_select,          │
   │     on_transition, on_conflict,              │
   │     on_violation, periodic                   │
   ├──────────────────────────────────────────────┤
-  │  Layer 3: Content                            │
+  │  Layer 3: Semantics (VCP/S)                  │
   │  (Constitutions, rules, constraints)         │
   ├──────────────────────────────────────────────┤
-  │  Layer 2: Transport                          │
-  │  (Delivery, encoding, verification)          │
+  │  Layer 2: Transport (VCP/T)                  │
+  │  (Signed bundles, hash verification,         │
+  │   audit logging)                             │
   ├──────────────────────────────────────────────┤
-  │  Layer 1: Identity                           │
-  │  (Signing, provenance, trust)                │
+  │  Layer 1: Identity (VCP/I)                   │
+  │  (Naming, namespaces, registry, encoding)    │
   └──────────────────────────────────────────────┘
 ```
+
+Every hook interception point sits within Layer 4. Audit records from `on_violation` hooks feed the tamper-evident audit chain ([VCP v3.1 §4.1](../../specs/VCP_SPECIFICATION_v3.1.md#41-tamper-evident-audit-chain)), a cross-cutting service rather than a layer.
 
 ### 1.4 Normative Language
 
@@ -323,7 +329,7 @@ Chain Execution Flow:
                       │                │
                       ▼                ▼
                    continue          abort
-                                    (chain halts, pipeline operation cancelled)
+                                    (chain halts, pipeline operation canceled)
 ```
 
 ### 5.2 Ordering Guarantees
@@ -625,7 +631,7 @@ def org_policy_resolver_action(input: HookInput) -> HookResult:
     for conflict in event.conflicting_rules:
         winner = org_policy.resolve(conflict.rule_a, conflict.rule_b)
         if winner is None:
-            # Cannot resolve -- escalate
+            # Cannot resolve; escalate
             escalation_queue.enqueue({
                 "conflict": conflict,
                 "session_id": input.session.id
@@ -753,7 +759,7 @@ def staleness_check_action(input: HookInput) -> HookResult:
 ### 10.1 Hook Registry
 
 ```python
-# Project-maintained implementation -- pseudocode
+# Project-maintained implementation (pseudocode)
 
 class HookRegistry:
     def __init__(self):
@@ -835,7 +841,7 @@ class HookRegistry:
 ### 10.2 Chain Executor
 
 ```python
-# Project-maintained implementation -- pseudocode
+# Project-maintained implementation (pseudocode)
 
 class ChainExecutor:
     def __init__(self, registry: HookRegistry):
@@ -994,7 +1000,7 @@ class ChainResult:
 ### 10.3 Periodic Hook Scheduler
 
 ```python
-# Project-maintained implementation -- pseudocode
+# Project-maintained implementation (pseudocode)
 
 class PeriodicScheduler:
     def __init__(self, registry: HookRegistry, executor: ChainExecutor):

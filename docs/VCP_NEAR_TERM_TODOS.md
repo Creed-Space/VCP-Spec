@@ -4,7 +4,7 @@
 status: Current planning record
 normative-authority: None
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 publication status
 owner: VCP maintainers
 evidence-boundary: Plans and gates only
 -->
@@ -14,16 +14,17 @@ evidence-boundary: Plans and gates only
 | Status | Current planning record |
 | Normative authority | None |
 | Protocol baseline | VCP 3.1 |
-| Last reviewed | 2026-08-13 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP maintainers |
 | Evidence boundary | Plans and gates. Completion requires linked machine or authorized human evidence. |
 
 ## Current state
 
-- VCP 3.1 is the repository protocol baseline.
+- VCP 3.1 is the protocol source baseline.
 - VCP 3.2 material remains pre-release.
 - VEP-0005 is a draft response to MCP 2026-07-28.
-- SDK artifacts are published at 4.2.0; the next registry release needs a new
+- SDK artifacts are published at 4.2.0 (VCP-SDK #99) under names ratified on
+  3 September 2026 (VCP-SDK #97); the next registry release needs a new
   coordinated review ledger.
 - The Demo is not conformance evidence.
 - Independent review, governance ratification, and canonical rendered documents
@@ -45,13 +46,12 @@ evidence-boundary: Plans and gates only
 
 | Decision | Required authority |
 |:---|:---|
-| Final registry names and owners | Project owner, registry owners, and trademark review |
 | VCP 3.2 maturity | Ratified protocol governance |
 | Licensing matrix and IETF draft rights | Rights authority with appropriate legal review |
 | Governance seats, quorum, and effective date | Constituting participants |
 | Canonical DOCX and PDF | Editorial and publication authority |
 | Independent protocol, cryptographic, privacy, and security acceptance | Reviewers independent of this implementation effort |
-| Package publication and production deployment | Named release and deployment approvers |
+| Next package publication and production deployment | Named release and deployment approvers |
 
 ## Evidence rule
 
@@ -61,5 +61,5 @@ human approver. Earlier evidence is superseded whenever the candidate changes.
 Passing source tests never substitutes for installed-artifact, deployed-runtime,
 human-review, rights, or publication evidence.
 
-The exhaustive improvement ledger for the current programme is maintained with
+The exhaustive improvement ledger for the current program is maintained with
 the coordinated implementation evidence, outside this normative repository.

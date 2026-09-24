@@ -3,17 +3,18 @@
 <!-- vcp-document-control
 status: Current interim lifecycle policy
 normative-authority: Repository maintenance policy
-protocol-version: VCP 3.1 source baseline with source-only SDK candidates
-last-reviewed: 2026-08-15
+protocol-version: VCP 3.1 source baseline with published SDK 4.2.0
+last-reviewed: 2026-09-24
 owner: VCP maintainers
 evidence-boundary: Maintenance expectations and end-state procedure, not a paid support contract or release guarantee
 -->
 
 ## Current support boundary
 
-The repositories provide community maintenance for current `main` source and
-the exact deployed Demo commit. No registry package, long-term-support line,
-paid support plan, continuous on-call service, or service-level agreement is
+The repositories provide community maintenance for current `main` source, the
+published SDK 4.2.x packages that the VCP-SDK security policy lists as
+supported, and the exact deployed Demo commit. No long-term-support line, paid
+support plan, continuous on-call service, or service-level agreement is
 currently promised. Older source snapshots are handled according to security
 impact, reproducibility, maintainer capacity, and any later published release
 policy.

@@ -17,7 +17,7 @@ the private Demo contact are `security@creedspace.com`. A test report must be
 acknowledged by the named operator before either route is advertised as
 verified.
 
-The initial coordinator owns acknowledgement, evidence protection, severity,
+The initial coordinator owns acknowledgment, evidence protection, severity,
 embargo, and assignment. Component owners investigate. A release authority
 approves publication or package action. A privacy authority handles personal
 data. A rights authority reviews wording with legal consequences. One person

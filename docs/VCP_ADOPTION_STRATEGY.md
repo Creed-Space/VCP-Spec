@@ -35,7 +35,7 @@ record.
 | C. First public release | Ratified names, rights approval, trusted publisher, registry receipts, production smoke | Published packages at exact versions |
 | D. Independent interop | Separately maintained implementation passes mandatory profile suites | Independent interoperability for that profile |
 | E. Governance maturity | Constituted membership, quorum, decisions, conflicts, minutes, appeals | Community-governed project within the recorded scope |
-| F. Standards submission | Current draft, submission rights, acknowledgements, technical and security review | Submitted Internet-Draft or other precise standards status |
+| F. Standards submission | Current draft, submission rights, acknowledgments, technical and security review | Submitted Internet-Draft or other precise standards status |
 
 ## IETF path
 
@@ -53,7 +53,7 @@ Before resubmission, the expired draft requires:
 2. a clear four-core-layer scope or complete treatment of all claimed layers;
 3. validated security, privacy, registry, and IANA considerations;
 4. IETF Trust and BCP 78 rights review;
-5. complete contributor acknowledgements and submission authority;
+5. complete contributor acknowledgments and submission authority;
 6. current `idnits` or Datatracker validation;
 7. an explicit intended status and standards venue strategy.
 
@@ -65,7 +65,7 @@ model, privacy boundary, and migration story. Integrations begin as small,
 reversible experiments against one named version. Their maintainers decide
 whether and how VCP fits their architecture.
 
-High-cost commitments such as a new foundation, certification programme, or
+High-cost commitments such as a new foundation, certification program, or
 trademark licensing scheme wait for governance and legal authority. Repository
 text cannot create acceptance by an external foundation or standards body.
 
