@@ -4,7 +4,7 @@
 status: Interim and unratified
 normative-authority: governance/authority.json
 protocol-version: Protocol independent governance layer
-last-reviewed: 2026-08-14 active authority and evidence boundary
+last-reviewed: 2026-09-24 status vocabulary
 owner: Interim repository administrator
 evidence-boundary: Present authority and proposed process, not permanent-governance ratification
 -->
@@ -12,7 +12,7 @@ evidence-boundary: Present authority and proposed process, not permanent-governa
 **Status:** active interim repository process, unratified as a permanent charter
 **Canonical authority:** this VCP-Spec repository
 **Machine-readable state:** [`governance/authority.json`](./governance/authority.json)
-**Last reviewed:** 2026-08-14
+**Last reviewed:** 2026-09-24
 
 ## Present truth
 
@@ -45,7 +45,7 @@ second VEP intake.
 | Normative protocol or schema change | Canonical VEP issue and candidate pull request | Ratified protocol decision before release status changes |
 | Extension maturity change | Canonical VEP and evidence record | Ratified governance decision |
 | Permanent governance charter | Public proposal, disclosures, discussion, and vote record | Constituted participants with recorded quorum |
-| Licence, patent, trademark, or contribution policy | Review pack and proposed text | Authorized rights and legal review |
+| License, patent, trademark, or contribution policy | Review pack and proposed text | Authorized rights and legal review |
 | Certification mark or compatibility claim | Conformance definition and appeals process | Trademark authority and ratified governance |
 | Registry publication | Coordinated release ledger | Named release and registry authority |
 | Foundation transfer | Executed transfer record | Current rights holder and accepting foundation |
@@ -77,7 +77,7 @@ The canonical interim status vocabulary is:
 |:---|:---|
 | Draft | Open proposal without a decision |
 | Recorded pre-charter acceptance | Historical repository label, retained for provenance, without evidence of a constituted TSC vote |
-| Experimental | Available for evaluation, outside the published baseline |
+| Experimental | Available for evaluation, outside the source baseline |
 | Implemented in source | Candidate behavior exists, without publication authority |
 | Released | Included in an authorized immutable protocol release |
 | Deferred | Work deliberately postponed with a recorded reason |
@@ -178,7 +178,7 @@ A permanent charter becomes active only when one decision record contains:
 5. appeal and amendment procedures;
 6. security and embargo procedures;
 7. succession and inactivity rules;
-8. an authorized rights review for licence, patent, trademark, contribution,
+8. an authorized rights review for license, patent, trademark, contribution,
    certification, and any foundation-transfer provisions;
 9. repository and registry control assignments;
 10. public copy updates that remove interim wording only after the decision is

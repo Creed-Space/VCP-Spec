@@ -23,14 +23,17 @@ body:
   - type: dropdown
     id: layer
     attributes:
-      label: Protocol Layer
-      description: Which VCP layer does this change affect?
+      label: Protocol Area
+      description: Which part of VCP does this change affect?
       options:
         - VCP/I (Identity)
         - VCP/T (Transport)
         - VCP/S (Semantics)
         - VCP/A (Adaptation)
-        - Cross-layer
+        - VCP/M (Messaging)
+        - VCP/E (Economic Governance)
+        - Core Security / cross-cutting
+        - Extensions (VCP-X-*)
         - Schemas
     validations:
       required: true

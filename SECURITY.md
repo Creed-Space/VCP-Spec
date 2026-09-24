@@ -40,7 +40,7 @@ examples are in scope. Editorial disagreements and governance proposals without
 a security impact belong in the public VEP process.
 
 The [coordinated security response](./docs/SECURITY_RESPONSE.md) defines
-severity, acknowledgement targets, embargo, disclosure, backport, advisory,
+severity, acknowledgment targets, embargo, disclosure, backport, advisory,
 release, and revocation roles. The [ecosystem threat model](./docs/THREAT_MODEL.md)
 maps material trust boundaries to controls and residual gates. These are
 interim process targets, not proof of staffing, a completed exercise, or
