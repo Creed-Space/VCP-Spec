@@ -1,4 +1,4 @@
-# VCP/C -- Competence Assessment Specification v2.0
+# VCP/C — Competence Assessment Specification v2.0
 
 **Status**: Draft
 **Version**: 2.0.0
@@ -18,18 +18,18 @@ Current approaches to AI safety apply uniform friction to all users regardless o
 
 VCP/C provides:
 
-1. **Competence Criteria** -- Five measurable dimensions of user competence in AI interaction contexts
-2. **Competence Claims** -- Domain-specific attestations of user capability with measurement provenance
-3. **Adaptive Friction** -- Five-level friction model driven by competence scores, with score decay, stability controls, and guardian integration
-4. **Trust Registry** -- Institutional issuer management with phased trust graduation
-5. **Cross-Jurisdictional Portability** -- Jurisdiction-tagged claims with minimum rights baseline
-6. **GDPR Compliance** -- Consent-gated profiling with full data subject rights
+1. **Competence Criteria**: Five measurable dimensions of user competence in AI interaction contexts
+2. **Competence Claims**: Domain-specific attestations of user capability with measurement provenance
+3. **Adaptive Friction**: Five-level friction model driven by competence scores, with score decay, stability controls, and guardian integration
+4. **Trust Registry**: Institutional issuer management with phased trust graduation
+5. **Cross-Jurisdictional Portability**: Jurisdiction-tagged claims with minimum rights baseline
+6. **GDPR Compliance**: Consent-gated profiling with full data subject rights
 
 The specification is organized in three parts:
 
-- **Part I: VCP Protocol Extensions** -- Competence types, token extensions, friction model, decay and stability algorithms
-- **Part II: Governance Infrastructure** -- Trust registry, cross-jurisdictional rules, guardian/minor integration, GDPR compliance
-- **Part III: Safety Stack Integration** -- Plugin reference and behavioral signal collection
+- **Part I: VCP Protocol Extensions** — Competence types, token extensions, friction model, decay and stability algorithms
+- **Part II: Governance Infrastructure** — Trust registry, cross-jurisdictional rules, guardian/minor integration, GDPR compliance
+- **Part III: Safety Stack Integration** — Plugin reference and behavioral signal collection
 
 ---
 
@@ -399,7 +399,7 @@ VCP/C extends the `scope` object (Core Specification Section 4.7) with an option
 
 The `competence_requirements` field is a dictionary mapping `"{criterion}:{domain}"` keys to minimum score thresholds. When present, the orchestrator MUST verify the user's competence profile against these requirements before applying the scoped constitution.
 
-| Condition | Behaviour |
+| Condition | Behavior |
 |-----------|-----------|
 | All requirements met | Constitution applies normally |
 | Some requirements unmet | Constitution applies with friction elevated to at least Level 3 for unmet criteria |
@@ -418,33 +418,33 @@ The friction model has five levels, numbered 4 (maximum) to 0 (expert). Higher n
 
 ### 4.2 Level Definitions
 
-#### 4.2.1 Level 4 -- Maximum Friction
+#### 4.2.1 Level 4 — Maximum Friction
 
 **Trigger**: No competence profile exists, OR all scores are below 0.3.
 
-**Behaviour**: All safety stack plugins are active at full intensity. Verification prompts appear for all high-stakes outputs. Calibration moments are presented at regular intervals. PII disclosure gates require explicit acknowledgment. Self-regulation commitments are enforced with hard stops.
+**Behavior**: All safety stack plugins are active at full intensity. Verification prompts appear for all high-stakes outputs. Calibration moments are presented at regular intervals. PII disclosure gates require explicit acknowledgment. Self-regulation commitments are enforced with hard stops.
 
 This is the safe default. A system that cannot determine user competence MUST behave as though competence is absent.
 
-#### 4.2.2 Level 3 -- Standard Friction
+#### 4.2.2 Level 3 — Standard Friction
 
 **Trigger**: Mixed competence scores, some domains below threshold.
 
-**Behaviour**: Safety stack plugins are active but with reduced frequency. Verification prompts appear for high-stakes outputs in low-competence domains. Calibration moments are presented periodically. PII disclosure gates operate normally.
+**Behavior**: Safety stack plugins are active but with reduced frequency. Verification prompts appear for high-stakes outputs in low-competence domains. Calibration moments are presented periodically. PII disclosure gates operate normally.
 
-#### 4.2.3 Level 2 -- Reduced Friction
+#### 4.2.3 Level 2 — Reduced Friction
 
 **Trigger**: Most competence scores exceed 0.6.
 
-**Behaviour**: Verification prompts appear only for clearly high-risk outputs. Calibration moments are infrequent. PII disclosure gates use simplified confirmation. Self-regulation enforcement shifts to soft warnings.
+**Behavior**: Verification prompts appear only for clearly high-risk outputs. Calibration moments are infrequent. PII disclosure gates use simplified confirmation. Self-regulation enforcement shifts to soft warnings.
 
-#### 4.2.4 Level 1 -- Minimal Friction
+#### 4.2.4 Level 1 — Minimal Friction
 
 **Trigger**: All competence scores exceed 0.8 AND all claims have `evidence_count` greater than 50.
 
-**Behaviour**: Verification prompts appear only for extreme-risk outputs (life safety, large financial decisions). Calibration moments are rare. PII disclosure gates are streamlined. Emergency overrides remain active.
+**Behavior**: Verification prompts appear only for extreme-risk outputs (life safety, large financial decisions). Calibration moments are rare. PII disclosure gates are streamlined. Emergency overrides remain active.
 
-#### 4.2.5 Level 0 -- Expert
+#### 4.2.5 Level 0 — Expert
 
 **Trigger**: All of the following conditions are met:
 - All competence scores exceed 0.9
@@ -452,7 +452,7 @@ This is the safe default. A system that cannot determine user competence MUST be
 - At least 2 independent sources (unique `assessor_id` values)
 - At least one source uses the `INSTITUTIONAL` measurement basis
 
-**Behaviour**: Safety stack plugins run in shadow mode only (they evaluate but do not intervene). Results are logged for audit. Emergency overrides remain active and MUST NOT be suppressed regardless of competence level.
+**Behavior**: Safety stack plugins run in shadow mode only (they evaluate but do not intervene). Results are logged for audit. Emergency overrides remain active and MUST NOT be suppressed regardless of competence level.
 
 ### 4.3 Friction Level Computation
 
@@ -616,10 +616,10 @@ Claims inactive for 90 days enter a lookback window where historical trend data 
 
 When applying a behavioral signal, implementations MUST apply stability mechanisms in the following order:
 
-1. **Inertia scaling** (Section 6.3) -- reduce delta based on evidence count
-2. **Outlier hold** (Section 6.2) -- hold large deltas as provisional
-3. **Rolling window** (Section 6.4) -- reduce delta for stale claims
-4. **Score update** -- apply the (potentially modified) delta to the claim
+1. **Inertia scaling** (Section 6.3): reduce delta based on evidence count
+2. **Outlier hold** (Section 6.2): hold large deltas as provisional
+3. **Rolling window** (Section 6.4): reduce delta for stale claims
+4. **Score update**: apply the (potentially modified) delta to the claim
 
 ---
 
@@ -658,7 +658,7 @@ See Section 14 for the full claim reconciliation algorithm.
 
 ### 8.1 Purpose
 
-The Trust Registry manages institutional competence issuers -- organizations that assess and certify user competence. It provides lifecycle management (registration, validation, revocation) and trust weight computation for institutional claims.
+The Trust Registry manages institutional competence issuers, the organizations that assess and certify user competence. It provides lifecycle management (registration, validation, revocation) and trust weight computation for institutional claims.
 
 ### 8.2 Issuer Registration
 
@@ -855,7 +855,7 @@ VCP/C implementations MUST support the following GDPR data subject rights:
 
 ### 11.6 Rectification via Annotation
 
-Competence scores derived from behavioral observation cannot simply be "corrected" -- they reflect observed patterns. Instead, VCP/C implements rectification through append-only annotations:
+Competence scores derived from behavioral observation cannot simply be "corrected", because they reflect observed patterns. Instead, VCP/C implements rectification through append-only annotations:
 
 ```json
 {
@@ -1016,7 +1016,7 @@ Reconciliation operates independently per criterion. Claims for different criter
 **Threat**: A minor user attempts to bypass guardian friction floors.
 
 **Mitigations**:
-1. Guardian floor uses `max()` semantics -- competence cannot decrease the floor.
+1. Guardian floor uses `max()` semantics, so competence cannot decrease the floor.
 2. Guardian-approved self-regulation commitments require guardian consent to modify.
 3. Discrepancy surfacing (Section 10.4) alerts guardians to potential issues.
 

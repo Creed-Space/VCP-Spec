@@ -8,13 +8,13 @@ governance adoption.
 
 1. Who may submit a disclosure and where is it recorded?
 2. What knowledge standard and timing apply?
-3. Does contribution imply any patent licence, and if so, on what terms?
+3. Does contribution imply any patent license, and if so, on what terms?
 4. Is defensive termination appropriate and legally supportable?
 5. How are third-party claims, essential claims, and non-assert commitments
    handled?
 6. What process manages confidential disclosures and conflicts?
 
-No patent licence, non-assert promise, or defensive-termination term is granted
+No patent license, non-assert promise, or defensive-termination term is granted
 by this draft.
 
 ## Trademark questions for review
@@ -28,7 +28,7 @@ by this draft.
 6. What happens if stewardship transfers to another entity?
 
 No ownership claim, permission, certification mark, endorsement, or foundation
-licence is created by this draft.
+license is created by this draft.
 
 ## Proposed process safeguards
 

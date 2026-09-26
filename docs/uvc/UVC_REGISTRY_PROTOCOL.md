@@ -4,14 +4,14 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 layer and governance status
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
 
 **Version**: 1.0.0
 **Date**: 2026-01-11
-**Layer**: 1 (UVC - Universal Value Coding)
+**Layer**: VCP/I (Identity)
 **Status**: Complete
 
 ---
@@ -19,6 +19,11 @@ evidence-boundary: Explanatory material, not implementation conformance
 ## Abstract
 
 This specification defines the protocol for resolving UVC tokens to VCP bundle locations. It covers resolution flow, REST API design, caching strategies, and provisions for distributed registry architectures.
+
+> **Deployment status**: No public VCP registry operates. `registry.example.org`
+> is an illustrative host. The `creed.space` URLs use the example issuer from
+> VCP/I v2.0 to show path shapes; they are not live registry or well-known
+> endpoints.
 
 ---
 
@@ -119,7 +124,7 @@ class ResolutionResult:
     # Metadata
     issuer: str                     # Bundle issuer
     version: str                    # Resolved version
-    csm1: str                       # CSM1 code
+    csm1: str                       # CSM-1 code
 
     # Cache control
     ttl: int                        # Seconds until stale
@@ -160,7 +165,7 @@ class UVCResolver:
     def __init__(
         self,
         cache: 'ResolutionCache',
-        registry_url: str = "https://registry.creed.space",
+        registry_url: str = "https://registry.example.org",  # illustrative; no public VCP registry operates
         trust_anchors: Dict[str, str] = None,
     ):
         self.cache = cache
@@ -312,8 +317,8 @@ info:
     url: https://creed.space
 
 servers:
-  - url: https://registry.creed.space/v1
-    description: Production registry
+  - url: https://registry.example.org/v1
+    description: Illustrative host; no public VCP registry operates
 
 paths:
   /resolve/{token}:
@@ -705,19 +710,19 @@ components:
 
 ```bash
 # Resolve token
-curl https://registry.creed.space/v1/resolve/family.safe.guide
+curl https://registry.example.org/v1/resolve/family.safe.guide
 
 # Resolve specific version
-curl "https://registry.creed.space/v1/resolve/family.safe.guide?version=1.2.0"
+curl "https://registry.example.org/v1/resolve/family.safe.guide?version=1.2.0"
 
 # Search by persona and tags
-curl "https://registry.creed.space/v1/search?persona=N&tags=family&tags=children"
+curl "https://registry.example.org/v1/search?persona=N&tags=family&tags=children"
 
 # List versions
-curl https://registry.creed.space/v1/versions/family.safe.guide
+curl https://registry.example.org/v1/versions/family.safe.guide
 
 # Register constitution (authenticated)
-curl -X POST https://registry.creed.space/v1/register \
+curl -X POST https://registry.example.org/v1/register \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -871,8 +876,8 @@ https://creed.space/.well-known/vcp/family/safe/guide/1.2.0.bundle
 For federated resolution, registries can be discovered via DNS:
 
 ```
-_vcp._tcp.creed.space.  IN  SRV  10 0 443 registry.creed.space.
-_vcp-peer._tcp.creed.space.  IN  SRV  20 0 443 peer1.registry.example.
+_vcp._tcp.example.org.  IN  SRV  10 0 443 registry.example.org.
+_vcp-peer._tcp.example.org.  IN  SRV  20 0 443 peer1.registry.example.
 ```
 
 ### 5.3 WebFinger
@@ -1023,6 +1028,11 @@ class DHTResolver:
 
 ## 8. Project-Maintained Implementation
 
+The listing below is a reference sketch kept with this document, not SDK code.
+VCP-SDK 4.2.0 ships an abstract `Registry` interface and an in-memory
+`LocalRegistry` for development and testing in `vcp.identity.registry`, with no
+network resolver. Registry adapters and trust anchors belong to the application.
+
 ### 8.1 Complete Resolver
 
 ```python
@@ -1070,7 +1080,7 @@ class UVCResolver:
     """
 
     DEFAULT_REGISTRIES = [
-        "https://registry.creed.space",
+        "https://registry.example.org",  # illustrative; no public VCP registry operates
     ]
 
     def __init__(

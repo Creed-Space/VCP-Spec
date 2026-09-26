@@ -1,4 +1,4 @@
-# VCP/I -- Identity Layer Specification v2.0
+# VCP/I — Identity Layer Specification v2.0
 
 **Status**: Draft
 **Version**: 2.0.0
@@ -11,7 +11,7 @@
 
 ## Abstract
 
-This specification defines the VCP Identity Layer (VCP/I), the innermost layer of the Value Context Protocol. VCP/I provides unique, human-readable, namespace-governed, version-aware identifiers for constitutional values and behavioral rules. It defines the token format, naming conventions, namespace governance, registry protocol, value ontology, and encoding algorithms that enable constitutions to be addressed, discovered, resolved, and verified across implementations and organizations.
+This specification defines the VCP Identity Layer (VCP/I), Layer 1 of the Value Context Protocol and the innermost layer of bundle encapsulation. VCP/I provides unique, human-readable, namespace-governed, version-aware identifiers for constitutional values and behavioral rules. It defines the token format, naming conventions, namespace governance, registry protocol, value ontology, and encoding algorithms that enable constitutions to be addressed, discovered, resolved, and verified across implementations and organizations.
 
 ---
 
@@ -32,7 +32,7 @@ This specification defines the VCP Identity Layer (VCP/I), the innermost layer o
 
 ### 1.1 Purpose
 
-The VCP Identity Layer provides the addressing foundation for the Value Context Protocol. Every constitution, value bundle, and behavioral rule in the VCP ecosystem is identified by a Universal Value Code (UVC) token -- a portable, human-readable name that resolves to a specific resource.
+The VCP Identity Layer provides the addressing foundation for the Value Context Protocol. Every constitution, value bundle, and behavioral rule in the VCP ecosystem is identified by a Universal Value Code (UVC) token: a portable, human-readable name that resolves to a specific resource.
 
 VCP/I enables:
 
@@ -46,25 +46,25 @@ VCP/I enables:
 
 ### 1.2 Relationship to Other Layers
 
-VCP/I is the innermost layer of the VCP protocol stack:
+VCP/I is Layer 1, the innermost layer of bundle encapsulation (VCP/I → VCP/T → VCP/S → VCP/A). VCP/M (Layer 5) and VCP/E (Layer 6) sit above these four and operate on messages and transactions rather than wrapping bundles.
 
 ```
-VCP/A (Adaptation) ── outermost
+VCP/A (Adaptation) ── outermost bundle wrapper
 VCP/S (Semantics)
-VCP/T (Transport)  ── specified in VCP Core Specification v2.0
+VCP/T (Transport)  ── VCP v3.1 §2.2 (v1.0 §4, §7, §8)
 VCP/I (Identity)   ── innermost: token, version, namespace reference
 ```
 
-Tokens are names that resolve to bundles. VCP/I is content-agnostic -- it names resources without prescribing their semantics, transport, or adaptation behavior. The other layers encapsulate VCP/I data:
+Tokens are names that resolve to bundles. VCP/I is content-agnostic. It names resources without prescribing their semantics, transport, or adaptation behavior. The other layers encapsulate VCP/I data:
 
 | Layer | Encapsulates | Data Contents |
 |-------|-------------|---------------|
 | VCP/I (innermost) | Constitutional content | Identity: token, version, namespace reference |
-| VCP/T (Core Spec) | VCP/I + content | Transport: digital signature, verification hash, bundle manifest |
+| VCP/T | VCP/I + content | Transport: digital signature, verification hash, bundle manifest |
 | VCP/S | VCP/T + VCP/I + content | Semantics: CSM1 rules, composition metadata, persona assignments |
 | VCP/A (outermost) | VCP/S + VCP/T + VCP/I + content | Context: situational state, transition signals, adaptation hooks |
 
-> **Note**: VCP/T (Transport) is specified within the VCP Core Specification v2.0 (`VCP_SPECIFICATION_v2.0.md`) rather than as a separate companion document.
+> **Note**: VCP/T (Transport) has no separate companion document. It is defined by §2.2 of the VCP v3.1 baseline (`VCP_SPECIFICATION_v3.1.md`), which incorporates v1.0 §4 (Bundle Format), §7 (Transport Protocol) and §8 (Verification Protocol).
 
 ### 1.3 Registry Operations
 
@@ -566,7 +566,7 @@ def from_emoji(emoji_str: str) -> str:
     return '.'.join(segments) if segments else None
 ```
 
-Emoji decoding is approximate -- it MAY lose precision for tokens with segments not in the codex.
+Emoji decoding is approximate: it MAY lose precision for tokens with segments not in the codex.
 
 ### 2.12 Mnemonic (Human Verbal) Format
 
@@ -1264,22 +1264,22 @@ def hash_uvc_token(token: str) -> str:
 
 | Tier | Prefixes | Governance | Registration | Decision Process | Timeline |
 |------|----------|------------|--------------|------------------|----------|
-| **Core** | `family`, `work`, `secure`, `creative`, `reality` | Creed Space stewardship | Reserved | Consortium vote (2/3 supermajority) | 90-day proposal period |
+| **Core** | `family`, `work`, `secure`, `creative`, `reality` | Creed Space stewardship | Reserved | Proposed: consortium vote (2/3 supermajority) | 90-day proposal period |
 | **Organizational** | `company`, `school`, `ngo` | Delegated to org | Verified ownership | Organization internal | Immediate |
 | **Community** | `religion`, `culture`, `community` | Community consensus | Multi-stakeholder | Community consensus | 30-day comment period |
 | **Personal** | `user` | Individual control | Self-service | Self-service | Immediate |
 
 #### 4.2.1 Core Tier
 
-**Governance**: Creed Space maintains exclusive stewardship.
+**Governance** (proposed): Creed Space stewardship. VCP governance is currently interim, and no consortium or advisory board exists (see `GOVERNANCE.md` and `governance/authority.json`).
 
 Characteristics:
 
 - Reserved namespaces, not available for registration
 - Universal semantics (same meaning everywhere)
 - Backward compatibility guaranteed
-- Governed by Creed Space advisory board
-- Changes require 2/3 consortium supermajority with a 90-day proposal period
+- Proposed: governed by a Creed Space advisory board (not constituted; see `GOVERNANCE.md` and `governance/authority.json`)
+- Proposed: changes require a 2/3 consortium supermajority with a 90-day proposal period
 
 Reserved prefixes:
 
@@ -2175,21 +2175,23 @@ components:
 
 ### 5.8 Example Requests
 
+`registry.example.org` is an illustrative host. No public VCP registry operates; the registry adapters and the registries they query belong to the application.
+
 ```bash
 # Resolve token
-curl https://registry.creed.space/v1/resolve/family.safe.guide
+curl https://registry.example.org/v1/resolve/family.safe.guide
 
 # Resolve specific version
-curl "https://registry.creed.space/v1/resolve/family.safe.guide?version=1.2.0"
+curl "https://registry.example.org/v1/resolve/family.safe.guide?version=1.2.0"
 
 # Search by persona and tags
-curl "https://registry.creed.space/v1/search?persona=N&tags=family&tags=children"
+curl "https://registry.example.org/v1/search?persona=N&tags=family&tags=children"
 
 # List versions
-curl https://registry.creed.space/v1/versions/family.safe.guide
+curl https://registry.example.org/v1/versions/family.safe.guide
 
 # Register constitution (authenticated)
-curl -X POST https://registry.creed.space/v1/register \
+curl -X POST https://registry.example.org/v1/register \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -2319,7 +2321,7 @@ https://{issuer}/.well-known/vcp/{path}/versions.json
 https://{issuer}/.well-known/vcp/{path}/{version}.bundle
 ```
 
-Example:
+Example, with `creed.space` standing in for any issuer (it does not currently serve these paths):
 
 ```
 https://creed.space/.well-known/vcp/family/safe/guide.json
@@ -2332,8 +2334,8 @@ https://creed.space/.well-known/vcp/family/safe/guide/1.2.0.bundle
 For federated resolution, registries can be discovered via DNS SRV records:
 
 ```
-_vcp._tcp.creed.space.       IN  SRV  10 0 443 registry.creed.space.
-_vcp-peer._tcp.creed.space.  IN  SRV  20 0 443 peer1.registry.example.
+_vcp._tcp.example.org.       IN  SRV  10 0 443 registry.example.org.
+_vcp-peer._tcp.example.org.  IN  SRV  20 0 443 peer1.registry.example.
 ```
 
 #### 5.10.3 WebFinger
@@ -2449,7 +2451,7 @@ Implementations SHOULD track:
 
 ### 6.1 Status and Scope
 
-The Value Ontology is an OPTIONAL component of VCP/I. VCP functions completely without a populated ontology -- tokens are names that resolve to bundles regardless of whether semantic backing exists.
+The Value Ontology is an OPTIONAL component of VCP/I. VCP functions completely without a populated ontology, because tokens are names that resolve to bundles regardless of whether semantic backing exists.
 
 The ontology enables optional enhancements:
 
@@ -3056,14 +3058,14 @@ class UVCResolver:
     Resolve UVC tokens to VCP bundle locations.
 
     Usage:
-        resolver = UVCResolver()
+        resolver = UVCResolver(registries=["https://registry.example.org"])
         result = await resolver.resolve("family.safe.guide")
         print(result.bundle_uri)
     """
 
-    DEFAULT_REGISTRIES = [
-        "https://registry.creed.space",
-    ]
+    # The application configures its registries. No public VCP registry
+    # operates, so the reference resolver has no default.
+    DEFAULT_REGISTRIES: List[str] = []
 
     def __init__(
         self,
@@ -3463,7 +3465,7 @@ When systems with different VCP versions exchange data:
 
 ### Appendix D: Reference Implementations
 
-- **Python, Rust, and TypeScript SDK**: github.com/Creed-Space/VCP-SDK
+- **VCP-SDK** (Python and Rust implementations, TypeScript WebMCP browser integration): github.com/Creed-Space/VCP-SDK
 - **Website**: www.ValueContextProtocol.org
 
 ---

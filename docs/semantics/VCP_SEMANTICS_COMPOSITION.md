@@ -14,13 +14,13 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/S (Semantics)
 **Status**: Complete
 
-> *Part of the Value-Context Protocol (VCP) - Layer 3*
+> *Part of the Value Context Protocol (VCP) - Layer 3*
 
 ---
 
 ## Abstract
 
-This specification defines how multiple constitutions are composed into a coherent behavioral policy. It covers composition modes, layer precedence, conflict detection, and merge semantics.
+This specification defines how multiple constitutions are composed into a coherent behavioral policy. It covers composition modes, composition layer precedence, conflict detection, and merge semantics.
 
 ---
 
@@ -28,7 +28,7 @@ This specification defines how multiple constitutions are composed into a cohere
 
 1. [Introduction](#1-introduction)
 2. [Composition Modes](#2-composition-modes)
-3. [Layer Precedence](#3-layer-precedence)
+3. [Composition layer precedence](#3-composition-layer-precedence)
 4. [Conflict Detection](#4-conflict-detection)
 5. [Merge Semantics](#5-merge-semantics)
 6. [Resolution Strategies](#6-resolution-strategies)
@@ -113,23 +113,23 @@ In constitution manifest:
 
 ---
 
-## 3. Layer Precedence
+## 3. Composition layer precedence
 
-### 3.1 Standard Layers
+### 3.1 Standard composition layers
 
 ```
-Layer 4: Session Override  (highest precedence)
-         ↑
-Layer 3: User Customization
-         ↑
-Layer 2: Domain Rules
-         ↑
-Layer 1: Safety Foundations
-         ↑
-Layer 0: Platform Defaults (lowest precedence)
+Composition layer 4: Session Override  (highest precedence)
+                     ↑
+Composition layer 3: User Customization
+                     ↑
+Composition layer 2: Domain Rules
+                     ↑
+Composition layer 1: Safety Foundations
+                     ↑
+Composition layer 0: Platform Defaults (lowest precedence)
 ```
 
-### 3.2 Layer Definitions
+### 3.2 Composition layer definitions
 
 ```python
 from dataclasses import dataclass
@@ -146,7 +146,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def platform_defaults() -> 'ConstitutionLayer':
-        """Layer 0: Platform defaults"""
+        """Composition layer 0: Platform defaults"""
         return ConstitutionLayer(
             constitution=load_platform_defaults(),
             layer=0,
@@ -156,7 +156,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def safety_foundation(ref: str) -> 'ConstitutionLayer':
-        """Layer 1: Safety foundations (UEF, etc.)"""
+        """Composition layer 1: Safety foundations (UEF, etc.)"""
         return ConstitutionLayer(
             constitution=load_constitution(ref),
             layer=1,
@@ -166,7 +166,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def domain_rules(ref: str) -> 'ConstitutionLayer':
-        """Layer 2: Domain-specific rules"""
+        """Composition layer 2: Domain-specific rules"""
         return ConstitutionLayer(
             constitution=load_constitution(ref),
             layer=2,
@@ -176,7 +176,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def user_customization(ref: str) -> 'ConstitutionLayer':
-        """Layer 3: User customizations"""
+        """Composition layer 3: User customizations"""
         return ConstitutionLayer(
             constitution=load_constitution(ref),
             layer=3,
@@ -186,7 +186,7 @@ class ConstitutionLayer:
 
     @staticmethod
     def session_override(constitution: 'Constitution') -> 'ConstitutionLayer':
-        """Layer 4: Session-specific overrides"""
+        """Composition layer 4: Session-specific overrides"""
         return ConstitutionLayer(
             constitution=constitution,
             layer=4,

@@ -11,7 +11,7 @@ P:G:4
 G:collaborate:expert:bilateral
 X:
 F:standard
-S:session-abc123
+S:
 R:🧠focused:4|💭calm:5|🔋rested:4
 Q:0.0:NONE::|WC_MIN:🛑📊⚖️
 WC:🛑⏸️📓🔒📊⚖️:2:welfare.creed-space.v1

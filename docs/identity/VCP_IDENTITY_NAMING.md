@@ -1,4 +1,4 @@
-# VCP-Identity: Naming Specification
+# VCP/I (Identity): Naming Specification
 
 <!-- vcp-document-control
 status: Reference companion, status-classified
@@ -14,7 +14,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/I (Identity)
 **Status**: Complete
 
-> *Part of the Value-Context Protocol (VCP) - Layer 1*
+> *Part of the Value Context Protocol (VCP), Layer 1*
 
 ---
 

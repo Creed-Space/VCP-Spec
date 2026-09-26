@@ -358,14 +358,14 @@
         { "$ref": "#/$defs/PersonalContext" },
         { "type": "null" }
       ],
-      "description": "Personal state context (Layer 3)."
+      "description": "Personal state context (personal tier)."
     },
     "generation_prefs": {
       "oneOf": [
         { "$ref": "#/$defs/GenerationPreferences" },
         { "type": "null" }
       ],
-      "description": "User-steerable generation preferences (Layer 4)."
+      "description": "User-steerable generation preferences (VCP-X-Personal extension data; not a tier or layer)."
     },
     "preset_id": {
       "type": ["string", "null"],

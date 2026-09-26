@@ -1,6 +1,6 @@
 # VCP Security Specification
 
-**Value-Context Protocol (VCP) v3.1 -- Security Layer**
+**Value Context Protocol (VCP) v3.1 — Core Security**
 
 | Field          | Value                                     |
 |----------------|-------------------------------------------|
@@ -12,9 +12,9 @@
 
 ## Abstract
 
-This document specifies the security mechanisms of the Value-Context Protocol
-(VCP) v3.1. VCP transports constitutional values to AI inference systems. The
-security layer protects personal context signals at rest, defends against
+This document specifies the security mechanisms of the Value Context Protocol
+(VCP) v3.1. VCP transports constitutional values to AI inference systems. Core
+Security protects personal context signals at rest, defends against
 prompt injection through constitutional content, enforces information-theoretic
 opacity between raw vulnerability data and inference models, and provides
 cryptographic revocation infrastructure for constitution bundles.
@@ -314,7 +314,7 @@ safety evaluation layer (PDP). These signals carry psychographic data
 that, if exposed to the inference model, could enable psychographic
 targeting, manipulation, or exploitation of vulnerable users.
 
-The Context Opacity Layer enforces a strict information barrier: raw
+Context opacity enforces a strict information barrier: raw
 personal signals are visible only to the PDP/safety evaluation layer.
 The inference model receives a single, coarse-grained `ProtectionLevel`
 that indicates how carefully it should respond, without revealing why.
@@ -360,7 +360,7 @@ signals to the inference model violates this specification.
 
 ### SS3.4 Vulnerability Scoring
 
-Vulnerability scoring is an internal mechanism of the opacity layer. Its
+Vulnerability scoring is an internal mechanism of context opacity. Its
 output (a float in `[0.0, 1.0]`) MUST NOT be exposed to the inference
 model.
 
@@ -542,10 +542,10 @@ Valid revocation reasons:
 | `superseded`      | Replaced by a newer version                       |
 | `issuer_request`  | Revoked by issuer for unspecified reason           |
 
-A CRL entry whose `reason` is not in this set MUST still be honoured as a
+A CRL entry whose `reason` is not in this set MUST still be honored as a
 revocation. Implementations MUST record the raw value for diagnostics and
 MAY map it to `issuer_request` for display. Implementations MUST NOT
-discard the entry because of an unrecognised reason.
+discard the entry because of an unrecognized reason.
 
 #### SS4.2.2 CRL (Certificate Revocation List)
 
@@ -734,10 +734,25 @@ single check with the following priority:
 4. **Fail-closed**: If a `crl_uri` is specified but the CRL is
    unavailable (network error, size limit, signature failure) and no
    valid stapled proof exists, the implementation MUST return status
-   `unknown` with source `fail_closed`. Callers MUST treat `unknown` as
-   revoked unless an operator policy explicitly enables the age-based
-   grace table of VCP v1.1 Amendment I ("Unknown Revocation Policy");
-   any such grace decision MUST be logged.
+   `unknown` with source `fail_closed`. Callers MUST reject the bundle
+   (fail closed) and report `REVOCATION_UNAVAILABLE`, not `REVOKED`,
+   unless an operator policy explicitly enables the age-based grace table
+   of VCP v1.1 Amendment I ("Unknown Revocation Policy"); any such grace
+   decision MUST be logged.
+
+> **Non-normative note: what VCP-SDK 4.2.0 implements.** The published
+> SDK (Python and Rust) does not follow this section step for step. It
+> consults a cached decision first, then the online `check_uri` endpoint,
+> whose response must echo the bundle's `jti` and issuer, and falls back
+> to `crl_uri`. A manifest that declares only a `check_uri` is checked,
+> not treated as opted out. A manifest that declares neither URI is
+> treated as not revoked, as in step 3, and the production policy that
+> step 3 calls for is left to the deployment. The SDK returns
+> `REVOCATION_UNAVAILABLE` when every configured source fails, and
+> `REVOKED` only for a confirmed revocation. It does not implement stapled
+> proofs (step 1, SS4.5.1) or the Amendment I grace table. The
+> requirements in this section remain normative; this note records the
+> current implementation and changes none of them.
 
 #### SS4.5.1 Stapled Proof Verification
 
@@ -787,9 +802,10 @@ Operations:
 4. Implementations MUST NOT accept CRLs larger than 1 MB.
 5. If a `crl_uri` is specified but the CRL is unavailable and no valid
    stapled proof exists, implementations MUST fail closed by returning
-   status `unknown` with source `fail_closed`. Callers MUST treat
-   `unknown` as revoked unless an operator policy explicitly enables the
-   Amendment I grace table, which MUST be logged (SS4.5 step 4).
+   status `unknown` with source `fail_closed`. Callers MUST reject
+   `unknown` fail closed and report `REVOCATION_UNAVAILABLE` (never
+   `REVOKED`) unless an operator policy explicitly enables the Amendment I
+   grace table, which MUST be logged (SS4.5 step 4).
 6. Implementations MUST provide JTI replay prevention. Redis-backed
    implementations SHOULD use the key format defined in SS4.6.
 7. CRL data MUST be fetched over HTTPS in production. HTTP MAY be
@@ -841,7 +857,7 @@ different ciphertexts.
 Context opacity (SS3) is specifically designed to counter psychographic
 targeting by inference models. A model that knows a user is emotionally
 distressed, cognitively overloaded, and in physical pain could exploit
-that state. The opacity layer replaces this five-dimensional vulnerability
+that state. Context opacity replaces this five-dimensional vulnerability
 surface with a single ordinal value (`protection_level`) that conveys
 "be more careful" without revealing why.
 
@@ -926,7 +942,7 @@ Conformance checklist for implementations of VCP v3.1 Security:
 - [ ] Ed25519 public key reused as an HMAC-SHA256 secret fails verification (negative fixture)
 - [ ] Stapled proof freshness limited to 24 hours
 - [ ] CRL size limited to 1 MB
-- [ ] Fail-closed when CRL specified but unavailable; `unknown` treated as revoked absent logged Amendment I grace policy
+- [ ] Fail-closed when a configured revocation source is unavailable; `unknown` rejected as `REVOCATION_UNAVAILABLE` (not `REVOKED`) absent logged Amendment I grace policy
 - [ ] Bundles without `crl_uri` handled as a `configuration` policy decision, not silently trusted
 - [ ] JTI replay prevention operational
 - [ ] Monotonic clocks used for TTL tracking

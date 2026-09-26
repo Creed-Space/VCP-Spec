@@ -9,14 +9,21 @@ VCP uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the minor
 
 ## [Unreleased] — 3.2 candidate (pre-release)
 
-The published source baseline remains VCP 3.1. Everything in this section is a
-3.2 candidate: VEP-0004 and the WC/AS welfare lines are experimental and become
-part of a release only through a recorded authorized decision.
+The source baseline remains VCP 3.1. Apart from the dated 3.1 alignment
+entries, everything in this section is a 3.2 candidate: VEP-0004 and the WC/AS
+welfare lines are experimental and become part of a release only through a
+recorded authorized decision.
 
 ### Changed
 - **Extension status**: VCP-X-Relational and VCP-X-Consensus are reclassified from Stable to Draft pending independent implementation evidence (see `specs/core/extension-lifecycle.md`). The 3.1.0 entry below records the labels used at the time.
 - **Governance record**: The TSC charter and foundation IP-transfer language recorded under 3.1.0 were never ratified or executed; they are preserved as explicitly unratified proposals (see `GOVERNANCE.md`). VEP-0001 through VEP-0003 are relabelled "Recorded pre-charter acceptance".
 - **Version lineage**: The 2.0 and 3.0 entries below are internal milestones; the separately published `VCP_SPECIFICATION_v2.0.md` (Draft, 2026-03-08) is a later consolidation of v1.0, the v1.1 amendments, and the §O-R refusal-token additions, and is not the same artifact as the "2.0" milestone.
+
+### Changed (2026-09-24, alignment of the 3.1 source baseline)
+- **Revocation failure** (v3.1 §3.4; `specs/core/security.md` SS4.5, SS4.7): when no configured revocation source can establish a status, verification rejects the bundle and reports `REVOCATION_UNAVAILABLE` (code 17), never `REVOKED` (code 15), which is reserved for confirmed revocation. A non-normative note records what SDK 4.2.0 implements (no stapled proofs, no Amendment I grace table).
+- **CSM-1 token** (VCP/S 2.1.2, §2.4): the line-1 token header version is defined as `1.0`, independent of the CSM-1 format and protocol versions; the P-, X-, F- and S-lines gain ABNF with comma-separated lists and a required S-line; a transmitted token SHOULD carry presence-only S-line markers (`S:🔒present`); the AS-line follows the R-line privacy model; R-line decay follows VCP-X-Personal §3-4.
+- **Adherence range**: `schemas/vcp-manifest-v1.schema.json` `metadata.adherence_level` accepts 0 (VCP/S §2.7), and the Custom persona's default adherence range is 0-5.
+- **VCP-X-Personal**: restates the Core Security SS3.7 rule that inference models MUST NOT receive raw personal signals, and lists it as a conformance item.
 
 ### Fixed
 - **`schemas/vcp-identity-token.schema.json`**: `definitions.segment.pattern` now matches the normative ABNF (`segment = LALPHA *31(LALPHA / DIGIT / "-")`, trailing hyphen permitted) and the reference SDK; `properties.canonical` accepts the preserved uppercase `:NS` suffix and documents that only path and prerelease are lowercased; the schema now declares `additionalProperties: false`.

@@ -70,7 +70,7 @@ This specification does NOT cover:
 | VCP/A — Adaptation Layer | Defines the Enneagram context format and R-line personal state used in `context_share` payloads. |
 | VCP/S — Semantics Layer | Defines the CSM-1 constitutional semantic model referenced by `constitution_ref` fields and constraint composition rules. |
 | VCP/I — Identity Layer | Defines the `creed://` URI token scheme used for constitution references. |
-| VCP Core v2.0 (VCP/T — Transport) | Defines bundle signing and verification used for constitution integrity. VCP/T is specified within the Core Specification (`VCP_SPECIFICATION_v2.0.md`) rather than as a separate companion document. |
+| VCP/T — Transport (VCP v3.1 §2.2) | Defines bundle signing and verification used for constitution integrity. VCP/T is defined by the v3.1 baseline §2.2, which incorporates v1.0 §4, §7 and §8. |
 
 ---
 
@@ -249,7 +249,7 @@ Each element in the `constraints` array MUST conform to:
 | `"merge"` | The child MUST add these constraints to its existing constraint set. Where conflicts arise, the more restrictive constraint wins. |
 | `"override"` | The child MUST replace its current constraints of the same `type` with the propagated constraints. Existing constraints of other types are unaffected. |
 
-The "more restrictive wins" rule for `"merge"` mode aligns with the VCP/S constitution stack precedence model, where conflicts between layers are resolved by applying the most restrictive interpretation.
+The "more restrictive wins" rule for `"merge"` mode aligns with the VCP/S constitution stack precedence model, where conflicts between composition layers are resolved by applying the most restrictive interpretation.
 
 #### 3.3.4 Example
 
@@ -440,10 +440,10 @@ Messages from a single sender to a single recipient SHOULD be delivered in order
 
 | Severity | Acknowledge | Pause Child | Suspend Child | Propagate Upward |
 |----------|-------------|-------------|---------------|------------------|
-| `info` | SHOULD | -- | -- | -- |
-| `warning` | SHOULD | -- | -- | -- |
-| `critical` | MUST (within 5s) | SHOULD | -- | MAY |
-| `emergency` | MUST (within 5s) | -- | MUST | MUST (if parent exists) |
+| `info` | SHOULD | — | — | — |
+| `warning` | SHOULD | — | — | — |
+| `critical` | MUST (within 5s) | SHOULD | — | MAY |
+| `emergency` | MUST (within 5s) | — | MUST | MUST (if parent exists) |
 
 ### 6.2 Acknowledgment
 

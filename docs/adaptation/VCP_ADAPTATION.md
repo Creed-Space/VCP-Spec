@@ -20,7 +20,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/A (Adaptation)
 **Status**: Complete
 
-> *Part of the Value-Context Protocol (VCP) - Layer 4*
+> *Part of the Value Context Protocol (VCP) - Layer 4*
 
 ---
 
@@ -66,7 +66,7 @@ VCP Context enables:
 ### 1.3 Relationship to Other Layers
 
 ```
-Layer 4 (Context) informs how Layer 3 (Content) is applied via Layer 2 (Transport)
+Layer 4 (VCP/A, Adaptation) informs how Layer 3 (VCP/S, Semantics) content is applied, delivered via Layer 2 (VCP/T, Transport)
 
 Context: ⏰🌅|📍🏡|👥👶  →  Constitution: N5+F  →  Behavior: child-safe mode
 Context: ⏰🌙|📍🏢|👥👔  →  Constitution: A3+W  →  Behavior: professional mode
@@ -191,7 +191,7 @@ Culture values encode **communication styles**, not nationalities. This avoids s
 | 😵 | overwhelmed | Stressed/overloaded |
 | 🥺 | vulnerable | Emotionally fragile |
 
-**Relationship to CSM-1 R-line**: The STATE dimension is the adaptation layer's *view* of the R-line personal state dimensions defined in CSM-1 v1.1. The R-line defines 5 sub-dimensions (cognitive, emotional, energy, urgency, body) with intensity scales. The Enneagram STATE dimension is *derived from* R-line signals, not independent of them. When both are present, the R-line is authoritative for fine-grained state and STATE provides the coarse classification used for constitution selection. Implementations SHOULD map R-line values to STATE emoji codes using the following heuristic: emotional.valence < 3 → 😢/😡, energy < 3 → 😴, urgency > 7 → 😰, body.pain > 5 → 🤒.
+**Relationship to CSM-1 R-line**: The STATE dimension is the adaptation layer's *view* of the R-line personal state dimensions defined in CSM-1 v1.1. The R-line defines 5 sub-dimensions (cognitive, emotional, energy, urgency, body) with intensity scales. The Enneagram STATE dimension is *derived from* R-line signals, not independent of them. When both are present, the R-line is authoritative for fine-grained state and STATE provides the coarse classification used for constitution selection. Implementations SHOULD map R-line values to STATE emoji codes using the following heuristic: 💭frustrated or 💭tense at intensity 3 or above → 😢/😡; 🔋fatigued or 🔋depleted → 😴; ⚡pressured or ⚡critical at intensity 4 or above → 😰; 🩺pain or 🩺unwell at intensity 3 or above → 🤒. Each R-line value is a category with an integer intensity from 1 to 5; the line has no valence or pain-score fields.
 
 #### ENVIRONMENT (🌡️)
 
@@ -1249,7 +1249,7 @@ The wire format separates situational and personal bands with U+2016 (‖).
 | `👥👶` (children present) | `N5+F` (Nanny, max safety) |
 | `📍🏢` + `👥👔` | `A3+W+P` (Ambassador, work) |
 | `🎭🚨` (emergency) | Override to emergency mode |
-| `🧠🥺` (vulnerable state) | `G4+V` (Godparent, vulnerable) |
+| `🧠🥺` (vulnerable state) | `N5+V` (Nanny, vulnerable) |
 | `📍🏥` (medical setting) | `D3+H+P` (Mediator, health) |
 | `🎭🎪` (entertainment) | `M2` (Muse, creative) |
 

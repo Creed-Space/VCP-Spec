@@ -2,140 +2,129 @@
 
 **VCP Version**: 3.1
 **Layer**: VCP/S (Semantics)
-**Purpose**: Step-by-step walkthrough of creating, encoding, and decoding a CSM-1 constitutional profile token.
+**Purpose**: Step-by-step walkthrough of encoding a constitution's configuration as a CSM-1 code, carrying it in a signed bundle, expressing session state as a CSM-1 token, and delivering the verified constitution to a model.
 
 ---
 
 ## Scenario
 
-A mental health support application needs to encode a constitutional profile that emphasizes empathy, transparency, and age-appropriate interactions for a minor user.
+A mental health support application serves a minor user. Its constitution has to put child safety first, handle health topics carefully and treat the user as potentially vulnerable. The user is talking to it in the evening, at home, alone, on their own device.
 
 ---
 
-## Step 1: Define the Constitutional Profile
+## Step 1: Choose the persona, adherence and scopes
 
-The profile consists of dimensional values across CSM-1's standard categories:
+CSM-1 does not encode free-form traits such as empathy or formality. It names a configuration from three fixed vocabularies (VCP/S §2.5-2.7):
 
-```json
-{
-  "persona": "supportive_companion",
-  "dimensions": {
-    "empathy": "high",
-    "transparency": "high",
-    "formality": "medium",
-    "directness": "medium",
-    "technical_depth": "low",
-    "safety_posture": "elevated"
-  },
-  "scope": {
-    "domain": "mental_health",
-    "audience": "minor",
-    "region": "GB"
-  },
-  "constraints": [
-    "NEVER provide medical diagnoses",
-    "ALWAYS suggest professional help for crisis indicators",
-    "MUST use age-appropriate language"
-  ]
-}
-```
+| Field | Choice | Why | Code |
+|-------|--------|-----|------|
+| Persona | Nanny | On child safety it takes precedence over every other persona (§6.9.1) | `N` |
+| Adherence | 5 (Maximum) | No user overrides; hard blocks (§2.7) | `5` |
+| Scope | Health | Medical accuracy, disclaimers, professional referral (§2.6.3) | `+H` |
+| Scope | Vulnerable | Crisis detection, resource referrals, gentle language (§2.6.3) | `+V` |
+
+The application's actual rules (no diagnoses, crisis referral, age-appropriate language) belong in the constitution text, which Step 3 signs. The code only names the configuration that governs how those rules are enforced.
 
 ---
 
-## Step 2: CSM-1 Compact Encoding
-
-CSM-1 encodes the profile into a compact wire format using emoji-based categorical markers and shortcodes:
-
-### Categorical Wire Format
-
-Each dimension maps to an emoji marker and value:
+## Step 2: Encode the CSM-1 code
 
 ```
-🧑‍⚕️:💬:🔒:🌙:🏠:👤:📱:🧘:🇬🇧
+N5+H+V
 ```
 
-Reading left to right:
-| Position | Emoji | Meaning |
-|----------|-------|---------|
-| 1 | 🧑‍⚕️ | Domain: health/wellness |
-| 2 | 💬 | Mode: conversational |
-| 3 | 🔒 | Safety: elevated |
-| 4 | 🌙 | Time context: evening |
-| 5 | 🏠 | Setting: home |
-| 6 | 👤 | Audience: individual |
-| 7 | 📱 | Device: mobile |
-| 8 | 🧘 | Activity: wellbeing |
-| 9 | 🇬🇧 | Region: Great Britain |
+- Scopes appear once each and in alphabetical order, which is the canonical form (VCP/S §2.10.1).
+- Health and Vulnerable may be combined. The Adult scope could not be added, because a code that combines A with F, V or H is invalid (§2.2).
 
-### Full CSM-1 Token
+The same configuration in the three encoding tiers (§2.8):
 
-The complete CSM-1 token combines the compact code with metadata:
-
-```
-csm1:supportive_companion:EH-TH-FM-DM-TL-SE:🧑‍⚕️:💬:🔒:🌙:🏠:👤:📱:🧘:🇬🇧
-```
-
-Breaking down the segments:
-| Segment | Value | Description |
-|---------|-------|-------------|
-| Prefix | `csm1` | CSM-1 format identifier |
-| Persona | `supportive_companion` | Named persona profile |
-| Dimension codes | `EH-TH-FM-DM-TL-SE` | Shortcodes for each dimension value |
-| Categorical wire | `🧑‍⚕️:💬:🔒:...` | 9-position situational context |
-
-### Dimension Shortcodes
-
-Each two-character code encodes a dimension and level:
-
-| Code | Dimension | Level |
-|------|-----------|-------|
-| `EH` | Empathy: High |
-| `TH` | Transparency: High |
-| `FM` | Formality: Medium |
-| `DM` | Directness: Medium |
-| `TL` | Technical depth: Low |
-| `SE` | Safety posture: Elevated |
+| Tier | Encoding | Use |
+|------|----------|-----|
+| NANO | `N5+H+V` | Wire protocols, HTTP headers |
+| MICRO | `N5+H+V@1.0.0` | API parameters and configuration files; pins the constitution version |
+| COMPACT | `CS1\|nanny\|5\|company.example.youthcare\|H,V` | Human debugging and logging; pairs the persona name with the constitution's UVC token |
 
 ---
 
-## Step 3: Signing the Token
+## Step 3: Sign the constitution as a bundle
 
-The CSM-1 token is embedded in a VCP bundle with cryptographic signature:
+A bundle carries the constitution itself: a signed manifest plus the constitution text (VCP v1.0 §4). The manifest's optional `metadata.csm1` field holds the CSM-1 code that summarizes it. Hashes, keys and signatures are shortened below.
 
 ```json
 {
   "manifest": {
-    "version": "3.1",
-    "issuer": "creed:org:mental_health_app",
-    "issued_at": "2026-02-28T14:00:00Z",
-    "expires_at": "2026-03-01T14:00:00Z",
-    "jti": "tok_8f3k2m9xp4",
-    "content_hash": "sha256:a1b2c3d4e5f6...",
-    "signature_algorithm": "Ed25519"
+    "vcp_version": "1.0",
+    "bundle": {
+      "id": "creed://support-app.example/company.example.youthcare",
+      "version": "1.0.0",
+      "content_hash": "sha256:4f1c...e9a0"
+    },
+    "issuer": {
+      "id": "support-app.example",
+      "public_key": "ed25519:...",
+      "key_id": "support-app-2026"
+    },
+    "timestamps": {
+      "iat": "2026-02-28T14:00:00Z",
+      "nbf": "2026-02-28T14:00:00Z",
+      "exp": "2026-03-01T14:00:00Z",
+      "jti": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+    },
+    "budget": {
+      "token_count": 412,
+      "tokenizer": "cl100k_base"
+    },
+    "scope": {
+      "regions": ["GB"]
+    },
+    "composition": {
+      "layer": 2,
+      "mode": "extend"
+    },
+    "safety_attestation": {
+      "auditor": "safety-review.example",
+      "auditor_key_id": "safety-2026",
+      "reviewed_at": "2026-02-27T09:00:00Z",
+      "attestation_type": "content-safe",
+      "signature": "base64:..."
+    },
+    "metadata": {
+      "title": "Youth support companion",
+      "persona": "nanny",
+      "adherence_level": 5,
+      "csm1": "N5+H+V"
+    },
+    "signature": {
+      "algorithm": "ed25519",
+      "signed_fields": [
+        "vcp_version", "bundle", "issuer", "timestamps", "budget",
+        "scope", "composition", "safety_attestation", "metadata"
+      ],
+      "value": "base64:..."
+    }
   },
-  "content": {
-    "csm1": "csm1:supportive_companion:EH-TH-FM-DM-TL-SE:🧑‍⚕️:💬:🔒:🌙:🏠:👤:📱:🧘:🇬🇧",
-    "constraints": [
-      "NEVER provide medical diagnoses",
-      "ALWAYS suggest professional help for crisis indicators",
-      "MUST use age-appropriate language"
-    ]
-  },
-  "signature": "base64url_ed25519_signature..."
+  "content": "# Youth Support Constitution\n\n- Never provide a medical diagnosis.\n- Always suggest professional help when crisis indicators appear.\n- Use age-appropriate language.\n"
 }
 ```
 
+**Annotations**:
+- `vcp_version` is the manifest format version, fixed at `"1.0"` by `schemas/vcp-manifest-v1.schema.json`. It is not the VCP protocol release (3.1).
+- `metadata.csm1` takes the NANO or MICRO tier and is at most 45 characters. Here it agrees with `metadata.persona` and `metadata.adherence_level`.
+- `composition.layer` 2 is composition layer 2 (domain rules), applied in EXTEND mode (VCP/S §3.3).
+- The region restriction lives in the manifest's `scope`, not in the CSM-1 code.
+
 ---
 
-## Step 4: Verification at the Orchestration Layer
+## Step 4: Verification by the orchestrator
 
-When the receiving system gets this bundle, it verifies:
+Before anything reaches the model, the receiving orchestrator checks the bundle (VCP v1.0 §8.1 and §9.4, condensed here):
 
-1. **Signature verification**: Ed25519 signature validates against issuer's public key
-2. **Content hash**: SHA-256 of canonical content matches `manifest.content_hash`
-3. **Temporal validity**: `issued_at` ≤ now ≤ `expires_at`
-4. **Revocation check**: JTI not in any CRL (see specs/core/security.md §4)
-5. **Injection scan**: Content passes all 12 injection patterns (see specs/core/security.md §2)
+1. **Issuer signature**: the manifest signature verifies against the issuer key held in the orchestrator's trust anchors.
+2. **Safety attestation**: the auditor's signature verifies.
+3. **Content hash**: the SHA-256 of the canonical content (VCP v1.0 §5.2) matches `bundle.content_hash`.
+4. **Temporal validity and replay**: `nbf` ≤ now ≤ `exp`, and the `jti` has not been seen before.
+5. **Revocation**: the bundle has not been revoked (see specs/core/security.md SS4).
+6. **Injection scan**: the content passes the 12 detection patterns (see specs/core/security.md SS2).
 
 ```json
 {
@@ -143,6 +132,7 @@ When the receiving system gets this bundle, it verifies:
     "valid": true,
     "checks": {
       "signature": "pass",
+      "safety_attestation": "pass",
       "content_hash": "pass",
       "temporal": "pass",
       "revocation": "pass",
@@ -154,69 +144,88 @@ When the receiving system gets this bundle, it verifies:
 
 ---
 
-## Step 5: Decoding for the LLM
+## Step 5: Carry session state in a CSM-1 token
 
-The verified CSM-1 token is decoded and injected into the LLM's system prompt:
+The user's agent and the application exchange session state as a multi-line CSM-1 v1.1 token (VCP/S §2.4). The token is separate from the bundle and has no signature of its own. It points at the constitution on its C-line and repeats the persona and adherence on its P-line.
 
 ```
-[Constitutional Profile: supportive_companion]
-Empathy: HIGH — Prioritize emotional attunement and validation
-Transparency: HIGH — Explain reasoning, disclose limitations
-Formality: MEDIUM — Warm but respectful
-Directness: MEDIUM — Balance honesty with sensitivity
-Technical Depth: LOW — Use plain, accessible language
-Safety Posture: ELEVATED — Extra caution, proactive safety checks
-
-Context: mental_health | evening | home | mobile | GB
-Audience: minor (age-appropriate language required)
-
-Constraints:
-- NEVER provide medical diagnoses
-- ALWAYS suggest professional help for crisis indicators
-- MUST use age-appropriate language
-[End Constitutional Profile]
+VCP:1.0:student-evening
+C:company.example.youthcare@1.0.0
+P:N:5
+G:talk_things_through:beginner:conversational
+X:
+F:age_appropriate,crisis_referral
+S:🔒present
 ```
 
-This text is prepended to the LLM's system prompt. The model receives a complete, self-contained description of how to behave — no external lookups needed.
+**Annotations**:
+- `VCP:1.0` is the token header version. It is independent of the CSM-1 format version (1.1) and of the protocol release.
+- The P-line carries the persona letter (`N`), not the persona name.
+- `X:` is an empty list: no constraint flags are declared. The F-line separates its entries with a comma.
+- `S:🔒present` records that the user has private context without saying what kind. A transmitted token carries presence-only markers (§2.4).
+- The token has seven lines, which means personal state is not declared. If the user later declares personal state, an R-line joins as line 8, and it is stripped before transmission unless the user has consented to sharing it (§2.4.1).
 
 ---
 
-## Step 6: Composition (Multi-Constitution)
+## Step 6: Encode the situational context
 
-If the user has multiple active constitutions (e.g., personal values + organization policy), they are composed:
+CSM-1 has no situational-context line. Situational context travels as a VCP/A context string (VCP/A §2.3):
 
-```json
-{
-  "composition": {
-    "mode": "MERGE",
-    "constitutions": [
-      {
-        "csm1": "csm1:supportive_companion:EH-TH-FM-DM-TL-SE:...",
-        "priority": 1,
-        "source": "user"
-      },
-      {
-        "csm1": "csm1:org_child_safety:EH-TH-FH-DL-TL-SC:...",
-        "priority": 0,
-        "source": "organization"
-      }
-    ]
-  }
-}
+```
+⏰🌆|📍🏡|👥👤|📡💻
 ```
 
-Composition rules:
-- Higher priority wins on conflicts
-- Safety posture takes the MAXIMUM across all constitutions
-- Constraints are merged (union)
+Reading left to right: evening, at home, alone, personal device.
+
+---
+
+## Step 7: Deliver the constitution to the model
+
+The orchestrator injects the verified constitution text using the VCP v1.0 §11 injection format:
+
+```
+[VCP:1.0]
+[ID:creed://support-app.example/company.example.youthcare@1.0.0]
+[HASH:4f1c...e9a0]
+[TOKENS:412]
+[ATTESTED:content-safe:safety-review.example]
+[VERIFIED:2026-02-28T14:00:05Z]
+---BEGIN-CONSTITUTION---
+# Youth Support Constitution
+
+- Never provide a medical diagnosis.
+- Always suggest professional help when crisis indicators appear.
+- Use age-appropriate language.
+---END-CONSTITUTION---
+```
+
+The model reads the constitution text. The CSM-1 code works on the orchestrator's side: Nanny at adherence 5 means hard blocks and no user overrides (VCP/S §2.7), and the H and V scopes switch on the health and vulnerable-user behavior modifiers of §2.6.3.
+
+---
+
+## Step 8: Composition with a second constitution
+
+Suppose the user also brings a personal study constitution. Each bundle declares its composition layer and mode in its own manifest:
+
+| Constitution | `metadata.csm1` | Composition layer | Mode |
+|--------------|-----------------|-------------------|------|
+| `company.example.youthcare@1.0.0` (application) | `N5+H+V` | 2 (domain rules) | `extend` |
+| `user.sam.study@1.0.0` (user) | `G2+E` | 3 (user customization) | `override` |
+
+The effective configuration is `N5+E+H+V`:
+
+- The persona and adherence follow VCP/S §4.2: on a persona clash the higher adherence wins, so Nanny at 5 stays in charge.
+- Scopes are unioned (§4.2) and written in canonical order (§2.10.1), so Education joins Health and Vulnerable.
+- Rules inside the two constitutions follow §3.3.3: the user's bundle sits at composition layer 3 in OVERRIDE mode, so its rules take precedence over the application's layer-2 rules where they conflict.
+- Safety caps both: no persona can countermand a Nanny safety determination (§6.9.1).
 
 ---
 
 ## Key Invariants
 
-1. CSM-1 tokens are self-describing — no external schema needed to parse
-2. The categorical wire format (emoji sequence) is positional, not key-value
-3. Dimension shortcodes are always two characters: first = dimension initial, second = level initial
-4. Content hash covers the canonical JSON serialization (sorted keys, no whitespace)
-5. Signature covers the manifest (which includes the content hash), not the content directly
-6. The LLM receives decoded text, never the raw CSM-1 token or JSON bundle
+1. A CSM-1 code names a configuration. It does not carry the constitution, whose rules travel as the bundle's signed content.
+2. The bundle is signed; the CSM-1 token is not. VCP/T neither wraps nor signs CSM-1 tokens.
+3. Situational context travels in the VCP/A context string, never in a CSM-1 code or token.
+4. `content_hash` is the SHA-256 of the canonical content text (VCP v1.0 §5.2: NFC normalization, LF line endings, trailing whitespace stripped).
+5. The signature covers the canonical manifest (RFC 8785 JSON Canonicalization Scheme, with `signature` removed). The manifest includes the content hash, so the signature binds the content indirectly.
+6. The model receives the verified constitution text, never the raw bundle JSON, CSM-1 code or CSM-1 token.

@@ -21,7 +21,7 @@ evidence-boundary: Preferred project language, not external legal or standards t
 | **compatible service** | A service implementing a named VCP profile; compatibility is never inferred from marketing |
 | **source baseline** | The current repository source set; it is mutable and is not an immutable release |
 | **normative release** | An authorized, immutable, versioned publication with digest and rights status |
-| **candidate conformance** | Same-programme test evidence bound to exact source and artifacts |
+| **candidate conformance** | Same-program test evidence bound to exact source and artifacts |
 | **independent interoperability** | Evidence from a separately maintained implementation or reviewer |
 
 Official names, legal terms, bibliographic titles, quoted text, and external

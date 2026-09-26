@@ -4,7 +4,7 @@
 status: Current repository policy
 normative-authority: Interim governance process
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-15 status and authority classification
+last-reviewed: 2026-09-24 status vocabulary
 owner: VCP Spec maintainers
 evidence-boundary: Classification and precedence policy
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Classification and precedence policy
 | Status | Current repository policy |
 | Normative authority | Interim governance process |
 | Protocol baseline | VCP 3.1 |
-| Last reviewed | 2026-08-15 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Classification and precedence policy |
 
@@ -59,7 +59,7 @@ choose whichever copy makes a test pass.
 
 | Status | Meaning |
 |:---|:---|
-| Published baseline | Current repository protocol reference, without implying external standards status |
+| Source baseline | Current repository protocol reference; not an immutable, ratified release and not a standards-body publication |
 | Recorded pre-charter acceptance | Historical baseline label without evidence of a constituted TSC vote |
 | Accepted | Approved by a recorded, authorized governance decision |
 | Candidate | Reviewable pre-release material |

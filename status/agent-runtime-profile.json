@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-01",
+  "as_of": "2026-09-24",
   "profile": "VCP Agent Runtime Profile 0.1.0",
   "status": "draft-candidate",
   "ratified": false,
@@ -24,13 +24,13 @@
     "the Rewind adapter binds verified gateway claims and atomic use, but production dispatch wiring is not enabled by this candidate",
     "safe accretion storage is an in-memory reference and is not a durable production memory authority",
     "cross-language facades cover portable contracts and local orientation; controlled host execution remains Python-only",
-    "independent interoperability, governance ratification, package publication, deployment, and human accessibility review remain open"
+    "independent interoperability, governance ratification, profile publication as a protocol release, deployment, and human accessibility review remain open; the Python, Rust, and TypeScript facades ship in the published SDK 4.2.0 packages"
   ],
   "authority_boundaries": {
     "source": "this repository candidate branch",
     "runtime": "local-reference test evidence only",
     "deployment": "unverified",
     "governance": "unratified",
-    "publication": "unpublished"
+    "publication": "profile unpublished; facades ship in SDK 4.2.0"
   }
 }

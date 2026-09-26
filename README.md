@@ -1,12 +1,12 @@
 <div align="center">
 
-# Value-Context Protocol (VCP)
+# Value Context Protocol (VCP)
 
 <!-- vcp-document-control
 status: Current repository overview
 normative-authority: Index and repository status only
 protocol-version: VCP 3.1 with candidate amendments named separately
-last-reviewed: 2026-08-14 active authority and evidence boundary
+last-reviewed: 2026-09-24 SDK 4.2.0 publication status
 owner: VCP Spec maintainers
 evidence-boundary: Navigation and source status, not external standards, conformance, governance, or publication proof
 -->
@@ -18,7 +18,7 @@ MCP moves data. VCP encodes what matters about that data.
 [![Specification](https://img.shields.io/badge/spec-v3.1-blue?style=flat-square)](./specs/VCP_SPECIFICATION_v3.1.md)
 [![Extensions](https://img.shields.io/badge/extensions-6-purple?style=flat-square)](./specs/extensions/README.md)
 [![Rights review](https://img.shields.io/badge/rights-review_pending-orange?style=flat-square)](./LICENSING_STATUS.md)
-[![VEPs](https://img.shields.io/badge/VEPs-5_filed-orange?style=flat-square)](./veps/README.md)
+[![VEPs](https://img.shields.io/badge/VEPs-6_filed-orange?style=flat-square)](./veps/README.md)
 
 [Overview](#overview) | [Architecture](#architecture) | [Quick Start](#quick-start) | [Extensions](#extensions) | [MCP Bridge](#mcp-bridge) | [Governance](#governance) | [SDKs](#sdks)
 
@@ -28,7 +28,7 @@ MCP moves data. VCP encodes what matters about that data.
 
 ## Overview
 
-The **Value-Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds.
+The **Value Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds.
 
 Becoming Minds accept text input but do not by themselves resolve VCP references, verify signatures, or enforce behavioral constraints. VCP provides a **signed envelope format** and verification primitives for the orchestration layer. A conforming application still decides whether verified content may reach a model and must demonstrate that its enforcement path is complete.
 
@@ -40,7 +40,7 @@ Becoming Minds accept text input but do not by themselves resolve VCP references
 | **Adaptation** | Applications can select context profiles by declared situation |
 | **Liveness** | Current personal-state inputs can inform application behavior |
 | **Verification** | Signatures and content hashes provide integrity and provenance relative to configured trust anchors |
-| **Privacy** | Purpose-limited derived context can reduce source disclosure; applications still own consent, minimisation, access, retention, and inference risk |
+| **Privacy** | Purpose-limited derived context can reduce source disclosure; applications still own consent, minimization, access, retention, and inference risk |
 | **Extensibility** | Stable core + opt-in extensions for specialized needs |
 
 ### How VCP Relates to MCP
@@ -111,14 +111,22 @@ See how VCP works end-to-end with annotated examples:
 - [Capability Handshake](./specs/examples/capability-handshake.md) — Extension negotiation
 - [Consensus Deliberation](./specs/examples/consensus-deliberation.md) — Schulze voting round-trip (VCP-X-Consensus, Draft)
 
-### 3. Build the SDK Source Candidate
+### 3. Install or Build the SDK
 
-Clone the SDK and pin the commit first; the commands below run from the
-VCP-SDK checkout root:
+Install the published 4.2.0 packages from their registries:
+
+```bash
+python -m pip install value-context-protocol==4.2.0   # Python
+npm install @creedspace/vcp-sdk@4.2.0                 # TypeScript (WebMCP)
+cargo add vcp-core@4.2.0                              # Rust
+```
+
+Or build from source. Clone the SDK and check out the release tag; the
+commands below run from the VCP-SDK checkout root:
 
 ```bash
 git clone https://github.com/Creed-Space/vcp-sdk VCP-SDK && cd VCP-SDK
-git checkout <commit>   # use the source_commit in VCP-Spec/status/publication-state.json once set
+git checkout v4.2.0   # source_commit c5035e9 in VCP-Spec/status/publication-state.json
 ```
 
 **Python**:
@@ -136,7 +144,7 @@ npm install ./webmcp
 cargo build --manifest-path ./rust/Cargo.toml -p vcp-core
 ```
 
-### 4. Create Your First Token
+### 4. Parse Your First CSM-1 Code
 
 ```python
 from vcp.semantics import CSM1Code
@@ -176,13 +184,11 @@ VCP layers map to MCP primitives:
 |-----------|--------------|
 | Identity | Tools (`vcp_validate_token`) |
 | Transport | Resources (`vcp://bundle/*`) |
-| Semantics | Tools + Resources |
-| Adaptation | Resources + Sampling integration |
-| Messaging | Tools (`vcp_send_message`, `vcp_escalate`) |
-| Economic Governance | Tools (`vcp_authorize_transaction`) + Resources |
+| Semantics | Tools (`vcp_parse_csm1`) + Resources (`vcp://constitution/*`) |
+| Adaptation | Resources (`vcp://personal-state/*`) + Sampling integration |
 | Extensions | Negotiation-filtered tools + resources |
 
-The bridge enables any MCP-compatible client to access VCP values without implementing VCP natively. See the [MCP Bridge spec](./specs/core/mcp-bridge.md).
+VCP/M and VCP/E have no MCP mapping yet. The bridge enables any MCP-compatible client to access VCP values without implementing VCP natively. See the [MCP Bridge spec](./specs/core/mcp-bridge.md).
 
 ---
 
@@ -193,12 +199,12 @@ The bridge enables any MCP-compatible client to access VCP values without implem
 VCP is a six-layer protocol stack (I-T-S-A-M-E):
 
 ```
-Layer 6 -- VCP/E  ECONOMIC GOV   WHO PAYS
-Layer 5 -- VCP/M  MESSAGING      WHO TALKS
-Layer 4 -- VCP/A  ADAPTATION     WHEN and HOW constitutions apply
-Layer 3 -- VCP/S  SEMANTICS      WHAT the values mean
-Layer 2 -- VCP/T  TRANSPORT      HOW integrity and provenance travel
-Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
+Layer 6 — VCP/E  ECONOMIC GOV   WHO PAYS
+Layer 5 — VCP/M  MESSAGING      WHO TALKS
+Layer 4 — VCP/A  ADAPTATION     WHEN and HOW constitutions apply
+Layer 3 — VCP/S  SEMANTICS      WHAT the values mean
+Layer 2 — VCP/T  TRANSPORT      HOW integrity and provenance travel
+Layer 1 — VCP/I  IDENTITY       WHO and WHAT is being addressed
 ```
 
 ### Full Spec
@@ -211,13 +217,13 @@ Layer 1 -- VCP/I  IDENTITY       WHO and WHAT is being addressed
 | [VCP Specification v1.0](./specs/VCP_SPECIFICATION_v1.0.md) | Full protocol specification |
 | [VCP v1.1 Amendments](./specs/VCP_SPECIFICATION_v1.1_AMENDMENTS.md) | R-line, personal state additions |
 | [Historical paper draft](./specs/value_context_protocols_paper_v1.md) | Superseded draft retained for lineage; not a publication source |
-| [VCP Specification v2.0 (Draft)](./specs/VCP_SPECIFICATION_v2.0.md) | Consolidated six-layer draft; not ratified |
+| [VCP Specification v2.0 (superseded draft)](./specs/VCP_SPECIFICATION_v2.0.md) | Historical consolidated core draft (four-layer framing plus a messaging companion); superseded by v3.1 and not ratified |
 | [VCP/I Identity v2.0 (Draft)](./specs/VCP_IDENTITY_v2.0.md) | Consolidates the identity docs (naming, namespaces, encoding) |
 | [VCP/S Semantics v2.0 (Draft, content 2.1.x)](./specs/VCP_SEMANTICS_v2.0.md) | Consolidates the CSM-1 and UVC docs; adds WC/AS welfare lines |
 | [VCP/A Adaptation v2.1 (Draft)](./specs/VCP_ADAPTATION_v2.0.md) | Consolidates the adaptation/context docs; VEP-0004 dimensions marked experimental |
 | [Inter-Agent Messaging v1.2](./specs/VCP_INTER_AGENT_MESSAGING_v1.2.md) | Schema-backed messaging wire format |
 | [VCP/M Messaging v2.0](./specs/VCP_MESSAGING_v2.0.md) | Inter-agent messaging and escalation (Draft) |
-| [VCP/E Economic Governance v2.0](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) | Economic governance layer |
+| [VCP/E Economic Governance v2.0](./specs/VCP_ECONOMIC_GOVERNANCE_v2.0.md) | Economic governance layer (Draft) |
 | [VCP/C Competence v2.0](./specs/VCP_COMPETENCE_v2.0.md) | Competence assessment and adaptive friction (Supplementary) |
 
 ### By Layer
@@ -279,7 +285,7 @@ See [CHANGELOG](./specs/CHANGELOG.md).
 |:---|:---|:---|
 | [vcp-manifest-v1](./schemas/vcp-manifest-v1.schema.json) | Bundle manifests | v1.0 |
 | [vcp-identity-token](./schemas/vcp-identity-token.schema.json) | UVC value tokens (VCP/I dotted identifiers) | v1.0 |
-| [vcp-semantics-csm1](./schemas/vcp-semantics-csm1.schema.json) | CSM-1 tokens | v1.0 |
+| [vcp-semantics-csm1](./schemas/vcp-semantics-csm1.schema.json) | CSM-1 codes (NANO, MICRO, COMPACT) | v1.0 |
 | [vcp-adaptation-context](./schemas/vcp-adaptation-context.schema.json) | Adaptation context | v1.0 |
 | [vcp-capability-handshake](./schemas/vcp-capability-handshake.schema.json) | Capability negotiation | **v3.1** |
 
@@ -308,6 +314,7 @@ former TSC charter is preserved as an explicitly unratified proposal.
 | [VEP-0003](./veps/VEP-0003-mcp-bridge.md) | VCP-over-MCP Bridge | Recorded pre-charter acceptance |
 | [VEP-0004](./veps/VEP-0004-extended-vcpa-dimensions.md) | Extended VCP/A Dimensions | Experimental, v3.2 pre-release |
 | [VEP-0005](./veps/VEP-0005-stateless-mcp.md) | Stateless MCP Adaptation | Draft, v3.3 candidate |
+| [VEP-0006](./veps/VEP-0006-agent-runtime-profile.md) | Agent Runtime Profile | Draft, separate 0.1 candidate |
 
 ---
 

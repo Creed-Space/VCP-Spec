@@ -4,7 +4,7 @@
 status: Current finite roadmap
 normative-authority: Planning only
 protocol-version: VCP 3.1 source baseline and candidate work
-last-reviewed: 2026-08-15
+last-reviewed: 2026-09-24
 owner: VCP Spec maintainers
 evidence-boundary: Priorities and gates, not promises, acceptance, funding, or release authority
 -->
@@ -21,8 +21,8 @@ evidence-boundary: Priorities and gates, not promises, acceptance, funding, or r
 
 ## Next: authority and independent scrutiny
 
-1. Ratify governance, publication authority, licensing, authorship, package
-   names, trademark policy, contributor terms, and security decision roles.
+1. Ratify governance, publication authority, licensing, authorship, trademark
+   policy, contributor terms, and security decision roles.
 2. Select one exact release candidate and freeze its source plus artifact
    digests.
 3. Commission independent protocol, cryptographic, privacy, welfare, human
@@ -35,8 +35,8 @@ evidence-boundary: Priorities and gates, not promises, acceptance, funding, or r
 1. Resolve review findings and repeat candidate-bound validation.
 2. Publish a signed immutable normative corpus, rendered accessible formats,
    conformance report, SBOMs, provenance, and errata route.
-3. Publish packages only through protected trusted-publishing environments,
-   then verify registry metadata and clean installation.
+3. Publish later package releases only through protected trusted-publishing
+   environments, then verify registry metadata and clean installation.
 4. Hold an interoperability event and publish exact profile results.
 
 ## Conditional backlog

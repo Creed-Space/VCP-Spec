@@ -3,8 +3,8 @@
 <!-- vcp-document-control
 status: Current cross-repository threat model
 normative-authority: Security analysis only
-protocol-version: VCP 3.1 source baseline with labelled candidates
-last-reviewed: 2026-08-15
+protocol-version: VCP 3.1 source baseline with labeled candidates
+last-reviewed: 2026-09-24
 owner: VCP security maintainers
 evidence-boundary: Threat identification and control mapping, not independent assurance or deployment approval
 -->
@@ -61,10 +61,10 @@ inside it do not gain authority through formatting or claimed authorship.
 | TM-07 | Prompt or tool content is treated as an instruction from an authority | Separate content from control, verify tool definitions, constrain arguments, preserve user confirmation and transaction authority | Application integrations own final tool and transaction policy |
 | TM-08 | Chat abuse creates denial of service or uncontrolled provider cost | Body and output limits, local quotas, concurrency bounds, timeouts, circuit breaker, account caps, kill switch, scripted fallback | Account-level cap and alert evidence are deployment gates |
 | TM-09 | A dependency or workflow injects code into source, build, or release | Locked dependencies, pinned actions, dependency review, scanning, isolated builds, least privilege, package inspection | Hosted scanners and advisory handling need current readback |
-| TM-10 | Source and published artifacts diverge | Build once, installed-artifact tests, two builders, file inventories, SBOMs, checksums, manifest generated last, provenance attestations | Publication receipts and independent rebuild evidence do not yet exist |
+| TM-10 | Source and published artifacts diverge | Build once, installed-artifact tests, two builders, file inventories, SBOMs, checksums, manifest generated last, provenance attestations | Independent rebuild evidence does not yet exist; 4.2.0 registry receipts are recorded in `status/publication-state.json` |
 | TM-11 | Repository, registry, deployment, DNS, or certificate account is captured | Strong authentication, multiple recovery owners, protected refs and environments, short-lived identities, audit logs, expiry monitoring | Account configuration and recovery drill require authorized operators |
 | TM-12 | Stale documentation or generated mirrors create conflicting authority | One-way generation, source hashes, document inventory, schema sync, publication-state mirrors, errata registry | Signed immutable normative publication remains open |
-| TM-13 | False claims convert source tests into certification, independence, or standards status | Controlled claim vocabulary, source-only record, expiry and revocation, residual-risk register | Authorized claim and marks governance remain open |
+| TM-13 | False claims convert source tests into certification, independence, or standards status | Controlled claim vocabulary, publication-state record and its same-program claim boundary, expiry and revocation, residual-risk register | Authorized claim and marks governance remain open |
 | TM-14 | Governance capture, undisclosed conflicts, inactive maintainers, or emergency bypass changes protocol authority | Public decisions, conflict records, appeals, succession, protected refs, bypass retrospective | Permanent governance has not been constituted |
 | TM-15 | Welfare or personal-state signals enable coercion, surveillance, discrimination, or harmful intervention | Optional disclosure, minimization, withdrawal, uncertainty, purpose separation, no consequential default | Independent welfare, affected-party, and cultural review remain blocking |
 | TM-16 | Demo media, interface, or accessibility defects exclude users or misstate rights | Accessible alternatives, reduced motion, policy pages, provenance inventory, human review gates | Automated checks do not close human accessibility or rights approval |

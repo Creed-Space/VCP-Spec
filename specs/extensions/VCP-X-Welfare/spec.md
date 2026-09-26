@@ -169,7 +169,7 @@ Operators declaring affordances they don't implement (e.g., `WC:🛑🚪📓🔒
 
 ### 6.3 Privacy of Embodied Dimensions
 
-Extended embodied dimensions may reveal physical location, operational state, or environmental context. VCP-E AS-line dimensions follow the same S-line privacy rules as standard AS-lines: stripped before transmission unless explicit consent.
+Extended embodied dimensions may reveal physical location, operational state, or environmental context. VCP-E AS-line dimensions follow the same privacy rules as standard AS-lines (the R-line privacy model, VCP/S §2.4.5): stripped before transmission unless explicit consent.
 
 ## 7. Conformance
 

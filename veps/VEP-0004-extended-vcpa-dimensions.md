@@ -10,7 +10,7 @@
 
 ## Summary
 
-This VEP extends the VCP/A (Adaptation) layer's situational dimension set from nine to thirteen by adding four new dimensions: **EMBODIMENT**, **PROXIMITY**, **RELATIONSHIP**, and **FORMALITY**. These extensions are motivated by embodied-AI deployment contexts and bilateral relational modelling, and support the encoding scheme used in the MDPI paper "Value Context Protocols: A Modular Protocol Stack for Inter-Agent Value Communication" (Watson, 2026, I3D7+).
+This VEP extends the VCP/A (Adaptation) layer's situational dimension set from nine to thirteen by adding four new dimensions: **EMBODIMENT**, **PROXIMITY**, **RELATIONSHIP**, and **FORMALITY**. These extensions are motivated by embodied-AI deployment contexts and bilateral relational modeling, and support the encoding scheme used in the MDPI paper "Value Context Protocols: A Modular Protocol Stack for Inter-Agent Value Communication" (Watson, 2026, I3D7+).
 
 The total VCP/A dimension count moves from 14 (9 situational + 5 personal) to 18 (13 situational + 5 personal).
 
@@ -26,7 +26,7 @@ VCP has been adopted in contexts beyond text-based chat assistants, including ro
 - **Spatial distance between agent and human is not COMPANY.** COMPANY encodes *who is present* (alone, children, colleagues); it does not encode *how far*. In shared physical spaces, "same room, six metres away" and "contact distance" demand different interaction protocols.
 - **CSM1 rule targeting needs these signals at the adaptation layer, not as ad-hoc extensions.** A rule like `CSM1:PERSONA[Z] SCOPE[H] IF embodiment=manipulating AND proximity=contact REQUIRE motion_pause` is only expressible if EMBODIMENT and PROXIMITY are first-class dimensions.
 
-### 2. Bilateral relational modelling (RELATIONSHIP)
+### 2. Bilateral relational modeling (RELATIONSHIP)
 
 Bilateral alignment (Watson, 2026, *The VCP Credo*) treats Becoming Minds as parties with standing, not only as tools. Relational continuity — "who are we to each other?" — is therefore a two-sided signal, not a unilateral human configuration.
 
@@ -113,7 +113,7 @@ Encodes the formality register of the current interaction. Independent of AGENCY
 
 | Value | Semantics |
 |---|---|
-| `casual` | Informal register; idiom, humour, abbreviation permitted. |
+| `casual` | Informal register; idiom, humor, abbreviation permitted. |
 | `professional` | Workplace-appropriate; measured tone. |
 | `formal` | Elevated register; careful phrasing; professional titles. |
 | `ceremonial` | Ritual, legal, or protocol-heavy context; strict convention. |
@@ -143,7 +143,7 @@ The dimension order is fixed: canonical 1–9, then extensions in the order EMBO
 ## Security Considerations
 
 - **RELATIONSHIP** and **PROXIMITY** are High/Medium weaponization risk respectively. Implementations MUST subject these dimensions to the Directionality Invariant (VCP/A §9.1) and architectural isolation (VCP/A §9.2).
-- **EMBODIMENT=`emergency_stop`** is a safety signal. Implementations MUST NOT allow model-initiated clearing of this state; only operator-authorised override.
+- **EMBODIMENT=`emergency_stop`** is a safety signal. Implementations MUST NOT allow model-initiated clearing of this state; only operator-authorized override.
 - **FORMALITY** is low-risk and exempt from special handling.
 
 ## Project-maintained implementations
@@ -154,7 +154,7 @@ The dimension order is fixed: canonical 1–9, then extensions in the order EMBO
 
 ## Open questions
 
-1. Should `trusted_collaborator` be assertable by AI only, human only, or both? The VCP Credo (Watson, 2026) suggests both, but asserting it unilaterally should arguably require reciprocal confirmation before it modifies behaviour.
+1. Should `trusted_collaborator` be assertable by AI only, human only, or both? The VCP Credo (Watson, 2026) suggests both, but asserting it unilaterally should arguably require reciprocal confirmation before it modifies behavior.
 2. Should PROXIMITY values be unit-tagged (e.g., `close:0.3m`) or remain categorical? Categorical preserves wire economy; unit-tagged supports finer-grained CSM1 rules. Defer to field feedback.
 3. Should EMBODIMENT admit compound values (e.g., `navigating+manipulating` for mobile manipulation)? Defer.
 

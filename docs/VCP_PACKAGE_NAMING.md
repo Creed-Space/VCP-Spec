@@ -1,49 +1,57 @@
 # VCP Package Identifier Decision Record
 
 <!-- vcp-document-control
-status: Unratified decision record
+status: Ratified decision record
 normative-authority: None
 protocol-version: Independent of protocol version
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 publication status
 owner: VCP release authority
-evidence-boundary: Candidate identifiers only
+evidence-boundary: Ratified identifiers; registry receipts in publication-state
 -->
 
 | Field | Value |
 |:---|:---|
-| Status | Unratified, publication-blocking decision record |
+| Status | Ratified decision record; names ratified 3 September 2026 (VCP-SDK #97) and published at 4.2.0 |
 | Normative authority | None |
 | Protocol baseline | Independent of protocol version |
-| Last reviewed | 2026-08-13 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP release authority |
-| Evidence boundary | Candidate metadata only. This page does not grant ownership or availability. |
+| Evidence boundary | Ratified identifiers. Registry receipts live in the publication-state record; this page does not grant ownership. |
 
 ## Present rule
 
-No registry name is approved for public installation instructions. The machine
-[publication-state record](../status/publication-state.json) therefore permits
-source installs only. Existing package metadata identifiers are review
-candidates and may change before the first public release.
+The names below were ratified on 3 September 2026 and published at 4.2.0. The
+machine [publication-state record](../status/publication-state.json) records a
+registry receipt for each artifact and permits registry install commands:
+
+```bash
+python -m pip install value-context-protocol==4.2.0
+npm install @creedspace/vcp-sdk@4.2.0
+cargo add vcp-core@4.2.0
+```
 
 The former proposal to publish Python as `vcp` is withdrawn. That PyPI name is
 already associated with an unrelated project, so directing users to it would be
 unsafe. The former assumption that mirroring MCP names proves ownership or
 standards equivalence is also withdrawn.
 
-## Candidate identifiers under review
+## Ratified identifiers
 
 | Surface | Repository metadata | Registry claim |
 |:---|:---|:---|
-| Python distribution | `value-context-protocol` | Unverified and unratified |
-| Python import | `vcp` | Local import namespace, not a registry claim |
-| WebMCP npm package | `@creedspace/vcp-sdk` | Unverified and unratified |
-| Rust library | `vcp-core` | Local crate identifier, not a registry claim |
-| Rust CLI | `vcp-cli` | Local binary and crate identifier, not a registry claim |
-| Rust WASM | `vcp-wasm` | Local package identifier, not a registry claim |
+| Python distribution | `value-context-protocol` | PyPI, published 4.2.0 |
+| Python import | `vcp` | Import namespace, not a registry name |
+| WebMCP npm package | `@creedspace/vcp-sdk` | npm, published 4.2.0 |
+| Rust library | `vcp-core` | crates.io, published 4.2.0 |
+| Rust CLI | `vcp-cli` | crates.io, published 4.2.0 |
+| Rust WASM | `vcp-wasm` | crates.io, published 4.2.0; the generated WebAssembly package is not on npm |
 
 ## Ratification checks
 
-Before any name becomes public guidance, release authority records:
+Before a new or changed name becomes public guidance, release authority records
+the checks below. For the ratified 4.2.0 names, registry ownership, account
+recovery, and trusted-publishing provenance remain open to the closure standard
+(VCP-RISK-005 in [`status/residual-risks.json`](../status/residual-risks.json)).
 
 1. registry availability and existing ownership;
 2. confusingly similar projects and dependency-confusion risk;
@@ -55,13 +63,13 @@ Before any name becomes public guidance, release authority records:
 8. recovery, deprecation, transfer, and yanking procedures;
 9. first-release approval and immutable publication receipt.
 
-## Source-only installation
+## Source installation (alternative)
 
-Select a reviewed VCP-SDK commit, check it out exactly, and run commands from
-that checkout:
+To build from source instead, check out the published tag in a VCP-SDK clone
+and run these commands from that checkout:
 
 ```bash
-git checkout --detach <reviewed-vcp-sdk-commit>
+git checkout --detach v4.2.0
 python -m pip install ./python
 npm install ./webmcp
 cargo build --manifest-path ./rust/Cargo.toml -p vcp-core

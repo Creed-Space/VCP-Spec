@@ -4,7 +4,7 @@
 status: Current companion
 normative-authority: Accepted specifications and schemas
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 publication status
 owner: VCP Spec maintainers
 evidence-boundary: Orientation only
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Orientation only
 | Status | Current non-normative guide |
 | Normative authority | VCP 3.1 and accepted VEPs |
 | Protocol baseline | VCP 3.1 |
-| Last reviewed | 2026-08-13 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Orientation only |
 
@@ -49,22 +49,23 @@ valid VCP object is still untrusted input until the required checks succeed.
 
 | Surface | Current state |
 |:---|:---|
-| VCP 3.1 | Repository baseline |
+| VCP 3.1 | Source baseline (not yet an immutable release) |
 | VCP 3.2 amendments | Pre-release candidate |
 | Extensions | Mixed stable, draft, and experimental statuses |
-| SDKs | Source-only release candidates |
+| SDKs | Published 4.2.0 on PyPI, npm and crates.io; conformance claims remain same-program evidence |
 | Demo | Demonstration application |
 | Conformance | Machine-reported suite coverage, with unsupported areas explicit |
-| Certification | No certification programme is authorized |
+| Certification | No certification program is authorized |
 | IETF draft | Expired working copy requiring rights and technical review |
 
 ## A safe first exercise
 
 1. Read the [overview](./VCP_OVERVIEW.md) and the normative
    [VCP 3.1 specification](../specs/VCP_SPECIFICATION_v3.1.md).
-2. Select an exact sibling VCP-SDK commit.
-3. Install the Python source candidate with `python -m pip install ./python`.
-4. Parse a CSM-1 expression using `VCP-SDK/examples/python/01_parse_token.py` (shown in the [integration guide](./VCP_INTEGRATION_GUIDE.md#4-python-quick-start)).
+2. Check out VCP-SDK tag v4.2.0, or an exact sibling commit.
+3. Install the Python SDK with `python -m pip install value-context-protocol==4.2.0`,
+   or run `python -m pip install ./python` from that checkout.
+4. Parse an identity token using `VCP-SDK/examples/python/01_parse_token.py` (shown in the [integration guide](./VCP_INTEGRATION_GUIDE.md#4-python-quick-start)).
 5. Run the applicable conformance runner and inspect its machine-readable report.
 6. Treat unsupported suites as unsupported.
 
@@ -77,7 +78,7 @@ claims are currently available.
 **Compatible** means a named implementation accepts a declared version or
 surface under a documented matrix. **Conformant** means an exact implementation
 and exact protocol revision pass every mandatory suite for a defined profile.
-**Certified** is reserved for a future authorized programme with independent
+**Certified** is reserved for a future authorized program with independent
 criteria, appeals, expiry, and revocation. Repository badges cannot create that
 authority.
 

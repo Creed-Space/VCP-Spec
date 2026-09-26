@@ -1,9 +1,9 @@
-# Contributing to the Value-Context Protocol
+# Contributing to the Value Context Protocol
 
 <!-- vcp-document-control
 status: Current contributor guidance
 normative-authority: Interim repository contribution process
-protocol-version: VCP 3.1 with candidate work separately labelled
+protocol-version: VCP 3.1 with candidate work separately labeled
 last-reviewed: 2026-08-14 active authority and evidence boundary
 owner: VCP Spec maintainers
 evidence-boundary: Source contribution process, not rights approval or protocol ratification
@@ -23,7 +23,7 @@ submitting rights-sensitive material.
 ## 1. Developer Certificate of Origin (DCO)
 
 Every commit to this repository MUST include a `Signed-off-by` line certifying
-that you have the right to submit the work under the applicable licence for its
+that you have the right to submit the work under the applicable license for its
 destination file class. The authorized file-class matrix is still pending. A
 sign-off records the contributor's certification; it does not resolve the
 repository's historical licensing conflict by itself.
@@ -56,7 +56,7 @@ git config user.email "your.email@example.com"
 By signing off, you certify that:
 
 1. You created the contribution (in whole or part) and have the right to
-   submit it under the applicable project licence; or
+   submit it under the applicable project license; or
 2. The contribution is based on prior work under a compatible open source
    license and you have the right to submit it with modifications; or
 3. Someone who certified (1) or (2) provided the contribution to you directly
@@ -160,8 +160,9 @@ annotated JSON examples.
 ### Lifecycle
 
 How the extension's data is created, updated, and removed. Define the
-interaction with existing VCP layers (identity, values, context, consent,
-attestation).
+interaction with the existing VCP layers (Identity, Transport, Semantics,
+Adaptation, Messaging, Economic Governance) and with Core Security (encryption,
+scanning, opacity, revocation, audit).
 
 ### Security considerations
 
@@ -308,9 +309,9 @@ Open a pull request against `main`. In the PR description:
 When writing normative specification text, use RFC 2119 / RFC 8174 keywords
 in CAPITALS:
 
-- **MUST** / **MUST NOT** -- absolute requirement or prohibition
-- **SHOULD** / **SHOULD NOT** -- recommended, with documented exceptions
-- **MAY** -- truly optional
+- **MUST** / **MUST NOT**: absolute requirement or prohibition
+- **SHOULD** / **SHOULD NOT**: recommended, with documented exceptions
+- **MAY**: truly optional
 
 Do not capitalize these words when used in their ordinary English sense.
 

@@ -4,7 +4,7 @@
 status: Current companion
 normative-authority: Accepted specifications and schemas
 protocol-version: VCP 3.1
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-24 publication status
 owner: VCP Spec maintainers
 evidence-boundary: Architecture guidance only
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Architecture guidance only
 | Status | Current non-normative architecture companion |
 | Normative authority | VCP 3.1 specifications, accepted VEPs, and schemas |
 | Protocol baseline | VCP 3.1 |
-| Last reviewed | 2026-08-13 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Data-flow guidance. Deployment controls require separate evidence. |
 
@@ -53,7 +53,7 @@ unsupported and never counted as a pass.
 
 ## SDK mapping
 
-The source candidate maps the flow to the following implementation surfaces:
+SDK 4.2.0 maps the flow to the following implementation surfaces:
 
 | Stage | Python | Rust | WebMCP |
 |:---|:---|:---|:---|
@@ -65,8 +65,8 @@ The source candidate maps the flow to the following implementation surfaces:
 
 The sibling repositories are selected by the exact `source_commit` recorded
 in [`status/publication-state.json`](../status/publication-state.json)
-(currently `null`, meaning no commit has been pinned yet). Moving branches are
-unsuitable evidence.
+(currently `c5035e9`, tag `v4.2.0`). Moving branches are unsuitable
+evidence.
 
 ## MCP 2026-07-28 profile
 

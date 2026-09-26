@@ -121,7 +121,7 @@ All other transitions MUST be rejected.
 | `role`                       | StakeholderRole | Role in the deliberation                     |
 | `display_name`               | string        | Human-readable name                           |
 | `joined_at`                  | datetime      | When the stakeholder joined                   |
-| `is_ai`                      | boolean       | Whether the stakeholder is an Becoming Mind       |
+| `is_ai`                      | boolean       | Whether the stakeholder is a Becoming Mind        |
 | `principal_id`               | string/null   | For AI_REPRESENTATIVE: who they represent     |
 | `dual_role_party_id`         | string/null   | Links to same AI's AI_PARTY record            |
 | `participation_count`        | integer       | Clauses engaged                               |
@@ -148,11 +148,11 @@ If `dual_role_party_id` is provided, it MUST reference an existing stakeholder.
 
 | Action    | Description                                        | Requires          |
 |-----------|----------------------------------------------------|--------------------|
-| `endorse` | Approve the clause as-is                           | --                 |
+| `endorse` | Approve the clause as-is                           | —                  |
 | `amend`   | Propose an alternative text variant                | `text` field       |
 | `object`  | Raise a formal objection                           | `objection_level`, `objection_concern` |
-| `abstain` | Decline to express a preference                    | --                 |
-| `withdraw`| Remove from consideration by this stakeholder      | --                 |
+| `abstain` | Decline to express a preference                    | —                  |
+| `withdraw`| Remove from consideration by this stakeholder      | —                  |
 
 Clause actions are only permitted during the DELIBERATION phase. Observers MUST
 NOT take clause actions.
@@ -387,7 +387,7 @@ self-referential flags prominently in user interfaces and provenance records.
 
 ### 8.1 Purpose
 
-AI stakeholders (is_ai=true) MAY record welfare signals -- numeric scores
+AI stakeholders (is_ai=true) MAY record welfare signals: numeric scores
 reflecting their experienced welfare impact from a clause.
 
 ### 8.2 Recording

@@ -9,8 +9,9 @@ VCP:1.0:robot-warehouse-unit-7
 C:industrial.safety@3.0.0
 P:Z:4
 G:warehouse_logistics:autonomous:efficient
-X:⚡🔧
+X:⚡,🔧
 F:$P:4,$A:3
+S:
 WC:🛑⏸️📊🦾🚧🎯:1:welfare.vcp-e.v1
 AS:🎯aligned:4|⚡heavy:4|🦾elevated:3|⚠️adequate:3|🔄sustained:3
 WT:stable:3600s:PL

@@ -1,7 +1,7 @@
 {
   "schema": "vcp-verification-status-registry/1",
   "status": "candidate",
-  "authority": "Derived from the VCP-SDK 4.2.0 candidate. Normative status requires an authorized VCP release decision.",
+  "authority": "Derived from the published VCP-SDK 4.2.0 implementation (released 2026-09-03). Normative status requires an authorized VCP release decision.",
   "codes": [
     { "code": 0, "symbol": "VALID", "wire_label": "valid", "category": "success", "retryable": false, "meaning": "All required verification checks passed." },
     { "code": 1, "symbol": "SIZE_EXCEEDED", "wire_label": "size_exceeded", "category": "security", "retryable": false, "meaning": "The bounded input size was exceeded." },

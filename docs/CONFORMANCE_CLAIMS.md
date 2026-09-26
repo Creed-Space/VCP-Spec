@@ -4,7 +4,7 @@
 status: Current repository policy
 normative-authority: Interim claim-control policy
 protocol-version: VCP 3.1 with separately named amendments and extensions
-last-reviewed: 2026-08-14 claim scope and governance boundary
+last-reviewed: 2026-09-24 publication status
 owner: VCP Spec maintainers
 evidence-boundary: Claim vocabulary and evidence requirements, not certification authority
 -->
@@ -14,7 +14,7 @@ evidence-boundary: Claim vocabulary and evidence requirements, not certification
 | Status | Current repository policy |
 | Normative authority | Interim claim-control policy, subordinate to ratified protocol and governance decisions |
 | Protocol baseline | VCP 3.1, with every amendment and extension named separately |
-| Last reviewed | 2026-08-14 |
+| Last reviewed | 2026-09-24 |
 | Owner | VCP Spec maintainers |
 | Evidence boundary | Controls repository and ecosystem wording. It does not create an independent certification authority or trademark permission. |
 
@@ -35,7 +35,7 @@ environment named in their evidence.
 | **passes the named VCP test suite** | The exact artifact received passing results for the explicitly named suite or profile. | Machine-readable report, suite and runner hashes, artifact digest, environment, and complete passed, failed, unsupported, and not-applicable counts. |
 | **VCP conformant for profile _P_** | The exact artifact passes every mandatory case for a versioned profile _P_, with no unresolved required failure. | Accepted profile definition, complete machine-readable results, reproducible runner, immutable artifact digest, and an authorized claim decision. |
 | **interoperability-tested with _I_** | The artifact exchanged protocol data with separately named implementation _I_ for stated scenarios. | Both immutable implementation identities, scenario and profile coverage, deviations, and retained results. Organizational independence must be stated rather than implied. |
-| **VCP Certified** | Reserved for a future authorized certification programme. | Ratified criteria and test authority, independent assessment rules, trademark authorization, appeals, expiry, surveillance or renewal, revocation, and a public certification record. |
+| **VCP Certified** | Reserved for a future authorized certification program. | Ratified criteria and test authority, independent assessment rules, trademark authorization, appeals, expiry, surveillance or renewal, revocation, and a public certification record. |
 
 The phrases **VCP compliant**, **fully VCP compatible**, **fully conformant**,
 **official implementation**, and **project-maintained implementation** are prohibited
@@ -73,7 +73,8 @@ record. The badge text names the profile and version, and its link resolves to
 the full evidence. A badge must not collapse unsupported or not-applicable cases
 into passes, outlive the underlying claim, or imply certification.
 
-The current source candidate may state scoped suite results such as:
+The published SDK 4.2.0, like any later SDK release, may state scoped suite
+results such as:
 
 > VCP-SDK artifact `<digest>` passed conformance profile `<profile>` for VCP
 > `<version>`: `<passed>` passed, `<unsupported>` unsupported, and

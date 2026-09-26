@@ -1,4 +1,4 @@
-# Value-Context Protocol (VCP) Specification v3.1
+# Value Context Protocol (VCP) Specification v3.1
 
 **Version**: 3.1
 **Date**: 2026-02-28
@@ -12,7 +12,7 @@ certification, or independent conformance report.
 
 ## Abstract
 
-The Value-Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference. A sixth, experimental extension (VCP-X-Welfare) was registered after the 3.1 baseline and is tracked as a 3.2 candidate.
+The Value Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference. A sixth, experimental extension (VCP-X-Welfare) was registered after the 3.1 baseline and is tracked as a 3.2 candidate.
 
 ---
 
@@ -22,27 +22,27 @@ VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  Layer 6 — VCP/E  ECONOMIC GOVERNANCE                              │
+│  Layer 6 — VCP/E  ECONOMIC GOVERNANCE                               │
 │  WHO PAYS and transaction governance                                │
 │  Fiduciary constraints · Authorization gaps · Capability decisions  │
 ├─────────────────────────────────────────────────────────────────────┤
-│  Layer 5 — VCP/M  MESSAGING                                        │
+│  Layer 5 — VCP/M  MESSAGING                                         │
 │  WHO TALKS - Inter-agent message exchange                           │
 │  Message types · Escalation severity · Delivery semantics           │
 ├─────────────────────────────────────────────────────────────────────┤
-│  Layer 4 — VCP/A  ADAPTATION                                       │
+│  Layer 4 — VCP/A  ADAPTATION                                        │
 │  WHEN and HOW constitutions apply                                   │
-│  Context encoding · State tracking · Messaging · Deterministic hooks│
+│  Context encoding · State tracking · Deterministic hooks · Torch    │
 ├─────────────────────────────────────────────────────────────────────┤
-│  Layer 3 — VCP/S  SEMANTICS                                        │
+│  Layer 3 — VCP/S  SEMANTICS                                         │
 │  WHAT the values mean                                               │
 │  CSM-1 grammar · Persona composition · Traits · Personal state      │
 ├─────────────────────────────────────────────────────────────────────┤
-│  Layer 2 — VCP/T  TRANSPORT                                        │
+│  Layer 2 — VCP/T  TRANSPORT                                         │
 │  HOW integrity and provenance travel                                │
 │  Signed bundles · Hash verification · Audit logging                 │
 ├─────────────────────────────────────────────────────────────────────┤
-│  Layer 1 — VCP/I  IDENTITY                                         │
+│  Layer 1 — VCP/I  IDENTITY                                          │
 │  WHO and WHAT is being addressed                                    │
 │  Naming · Namespaces · Registry · Encoding                          │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -89,7 +89,7 @@ The six layers of the VCP stack. Layers 1–4 are unchanged from v1.0; layers 5�
 
 ### 2.1. VCP/I — Identity
 
-Defines token format, namespace tiers (personal, organizational, platform), and identity encoding. See [Identity documentation](../docs/identity/).
+Defines token format, namespace tiers (core, organizational, community, personal), and identity encoding. See [Identity documentation](../docs/identity/).
 
 ### 2.2. VCP/T — Transport
 
@@ -124,10 +124,10 @@ The v3.1 security profile specifies Fernet symmetric encryption for personal con
 The reference profile defines 12 detection patterns (8 OWASP, 2 VCP-specific, 2 Unicode) as one defense-in-depth control before model use. Passing these patterns does not establish that content is safe from prompt injection. Applications MUST combine verification, parsing, policy, least privilege, output controls, and adversarial tests appropriate to the deployment.
 
 ### 3.3. Context Opacity
-Protection levels (STANDARD, ELEVATED, HIGH, CRITICAL) may be computed from personal-state inputs. A conforming opacity integration MUST prevent raw personal signals from reaching inference models and expose only the approved derived level. Derived levels can still reveal sensitive state and require consent, minimisation, access control, retention limits, and inference review. Conformance requires end-to-end mediation evidence rather than an encoder claim alone.
+Protection levels (STANDARD, ELEVATED, HIGH, CRITICAL) may be computed from personal-state inputs. A conforming opacity integration MUST prevent raw personal signals from reaching inference models and expose only the approved derived level. Derived levels can still reveal sensitive state and require consent, minimization, access control, retention limits, and inference review. Conformance requires end-to-end mediation evidence rather than an encoder claim alone.
 
 ### 3.4. Revocation Infrastructure
-CRL (Certificate Revocation List) + OCSP-style stapled proofs. Signature verification via Ed25519 (preferred) or HMAC-SHA256. Fail-closed: if all revocation sources are unavailable, treat as revoked.
+CRL (Certificate Revocation List) + OCSP-style stapled proofs. Signature verification via Ed25519 (preferred) or HMAC-SHA256. Fail-closed: if no configured revocation source can establish a status, verification MUST reject the bundle. Implementations report this as `REVOCATION_UNAVAILABLE` (code 17), not `REVOKED` (code 15), which is reserved for confirmed revocation; see [specs/core/status-code-registry.md](./core/status-code-registry.md).
 
 ---
 
@@ -136,7 +136,7 @@ CRL (Certificate Revocation List) + OCSP-style stapled proofs. Signature verific
 Full specification: [specs/core/audit.md](./core/audit.md)
 
 ### 4.1. Tamper-Evident Audit Chain
-The profile specifies a SHA-256 hash chain with canonical JSON serialization and serialized appends. Truncated hashes may reduce stored detail but are not anonymization: stable or low-entropy inputs can remain linkable. Audit designs MUST separately address minimisation, keyed pseudonymization where appropriate, access, retention, erasure obligations, and chain verification.
+The profile specifies a SHA-256 hash chain with canonical JSON serialization and serialized appends. Truncated hashes may reduce stored detail but are not anonymization: stable or low-entropy inputs can remain linkable. Audit designs MUST separately address minimization, keyed pseudonymization where appropriate, access, retention, erasure obligations, and chain verification.
 
 ---
 
@@ -197,7 +197,7 @@ Annotated walkthroughs demonstrating VCP operations end-to-end:
 |--------|----------|-------------|
 | [vcp-manifest-v1](../schemas/vcp-manifest-v1.schema.json) | Signed bundle manifests | No |
 | [vcp-identity-token](../schemas/vcp-identity-token.schema.json) | UVC value tokens (VCP/I dotted identifiers); not the handshake `identity` credential | No |
-| [vcp-semantics-csm1](../schemas/vcp-semantics-csm1.schema.json) | CSM-1 compact tokens | No |
+| [vcp-semantics-csm1](../schemas/vcp-semantics-csm1.schema.json) | CSM-1 codes (NANO, MICRO and COMPACT tiers) | No |
 | [vcp-adaptation-context](../schemas/vcp-adaptation-context.schema.json) | Adaptation context | No |
 | [vcp-messaging-v1.2](../schemas/vcp-messaging-v1.2.schema.json) | Inter-agent messaging v1.2 (`vcp_message: "1.2"`); v2.0 Draft messages are not covered here | No |
 | [vcp-capability-handshake](../schemas/vcp-capability-handshake.schema.json) | Capability negotiation | **Yes** |
@@ -233,7 +233,7 @@ The 2.0 and 3.0 milestones shipped in the reference implementation before the pu
 |-------|-------------|
 | **Core** | Implement VCP/I, VCP/T, VCP/S, VCP/A |
 | **Core + Security** | Core + context encryption + injection scanning + revocation |
-| **Core + Messaging** | Core + Security + VCP/M messaging + VCP/E economic governance |
+| **Core + Messaging** | Core + Security + VCP/M messaging + VCP/E economic governance (the §2.6 summary only; the detailed VCP/E v2.0 document is a Draft with no conformance fixtures) |
 | **Full** | Core + Security + Messaging + capability negotiation + all stable extensions |
 
 ### 11.2. Extension Conformance
