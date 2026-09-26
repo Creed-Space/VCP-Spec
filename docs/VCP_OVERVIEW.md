@@ -1,4 +1,4 @@
-# Value-Context Protocol Overview
+# Value Context Protocol Overview
 
 <!-- vcp-document-control
 status: Current companion
@@ -20,7 +20,7 @@ evidence-boundary: Architecture summary only
 
 ## Purpose
 
-The Value-Context Protocol, VCP, defines portable representations for declared
+The Value Context Protocol, VCP, defines portable representations for declared
 values, constitutional profiles, adaptation context, and related provenance.
 An application can carry these representations between cooperating components,
 verify integrity relative to configured trust anchors, and record the decision

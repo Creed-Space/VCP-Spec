@@ -40,7 +40,7 @@ Appendices:
 
 ### 1.1 Purpose
 
-The VCP Semantics Layer (VCP/S) defines the meaning and interpretation of constitutional content within the Value-Context Protocol. It occupies Layer 3 of the VCP stack, above the Transport Layer (VCP/T, defined by VCP v3.1 §2.2) and below the Adaptation Layer (VCP/A).
+The VCP Semantics Layer (VCP/S) defines the meaning and interpretation of constitutional content within the Value Context Protocol. It occupies Layer 3 of the VCP stack, above the Transport Layer (VCP/T, defined by VCP v3.1 §2.2) and below the Adaptation Layer (VCP/A).
 
 VCP/S is responsible for:
 

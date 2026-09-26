@@ -14,7 +14,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/S (Semantics)
 **Status**: Stable
 
-> *Part of the Value-Context Protocol (VCP) - Layer 3*
+> *Part of the Value Context Protocol (VCP) - Layer 3*
 
 ---
 
@@ -530,7 +530,7 @@ Adherence levels modulate the **intensity** of a persona's behavior but MUST NOT
 
 This specification is released under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0).
 
-You are free to share and adapt this material for any purpose, including commercial use, provided you give appropriate attribution to the Value-Context Protocol project.
+You are free to share and adapt this material for any purpose, including commercial use, provided you give appropriate attribution to the Value Context Protocol project.
 
 ---
 

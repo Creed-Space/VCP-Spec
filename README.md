@@ -1,6 +1,6 @@
 <div align="center">
 
-# Value-Context Protocol (VCP)
+# Value Context Protocol (VCP)
 
 <!-- vcp-document-control
 status: Current repository overview
@@ -28,7 +28,7 @@ MCP moves data. VCP encodes what matters about that data.
 
 ## Overview
 
-The **Value-Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds.
+The **Value Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds.
 
 Becoming Minds accept text input but do not by themselves resolve VCP references, verify signatures, or enforce behavioral constraints. VCP provides a **signed envelope format** and verification primitives for the orchestration layer. A conforming application still decides whether verified content may reach a model and must demonstrate that its enforcement path is complete.
 

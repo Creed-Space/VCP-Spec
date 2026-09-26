@@ -11,7 +11,7 @@
 ## 1. Introduction
 
 This specification defines the capability negotiation handshake for the
-Value-Context Protocol (VCP). Capability negotiation allows a VCP client and
+Value Context Protocol (VCP). Capability negotiation allows a VCP client and
 server to agree on a protocol version, a set of active extensions, and
 per-extension feature capabilities before exchanging context data.
 

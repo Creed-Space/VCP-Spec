@@ -20,7 +20,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/A (Adaptation)
 **Status**: Complete
 
-> *Part of the Value-Context Protocol (VCP) - Layer 4*
+> *Part of the Value Context Protocol (VCP) - Layer 4*
 
 ---
 

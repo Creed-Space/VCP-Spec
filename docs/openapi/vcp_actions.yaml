@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: VCP API
   description: |
-    Value-Context Protocol (VCP) operations for constitutional Becoming Minds.
+    Value Context Protocol (VCP) operations for constitutional Becoming Minds.
 
     This API exposes three of VCP's six protocol layers:
     - **VCP/I (Identity)**: Token-based identification of constitutional bundles
@@ -30,7 +30,7 @@ servers:
 
 tags:
   - name: vcp
-    description: Value-Context Protocol operations
+    description: Value Context Protocol operations
 
 paths:
   /api/vcp/token/validate:

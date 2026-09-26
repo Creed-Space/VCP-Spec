@@ -2,7 +2,7 @@
 
 ## Extension Model
 
-The Value-Context Protocol core specification (v3.1 source baseline) defines a
+The Value Context Protocol core specification (v3.1 source baseline) defines a
 stable wire format for context bundles, manifests, attestation, and verification.
 These core primitives are sufficient for many deployments and are expected to
 remain backward-compatible across major versions.

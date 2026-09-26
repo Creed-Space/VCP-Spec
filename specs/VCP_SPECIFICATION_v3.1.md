@@ -1,4 +1,4 @@
-# Value-Context Protocol (VCP) Specification v3.1
+# Value Context Protocol (VCP) Specification v3.1
 
 **Version**: 3.1
 **Date**: 2026-02-28
@@ -12,7 +12,7 @@ certification, or independent conformance report.
 
 ## Abstract
 
-The Value-Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference. A sixth, experimental extension (VCP-X-Welfare) was registered after the 3.1 baseline and is tracked as a 3.2 candidate.
+The Value Context Protocol (VCP) is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds. Version 3.1 introduces a formal extension model, capability negotiation, and five protocol extensions for personal state, relational context, consensus voting, session handoff, and intent inference. A sixth, experimental extension (VCP-X-Welfare) was registered after the 3.1 baseline and is tracked as a 3.2 candidate.
 
 ---
 

@@ -14,7 +14,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Layer**: VCP/A (Adaptation)
 **Status**: Stable
 
-> *Part of the Value-Context Protocol (VCP) - Layer 4*
+> *Part of the Value Context Protocol (VCP) - Layer 4*
 
 ---
 
@@ -1235,4 +1235,4 @@ This specification is released under the [Creative Commons Attribution 4.0 Inter
 
 You are free to share and adapt this material for any purpose, including commercially, provided you give appropriate attribution.
 
-*Value-Context Protocol is a project of Creed Space. Contributions welcome.*
+*Value Context Protocol is a project of Creed Space. Contributions welcome.*

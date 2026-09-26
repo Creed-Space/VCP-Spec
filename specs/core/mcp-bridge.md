@@ -8,7 +8,7 @@
 
 ## 1. Introduction
 
-This document specifies how VCP (Value-Context Protocol) layers map to MCP (Model Context Protocol) primitives. VCP and MCP are complementary protocols:
+This document specifies how VCP (Value Context Protocol) layers map to MCP (Model Context Protocol) primitives. VCP and MCP are complementary protocols:
 
 - **MCP** provides standardized transport for AI tool integration (tools, resources, prompts, sampling)
 - **VCP** provides standardized value transport (constitutional profiles, personal state, verification)

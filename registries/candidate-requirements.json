@@ -3366,7 +3366,7 @@
     },
     {
       "path": "specs/VCP_SPECIFICATION_v3.1.md",
-      "sha256": "82e70256cd1b43d179e0859bc6d2855be02c97190b98f5d3d1f0da2efd63803e"
+      "sha256": "0344f966fbc9276109adfac275b9576898afe3edc1ee9fefdfcd31fb9fa61b93"
     },
     {
       "path": "specs/core/audit.md",
@@ -3374,7 +3374,7 @@
     },
     {
       "path": "specs/core/capability-negotiation.md",
-      "sha256": "022cb127369e007131bf4764d6ae239f565cab92dfb5618fade742cedc5098a1"
+      "sha256": "01bcb4a10f4c254f50765c812fe13cc1ead3c33ed40a2e7316b6287f4671b072"
     },
     {
       "path": "specs/core/extension-lifecycle.md",
@@ -3382,7 +3382,7 @@
     },
     {
       "path": "specs/core/mcp-bridge.md",
-      "sha256": "c98401c6e50d568302a186317e516e84aa111c6dee1d5d0a6c8818c25786dff4"
+      "sha256": "124fdfb4102c9226324ff84c24bf3e37ff7fb36147a0cef623eeea0242ad329c"
     },
     {
       "path": "specs/core/representation-registry.md",
@@ -3390,7 +3390,7 @@
     },
     {
       "path": "specs/core/security.md",
-      "sha256": "7653ec8e8d2d93fcc25c6f406448ebf0b44d7af0a390ab3f32c55fe90adcc8ea"
+      "sha256": "61bb5991531fb9080ba66caa8e34d394a37b0884b55b40f30fc683cfa93acdbf"
     },
     {
       "path": "specs/core/status-code-registry.md",

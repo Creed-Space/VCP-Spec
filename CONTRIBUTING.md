@@ -1,4 +1,4 @@
-# Contributing to the Value-Context Protocol
+# Contributing to the Value Context Protocol
 
 <!-- vcp-document-control
 status: Current contributor guidance

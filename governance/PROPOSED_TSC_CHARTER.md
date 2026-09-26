@@ -3,7 +3,7 @@
 **Status:** proposal only. Unratified. No current operational or legal effect.
 
 This preserved charter describes a possible future governance model for the
-Value-Context Protocol. The Technical Steering Committee described below has
+Value Context Protocol. The Technical Steering Committee described below has
 not been constituted, no neutral-governance or foundation transfer is claimed,
 and the intellectual-property and trademark provisions require authorized legal
 review. Current authority is recorded in [`../GOVERNANCE.md`](../GOVERNANCE.md)
@@ -304,7 +304,7 @@ Contributors retain copyright to their individual contributions.
 
 ### 7.1 Ownership
 
-"Value-Context Protocol" and "VCP" are trademarks of Creed Space.
+"Value Context Protocol" and "VCP" are trademarks of Creed Space.
 
 ### 7.2 Permitted use without approval
 
@@ -344,7 +344,7 @@ The VCP name and trademarks MUST NOT be used:
 
 ## 8. Neutrality
 
-The Value-Context Protocol is developed in the open under neutral governance.
+The Value Context Protocol is developed in the open under neutral governance.
 No single organization controls the protocol's direction. The TSC represents
 diverse stakeholder interests including protocol implementors, AI providers,
 and end users.

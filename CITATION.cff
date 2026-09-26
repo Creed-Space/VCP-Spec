@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use the Value-Context Protocol, cite this specification."
-title: "Value-Context Protocol Specification"
+message: "If you use the Value Context Protocol, cite this specification."
+title: "Value Context Protocol Specification"
 type: software
 version: "3.1"
 license-url: "https://github.com/Creed-Space/VCP-Spec/blob/main/LICENSING_STATUS.md"

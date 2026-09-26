@@ -1,6 +1,6 @@
 # VCP Security Specification
 
-**Value-Context Protocol (VCP) v3.1 — Core Security**
+**Value Context Protocol (VCP) v3.1 — Core Security**
 
 | Field          | Value                                     |
 |----------------|-------------------------------------------|
@@ -12,7 +12,7 @@
 
 ## Abstract
 
-This document specifies the security mechanisms of the Value-Context Protocol
+This document specifies the security mechanisms of the Value Context Protocol
 (VCP) v3.1. VCP transports constitutional values to AI inference systems. Core
 Security protects personal context signals at rest, defends against
 prompt injection through constitutional content, enforces information-theoretic
