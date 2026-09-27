@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-27 core namespace prefix list and examples
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -155,13 +155,13 @@ segment           = LALPHA *31(LALPHA / DIGIT / "-")
 ; Examples:
 ;   3 segments: family.safe.guide (domain=family, approach=safe, role=guide)
 ;   4 segments: company.acme.legal.compliance (domain=company, path=[acme], approach=legal, role=compliance)
-;   5 segments: org.example.dept.team.policy (domain=org, path=[example,dept], approach=team, role=policy)
+;   5 segments: company.example.dept.team.policy (domain=company, path=[example,dept], approach=team, role=policy)
 
 ; Namespace suffix (optional, uppercase)
 namespace-suffix  = UALPHA *31(UALPHA / DIGIT)
 
 ; Namespace governance (determined by first segment):
-;   Core: family, work, secure, creative, reality, education, health, finance, legal
+;   Core: family, work, secure, creative, reality
 ;   Organizational: company.*, school.*, ngo.*
 ;   Community: religion.*, culture.*, community.*
 ;   Personal: user.*

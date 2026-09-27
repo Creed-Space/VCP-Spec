@@ -340,7 +340,7 @@ creed://acme.com/company.acme.legal@latest
 The paper specification also defines an alternative URI scheme:
 
 ```
-vcp://core.ethics.consent
+vcp://family.safe.guide
 ```
 
 Implementations MUST accept the `creed://` scheme. Implementations SHOULD also accept the `vcp://` scheme as equivalent.
@@ -464,7 +464,7 @@ NFC tags MAY carry VCP/I tokens for hardware-based identity sharing. The NFC pay
 For semantic web integration, VCP/I tokens MAY be represented as JSON-LD:
 
 ```json
-{"@id": "vcp:core.ethics.consent"}
+{"@id": "vcp:family.safe.guide"}
 ```
 
 ### 2.9 Compact Binary Format
@@ -765,7 +765,7 @@ Examples:
 
 - 3 segments: `family.safe.guide` (domain=family, approach=safe, role=guide)
 - 4 segments: `company.acme.legal.compliance` (domain=company, path=[acme], approach=legal, role=compliance)
-- 5 segments: `org.example.dept.team.policy` (domain=org, path=[example,dept], approach=team, role=policy)
+- 5 segments: `company.example.dept.team.policy` (domain=company, path=[example,dept], approach=team, role=policy)
 
 ### 3.2 Namespace Prefixes
 
@@ -828,7 +828,7 @@ segment           = LALPHA *31(LALPHA / DIGIT / "-")
 namespace-suffix  = UALPHA *31(UALPHA / DIGIT)
 
 ; Namespace governance (determined by first segment):
-;   Core: family, work, secure, creative, reality, education, health, finance, legal
+;   Core: family, work, secure, creative, reality
 ;   Organizational: company.*, school.*, ngo.*
 ;   Community: religion.*, culture.*, community.*
 ;   Personal: user.*
@@ -855,7 +855,9 @@ ALPHA             = %x41-5A / %x61-7A          ; A-Z / a-z
 
 ### 3.5 Formal Grammar (EBNF)
 
-For cross-reference with the academic paper specification:
+For cross-reference with the academic paper specification.
+This EBNF preserves the paper's tier-first notation (`core.ethics.consent`) and is informative only.
+The ABNF in Section 3.4 and the prefix tables in Sections 3.2 and 4.2 control: tokens begin with a namespace prefix such as `family` or `company`, not with a literal tier name.
 
 ```ebnf
 (* VCP/I Identity Token Grammar *)
@@ -951,7 +953,7 @@ class UVCValidationRules:
     RULES = {
         # Length constraints
         'max_total_length': 128,       # Maximum total token length
-        'max_segments': 8,              # Maximum hierarchy depth
+        'max_segments': 10,             # Maximum hierarchy depth (ABNF token-path)
         'max_segment_length': 32,       # Maximum single segment length
 
         # Character constraints
@@ -1040,9 +1042,9 @@ class UVCTokenValidator:
         # Split into segments
         segments = base_token.split('.')
 
-        if len(segments) > 8:
+        if len(segments) > 10:
             return ValidationResult(False, ValidationError.TOO_MANY_SEGMENTS,
-                f"Too many segments (max 8): {len(segments)}")
+                f"Too many segments (max 10): {len(segments)}")
 
         # Check for empty segments (consecutive dots)
         for i, seg in enumerate(segments):
@@ -1268,6 +1270,10 @@ def hash_uvc_token(token: str) -> str:
 | **Organizational** | `company`, `school`, `ngo` | Delegated to org | Verified ownership | Organization internal | Immediate |
 | **Community** | `religion`, `culture`, `community` | Community consensus | Multi-stakeholder | Community consensus | 30-day comment period |
 | **Personal** | `user` | Individual control | Self-service | Self-service | Immediate |
+
+The prefixes in this table are the complete set.
+The tier of a token is determined by its first segment, and a token whose first segment is not listed here has no tier: the validation regex (Section 3.6) does not match it and the reference validator (Section 3.7.2) rejects it with `INVALID_NAMESPACE`.
+The Core tier has exactly the five prefixes listed; `education`, `health`, `finance` and `legal` are not Core prefixes.
 
 #### 4.2.1 Core Tier
 
@@ -1822,8 +1828,8 @@ class ResolutionResult:
 Registries MUST support wildcard queries without exposing the full namespace:
 
 ```
-SEARCH("org.*.safety.medical") -> [org.acme.safety.medical, ...]
-SEARCH("core.ethics.consent.*") -> [core.ethics.consent.medical, ...]
+SEARCH("company.*.safety.medical") -> [company.acme.safety.medical, ...]
+SEARCH("family.safe.*") -> [family.safe.guide, ...]
 ```
 
 ### 5.6 Registry API
@@ -3476,6 +3482,7 @@ When systems with different VCP versions exchange data:
 |---------|------|---------|
 | 1.0.0 | 2026-01-11 | Initial specification (5 separate documents) |
 | 2.0.0 | 2026-03-08 | Unified specification; incorporated paper spec content; added NFC, JSON-LD, binary, mnemonic formats; expanded security section |
+| 2.0.0 (source alignment) | 2026-09-27 | `max_segments` in §3.7 corrected from 8 to 10 to match the §3.4 ABNF, the identity schema and the SDK; ABNF governance comment lists only the five Core prefixes; §4.2 states that the prefix table is complete and that unknown prefixes are rejected, as §3.6 and §3.7.2 already specify; §3.5 EBNF marked informative; the five-segment example (§3.1.2), the `vcp://` and JSON-LD examples (§2.4, §2.8) and the wildcard search examples (§5.5) use canonical prefixes |
 
 ---
 
