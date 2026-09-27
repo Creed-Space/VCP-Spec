@@ -380,6 +380,36 @@ class RetiredIdentityRuleTests(unittest.TestCase):
         self.assertIn("namespace-suffix  = UALPHA *31(UALPHA / DIGIT)", text)
 
 
+class RLineIntensityTests(unittest.TestCase):
+    """VCP/S §2.4.1: intensity optional (default 3), extended needs an intensity."""
+
+    RLINE = re.compile(
+        r"^(?:none|(?:[🧠💭🔋⚡🩺][a-z_]+(?::[1-5](?::[A-Za-z_]+)?)?)"
+        r"(?:\|[🧠💭🔋⚡🩺][a-z_]+(?::[1-5](?::[A-Za-z_]+)?)?)*)$"
+    )
+
+    def test_abnf_and_default_rule_agree(self) -> None:
+        text = read(SEMANTICS)
+        self.assertIn(
+            'dimension       = emoji value [ ":" intensity [ ":" extended ] ]', text
+        )
+        self.assertIn("parsers MUST treat it as `3` (moderate)", text)
+        self.assertIn("Encoders SHOULD emit the intensity explicitly.", text)
+
+    def test_examples_follow_the_grammar(self) -> None:
+        valid = ("🧠focused", "🧠focused:4|💭calm", "🩺unwell:4:migraine", "none")
+        invalid = ("🩺unwell:migraine", "🧠focused:04", "🧠focused:4:", "🩺unwell::migraine")
+        for body in valid:
+            with self.subTest(valid=body):
+                self.assertIsNotNone(self.RLINE.fullmatch(body))
+        for body in invalid:
+            with self.subTest(invalid=body):
+                self.assertIsNone(self.RLINE.fullmatch(body))
+        for example in re.findall(r"^([🧠💭🔋⚡🩺]\S+)\s+->", read(SEMANTICS), re.MULTILINE):
+            with self.subTest(example=example):
+                self.assertIsNotNone(self.RLINE.fullmatch(example))
+
+
 class SemanticsNotationTests(unittest.TestCase):
     def test_retired_bracket_notation_is_absent(self) -> None:
         # The changelog may name the retired notation; the body must not use it.

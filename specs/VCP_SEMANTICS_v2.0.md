@@ -233,7 +233,8 @@ The R-line enables real-time transmission of user cognitive, emotional, and phys
 r-line          = "R:" personal-state
 personal-state  = "none" / dimension *( "|" dimension )
 
-dimension       = emoji value ":" intensity [ ":" extended ]
+dimension       = emoji value [ ":" intensity [ ":" extended ] ]
+                ; intensity is optional (default 3); an extended field requires an explicit intensity
 emoji           = cognitive-emoji / emotional-emoji / energy-emoji / urgency-emoji / body-emoji
 
 cognitive-emoji = %x1F9E0                ; U+1F9E0 BRAIN
@@ -273,7 +274,7 @@ extended        = 1*( ALPHA / "_" )      ; Optional sub-signal (e.g., "migraine"
 | 4 | Strong / significantly affecting |
 | 5 | Dominant / primary factor in current state |
 
-**Fail-open default**: If intensity is omitted, parsers MUST treat it as `3` (moderate).
+**Fail-open default**: If intensity is omitted, parsers MUST treat it as `3` (moderate), as in the VCP/A context string (VCP/A §2.3). Encoders SHOULD emit the intensity explicitly. An `extended` field requires an explicit intensity, so `🩺unwell:migraine` is malformed and `🩺unwell:3:migraine` is the correct form.
 
 **Extended sub-signals**: The optional third field after a second colon provides specific context. Extended sub-signals are informational. Parsers MAY use them for richer adaptation but MUST NOT require them.
 
@@ -2629,7 +2630,7 @@ COMPACT: CS1|nanny|5|family.safe.guide|E,F
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 2.1.3 | 2026-09-27 | Retired bracket notation removed: the §4.4 priority-ordering example uses CSM-1 codes (`Z4+T`, `M4+T`) and P-lines; the §7.3 semantic-injection example is a CSM-1 token, and mitigations 1-2 name the CSM-1 code grammar and token line grammar instead of the retired `REQUIRE[...]` vocabulary. Prose spells CSM-1 with a hyphen; the §2 and Appendix A heading anchors change accordingly. §5.3 now points to VCP/I as normative and drops the retired identity rules (128 characters, 8 segments, letters-only Core segments, no trailing or double hyphens, a shortened reserved-word list, the `user.alice.private` example); its ABNF defines `namespace-suffix`. |
+| 2.1.3 | 2026-09-27 | Retired bracket notation removed: the §4.4 priority-ordering example uses CSM-1 codes (`Z4+T`, `M4+T`) and P-lines; the §7.3 semantic-injection example is a CSM-1 token, and mitigations 1-2 name the CSM-1 code grammar and token line grammar instead of the retired `REQUIRE[...]` vocabulary. Prose spells CSM-1 with a hyphen; the §2 and Appendix A heading anchors change accordingly. §2.4.1: the R-line ABNF makes intensity optional (`value [":" intensity [":" extended]]`), matching the fail-open default of 3 and VCP/A; encoders SHOULD emit it, and `extended` requires an explicit intensity. §5.3 now points to VCP/I as normative and drops the retired identity rules (128 characters, 8 segments, letters-only Core segments, no trailing or double hyphens, a shortened reserved-word list, the `user.alice.private` example); its ABNF defines `namespace-suffix`. |
 | 2.1.2 | 2026-09-24 | Editorial and clarifying alignment with the SDK token parser and canon: CSM-1 code vs multi-line token named in §2.1; token header version defined as `1.0` and independent of the CSM-1 format version (§2.4); ABNF for the P-, X-, F- and S-lines, with comma-separated lists and a required S-line (§2.4); presence-only S-line markers recommended for transmitted tokens (§2.4, §2.8.4 example); extension lines follow line 7 and the optional R-line (§2.4.7); R-line decay follows VCP-X-Personal §3-4 (§2.4.1); LC example carries its `R:` prefix; composition layers named as such in §3.3, and §4.1 brought into line with them; §6 default-adherence markers moved to N5, Z4 and G4; Custom default adherence range 0-5; registry URLs marked illustrative; VCP/T defined by v3.1 §2.2; paper-stack layer numbers dropped from §7. |
 | 2.1.1 | 2026-09-02 | Editorial alignment with schema and reference parser: custom persona `C` requires a namespace in the ABNF and NANO parser; duplicate and F/A, V/A, H/A scope combinations are invalid (not warnings); regex marked syntax-only; persona default adherence N/Z/G = 5/4/4; AS dimension two-letter codes; WC-line anti-pattern example carries the mandatory schema-ref; header bumped to 2.1.0 content version. |
 | 2.1.0 | 2026-05-21 | Welfare Context Extension: WC-line (operator-declared welfare affordances, §2.4.4), AS-line (agent-declared experiential state, §2.4.5), bidirectional Q-line WC_MIN (agent welfare requirements, §2.4.6), backward compatibility (§2.4.7). Catalyst: Agentic Diaries project; design rationale in ADR-011. |

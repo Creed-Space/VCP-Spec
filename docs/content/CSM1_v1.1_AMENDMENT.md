@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-09-27 CSM-1 spelling
+last-reviewed: 2026-09-27 R-line intensity optional in ABNF; CSM-1 spelling
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -50,7 +50,8 @@ Line 8: R:<personal-state>                  Personal state dimensions (NEW)
 r-line          = "R:" personal-state
 personal-state  = "none" / dimension *( "|" dimension )
 
-dimension       = emoji value ":" intensity [ ":" extended ]
+dimension       = emoji value [ ":" intensity [ ":" extended ] ]
+                ; intensity is optional (default 3); an extended field requires an explicit intensity
 emoji           = cognitive-emoji / emotional-emoji / energy-emoji / urgency-emoji / body-emoji
 
 cognitive-emoji = %x1F9E0                ; U+1F9E0 BRAIN
@@ -90,7 +91,7 @@ extended        = 1*( ALPHA / "_" )      ; Optional sub-signal (e.g., "migraine"
 | 4 | Strong / significantly affecting |
 | 5 | Dominant / primary factor in current state |
 
-**Fail-open default**: If intensity is omitted, parsers MUST treat it as `3` (moderate). This ensures partial tokens remain functional.
+**Fail-open default**: If intensity is omitted, parsers MUST treat it as `3` (moderate). This ensures partial tokens remain functional. Encoders SHOULD emit the intensity explicitly, and an `extended` field requires an explicit intensity (VCP/S §2.4.1).
 
 ### Extended Sub-signals
 
