@@ -81,12 +81,73 @@ class AdaptationVocabularyTests(unittest.TestCase):
         )
         self.assertEqual(self.definitions["culture_values"]["enum"], list(table))
 
-    def test_every_enum_value_is_named_in_its_description(self) -> None:
-        for name in ("system_context_values", "culture_values"):
-            definition = self.definitions[name]
-            for emoji in definition["enum"]:
-                with self.subTest(definition=name, emoji=emoji):
-                    self.assertIn(emoji, definition["description"])
+    SITUATIONAL: ClassVar[dict[str, str]] = {
+        "time_values": "TIME (⏰)",
+        "space_values": "SPACE (📍)",
+        "company_values": "COMPANY (👥)",
+        "culture_values": "CULTURE (🌍)",
+        "occasion_values": "OCCASION (🎭)",
+        "environment_values": "ENVIRONMENT (🌡️)",
+        "agency_values": "AGENCY (🔷)",
+        "constraints_values": "CONSTRAINTS (🔶)",
+        "system_context_values": "SYSTEM_CONTEXT (📡)",
+        "embodiment_values": "EMBODIMENT (🧍)",
+        "proximity_values": "PROXIMITY (↔️)",
+        "formality_values": "FORMALITY (🎩)",
+    }
+    PERSONAL: ClassVar[dict[str, str]] = {
+        "cognitive_state_values": "cognitive_state",
+        "emotional_tone_values": "emotional_tone",
+        "energy_level_values": "energy_level",
+        "perceived_urgency_values": "perceived_urgency",
+        "body_signals_values": "body_signals",
+    }
+
+    def test_every_situational_enum_matches_its_spec_table(self) -> None:
+        for name, heading in self.SITUATIONAL.items():
+            table = value_table(self.text, heading)
+            with self.subTest(definition=name):
+                self.assertTrue(table)
+                self.assertEqual(self.definitions[name]["enum"], list(table))
+                for emoji, value in table.items():
+                    self.assertIn(f"{emoji} {value}", self.definitions[name]["description"])
+
+    def test_summary_table_examples_come_from_the_value_tables(self) -> None:
+        rows = re.findall(
+            r"^\| \d+ \| \S+ \| \*\*(\w+)\*\* \| [^|]+\| ([^|]+) \|$",
+            self.text,
+            re.MULTILINE,
+        )
+        headings = {heading.split(" ")[0]: heading for heading in self.SITUATIONAL.values()}
+        checked = 0
+        for dimension, examples in rows:
+            if dimension not in headings:
+                continue
+            table = value_table(self.text, headings[dimension])
+            for pair in examples.strip().split(", "):
+                emoji, value = pair.split(" ", 1)
+                with self.subTest(dimension=dimension, example=pair):
+                    self.assertEqual(table.get(emoji), value)
+                    checked += 1
+        self.assertGreater(checked, 50)
+
+    def test_personal_state_enums_match_vcp_x_personal(self) -> None:
+        personal = load_json("specs/extensions/VCP-X-Personal/schema.json")
+        text = json.dumps(personal, ensure_ascii=False)
+        for name, dimension in self.PERSONAL.items():
+            enum = self.definitions[name]["enum"]
+            with self.subTest(definition=name):
+                self.assertIn(json.dumps(enum, ensure_ascii=False), text)
+                self.assertRegex(self.text, rf"\*\*{dimension.upper()}\*\* \| [^|]+\| {', '.join(enum)} \|")
+
+    def test_unknown_values_are_tolerated_not_rejected(self) -> None:
+        self.assertIn(
+            "A receiver or decoder MUST NOT reject a context string because a dimension carries a value",
+            self.text,
+        )
+        self.assertNotIn("unknown dimension values | Reject the signal", self.text)
+        self.assertIn("| **Unknown Value** |", self.text)
+        self.assertIn("VCP/A §2.3 (unknown values and dimensions)", read(ROOT / "veps/VEP-0004-extended-vcpa-dimensions.md"))
 
     def test_dimension_count_statement(self) -> None:
         self.assertNotIn("encodes context across 18 dimensions", self.text)

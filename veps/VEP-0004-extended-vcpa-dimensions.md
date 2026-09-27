@@ -136,7 +136,7 @@ The dimension order is fixed: canonical 1–9, then extensions in the order EMBO
 
 ## Compatibility
 
-- **Backward compatibility**: parsers ignorant of VEP-0004 dimensions SHOULD tolerate unknown `dim-symbol value-list` blocks per VCP/A §4.4 (unknown-dimension handling). They MUST NOT reject the context string.
+- **Backward compatibility**: parsers ignorant of VEP-0004 dimensions SHOULD tolerate unknown `dim-symbol value-list` blocks per VCP/A §2.3 (unknown values and dimensions). They MUST NOT reject the context string.
 - **Forward compatibility**: emitters MAY omit VEP-0004 dimensions when values are default or unknown. Receivers MUST treat absent dimensions as "no information", not as "default value".
 - **Negotiation**: per VEP-0002 capability negotiation, advertise support with capability token `vcp-a-ext-v1`.
 

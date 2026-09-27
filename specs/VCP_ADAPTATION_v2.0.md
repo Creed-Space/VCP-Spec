@@ -148,14 +148,14 @@ The protocol is called the "Extended Enneagram Protocol": the original 9 situati
 
 | # | Symbol | Dimension | Description | Example Values |
 |---|--------|-----------|-------------|----------------|
-| 1 | ⏰ | **TIME** | Temporal context | 🌅 morning, ☀️ midday, 🌆 evening, 🌙 night, 📅 weekday, 🎉 weekend |
-| 2 | 📍 | **SPACE** | Location/environment | 🏡 home, 🏢 office, 🏫 school, 🏥 hospital, 🚗 transit, 🌳 outdoor |
+| 1 | ⏰ | **TIME** | Temporal context | 🌅 morning, ☀️ daytime, 🌆 evening, 🌙 night, 📅 weekday, 🎉 weekend |
+| 2 | 📍 | **SPACE** | Location/environment | 🏡 home, 🏢 office, 🏫 school, 🏥 hospital, 🚗 vehicle, 🌳 outdoor |
 | 3 | 👥 | **COMPANY** | Social context | 👤 alone, 👶 children, 👔 colleagues, 👨‍👩‍👧 family, 👥 crowd, 🐕 pets |
 | 4 | 🌍 | **CULTURE** | Communication style | 🔇 high_context, 📢 low_context, 🎩 formal, 👋 informal, 📊 hierarchical, ⚖️ egalitarian, 👥 collectivist, 👤 individualist |
-| 5 | 🎭 | **OCCASION** | Event type | ➖ normal, 🎂 celebration, 😢 mourning, 🚨 emergency, 🎓 formal |
-| 6 | 🌡️ | **ENVIRONMENT** | Physical conditions | 🥵 hot, 🥶 cold, 🔇 quiet, 🌤️ outdoors, 🌧️ weather |
-| 7 | 🔷 | **AGENCY** | Power/ability to act | 👑 leader, 🤝 peer, 📋 subordinate, 🔐 limited, 🎯 autonomous |
-| 8 | 🔶 | **CONSTRAINTS** | External limitations | ○ minimal, ⚖️ legal, 💸 economic, ⏱️ time, 🔒 privacy |
+| 5 | 🎭 | **OCCASION** | Event type | ➖ normal, 🎂 celebration, ⚰️ mourning, 🚨 emergency, 🎓 graduation |
+| 6 | 🌡️ | **ENVIRONMENT** | Physical conditions | 🥵 hot, 🥶 cold, 🔇 quiet, 🌤️ outdoors, 🌧️ wet |
+| 7 | 🔷 | **AGENCY** | Power/ability to act | 👑 leader, 🤝 peer, 👇 subordinate, 🔐 limited, 🆓 autonomous |
+| 8 | 🔶 | **CONSTRAINTS** | External limitations | ○ minimal, ⚖️ legal, 💸 economic, ⏰ time, 🔒 confidential |
 | 9 | 📡 | **SYSTEM_CONTEXT** | Computing environment | 💻 personal_device, 🏢 workplace_system, 🖥️ shared_terminal, 👁️ monitored_environment |
 | 10 | 🧍 | **EMBODIMENT** | Agent's physical/motor state (VEP-0004) | 🪑 stationary, 🚶 navigating, ✋ manipulating, 📦 carrying, 🛑 emergency_stop |
 | 11 | ↔️ | **PROXIMITY** | Spatial distance to nearest human (VEP-0004) | 🌐 distant, 🏠 same_room, 👣 nearby, 🤏 close, 👆 contact |
@@ -443,10 +443,21 @@ URGENCY-SYM      = %x26A1        ; ⚡
 BODY-SYM         = %x1FA7A       ; 🩺
 
 emoji-value      = 1*4EMOJI      ; Unicode emoji codepoints
-category-name    = 1*ALPHA       ; ASCII category label
+category-name    = LALPHA *(LALPHA / "_")   ; lowercase category label, e.g. low_energy
+LALPHA           = %x61-7A       ; a-z
 ```
 
 The `‖` (double bar, U+2016) separates situational (external) from personal (internal) dimensions. If personal state dimensions are absent, the `‖` separator is omitted.
+
+#### Unknown values and dimensions (forward compatibility)
+
+The value tables in Section 2.2 and the personal-state categories in Section 3.1 are the canonical vocabularies, and emitters SHOULD use them.
+A receiver or decoder MUST NOT reject a context string because a dimension carries a value that is not in those vocabularies, or because a group begins with a dimension symbol it does not recognize.
+Such a group is an unknown dimension block, not a malformation, which is the same rule VEP-0004 sets for receivers that do not implement its dimensions.
+The receiver ignores the unknown value or block when it adapts behavior, and passes it through unchanged when it relays the context; it MUST NOT treat it as a default or as a known value.
+Known values in the same string, including emergency indicators (Section 5.1.6), keep their meaning.
+A validator running in a strict validation mode, for example a conformance test or an emitter checking its own output, reports each unknown value or dimension as a validation error or warning.
+A string that is malformed in any other way, for example an empty group, an intensity outside 1-5, or a missing separator, is still a validation error and is rejected (Section 5.6).
 
 ### 2.4 Encoding Examples
 
@@ -1012,7 +1023,8 @@ An implementation MUST NOT trust persisted state blindly.
 
 | Category | Examples | Handling |
 |----------|----------|----------|
-| **Validation Error** | Malformed context string, unknown dimension values | Reject the signal, remain in current state, log warning. |
+| **Validation Error** | Malformed context string (Section 2.3) | Reject the signal, remain in current state, log warning. |
+| **Unknown Value** | Dimension value or dimension symbol outside the Section 2.2 and 3.1 vocabularies | Do not reject the signal. Ignore the unknown part (pass it through when relaying) and process the rest (Section 2.3). Strict validators report it as an error or warning. |
 | **Composition Error** | Constitution not found, schema mismatch | Transition to DEGRADED if current constitution becomes unavailable; log error. |
 | **Timeout Error** | TRANSITIONING exceeds 5s, CONFLICT exceeds 30s | Revert to previous state (ACTIVE with prior constitution), log timeout. |
 | **Persistence Error** | Redis unavailable, file I/O failure | Continue with in-memory state, log degraded persistence. |
@@ -1947,7 +1959,7 @@ The 70-80% reduction is significant for context-limited applications and high-fr
 | 1.2.0 | 2026-02-15 | Formal state machine (6 states, transition table, hysteresis, persistence, error recovery). Hook system (6 types, interface contracts, execution model, security). |
 | 2.0.0 | 2026-03-08 | Unified specification consolidating all VCP/A documents. v3.1 dimension model (14 dimensions: 9 situational + 5 personal state). Torch protocol integration. Sacred Ground principle. Anti-instrumentalization. |
 | 2.1.0 | 2026-04-17 | VEP-0004 integration: EMBODIMENT, PROXIMITY, RELATIONSHIP, FORMALITY added as dimensions 10–13. Total dimension count raised to 18 (13 situational + 5 personal). New conformance level **VCP-Extended** (capability token `vcp-a-ext-v1`). No existing dimensions renumbered; canonical dimensions 1–9 retain identity. |
-| 2.1.1 | 2026-09-27 | Dimension count stated as 14 baseline dimensions (9 situational + 5 personal) in v3.1 plus 4 experimental VEP-0004 situational dimensions (18 with them) in the abstract and §2.1. Emergency indicators (§5.1.6, §7.1) add `🛑` (EMBODIMENT emergency_stop, experimental VEP-0004) and a MAY clause for `⚠️` and `🆘` from free-form callers, matching the SDK. SYSTEM_CONTEXT and CULTURE value tables are unchanged and now match `schemas/vcp-adaptation-context.schema.json`. |
+| 2.1.1 | 2026-09-27 | Dimension count stated as 14 baseline dimensions (9 situational + 5 personal) in v3.1 plus 4 experimental VEP-0004 situational dimensions (18 with them) in the abstract and §2.1. Emergency indicators (§5.1.6, §7.1) add `🛑` (EMBODIMENT emergency_stop, experimental VEP-0004) and a MAY clause for `⚠️` and `🆘` from free-form callers, matching the SDK. SYSTEM_CONTEXT and CULTURE value tables are unchanged and now match `schemas/vcp-adaptation-context.schema.json`. §2.1 example values corrected to the §2.2 tables (daytime, vehicle, ⚰️ mourning, 🎓 graduation, wet, 👇 subordinate, 🆓 autonomous, ⏰ time, confidential), and every schema enum now matches §2.2; §2.3 adds the forward-compatibility rule for unknown values and dimensions (receivers ignore or pass through, strict validators report), §5.6 no longer rejects signals for unknown values, and `category-name` admits lowercase letters and underscores (`low_energy`, `time_aware`) as the §3.1 vocabulary and the schema already require. |
 
 ---
 
