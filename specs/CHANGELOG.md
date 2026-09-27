@@ -36,6 +36,7 @@ recorded authorized decision.
   - Dimension counts: the adaptation schema description and VCP-X-Personal §1.1 state 9 baseline situational dimensions, 13 with VEP-0004.
   - MCP revision caveat added wherever the `initialize` mapping or Sampling is described: `specs/core/capability-negotiation.md` §9, `specs/examples/capability-handshake.md`, VEP-0002, VEP-0003, README and the wiki.
   - Retired bracket notation removed from the VEP-0004 motivation and the wiki.
+  - VCP/I §2.3.2 (and its two `docs/` copies): the illustrative CSM-1 to UVC defaults cover the six standard personas with three-segment Core tokens; the retired `R` (Anchor) and `H` (Hotrod) entries and the `custom.` prefix are gone, and a Custom code has no default.
   - Persona and scope lists in `docs/openapi/vcp_actions.yaml` follow VCP/S (the retired Anchor and Hotrod personas and the old scope letters are gone).
   - Prose spells CSM-1 with a hyphen (identifiers, file names and code are unchanged); heading anchors that changed are updated.
   - Wiki: VEP-0001 to VEP-0003 are shown as Recorded pre-charter acceptance, VCP-X-Relational and VCP-X-Consensus as Draft.

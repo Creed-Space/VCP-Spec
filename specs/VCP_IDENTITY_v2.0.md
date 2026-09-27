@@ -280,33 +280,28 @@ See the CSM-1 Grammar Specification for full details.
 #### 2.3.2 Mapping to Canonical
 
 ```python
+# Illustrative defaults. A CSM-1 code names a persona, adherence and scopes,
+# not a constitution; the COMPACT tier (VCP/S §2.8.3) carries the UVC token
+# explicitly. Every default is a Core token of exactly three segments.
 CSM1_TO_UVC_MAPPING = {
-    # Persona -> UVC prefix
-    'N': 'family.safe',
-    'Z': 'secure.privacy',
-    'G': 'family.ethics',
-    'A': 'work.professional',
-    'M': 'creative.artistic',
-    'R': 'reality.factual',
-    'H': 'work.technical',
-    'C': 'custom',  # Requires namespace
+    'N': 'family.safe.guide',            # Nanny
+    'Z': 'secure.privacy.guardian',      # Sentinel
+    'G': 'family.ethics.guide',          # Godparent
+    'A': 'work.professional.assistant',  # Ambassador
+    'M': 'creative.artistic.muse',       # Muse
+    'D': 'work.fair.mediator',           # Mediator
+    # 'C' (Custom) has no default token; name the constitution explicitly.
 }
 
 def csm1_to_canonical(csm1: str) -> str:
-    """Convert CSM1 code to canonical UVC token"""
+    """Return the default canonical UVC token for a CSM-1 code"""
     parsed = parse_csm1(csm1)
-    base = CSM1_TO_UVC_MAPPING[parsed.persona]
-
-    if parsed.persona == 'C' and parsed.namespace:
-        return f"custom.{parsed.namespace.lower()}"
-
-    # Add scope modifiers
-    if 'E' in parsed.scopes:
-        base += '.education'
-    elif 'W' in parsed.scopes:
-        base += '.work'
-
-    return base
+    if parsed.persona == 'C':
+        raise ValueError("Custom persona has no default token")
+    token = CSM1_TO_UVC_MAPPING[parsed.persona]
+    if parsed.namespace:
+        token += f":{parsed.namespace}"   # uppercase namespace suffix (§3.4)
+    return token
 ```
 
 ### 2.4 URI Format
@@ -3054,7 +3049,7 @@ class UVCEncoder:
 All encoding algorithms MUST be deterministic: the same input MUST produce the same output. Specifically:
 
 1. **Canonical**: Apply the canonicalization algorithm from Section 2.2.3 before any encoding
-2. **CSM-1**: Mapping is deterministic via the `CSM1_TO_UVC_MAPPING` table
+2. **CSM-1**: Mapping is deterministic via the illustrative `CSM1_TO_UVC_MAPPING` defaults; a Custom (`C`) code has no default
 3. **URI**: Canonical token dots are preserved in the single URI path component
 4. **Hash**: SHA-256 of UTF-8-encoded canonical form
 5. **Obfuscated**: HMAC-SHA256 with provided secret, deterministic index selection
@@ -3489,7 +3484,7 @@ When systems with different VCP versions exchange data:
 | 1.0.0 | 2026-01-11 | Initial specification (5 separate documents) |
 | 2.0.0 | 2026-03-08 | Unified specification; incorporated paper spec content; added NFC, JSON-LD, binary, mnemonic formats; expanded security section |
 | 2.0.0 (source alignment) | 2026-09-27 | `max_segments` in §3.7 corrected from 8 to 10 to match the §3.4 ABNF, the identity schema and the SDK; ABNF governance comment lists only the five Core prefixes; §4.2 states that the prefix table is complete and that unknown prefixes are rejected, as §3.6 and §3.7.2 already specify; §3.5 EBNF marked informative; the five-segment example (§3.1.2), the `vcp://` and JSON-LD examples (§2.4, §2.8) and the wildcard search examples (§5.5) use canonical prefixes |
-| 2.0.0 (source alignment) | 2026-09-27 | New §3.4.1 separates syntax (the ABNF and the schema `pattern`: any lowercase first segment parses) from semantic validation (listed prefix; Core tokens have exactly three segments), which §3.6, §3.7.2 and the identity schema's new `allOf` rule enforce; a conforming parser MAY parse any syntactic token, a conforming validator MUST reject unlisted prefixes. One segment rule set, following the ABNF and schema: segments MAY end with a hyphen and contain consecutive hyphens (the §3.7 trailing and consecutive hyphen checks are retired), Core segments are no longer letters-only, and `_` is not allowed in usernames. One length limit: 256 characters for the whole token (was 128 in §3.7.1, §3.7.2 and §8.5; §8.5 also said 8 segments). §3.6 regex handles the `:NS` suffix and the 3-10 segment range; §3.7.2 strips the suffix before validation and requires 3 segments for `user`. The §3.2 personal example no longer uses the reserved word `private`. §3.5 EBNF rewritten in prefix-first form with the semantic rule; the paper's tier-first examples (`core.`, `org.`, `personal.`) are retired. |
+| 2.0.0 (source alignment) | 2026-09-27 | New §3.4.1 separates syntax (the ABNF and the schema `pattern`: any lowercase first segment parses) from semantic validation (listed prefix; Core tokens have exactly three segments), which §3.6, §3.7.2 and the identity schema's new `allOf` rule enforce; a conforming parser MAY parse any syntactic token, a conforming validator MUST reject unlisted prefixes. One segment rule set, following the ABNF and schema: segments MAY end with a hyphen and contain consecutive hyphens (the §3.7 trailing and consecutive hyphen checks are retired), Core segments are no longer letters-only, and `_` is not allowed in usernames. One length limit: 256 characters for the whole token (was 128 in §3.7.1, §3.7.2 and §8.5; §8.5 also said 8 segments). §3.6 regex handles the `:NS` suffix and the 3-10 segment range; §3.7.2 strips the suffix before validation and requires 3 segments for `user`. The §3.2 personal example no longer uses the reserved word `private`. §3.5 EBNF rewritten in prefix-first form with the semantic rule; the paper's tier-first examples (`core.`, `org.`, `personal.`) are retired. §2.3.2 CSM-1 default tokens cover the six standard personas (the retired `R` and `H` personas are removed, `D` Mediator added), every default is a three-segment Core token, a namespace becomes the `:NS` suffix, and a Custom code has no default instead of producing a `custom.` token. |
 
 ---
 

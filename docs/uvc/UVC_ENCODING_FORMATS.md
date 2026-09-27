@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-09-27 CSM-1 spelling
+last-reviewed: 2026-09-27 CSM-1 spelling and default token mapping
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -187,33 +187,28 @@ csm1-code = persona adherence [scopes] [":" namespace] ["@" version]
 ### 4.2 Mapping to UVC
 
 ```python
+# Illustrative defaults. A CSM-1 code names a persona, adherence and scopes,
+# not a constitution; the COMPACT tier (VCP/S §2.8.3) carries the UVC token
+# explicitly. Every default is a Core token of exactly three segments.
 CSM1_TO_UVC_MAPPING = {
-    # Persona → UVC prefix
-    'N': 'family.safe',
-    'Z': 'secure.privacy',
-    'G': 'family.ethics',
-    'A': 'work.professional',
-    'M': 'creative.artistic',
-    'R': 'reality.factual',
-    'H': 'work.technical',
-    'C': 'custom',  # Requires namespace
+    'N': 'family.safe.guide',            # Nanny
+    'Z': 'secure.privacy.guardian',      # Sentinel
+    'G': 'family.ethics.guide',          # Godparent
+    'A': 'work.professional.assistant',  # Ambassador
+    'M': 'creative.artistic.muse',       # Muse
+    'D': 'work.fair.mediator',           # Mediator
+    # 'C' (Custom) has no default token; name the constitution explicitly.
 }
 
 def csm1_to_canonical(csm1: str) -> str:
-    """Convert CSM1 code to canonical UVC token"""
+    """Return the default canonical UVC token for a CSM-1 code"""
     parsed = parse_csm1(csm1)
-    base = CSM1_TO_UVC_MAPPING[parsed.persona]
-
-    if parsed.persona == 'C' and parsed.namespace:
-        return f"custom.{parsed.namespace.lower()}"
-
-    # Add scope modifiers
-    if 'E' in parsed.scopes:
-        base += '.education'
-    elif 'W' in parsed.scopes:
-        base += '.work'
-
-    return base
+    if parsed.persona == 'C':
+        raise ValueError("Custom persona has no default token")
+    token = CSM1_TO_UVC_MAPPING[parsed.persona]
+    if parsed.namespace:
+        token += f":{parsed.namespace}"   # uppercase namespace suffix (§3.4)
+    return token
 ```
 
 ---

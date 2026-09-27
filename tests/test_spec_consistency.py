@@ -283,6 +283,15 @@ class IdentityRuleSetTests(unittest.TestCase):
                 self.assertIsNotNone(re.fullmatch(self.token_schema["pattern"], token))
                 self.assertFalse(self.schema_accepts(token))
 
+    def test_csm1_default_tokens_are_semantically_valid(self) -> None:
+        block = re.search(r"CSM1_TO_UVC_MAPPING = \{(.*?)\n\}", self.text, re.DOTALL)
+        mapping = dict(re.findall(r"'([A-Z])': '([^']+)'", block.group(1)))
+        self.assertEqual(set(mapping), {"N", "Z", "G", "A", "M", "D"})
+        for persona, token in mapping.items():
+            with self.subTest(persona=persona):
+                self.assertTrue(self.schema_accepts(token))
+                self.assertIsNotNone(self.spec_regex.fullmatch(token))
+
     def test_single_length_limit_and_hyphen_rule(self) -> None:
         self.assertEqual(self.token_schema["maxLength"], 256)
         self.assertIn("'max_total_length': 256,", self.text)
