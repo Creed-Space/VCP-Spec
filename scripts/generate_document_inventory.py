@@ -138,6 +138,15 @@ def classify(snapshot: RegularFileSnapshot) -> dict[str, object]:
         authority = "VEP proposal process; acceptance requires an authorized decision"
         kind = "vep"
         status = embedded_status(path, snapshot) or "proposal-status-undeclared"
+    elif name == "vcp_paper_spec_content.md":
+        status = "historical-non-normative"
+        publication_class = "historical"
+        authority = (
+            "Historical migration from paper draft I2D2; no normative authority. "
+            "Layer specifications, the VCP 3.1 source baseline, and specs/core control"
+        )
+        kind = "research-draft"
+        replacement = "specs/VCP_SPECIFICATION_v3.1.md"
     elif "paper" in name or name.startswith("draft-watson"):
         status = "research-or-submission-draft"
         publication_class = (

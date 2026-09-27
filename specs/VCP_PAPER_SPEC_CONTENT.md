@@ -1,3 +1,18 @@
+> **HISTORICAL, NON-NORMATIVE**
+>
+> This document preserves specification text migrated from paper draft I2D2
+> (March 2026). It has no normative authority and is not maintained against the
+> current protocol. It still contains retired material, including the
+> float-valued VCP/A bundle (`context_intensity`, `affect_tone`,
+> `enneagram_type` and related fields) that the v3.1 categorical personal state
+> model replaced, and an emergency token set that differs from the one in
+> VCP/A. The layer specifications (`specs/VCP_*_v2.0.md`), the v3.1 baseline
+> (`specs/VCP_SPECIFICATION_v3.1.md`) and `specs/core/` control. Do not
+> implement from or cite this document as current. Retained for provenance
+> only.
+
+---
+
 # VCP Specification Content from Academic Paper
 
 **Origin:** This document contains specifications migrated from *Value Context Protocol: A Standard for Inter-Agent Value Communication* (submitted for publication), following review comments by Filip Alimpić. These sections have been extracted from the academic paper to serve as formal specification documents for the Value Context Protocol standards track.

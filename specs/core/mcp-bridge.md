@@ -19,6 +19,14 @@ The bridge enables VCP tokens and context to travel over MCP infrastructure. Any
 
 The key words "MUST", "SHOULD", "MAY", "MUST NOT", and "SHOULD NOT" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
+### 1.2. MCP revision compatibility (informative)
+
+This bridge targets MCP revisions up to and including 2025-11-25.
+It relies on the MCP `initialize` handshake (Section 5.1) and on MCP Sampling (Section 6).
+MCP revision 2026-07-28 removed `initialize`, deprecated Sampling, and replaced server-initiated elicitation with Multi Round-Trip Requests.
+[VEP-0005](../../veps/VEP-0005-stateless-mcp.md) (Draft, v3.3 candidate) is the adaptation path for that revision.
+This subsection is informative and changes no requirement of this document.
+
 ---
 
 ## 2. Architecture

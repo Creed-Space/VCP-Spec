@@ -101,7 +101,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "7209cdc42af59eb2716f8138e33c6a3650e172c0e900d732bc1801c20a3b7d60",
+      "sha256": "3df4852fc8693eac61538a03f89369cef9803bd69d2c15af84612e1a218ea22f",
       "status": "active-source-candidate"
     },
     {
@@ -703,17 +703,17 @@
       "status": "research-or-submission-draft"
     },
     {
-      "authority": "Non-normative research or submission draft",
+      "authority": "Historical migration from paper draft I2D2; no normative authority. Layer specifications, the VCP 3.1 source baseline, and specs/core control",
       "dependencies": [],
       "effective_version": "embedded-or-unversioned",
       "kind": "research-draft",
       "owner": "VCP-Spec maintainers",
       "path": "specs/VCP_PAPER_SPEC_CONTENT.md",
-      "publication_class": "proposal",
-      "replacement": null,
+      "publication_class": "historical",
+      "replacement": "specs/VCP_SPECIFICATION_v3.1.md",
       "review_date": "2026-08-15",
-      "sha256": "8d97763c3741d90809644575255a16180645daba3ee56d90471fe9d5b990d134",
-      "status": "research-or-submission-draft"
+      "sha256": "c7a14c090e23104dd841a86082f028cd03721f8411d47ba38e1e29522963fc02",
+      "status": "historical-non-normative"
     },
     {
       "authority": "Interim VCP-Spec maintainers; immutable release authority remains open",
@@ -725,7 +725,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "e7fdcc1b39e6966a465c61daf5d3df98e2952ebf828e03a23a4f4aee5f22120e",
+      "sha256": "cea785c68e5d9606fb59982021d492f8203f8d9d1c89de6a810990441739cab1",
       "status": "active-source-candidate"
     },
     {
@@ -777,7 +777,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "0344f966fbc9276109adfac275b9576898afe3edc1ee9fefdfcd31fb9fa61b93",
+      "sha256": "b714b110b0055371d91860e07ff7d3e8b1f7b9ea1e3e808cb172a481d638bd5e",
       "status": "current-source-baseline"
     },
     {
@@ -829,7 +829,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "124fdfb4102c9226324ff84c24bf3e37ff7fb36147a0cef623eeea0242ad329c",
+      "sha256": "a5ba23c58039a69fa7d2c6c9ce698e8a6613500fe86eb65ffd3ec8dd7b8b95ad",
       "status": "active-source-candidate"
     },
     {

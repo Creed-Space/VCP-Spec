@@ -176,6 +176,11 @@ Full specification: [specs/core/mcp-bridge.md](./core/mcp-bridge.md)
 
 VCP layers map to MCP primitives: bundles as resources, operations as tools, context via sampling integration. Capability negotiation piggybacks on MCP's `initialize` handshake.
 
+> **Informative note (MCP revisions).** The v3.1 bridge targets MCP revisions up to and including 2025-11-25, because it uses the `initialize` handshake and Sampling.
+> MCP revision 2026-07-28 removed `initialize`, deprecated Sampling, and replaced server-initiated elicitation with Multi Round-Trip Requests.
+> [VEP-0005](../veps/VEP-0005-stateless-mcp.md) (Draft, v3.3 candidate) is the adaptation path.
+> This note changes no normative requirement of the v3.1 baseline; see [specs/core/mcp-bridge.md](./core/mcp-bridge.md) §1.2.
+
 ---
 
 ## 8. Wire Format Examples

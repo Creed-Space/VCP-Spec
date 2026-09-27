@@ -56,7 +56,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 241,
+        "line": 246,
         "line_sha256": "9047123fa1ec76106a59f588dbb762f8fb854759d9b35b86a531c11411316c29",
         "path": "specs/VCP_SPECIFICATION_v3.1.md"
       },
@@ -775,7 +775,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 80,
+        "line": 88,
         "line_sha256": "6c14aac14ddfb150b4dbfbd351824ebd5db012d72dc42c18361fb66813c1eae6",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -783,7 +783,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 97,
+        "line": 105,
         "line_sha256": "467d74b6d9e185e0bf4d740e76dacffc91fa736df3a4f500ec881f815ef5c6d3",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -791,7 +791,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 98,
+        "line": 106,
         "line_sha256": "2f2a879c59a2175a7a5976e6e793e971a7beaa49aafcd6f5c7b0e647cb064bef",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -799,7 +799,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 99,
+        "line": 107,
         "line_sha256": "f113a496a5397c695d4d51ade306622b67fce9221d0dca10b81dbfa40d7e5a83",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -807,7 +807,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 100,
+        "line": 108,
         "line_sha256": "5312e8640522f139efc1b7b8f5e162683730b37aad6df7dbea235e6ad3b0c2ff",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -815,7 +815,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 130,
+        "line": 138,
         "line_sha256": "e1f0f0908abfebc28fe6447fdc6b835a582b25a16f6b95a25f22212bbe1a96ef",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -823,7 +823,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 194,
+        "line": 202,
         "line_sha256": "0ec3b88a9b61dd2e58c681fe8ad861ea6bd4840b2bfe1099a28b8a81e449b635",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -831,7 +831,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 226,
+        "line": 234,
         "line_sha256": "b721cc220638b71f00055c2ce272899bf7d5212868f33726910119a8e01d03b3",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -839,7 +839,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 227,
+        "line": 235,
         "line_sha256": "a4c909e9159bba4a253f424c7ca01e4839414f597e0b4195a8a67e7f66729b77",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -847,7 +847,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 228,
+        "line": 236,
         "line_sha256": "ea608ecca69d5743f808334e2d6bf512e9ec0132c9d94d8b68e523d7e8540fae",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -855,7 +855,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 229,
+        "line": 237,
         "line_sha256": "5d5b361b9e029e902eeee05267b012145ed8240b6e0958a8f3fc1bac4995a530",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -863,7 +863,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 245,
+        "line": 253,
         "line_sha256": "1b42b480afcd0613b84d940b89531a78a646418bf00bc4ba53ea0424afcfc19f",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -871,7 +871,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 251,
+        "line": 259,
         "line_sha256": "7fb81e197f5f6008a35df1820963d88dcb0c384b0638f3823c7e31ecbfad0084",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -879,7 +879,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 253,
+        "line": 261,
         "line_sha256": "c7959e33b77aff74b66402c21f6d14a9455a2e13a61e94d7ab207f0a760bfec4",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -887,7 +887,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 254,
+        "line": 262,
         "line_sha256": "101db49f81f300148b93dacb7bfaa6d503b46f3e8a610e54de06f336be1666b0",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -895,7 +895,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 255,
+        "line": 263,
         "line_sha256": "0b15ce9bfa5246bdeb715c28130a4f29b0c86efd84f1789188b03056eb71c394",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -903,7 +903,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 256,
+        "line": 264,
         "line_sha256": "56b10e5f782abff96771cb5c20353e29c0cf534fb634f41fb9d7013f103680ba",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -911,7 +911,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 262,
+        "line": 270,
         "line_sha256": "88912b81cbcca4b4b34e4795aa209d4d0271cf352084fd31ac60e97d39df9c07",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -919,7 +919,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 271,
+        "line": 279,
         "line_sha256": "bd6185476c1cc71d1ed1d9adb401832baf8dd4cb02dbfc098ad3158085586a43",
         "path": "specs/core/mcp-bridge.md"
       },
@@ -3374,7 +3374,7 @@
     },
     {
       "path": "specs/VCP_SPECIFICATION_v3.1.md",
-      "sha256": "0344f966fbc9276109adfac275b9576898afe3edc1ee9fefdfcd31fb9fa61b93"
+      "sha256": "b714b110b0055371d91860e07ff7d3e8b1f7b9ea1e3e808cb172a481d638bd5e"
     },
     {
       "path": "specs/core/audit.md",
@@ -3390,7 +3390,7 @@
     },
     {
       "path": "specs/core/mcp-bridge.md",
-      "sha256": "124fdfb4102c9226324ff84c24bf3e37ff7fb36147a0cef623eeea0242ad329c"
+      "sha256": "a5ba23c58039a69fa7d2c6c9ce698e8a6613500fe86eb65ffd3ec8dd7b8b95ad"
     },
     {
       "path": "specs/core/representation-registry.md",
