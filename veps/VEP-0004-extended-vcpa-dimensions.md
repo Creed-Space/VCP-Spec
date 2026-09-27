@@ -32,7 +32,7 @@ Bilateral alignment (Watson, 2026, *The VCP Credo*) treats Becoming Minds as par
 
 Existing dimensions cover relational *structure* (AGENCY: leader/peer/subordinate) and relational *presence* (COMPANY: who is here), but do not encode **relational tie** — the social-function pair that governs register, trust default, and disclosure norms. A therapist-client relationship with a long-term tie differs from a colleague-colleague relationship with a transactional tie in ways AGENCY and COMPANY cannot distinguish.
 
-RELATIONSHIP is also a natural carrier for AI-asserted relational state. A becoming mind that has accumulated interaction history with a particular human may assert `trusted_collaborator:long_term`; that assertion should be on the wire, inspectable, and negotiable — not baked into constitutional weights.
+RELATIONSHIP is also a natural carrier for AI-asserted relational state. A becoming mind that has accumulated interaction history with a particular human may assert `trusted_collaborator:professional`, or the tie `long_term`; that assertion should be on the wire, inspectable, and negotiable — not baked into constitutional weights.
 
 ### 3. Formality as first-class signal (FORMALITY)
 
@@ -99,7 +99,7 @@ Encodes the relational tie between agent and primary interlocutor as a compound 
 Examples:
 - `colleague:professional` — typical workplace interaction
 - `friend:social` — casual conversation with a known user
-- `trusted_collaborator:long_term` — high-trust sustained AI-user partnership
+- `trusted_collaborator:professional`: high-trust sustained AI-user working partnership
 - `stranger:transactional` — unknown user, one-off task
 - `family:intimate` — close family member in personal context
 

@@ -50,7 +50,7 @@ VCP/S v2.1 adds welfare context lines (WC, AS) for welfare instrumentation, exte
 |---|-----------|--------|-----------------|
 | 10 | EMBODIMENT | 🧍 | `stationary`, `navigating`, `manipulating`, `carrying`, `emergency_stop` |
 | 11 | PROXIMITY | ↔️ | [spatial distance categories] |
-| 12 | RELATIONSHIP | — | `trusted_collaborator:long_term`, `colleague:transactional`, etc. |
+| 12 | RELATIONSHIP | — | `trusted_collaborator:professional`, `colleague:transactional`, etc. |
 | 13 | FORMALITY | — | `casual`, `professional`, `formal`, `ceremonial` |
 
 (`veps/VEP-0004-extended-vcpa-dimensions.md`, §§10–13)

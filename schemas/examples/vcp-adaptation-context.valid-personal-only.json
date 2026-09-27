@@ -1,0 +1,13 @@
+{
+  "context": "‖🧠focused|💭calm:5|🔋rested:4|⚡pressured:4|🩺neutral",
+  "parsed": {
+    "personal": {
+      "cognitive_state": {"value": "focused"},
+      "emotional_tone": {"value": "calm", "intensity": 5},
+      "energy_level": {"value": "rested", "intensity": 4},
+      "perceived_urgency": {"value": "pressured", "intensity": 4},
+      "body_signals": {"value": "neutral"}
+    }
+  },
+  "conformance_level": "VCP-Standard"
+}

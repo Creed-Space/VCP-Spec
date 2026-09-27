@@ -140,6 +140,34 @@ class AdaptationVocabularyTests(unittest.TestCase):
                 self.assertIn(json.dumps(enum, ensure_ascii=False), text)
                 self.assertRegex(self.text, rf"\*\*{dimension.upper()}\*\* \| [^|]+\| {', '.join(enum)} \|")
 
+    def test_relationship_examples_match_the_schema_pattern(self) -> None:
+        pattern = self.definitions["relationship_value"]["pattern"]
+        examples = set(re.findall(r"🪢([a-z_:]+)", self.text))
+        examples |= set(re.findall(r"`([a-z_]+:[a-z_]+)`", self.text.split("#### RELATIONSHIP", 1)[1][:3000]))
+        self.assertIn("trusted_collaborator:professional", examples)
+        for example in examples:
+            with self.subTest(example=example):
+                self.assertIsNotNone(re.fullmatch(pattern, example))
+
+    def test_encoding_examples_validate_and_intensity_is_one_digit(self) -> None:
+        schema = load_json("schemas/vcp-adaptation-context.schema.json")
+        context_pattern = schema["properties"]["context"]["pattern"]
+        section = self.text[self.text.index("### 2.4 Encoding Examples"):]
+        block = section[section.index("```") + 3 : section.index("```", section.index("```") + 3)]
+        contexts = [
+            line.strip()
+            for line in block.splitlines()
+            if line.strip() and not line.startswith(("#", "Meaning", " "))
+        ]
+        self.assertIn("‖🧠focused|💭calm:5|🔋rested:4|⚡pressured:4|🩺neutral", contexts)
+        for context in contexts:
+            with self.subTest(context=context):
+                self.assertIsNotNone(re.fullmatch(context_pattern, context))
+        for bad in ("‖🧠focused:04", "‖🧠focused:0", "‖🧠focused:6", "📍🏡‖💭calm:45"):
+            with self.subTest(bad=bad):
+                self.assertIsNone(re.fullmatch(context_pattern, bad))
+        self.assertIn('context-string   = situational ["‖" personal] / "‖" personal', self.text)
+
     def test_unknown_values_are_tolerated_not_rejected(self) -> None:
         self.assertIn(
             "A receiver or decoder MUST NOT reject a context string because a dimension carries a value",

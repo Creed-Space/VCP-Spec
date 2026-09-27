@@ -159,7 +159,7 @@ The protocol is called the "Extended Enneagram Protocol": the original 9 situati
 | 9 | 📡 | **SYSTEM_CONTEXT** | Computing environment | 💻 personal_device, 🏢 workplace_system, 🖥️ shared_terminal, 👁️ monitored_environment |
 | 10 | 🧍 | **EMBODIMENT** | Agent's physical/motor state (VEP-0004) | 🪑 stationary, 🚶 navigating, ✋ manipulating, 📦 carrying, 🛑 emergency_stop |
 | 11 | ↔️ | **PROXIMITY** | Spatial distance to nearest human (VEP-0004) | 🌐 distant, 🏠 same_room, 👣 nearby, 🤏 close, 👆 contact |
-| 12 | 🪢 | **RELATIONSHIP** | Relational tie `{tie_strength}:{function}` (VEP-0004) | colleague:professional, friend:social, trusted_collaborator:long_term, stranger:transactional |
+| 12 | 🪢 | **RELATIONSHIP** | Relational tie `{tie_strength}:{function}` (VEP-0004) | colleague:professional, friend:social, trusted_collaborator:professional, stranger:transactional |
 | 13 | 🎩 | **FORMALITY** | Interaction register (VEP-0004) | 😎 casual, 💼 professional, 🎓 formal, 🏛️ ceremonial |
 
 #### Personal tier: personal state (categorical with intensity 1-5)
@@ -372,7 +372,7 @@ Encodes the relational tie between agent and primary interlocutor as a compound 
 | intimate | Close personal |
 | adversarial | Contested or oppositional |
 
-Compound examples: `colleague:professional`, `friend:social`, `trusted_collaborator:long_term`, `stranger:transactional`, `family:intimate`.
+Compound examples: `colleague:professional`, `friend:social`, `trusted_collaborator:professional`, `long_term:social`, `stranger:transactional`, `family:intimate`. `long_term` is a tie strength, so it appears before the colon, never after it.
 
 RELATIONSHIP is High weaponization risk (see §2.7) and subject to the Directionality Invariant and architectural isolation (§9).
 
@@ -403,7 +403,7 @@ Encodes the formality register of the current interaction. Independent of AGENCY
 ```abnf
 ; Extended Enneagram Context Encoding (RFC 5234 ABNF)
 
-context-string   = situational ["‖" personal]
+context-string   = situational ["‖" personal] / "‖" personal
 situational      = dimension *("|" dimension)
 personal         = ps-dimension *("|" ps-dimension)
 
@@ -421,7 +421,7 @@ function         = "transactional" / "professional" / "educational" /
 ps-dimension     = ps-symbol ps-value [":" intensity]
 ps-symbol        = COGNITIVE-SYM / EMOTION-SYM / ENERGY-SYM / URGENCY-SYM / BODY-SYM
 ps-value         = category-name
-intensity        = "1" / "2" / "3" / "4" / "5"
+intensity        = "1" / "2" / "3" / "4" / "5"   ; exactly one digit: "04", "0" and "6" are invalid
 
 TIME-SYM         = %x23F0        ; ⏰
 SPACE-SYM        = %x1F4CD       ; 📍
@@ -447,7 +447,7 @@ category-name    = LALPHA *(LALPHA / "_")   ; lowercase category label, e.g. low
 LALPHA           = %x61-7A       ; a-z
 ```
 
-The `‖` (double bar, U+2016) separates situational (external) from personal (internal) dimensions. If personal state dimensions are absent, the `‖` separator is omitted.
+The `‖` (double bar, U+2016) separates situational (external) from personal (internal) dimensions. If personal state dimensions are absent, the `‖` separator is omitted. A string with personal state only begins with `‖`. An intensity is exactly one digit from 1 to 5; a leading zero (`04`), `0`, or a value above 5 is malformed.
 
 #### Unknown values and dimensions (forward compatibility)
 
@@ -481,7 +481,7 @@ Meaning: Hospital, colleagues present, agent manipulating, human within arm's re
 Meaning: Emergency occasion, emergency constraints
 
 # Personal state only (intensity defaults to 3 when omitted)
-🧠focused|💭calm:5|🔋rested:4|⚡pressured:4|🩺neutral
+‖🧠focused|💭calm:5|🔋rested:4|⚡pressured:4|🩺neutral
 Meaning: focused (moderate), very calm, well-rested, high time pressure, no physical concerns
 ```
 
@@ -1959,7 +1959,7 @@ The 70-80% reduction is significant for context-limited applications and high-fr
 | 1.2.0 | 2026-02-15 | Formal state machine (6 states, transition table, hysteresis, persistence, error recovery). Hook system (6 types, interface contracts, execution model, security). |
 | 2.0.0 | 2026-03-08 | Unified specification consolidating all VCP/A documents. v3.1 dimension model (14 dimensions: 9 situational + 5 personal state). Torch protocol integration. Sacred Ground principle. Anti-instrumentalization. |
 | 2.1.0 | 2026-04-17 | VEP-0004 integration: EMBODIMENT, PROXIMITY, RELATIONSHIP, FORMALITY added as dimensions 10–13. Total dimension count raised to 18 (13 situational + 5 personal). New conformance level **VCP-Extended** (capability token `vcp-a-ext-v1`). No existing dimensions renumbered; canonical dimensions 1–9 retain identity. |
-| 2.1.1 | 2026-09-27 | Dimension count stated as 14 baseline dimensions (9 situational + 5 personal) in v3.1 plus 4 experimental VEP-0004 situational dimensions (18 with them) in the abstract and §2.1. Emergency indicators (§5.1.6, §7.1) add `🛑` (EMBODIMENT emergency_stop, experimental VEP-0004) and a MAY clause for `⚠️` and `🆘` from free-form callers, matching the SDK. SYSTEM_CONTEXT and CULTURE value tables are unchanged and now match `schemas/vcp-adaptation-context.schema.json`. §2.1 example values corrected to the §2.2 tables (daytime, vehicle, ⚰️ mourning, 🎓 graduation, wet, 👇 subordinate, 🆓 autonomous, ⏰ time, confidential), and every schema enum now matches §2.2; §2.3 adds the forward-compatibility rule for unknown values and dimensions (receivers ignore or pass through, strict validators report), §5.6 no longer rejects signals for unknown values, and `category-name` admits lowercase letters and underscores (`low_energy`, `time_aware`) as the §3.1 vocabulary and the schema already require. |
+| 2.1.1 | 2026-09-27 | Dimension count stated as 14 baseline dimensions (9 situational + 5 personal) in v3.1 plus 4 experimental VEP-0004 situational dimensions (18 with them) in the abstract and §2.1. Emergency indicators (§5.1.6, §7.1) add `🛑` (EMBODIMENT emergency_stop, experimental VEP-0004) and a MAY clause for `⚠️` and `🆘` from free-form callers, matching the SDK. SYSTEM_CONTEXT and CULTURE value tables are unchanged and now match `schemas/vcp-adaptation-context.schema.json`. §2.1 example values corrected to the §2.2 tables (daytime, vehicle, ⚰️ mourning, 🎓 graduation, wet, 👇 subordinate, 🆓 autonomous, ⏰ time, confidential), and every schema enum now matches §2.2; §2.3 adds the forward-compatibility rule for unknown values and dimensions (receivers ignore or pass through, strict validators report), §5.6 no longer rejects signals for unknown values, and `category-name` admits lowercase letters and underscores (`low_energy`, `time_aware`) as the §3.1 vocabulary and the schema already require. The RELATIONSHIP example `trusted_collaborator:long_term` (invalid: `long_term` is a tie strength) becomes `trusted_collaborator:professional`; the ABNF admits a personal-only string beginning with `‖`, and the §2.4 personal-only example now carries it; an intensity is exactly one digit 1-5 (`04` is malformed). |
 
 ---
 

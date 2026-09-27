@@ -149,6 +149,19 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "example",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-adaptation-context.invalid-leading-zero-intensity.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "759cd02b8222670c433a2088122f03dd88a207a7bedda7652dd2c23617631cc5",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/examples/invalid/vcp-adaptation-context.invalid-whitespace.json",
       "publication_class": "illustrative",
       "replacement": null,
@@ -344,6 +357,19 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "example",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-adaptation-context.valid-personal-only.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "51d93997e9ccb062129061c8435878349c9cb9b4883d5d5922a1b615be14378d",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/examples/vcp-adaptation-context.valid.json",
       "publication_class": "illustrative",
       "replacement": null,
@@ -504,7 +530,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "6a7d9a3c3655867afd707a6567b72bd6bf3ea4a89886f28fcae579069a2a55e7",
+      "sha256": "f32782a58b07bb718d5097dd0ecaf16baa1a9bf139b68fd9c18ec5f0d23f23c1",
       "status": "source-schema-candidate"
     },
     {
@@ -647,7 +673,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "adcb70379df050d55d0cb6668f8332d8b43fbaa586d3c3c03ea581b147205268",
+      "sha256": "d6658dfa65d612e5a3b41ce487216c1ea99a1b3519f335828db9653ed95f3db7",
       "status": "active-source-candidate"
     },
     {
@@ -660,7 +686,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "ad04ea086c958a4721d403ae0602a7a086e00d1cb2fce5774ae66fa7dd15e785",
+      "sha256": "c494ffdae9640e61cb09b274ed25266c66b2031bf0b906428d702a71b0dd47bd",
       "status": "active-source-candidate"
     },
     {
@@ -1323,7 +1349,7 @@
       "publication_class": "proposal",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "5effbb798a55c54c9b46b0acfeb4274cb85c14361dc1286ad12436dcf054c0e7",
+      "sha256": "b03b8528ed7da744ee345609de65b3ba138fe64b574c84925f0f4f95a6545fba",
       "status": "experimental"
     },
     {
