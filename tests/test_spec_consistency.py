@@ -168,6 +168,21 @@ class AdaptationVocabularyTests(unittest.TestCase):
                 self.assertIsNone(re.fullmatch(context_pattern, bad))
         self.assertIn('context-string   = situational ["‖" personal] / "‖" personal', self.text)
 
+    def test_parsing_rules_for_repeats_unknown_groups_and_sub_signals(self) -> None:
+        for sentence in (
+            "A dimension MUST NOT appear in more than one group of the same string",
+            "The ABNF above lists a closed set of dimension symbols because it describes what a conforming emitter produces",
+            "including known values in a group that also holds unknown values and emergency indicators",
+            "A VCP/A context string carries no sub-signal",
+        ):
+            with self.subTest(sentence=sentence):
+                self.assertIn(sentence, self.text)
+        schema = load_json("schemas/vcp-adaptation-context.schema.json")
+        pattern = schema["properties"]["context"]["pattern"]
+        for bad in ("‖🩺pain:4[migraine]", "‖🩺pain:4:migraine"):
+            with self.subTest(bad=bad):
+                self.assertIsNone(re.fullmatch(pattern, bad))
+
     def test_unknown_values_are_tolerated_not_rejected(self) -> None:
         self.assertIn(
             "A receiver or decoder MUST NOT reject a context string because a dimension carries a value",
@@ -331,6 +346,40 @@ class IdentityRuleSetTests(unittest.TestCase):
         self.assertNotIn("1-32 lowercase alpha", self.text)
 
 
+class RetiredIdentityRuleTests(unittest.TestCase):
+    """VCP/S §5.3 and the naming companions must not restate retired VCP/I rules."""
+
+    FILES = (
+        "specs/VCP_SEMANTICS_v2.0.md",
+        "docs/identity/VCP_IDENTITY_NAMING.md",
+        "docs/uvc/UVC_NAMING_SPECIFICATION.md",
+    )
+
+    def test_no_retired_identity_rules(self) -> None:
+        retired = (
+            "'max_total_length': 128",
+            "'max_segments': 8",
+            "segment_end_char",
+            "'no_consecutive_hyphens': True",
+            "1-32 lowercase alpha",
+            "user.alice.private",
+            "Hard limit of 128",
+            "Maximum 8 segments",
+            "cannot end with hyphen",
+            "[a-z0-9_-]",
+        )
+        for relative in self.FILES:
+            text = read(ROOT / relative).split("\n## Changelog", 1)[0]
+            for phrase in retired:
+                with self.subTest(file=relative, phrase=phrase):
+                    self.assertNotIn(phrase, text)
+
+    def test_semantics_points_to_vcp_i(self) -> None:
+        text = read(SEMANTICS)
+        self.assertIn("is normative for UVC token syntax, namespace prefixes and validation", text)
+        self.assertIn("namespace-suffix  = UALPHA *31(UALPHA / DIGIT)", text)
+
+
 class SemanticsNotationTests(unittest.TestCase):
     def test_retired_bracket_notation_is_absent(self) -> None:
         # The changelog may name the retired notation; the body must not use it.
@@ -365,7 +414,12 @@ class AuditLevelTests(unittest.TestCase):
 
     def test_default_level_is_stated(self) -> None:
         self.assertIn("The default audit level is `minimal`.", self.text)
-        self.assertIn("The default level is `minimal`.", read(AMENDMENTS))
+
+    def test_amendment_j_is_unchanged_apart_from_a_forward_pointer(self) -> None:
+        text = read(AMENDMENTS)
+        self.assertIn("> **Superseded in part by [`specs/core/audit.md`](./core/audit.md) 1.2.0.**", text)
+        self.assertIn("| `minimal` | Bundle ID, hash, verification result | Production (default) |", text)
+        self.assertNotIn("2026-09-27", text.split("## Changelog", 1)[1])
 
     def test_field_placement_table(self) -> None:
         start = self.text.index("### 3.2 AuditEntry")
@@ -377,24 +431,6 @@ class AuditLevelTests(unittest.TestCase):
             )
         }
         self.assertEqual(placement, self.PLACEMENT)
-
-    def test_amendment_j_lists_the_same_first_level_for_each_field(self) -> None:
-        text = read(AMENDMENTS)
-        start = text.index("### Audit Levels")
-        end = text.index("### Privacy-Preserving Audit Entry")
-        rows = {
-            match.group(1): set(re.findall(r"`(\w+)`", match.group(2)))
-            for match in re.finditer(
-                r"^\| `(\w+)` \| ([^|]+) \|", text[start:end], re.MULTILINE
-            )
-        }
-        self.assertEqual(list(rows), list(self.LEVELS))
-        for level, fields in rows.items():
-            expected = {
-                field for field, first in self.PLACEMENT.items() if first == level
-            }
-            with self.subTest(level=level):
-                self.assertEqual(fields, expected)
 
     def test_privacy_hash_vectors(self) -> None:
         import hmac
@@ -522,6 +558,9 @@ class CurrentDocumentSweepTests(unittest.TestCase):
 
     def test_mcp_initialize_mentions_carry_the_revision_caveat(self) -> None:
         for path, text in self.documents.items():
+            relative = path.relative_to(ROOT).as_posix()
+            if relative in ("veps/VEP-0002-capability-negotiation.md", "veps/VEP-0003-mcp-bridge.md"):
+                continue  # accepted records are not rewritten
             if "MCP" in text and re.search(r"`initialize`", text):
                 with self.subTest(path=path.relative_to(ROOT).as_posix()):
                     self.assertIn("2025-11-25", text)

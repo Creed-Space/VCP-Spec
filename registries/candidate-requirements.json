@@ -3434,7 +3434,7 @@
     },
     {
       "path": "specs/core/audit.md",
-      "sha256": "21ccad0a3efbefdbd876f568305fe1f570fc04fd439af9962a494309b373cd06"
+      "sha256": "311d76a511f3b2e899e3112565b138b31f88457e731aed840894e75f5b76f58a"
     },
     {
       "path": "specs/core/capability-negotiation.md",

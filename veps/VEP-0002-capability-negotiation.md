@@ -98,11 +98,6 @@ If no VCP-Hello is received within 5 seconds of connection, the server MUST assu
 
 When VCP operates over MCP, the handshake piggybacks on MCP's `initialize` method:
 
-> **MCP revisions (informative).** This mapping uses MCP's `initialize` method, so it applies to MCP revisions up to and including 2025-11-25.
-> MCP 2026-07-28 removed `initialize`, deprecated Sampling, and replaced server-initiated elicitation with Multi Round-Trip Requests.
-> [VEP-0005](./VEP-0005-stateless-mcp.md) (Draft, v3.3 candidate) is the adaptation path; see [mcp-bridge.md §1.2](../specs/core/mcp-bridge.md#12-mcp-revision-compatibility-informative).
-
-
 - Client: VCP-Hello in `initializationOptions.vcp`
 - Server: VCP-Ack in `serverInfo.metadata.vcp`
 

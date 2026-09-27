@@ -62,7 +62,7 @@ lower levels.
 
 The default audit level is `minimal`.
 An implementation MUST record entries at `minimal` when the operator has not configured a level; `standard`, `full` and `diagnostic` are opt-in.
-This is the more privacy-preserving of the placements previously given by this document and by VCP v1.1 Amendment J, and it matches Amendment J and the project-maintained SDK field placement.
+This is the more privacy-preserving of the placements previously given by this document and by VCP v1.1 Amendment J, and it matches the project-maintained SDK field placement. This section supersedes the level table and default of Amendment J, which is retained unchanged as a historical source.
 
 ### 3.2 AuditEntry
 

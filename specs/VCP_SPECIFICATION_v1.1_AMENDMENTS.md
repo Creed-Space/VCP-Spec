@@ -724,6 +724,12 @@ When revocation status is UNKNOWN:
 
 ## Amendment J: Privacy Controls
 
+> **Superseded in part by [`specs/core/audit.md`](./core/audit.md) 1.2.0.**
+> The audit level table and default below are superseded by audit.md §3.1-3.2
+> (default `minimal`, per-level field placement) and §6 (keyed privacy hash).
+> Where they disagree, audit.md controls. This section is retained unchanged
+> for provenance.
+
 ### Problem
 
 Audit logs with full constitution text leak proprietary values and create GDPR issues.
@@ -734,17 +740,12 @@ Tiered audit logging with privacy controls.
 
 ### Audit Levels
 
-The default level is `minimal`.
-Implementations MUST record at `minimal` when no level is configured; higher levels are opt-in.
-Each level includes every field of the levels above it in this table.
-The field names and placement below are those of the Core audit specification ([`specs/core/audit.md`](./core/audit.md) §3.1-3.2), reconciled on 2026-09-27.
-
-| Level | Adds these fields | Use Case |
-|-------|-------------------|----------|
-| `minimal` | `audit_level`, `verification_result`, `bundle_id_hash`, `content_hash` | Production (default) |
-| `standard` | + `timestamp`, `session_id_hash`, `checks_passed`, `issuer_hash`, `version`, `manifest_signature`, `request_id` (hashed) | Compliance |
-| `full` | + `duration_ms`, `token_count` (manifest metadata, never content) | Debug |
-| `diagnostic` | + `content_preview` (first 100 characters of content); MUST NOT be used in production | Incident response |
+| Level | Contents | Use Case |
+|-------|----------|----------|
+| `minimal` | Bundle ID, hash, verification result | Production (default) |
+| `standard` | + timestamps, issuer, version | Compliance |
+| `full` | + complete manifest (no content) | Debug |
+| `diagnostic` | + content hash + first 100 chars | Incident response |
 
 ### Privacy-Preserving Audit Entry
 
@@ -754,8 +755,7 @@ The field names and placement below are those of the Core audit specification ([
   "audit_level": "standard",
 
   "timestamp": "2026-01-10T12:00:00.123Z",
-  "session_id_hash": "hmac-sha256(K_audit, session_id):abc123...",
-  "manifest_signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+  "session_id": "sha256(actual_session_id):abc123...",
 
   "verification": {
     "result": "VALID",
@@ -763,9 +763,9 @@ The field names and placement below are those of the Core audit specification ([
   },
 
   "bundle_ref": {
-    "id_hash": "hmac-sha256(K_audit, bundle_id):def456...",
+    "id_hash": "sha256(bundle_id):def456...",
     "content_hash": "sha256:7f83b165...",
-    "issuer_hash": "hmac-sha256(K_audit, issuer_id):ghi789...",
+    "issuer_hash": "sha256(issuer_id):ghi789...",
     "version": "1.2.0"
   }
 }
@@ -1035,4 +1035,3 @@ class AlgorithmPolicy:
 |---------|------|---------|
 | 1.0.0 | 2026-01-11 | Initial specification |
 | 1.1.0 | 2026-01-11 | Security amendments (A-N) based on Junto critique |
-| 1.1.0 (source alignment) | 2026-09-27 | §J audit levels reconciled with `specs/core/audit.md` 1.2.0: default `minimal` stated as a requirement, per-level field lists made explicit, `diagnostic` no longer lists the content hash (present from `minimal`), example uses `session_id_hash`, keyed privacy hashes and `manifest_signature` |

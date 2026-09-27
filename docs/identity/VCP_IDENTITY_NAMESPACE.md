@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-09-24 layer and governance status
+last-reviewed: 2026-09-27 identity rules aligned with VCP/I §3.4.1 and §3.7
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -129,7 +129,7 @@ CORE_NAMESPACES = {
 1. Email verification
 2. Username uniqueness check
 3. Terms acceptance
-4. No special characters (except `-`, `_`)
+4. The username is a token segment: a lowercase letter, then lowercase letters, digits or hyphens; `_` is not permitted (VCP/I §3.4.1)
 
 ---
 

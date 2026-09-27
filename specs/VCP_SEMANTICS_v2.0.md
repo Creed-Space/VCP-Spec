@@ -1722,6 +1722,9 @@ class ValueOntology:
 
 ### 5.3 UVC Naming Specification
 
+The VCP/I layer specification ([`VCP_IDENTITY_v2.0.md`](./VCP_IDENTITY_v2.0.md) §3 and §4.2) is normative for UVC token syntax, namespace prefixes and validation.
+This section summarizes it; where the two differ, VCP/I controls.
+
 #### 5.3.1 Token Format
 
 UVC tokens are dot-separated, lowercase, hierarchical identifiers:
@@ -1737,9 +1740,9 @@ Examples:
 
 | Component | Description | Constraints |
 |-----------|-------------|-------------|
-| `domain` | Value domain | 1-32 lowercase alpha |
-| `approach` | Approach within domain | 1-32 lowercase alpha |
-| `role` | Specific role/function | 1-32 lowercase alpha |
+| `domain` | Value domain: one of the five Core prefixes | 1-32 characters: a lowercase letter, then lowercase letters, digits or hyphens |
+| `approach` | Approach within domain | 1-32 characters: a lowercase letter, then lowercase letters, digits or hyphens |
+| `role` | Specific role/function | 1-32 characters: a lowercase letter, then lowercase letters, digits or hyphens |
 
 Hierarchical tokens support deeper paths:
 
@@ -1764,7 +1767,9 @@ user.alice.personal
 | `religion.<tradition>` | Religious | `religion.buddhist.mindfulness` |
 | `culture.<region>` | Cultural | `culture.japanese.formal` |
 | `community.<name>` | Community | `community.gaming.esports` |
-| `user.<username>` | Personal | `user.alice.private` |
+| `user.<username>` | Personal | `user.alice.personal` |
+
+The prefix list is complete: a token whose first segment is not listed is rejected by validators (VCP/I §3.4.1). Core tokens have exactly three segments; other tokens have three to ten.
 
 #### 5.3.3 UVC Token Grammar (ABNF)
 
@@ -1773,7 +1778,9 @@ user.alice.personal
 
 uvc-token         = token-path ["@" version] [":" namespace-suffix]
 
-; Token path: minimum 3 segments, maximum 10 segments
+; Token path: minimum 3 segments, maximum 10 segments.
+; Syntax only: prefixes and the Core three-segment rule are semantic
+; checks (VCP/I §3.4.1).
 token-path        = segment 2*9("." segment)
 
 ; Each segment: lowercase letters, digits, hyphens
@@ -1784,6 +1791,9 @@ segment           = LALPHA *31(LALPHA / DIGIT / "-")
 ;   - Second-to-last segment = approach
 ;   - Last segment = role
 ;   - Middle segments = path (organizational hierarchy)
+
+; Namespace suffix (optional, uppercase)
+namespace-suffix  = UALPHA *31(UALPHA / DIGIT)
 
 ; Version constraints
 version           = exact-version / compat-version / approx-version / alias-version
@@ -1800,33 +1810,20 @@ prerelease        = 1*(ALPHA / DIGIT / "." / "-")
 
 ; Core rules
 LALPHA            = %x61-7A                    ; lowercase a-z
+UALPHA            = %x41-5A                    ; uppercase A-Z
 DIGIT             = %x30-39                    ; 0-9
 ALPHA             = %x41-5A / %x61-7A          ; A-Z / a-z
 ```
 
 #### 5.3.4 Validation Rules
 
-```python
-class UVCValidationRules:
-    """Validation rules for UVC tokens"""
+Validation follows VCP/I §3.4.1 and §3.7, which are normative:
 
-    RULES = {
-        'max_total_length': 128,
-        'max_segments': 8,
-        'max_segment_length': 32,
-        'allowed_segment_chars': r'^[a-z0-9-]+$',
-        'segment_start_char': r'^[a-z]',
-        'segment_end_char': r'[a-z0-9]$',
-        'no_consecutive_dots': True,
-        'no_consecutive_hyphens': True,
-        'reserved_words': [
-            'system', 'admin', 'root', 'null', 'undefined',
-            'true', 'false', 'none', 'void', 'default',
-            'api', 'internal', 'private', 'public', 'test',
-            'vcp', 'uvc', 'csm', 'bundle', 'manifest', 'creed',
-        ],
-    }
-```
+- A token is at most 256 characters, including any version and namespace suffix.
+- A token has 3 to 10 segments; a Core token has exactly 3.
+- Each segment is 1 to 32 characters, starts with a lowercase letter, and continues with lowercase letters, digits or hyphens. A segment MAY end with a hyphen and MAY contain consecutive hyphens; `_` is not permitted.
+- The first segment MUST be a prefix from §5.3.2.
+- No segment may be a reserved word. The reserved-word list is the one in VCP/I §3.7.1 and is not repeated here.
 
 #### 5.3.5 Canonicalization
 
@@ -2632,7 +2629,7 @@ COMPACT: CS1|nanny|5|family.safe.guide|E,F
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 2.1.3 | 2026-09-27 | Retired bracket notation removed: the §4.4 priority-ordering example uses CSM-1 codes (`Z4+T`, `M4+T`) and P-lines; the §7.3 semantic-injection example is a CSM-1 token, and mitigations 1-2 name the CSM-1 code grammar and token line grammar instead of the retired `REQUIRE[...]` vocabulary. Prose spells CSM-1 with a hyphen; the §2 and Appendix A heading anchors change accordingly. |
+| 2.1.3 | 2026-09-27 | Retired bracket notation removed: the §4.4 priority-ordering example uses CSM-1 codes (`Z4+T`, `M4+T`) and P-lines; the §7.3 semantic-injection example is a CSM-1 token, and mitigations 1-2 name the CSM-1 code grammar and token line grammar instead of the retired `REQUIRE[...]` vocabulary. Prose spells CSM-1 with a hyphen; the §2 and Appendix A heading anchors change accordingly. §5.3 now points to VCP/I as normative and drops the retired identity rules (128 characters, 8 segments, letters-only Core segments, no trailing or double hyphens, a shortened reserved-word list, the `user.alice.private` example); its ABNF defines `namespace-suffix`. |
 | 2.1.2 | 2026-09-24 | Editorial and clarifying alignment with the SDK token parser and canon: CSM-1 code vs multi-line token named in §2.1; token header version defined as `1.0` and independent of the CSM-1 format version (§2.4); ABNF for the P-, X-, F- and S-lines, with comma-separated lists and a required S-line (§2.4); presence-only S-line markers recommended for transmitted tokens (§2.4, §2.8.4 example); extension lines follow line 7 and the optional R-line (§2.4.7); R-line decay follows VCP-X-Personal §3-4 (§2.4.1); LC example carries its `R:` prefix; composition layers named as such in §3.3, and §4.1 brought into line with them; §6 default-adherence markers moved to N5, Z4 and G4; Custom default adherence range 0-5; registry URLs marked illustrative; VCP/T defined by v3.1 §2.2; paper-stack layer numbers dropped from §7. |
 | 2.1.1 | 2026-09-02 | Editorial alignment with schema and reference parser: custom persona `C` requires a namespace in the ABNF and NANO parser; duplicate and F/A, V/A, H/A scope combinations are invalid (not warnings); regex marked syntax-only; persona default adherence N/Z/G = 5/4/4; AS dimension two-letter codes; WC-line anti-pattern example carries the mandatory schema-ref; header bumped to 2.1.0 content version. |
 | 2.1.0 | 2026-05-21 | Welfare Context Extension: WC-line (operator-declared welfare affordances, §2.4.4), AS-line (agent-declared experiential state, §2.4.5), bidirectional Q-line WC_MIN (agent welfare requirements, §2.4.6), backward compatibility (§2.4.7). Catalyst: Agentic Diaries project; design rationale in ADR-011. |
