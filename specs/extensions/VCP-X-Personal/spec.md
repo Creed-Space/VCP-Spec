@@ -35,7 +35,8 @@ Personal signals occupy the personal tier of the VCP context model
 
 ```
 Constitutional tier: creed / constitution references (VCP/S)
-Situational tier:    13 situational dimensions (VCP/A)
+Situational tier:    9 situational dimensions (VCP/A, v3.1 baseline;
+                     13 with the experimental VEP-0004 dimensions)
 Personal tier:       personal state   <-- THIS EXTENSION
 ```
 

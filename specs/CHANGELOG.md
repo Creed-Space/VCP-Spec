@@ -31,6 +31,14 @@ recorded authorized decision.
 - **VCP/S** (`specs/VCP_SEMANTICS_v2.0.md` 2.1.3): the §4.4 and §7.3 examples no longer use the retired bracket notation (`CSM:SCOPE[..]`, `PERSONA[..]`); they use CSM-1 codes, P-lines and a multi-line token.
 - **VCP/A** (`specs/VCP_ADAPTATION_v2.0.md` 2.1.1): the dimension count reads 14 baseline dimensions (9 situational + 5 personal) in v3.1, plus 4 experimental VEP-0004 situational dimensions (18 with them). The emergency indicator set adds `🛑` (EMBODIMENT emergency_stop, experimental VEP-0004), and implementations MAY also treat `⚠️` and `🆘` from free-form callers as emergency indicators. This brings the spec up to the SDK's emergency set; the SDK adds `🔥` and `🌪️`.
 - **MCP revisions** (`specs/core/mcp-bridge.md` §1.2, v3.1 §7): informative note that the v3.1 bridge targets MCP revisions up to 2025-11-25, that MCP 2026-07-28 removed `initialize`, deprecated Sampling and replaced server-initiated elicitation with Multi Round-Trip Requests, and that VEP-0005 (Draft, v3.3 candidate) is the adaptation path. No normative change.
+- **Canon sweep of current documents** (specs, schemas, VEPs, extensions, current `docs/` companions, `_wiki/`; historical and superseded documents untouched):
+  - Identity tokens use listed prefixes: `enterprise.compliance` becomes `company.acme.compliance` (VCP/M v2.0, inter-agent messaging v1.2 and `schemas/vcp-messaging-v1.2.schema.json` examples); the VCP-X-Welfare, VCP/E, composition and state-machine examples move to `work.`, `company.`, `community.`, `school.`, `secure.` and `user.` tokens; the VCP/I §3.5 EBNF is rewritten prefix-first.
+  - Dimension counts: the adaptation schema description and VCP-X-Personal §1.1 state 9 baseline situational dimensions, 13 with VEP-0004.
+  - MCP revision caveat added wherever the `initialize` mapping or Sampling is described: `specs/core/capability-negotiation.md` §9, `specs/examples/capability-handshake.md`, VEP-0002, VEP-0003, README and the wiki.
+  - Retired bracket notation removed from the VEP-0004 motivation and the wiki.
+  - Persona and scope lists in `docs/openapi/vcp_actions.yaml` follow VCP/S (the retired Anchor and Hotrod personas and the old scope letters are gone).
+  - Prose spells CSM-1 with a hyphen (identifiers, file names and code are unchanged); heading anchors that changed are updated.
+  - Wiki: VEP-0001 to VEP-0003 are shown as Recorded pre-charter acceptance, VCP-X-Relational and VCP-X-Consensus as Draft.
 - **Historical classification**: `specs/VCP_PAPER_SPEC_CONTENT.md` (migrated from paper draft I2D2, with the retired float-valued VCP/A bundle) carries a historical, non-normative header and is classified `historical-non-normative` in `status/document-inventory.json`.
 
 ### Changed (2026-09-24, alignment of the 3.1 source baseline)

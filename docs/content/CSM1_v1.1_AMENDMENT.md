@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-27 CSM-1 spelling
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -13,7 +13,7 @@ evidence-boundary: Explanatory material, not implementation conformance
 **Version**: 1.1.0
 **Date**: 2026-02-13
 **Layer**: VCP/S (Semantics)
-**Amends**: CSM1 Grammar Specification v1.0.0
+**Amends**: CSM-1 Grammar Specification v1.0.0
 
 ---
 

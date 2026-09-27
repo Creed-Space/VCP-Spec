@@ -119,17 +119,16 @@ paths:
 
         Code format: `persona + level + scopes[:namespace][@version]`
 
-        Personas:
+        Personas (VCP/S §2.2):
         - N: Nanny (child safety)
-        - Z: Sentinel (security/privacy)
-        - G: Godparent (ethical guidance)
-        - A: Ambassador (professional conduct)
-        - M: Muse (creativity)
-        - R: Anchor (factual accuracy)
-        - H: Hotrod (minimal constraints)
-        - C: Custom
+        - Z: Sentinel (security)
+        - G: Godparent (ethics)
+        - A: Ambassador (professional)
+        - M: Muse (creative challenge)
+        - D: Mediator (fair resolution)
+        - C: Custom (requires a namespace)
 
-        Scopes: F(amily), W(ork), E(ducation), H(ealth), I(finance), L(egal), P(rivacy), S(afety), A(ccessibility), V(environment), G(eneral)
+        Scopes (VCP/S §2.6.1): F (Family), W (Work), P (Privacy), E (Education), T (Technical), O (Official), V (Vulnerable), A (Adult), H (Health), S (Social), R (Religious). A cannot be combined with F, V or H.
 
         Examples:
         - `N5+F+E` - Nanny, level 5, Family+Education

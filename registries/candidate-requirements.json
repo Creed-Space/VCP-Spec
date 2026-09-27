@@ -707,7 +707,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 526,
+        "line": 530,
         "line_sha256": "0281b55d0e559683489c8eacaec16d79ed54b0611004a732befda30adefe7f0a",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -715,7 +715,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 531,
+        "line": 535,
         "line_sha256": "d7e21ab765c060252a4a4e7850e1bc9d1b5da9f7faaa158d044e0aa2605ecf30",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -723,7 +723,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 534,
+        "line": 538,
         "line_sha256": "b53404885684e8587df38e8d4b574e2d8540071ddbfc0515ba0dd1e5695500f3",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -731,7 +731,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 553,
+        "line": 557,
         "line_sha256": "97c0bf50583a846bb9e785f762c4962a9a4f9ad50c140fb7669ed53a941ed3a5",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -739,7 +739,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 563,
+        "line": 567,
         "line_sha256": "6af8f7ce2cddbe4537594fd087430d69b39de32b1df2803649610bedde882df1",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -747,7 +747,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 566,
+        "line": 570,
         "line_sha256": "decdd146fe773a553b58a6fe26f4e69857d45557a15074fc8b6d27b4a1eeed56",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -755,7 +755,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 571,
+        "line": 575,
         "line_sha256": "2028c219a4631cd45932c44b797333337033484386040841eafe4f078df40c23",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -763,7 +763,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 574,
+        "line": 578,
         "line_sha256": "164a2813a5893a97f005a8be206f6a5a662792cd08c97ffe4cdb0646a6e839a9",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -771,7 +771,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 576,
+        "line": 580,
         "line_sha256": "95050f137b085594d41bd07e51eb59b0c304ccac5bd2e361718e6fe25ff8afa4",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -779,7 +779,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 582,
+        "line": 586,
         "line_sha256": "16d932fe1ef88065e171186134a903adb4e4fa230cd6103cca4fec9b2e8ffe5b",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -787,7 +787,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 590,
+        "line": 594,
         "line_sha256": "c2de561c988abe8a48654708388fef48bf94222b0de48d4213791e98fcc59421",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -795,7 +795,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 622,
+        "line": 626,
         "line_sha256": "8d56ec23a4ab9ead8d50918d22408d843289d52fe756c67baf4215ef5a2044bf",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -803,7 +803,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 634,
+        "line": 638,
         "line_sha256": "73ddb30dcc9d030e7e28fd63d6b7ac240b441b642dc6569b6d9a5c361e766ba0",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -811,7 +811,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 635,
+        "line": 639,
         "line_sha256": "d1f517dec41e759c65d14530f74343efe8fcabde379126c44935b63089ceed1a",
         "path": "specs/core/capability-negotiation.md"
       },
@@ -3438,7 +3438,7 @@
     },
     {
       "path": "specs/core/capability-negotiation.md",
-      "sha256": "01bcb4a10f4c254f50765c812fe13cc1ead3c33ed40a2e7316b6287f4671b072"
+      "sha256": "adc1fe04132af23594eaab32bdc07dd0afed5f9a552bd2c805e3641f65f8480d"
     },
     {
       "path": "specs/core/extension-lifecycle.md",

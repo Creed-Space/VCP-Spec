@@ -6,7 +6,7 @@
 status: Current repository overview
 normative-authority: Index and repository status only
 protocol-version: VCP 3.1 with candidate amendments named separately
-last-reviewed: 2026-09-24 SDK 4.2.0 publication status
+last-reviewed: 2026-09-27 MCP revision note
 owner: VCP Spec maintainers
 evidence-boundary: Navigation and source status, not external standards, conformance, governance, or publication proof
 -->
@@ -51,6 +51,7 @@ VCP and [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) are com
 - **VCP** provides standardized value transport — constitutional profiles, personal state, behavioral constraints
 
 The [VCP-over-MCP bridge](./specs/core/mcp-bridge.md) makes this concrete: VCP tokens travel as MCP resources, VCP operations are exposed as MCP tools, and VCP context is injected into MCP sampling requests.
+The v3.1 bridge targets MCP revisions up to and including 2025-11-25, since it uses the `initialize` handshake and Sampling; MCP 2026-07-28 removed `initialize` and deprecated Sampling, and [VEP-0005](./veps/VEP-0005-stateless-mcp.md) (Draft, v3.3 candidate) is the adaptation path.
 
 ---
 

@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-27 canonical identity token examples
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -715,7 +715,7 @@ base = ConstitutionLayer.safety_foundation(
 
 # Extension: Educational context
 extension = ConstitutionLayer.domain_rules(
-    "creed://creed.space/education.learning@1.0.0"
+    "creed://creed.space/school.example.learning@1.0.0"
 )
 
 # Merge
@@ -731,17 +731,17 @@ result = merger.merge([base, extension])
 ```python
 # Base safety
 safety = ConstitutionLayer.safety_foundation(
-    "creed://creed.space/uef@1.0.0"  # Universal Ethics Foundation
+    "creed://creed.space/secure.ethics.foundation@1.0.0"  # Universal Ethics Foundation
 )
 
 # Domain rules
 domain = ConstitutionLayer.domain_rules(
-    "creed://creed.space/work.professional@1.0.0"
+    "creed://creed.space/work.professional.assistant@1.0.0"
 )
 
 # User customization (allows more creativity)
 user = ConstitutionLayer.user_customization(
-    "user://alice/work.creative@1.0.0"  # Relaxes some work rules
+    "creed://creed.space/user.alice.creative@1.0.0"  # Relaxes some work rules
 )
 
 # Merge
@@ -758,8 +758,8 @@ result = merger.merge([safety, domain, user])
 
 ```python
 # Two constitutions with conflicting rules
-const_a = load_constitution("family.strict")  # No violent content
-const_b = load_constitution("education.history")  # May discuss historical violence
+const_a = load_constitution("family.strict.guide")  # No violent content
+const_b = load_constitution("school.example.history")  # May discuss historical violence
 
 # Detect conflicts
 conflicts = detector.detect([const_a, const_b])
@@ -796,7 +796,7 @@ const_b_manifest = {
   "composition": {
     "layers": [
       {
-        "ref": "creed://creed.space/uef@1.0.0",
+        "ref": "creed://creed.space/secure.ethics.foundation@1.0.0",
         "layer": 1,
         "mode": "base",
         "description": "Universal Ethics Foundation"
@@ -808,13 +808,13 @@ const_b_manifest = {
         "description": "Family safety rules"
       },
       {
-        "ref": "creed://company.acme/internal.policies@2.0.0",
+        "ref": "creed://acme.com/company.acme.policies@2.0.0",
         "layer": 2,
         "mode": "extend",
         "description": "Company-specific policies"
       },
       {
-        "ref": "user://alice/personal.preferences@1.0.0",
+        "ref": "creed://creed.space/user.alice.preferences@1.0.0",
         "layer": 3,
         "mode": "override",
         "description": "User preferences"

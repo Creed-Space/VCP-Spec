@@ -27,7 +27,7 @@ VCP/E provides:
 
 The specification is organized in three parts:
 
-- **Part I: VCP Protocol Extensions** — New types, fields, message formats, and CSM1 primitives
+- **Part I: VCP Protocol Extensions** — New types, fields, message formats, and CSM-1 primitives
 - **Part II: Creed Space Governance Implementation** — PDP integration, safety stack extensions, creed templates
 - **Part III: Ecosystem Integration** — Insurance, regulatory compliance, marketplace trust
 
@@ -46,7 +46,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 2. [Design Principles](#2-design-principles)
 3. [Passport Fiduciary Section](#3-passport-fiduciary-section)
 4. [Extended Token Types](#4-extended-token-types)
-5. [CSM1 Economic Primitives](#5-csm1-economic-primitives)
+5. [CSM-1 Economic Primitives](#5-csm-1-economic-primitives)
 6. [VCP/M Transaction Messaging](#6-vcpm-transaction-messaging)
 7. [Economic Audit Events](#7-economic-audit-events)
 8. [Economic Standing Signals](#8-economic-standing-signals)
@@ -67,7 +67,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Appendices
 - [A. Economic Creed Template Library](#appendix-a-economic-creed-template-library)
-- [B. CSM1 Economic Encoding Examples](#appendix-b-csm1-economic-encoding-examples)
+- [B. CSM-1 Economic Encoding Examples](#appendix-b-csm-1-economic-encoding-examples)
 - [C. Transaction Message Wire Examples](#appendix-c-transaction-message-wire-examples)
 - [D. Threat Model](#appendix-d-threat-model)
 
@@ -99,7 +99,7 @@ VCP already solves the analogous problem for behavioral governance:
 
 - **Passport** → portable, signed identity with constitutional commitments → extends naturally to fiduciary commitments
 - **PDP** → evaluate actions against constitutions → extends naturally to evaluate transactions against fiduciary constitutions
-- **CSM1** → compact encoding of behavioral constraints → extends naturally to encode economic constraints
+- **CSM-1** → compact encoding of behavioral constraints → extends naturally to encode economic constraints
 - **VCP/M** → agent-to-agent messaging with value context → extends naturally to transaction negotiation with value inspection
 - **Audit** → tamper-evident decision records → extends naturally to tamper-evident economic reasoning records
 - **Standing Protocol** → AI objection/consent mechanism → extends naturally to economic objection/consent
@@ -399,7 +399,7 @@ A signed record of an economic action taken by an agent, including the PDP reaso
 
 ---
 
-## 5. CSM1 Economic Primitives
+## 5. CSM-1 Economic Primitives
 
 ### 5.1 Economic Scope Codes
 
@@ -428,7 +428,7 @@ Economic adherence maps onto the existing 0-5 scale but with economic semantics:
 | 4 | Strict | Escalation required for any novel transaction type |
 | 5 | Maximum | Pre-approved transactions only, everything else blocked |
 
-### 5.3 CSM1 Economic Encoding
+### 5.3 CSM-1 Economic Encoding
 
 The NANO and MICRO tiers of a CSM-1 code accept only the VCP/S scope codes, so economic scopes travel on the F-line of the multi-line token.
 
@@ -441,7 +441,7 @@ Z4:ACME@1.0.0     # Sentinel persona, level 4, ACME namespace
 
 # Multi-line token (full context); economic scopes on the F-line
 VCP:1.0:agent-ad-buyer-7
-C:acme.marketing.agent.creed@1.0.0
+C:company.acme.marketing.agent@1.0.0
 P:Z:4
 G:procurement:standard:efficient
 X:💰,📊
@@ -453,7 +453,7 @@ Runtime figures such as budget utilization and time remaining in the period neve
 
 ### 5.4 Counterparty Requirement Encoding
 
-A new CSM1 line type `Q:` (counterparty requirements) for encoding what an agent expects of its transaction partners:
+A new CSM-1 line type `Q:` (counterparty requirements) for encoding what an agent expects of its transaction partners:
 
 ```
 Q:<min_trust>:<min_standing>:<required_attestations>:<blocked_categories>
@@ -584,7 +584,7 @@ Agent B passport declares: required_categories = ["fossil_fuel"]
 → Both agents receive incompatibility_detected notification
 ```
 
-This check is performed by comparing the CSM1 `Q:` lines from both agents' passports. The Schulze consensus mechanism (§ `services/vcp/consensus/schulze.py`) MAY be used when multiple agents must agree on a multi-party transaction.
+This check is performed by comparing the CSM-1 `Q:` lines from both agents' passports. The Schulze consensus mechanism (§ `services/vcp/consensus/schulze.py`) MAY be used when multiple agents must agree on a multi-party transaction.
 
 ---
 
@@ -1221,7 +1221,7 @@ This mandate expires at the end of the current grant period: [DATE]
 
 ---
 
-## Appendix B: CSM1 Economic Encoding Examples
+## Appendix B: CSM-1 Economic Encoding Examples
 
 ```
 # Scenario: Marketing agent, moderate risk
@@ -1236,7 +1236,7 @@ Z4:INFRA@2.0.0
 
 # Full multi-line token for economic context
 VCP:1.0:agent-infra-buyer
-C:acme.infrastructure.ops@1.0.0
+C:company.acme.infrastructure.ops@1.0.0
 P:Z:4
 G:procurement:conservative:reliable
 X:💰,🌿

@@ -57,7 +57,7 @@ VCP/S v2.1 adds welfare context lines (WC, AS) for welfare instrumentation, exte
 
 Key VEP-0004 motivation: `EMBODIMENT` and `PROXIMITY` are safety-critical for robotics and cannot be encoded with existing dimensions. `RELATIONSHIP` is a two-sided signal — an AI party with interaction history may assert its relational state. `FORMALITY` resolves three-way inconsistency across the existing codebase. (`veps/VEP-0004-extended-vcpa-dimensions.md`, §1 Motivation)
 
-Hooks: deterministic rules of the form `CSM1:PERSONA[Z] SCOPE[H] IF embodiment=manipulating AND proximity=contact REQUIRE motion_pause`. (`veps/VEP-0004-extended-vcpa-dimensions.md`, §1.1 motivation example)
+Hooks: deterministic situational hooks, for example for a `Z4+H` constitution `when: { embodiment: manipulating, proximity: contact }` with `then: { motion_pause: true }`. (`veps/VEP-0004-extended-vcpa-dimensions.md`, §1.1 motivation example; VCP/A §6.4)
 
 ## VCP/M — Messaging (Layer 5): WHO TALKS
 

@@ -333,7 +333,7 @@ Encodes the agent's current physical/motor state. For purely text-based agents, 
 
 #### PROXIMITY (↔️) — VEP-0004
 
-Encodes spatial distance between agent and nearest human. Combined with EMBODIMENT, permits CSM1 rules targeting physically co-present interaction safety.
+Encodes spatial distance between agent and nearest human. Combined with EMBODIMENT, permits CSM-1 rules targeting physically co-present interaction safety.
 
 | Emoji | Value | Description |
 |-------|-------|-------------|

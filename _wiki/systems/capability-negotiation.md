@@ -77,6 +77,8 @@ Unsupported extensions in the `extensions` request list are acknowledged in `vcp
 
 VCP-Hello maps to `MCP initialize.params.initializationOptions.vcp`. VCP-Ack maps to `MCP initialize.result.serverInfo.metadata.vcp`. If no `vcp` key in MCP init options, server assumes VCP 1.0 (core only). (`veps/VEP-0003-mcp-bridge.md`, "Capability Negotiation Mapping")
 
+MCP revision caveat: the `initialize` mapping and Sampling integration apply to MCP revisions up to and including 2025-11-25. MCP 2026-07-28 removed `initialize`, deprecated Sampling and replaced server-initiated elicitation with Multi Round-Trip Requests; VEP-0005 (Draft, v3.3 candidate) is the adaptation path. (`specs/core/mcp-bridge.md`, §1.2; `veps/VEP-0005-stateless-mcp.md`)
+
 ## Extension Lifecycle States
 
 Managed by the extension model (VEP-0001):
@@ -95,8 +97,8 @@ Managed by the extension model (VEP-0001):
 | Extension | Status |
 |-----------|--------|
 | VCP-X-Personal | Stable |
-| VCP-X-Relational | Stable (Draft in spec.md) |
-| VCP-X-Consensus | Stable (Draft in spec.md) |
+| VCP-X-Relational | Draft |
+| VCP-X-Consensus | Draft |
 | VCP-X-Torch | Stable |
 | VCP-X-Intent | Experimental |
 | VCP-X-Welfare | Experimental |

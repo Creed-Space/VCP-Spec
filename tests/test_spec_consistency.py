@@ -402,5 +402,93 @@ class AuditLevelTests(unittest.TestCase):
                 self.assertLessEqual(self.LEVELS.index(first), level)
 
 
+PREFIXES = {
+    "family", "work", "secure", "creative", "reality",
+    "company", "school", "ngo", "religion", "culture", "community", "user",
+}
+HISTORICAL_STATUSES = {
+    "historical-archived",
+    "historical-non-normative",
+    "superseded-source-generation",
+    "research-or-submission-draft",
+}
+SUPERSEDED_MARKERS = ("> **Superseded", "> **Consolidated.", "> **Merged copy.")
+
+
+def current_documents() -> list[Path]:
+    """Markdown, JSON and YAML sources that are neither historical nor superseded."""
+    inventory = {
+        item["path"]: item["status"]
+        for item in load_json("status/document-inventory.json")["artifacts"]
+    }
+    roots = ("specs", "schemas", "veps", "docs", "_wiki")
+    paths = [ROOT / "README.md"]
+    for root in roots:
+        for suffix in ("*.md", "*.json", "*.yaml", "*.yml"):
+            paths.extend((ROOT / root).rglob(suffix))
+    selected = []
+    for path in sorted(set(paths)):
+        relative = path.relative_to(ROOT).as_posix()
+        if "/invalid/" in relative or relative.endswith(("CHANGELOG.md", "_wiki/log.md")):
+            continue
+        if inventory.get(relative) in HISTORICAL_STATUSES:
+            continue
+        head = read(path)[:3000]
+        if any(marker in head for marker in SUPERSEDED_MARKERS):
+            continue
+        selected.append(path)
+    return selected
+
+
+class CurrentDocumentSweepTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.documents = {path: read(path) for path in current_documents()}
+
+    def test_sweep_covers_the_expected_documents(self) -> None:
+        names = {path.relative_to(ROOT).as_posix() for path in self.documents}
+        self.assertIn("specs/VCP_SEMANTICS_v2.0.md", names)
+        self.assertIn("_wiki/systems/vep-specs.md", names)
+        self.assertNotIn("specs/VCP_PAPER_SPEC_CONTENT.md", names)
+        self.assertNotIn("docs/semantics/VCP_SEMANTICS_CSM1.md", names)
+
+    def test_no_retired_bracket_notation(self) -> None:
+        for path, text in self.documents.items():
+            body = text.split("\n## Changelog", 1)[0]
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                self.assertIsNone(re.search(r"(?:PERSONA|SCOPE|REQUIRE|PROOF)\[", body))
+
+    def test_versioned_tokens_use_listed_prefixes(self) -> None:
+        token = re.compile(
+            r"(?<![\w.@/-])([a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+)@(?:[0-9^~]|latest|canary)"
+        )
+        for path, text in self.documents.items():
+            for match in token.finditer(text):
+                with self.subTest(path=path.relative_to(ROOT).as_posix(), token=match.group(1)):
+                    self.assertIn(match.group(1).split(".")[0], PREFIXES)
+
+    def test_prose_spells_csm_1_with_a_hyphen(self) -> None:
+        bare = re.compile(r"(?<![\w/.#-])CSM1(?![\w-])")
+        for path, text in self.documents.items():
+            if path.suffix != ".md":
+                continue
+            in_fence = False
+            for number, line in enumerate(text.splitlines(), start=1):
+                if re.match(r"^\s{0,3}(```|~~~)", line):
+                    in_fence = not in_fence
+                    continue
+                if in_fence:
+                    continue
+                prose = re.sub(r"`[^`]*`|\]\([^)]*\)", "", line)
+                with self.subTest(path=path.relative_to(ROOT).as_posix(), line=number):
+                    self.assertIsNone(bare.search(prose))
+
+    def test_mcp_initialize_mentions_carry_the_revision_caveat(self) -> None:
+        for path, text in self.documents.items():
+            if "MCP" in text and re.search(r"`initialize`", text):
+                with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                    self.assertIn("2025-11-25", text)
+
+
 if __name__ == "__main__":
     unittest.main()

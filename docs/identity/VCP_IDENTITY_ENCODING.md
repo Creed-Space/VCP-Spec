@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-27 CSM-1 spelling
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -29,7 +29,7 @@ This specification defines the multiple encoding formats for UVC tokens. A singl
 1. [Introduction](#1-introduction)
 2. [Format Registry](#2-format-registry)
 3. [Canonical Format](#3-canonical-format)
-4. [CSM1 Format](#4-csm1-format)
+4. [CSM-1 Format](#4-csm-1-format)
 5. [URI Format](#5-uri-format)
 6. [Obfuscated Format](#6-obfuscated-format)
 7. [Phonetic Format](#7-phonetic-format)
@@ -45,7 +45,7 @@ This specification defines the multiple encoding formats for UVC tokens. A singl
 ### 1.1 Purpose
 
 Multiple encoding formats enable:
-- **Efficiency**: CSM1 for wire protocols
+- **Efficiency**: CSM-1 for wire protocols
 - **Readability**: Canonical for humans
 - **Privacy**: Obfuscated for sensitive contexts
 - **Accessibility**: Phonetic for voice, emoji for visual
@@ -56,7 +56,7 @@ Multiple encoding formats enable:
 | Format | Length | Human-Readable | Privacy | Machine-Parseable |
 |--------|--------|----------------|---------|-------------------|
 | Canonical | Variable | Yes | No | Yes |
-| CSM1 | Short | Partial | No | Yes |
+| CSM-1 | Short | Partial | No | Yes |
 | URI | Long | Yes | No | Yes |
 | Obfuscated | Fixed | Yes | Yes | With key |
 | Phonetic | Variable | Voice | No | Yes |
@@ -175,7 +175,7 @@ def canonicalize(token: str) -> str:
 
 ---
 
-## 4. CSM1 Format
+## 4. CSM-1 Format
 
 ### 4.1 Specification
 
@@ -363,7 +363,7 @@ Phonetic encoding for voice communication:
 
 ### 7.2 Specification
 
-Uses NATO phonetic alphabet for CSM1 codes:
+Uses NATO phonetic alphabet for CSM-1 codes:
 
 ```python
 NATO_PHONETIC = {

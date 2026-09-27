@@ -12,6 +12,10 @@
 
 This VEP specifies how VCP layers map to MCP (Model Context Protocol) primitives, enabling VCP tokens and context to travel over MCP's resource and tool infrastructure.
 
+> **MCP revisions (informative).** This mapping uses MCP's `initialize` handshake and Sampling, so it applies to MCP revisions up to and including 2025-11-25.
+> MCP 2026-07-28 removed `initialize`, deprecated Sampling, and replaced server-initiated elicitation with Multi Round-Trip Requests.
+> [VEP-0005](./VEP-0005-stateless-mcp.md) (Draft, v3.3 candidate) is the adaptation path; see [mcp-bridge.md §1.2](../specs/core/mcp-bridge.md#12-mcp-revision-compatibility-informative).
+
 ## Motivation
 
 MCP provides a standardized transport layer for AI tool integration. VCP provides a standardized value transport layer. These protocols are complementary, not competing:

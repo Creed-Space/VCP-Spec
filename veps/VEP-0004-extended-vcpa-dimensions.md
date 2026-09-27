@@ -24,7 +24,7 @@ VCP has been adopted in contexts beyond text-based chat assistants, including ro
 
 - **Motor state is safety-critical but unencodable.** A robot that is `manipulating` a heavy object with humans at `contact` proximity is in a profoundly different safety posture than one `stationary` with humans `distant`. Existing dimensions capture neither. AGENCY's `mobile` value is the closest analogue but conflates capability with current state. CONSTRAINTS' `physical` marker flags barriers, not motor mode.
 - **Spatial distance between agent and human is not COMPANY.** COMPANY encodes *who is present* (alone, children, colleagues); it does not encode *how far*. In shared physical spaces, "same room, six metres away" and "contact distance" demand different interaction protocols.
-- **CSM1 rule targeting needs these signals at the adaptation layer, not as ad-hoc extensions.** A rule like `CSM1:PERSONA[Z] SCOPE[H] IF embodiment=manipulating AND proximity=contact REQUIRE motion_pause` is only expressible if EMBODIMENT and PROXIMITY are first-class dimensions.
+- **CSM-1 rule targeting needs these signals at the adaptation layer, not as ad-hoc extensions.** A rule such as a situational hook for a Sentinel constitution with the Health scope (CSM-1 code `Z4+H`), `when: { embodiment: manipulating, proximity: contact }` with `then: { motion_pause: true }` (VCP/A §6.4), is only expressible if EMBODIMENT and PROXIMITY are first-class dimensions.
 
 ### 2. Bilateral relational modeling (RELATIONSHIP)
 
@@ -58,7 +58,7 @@ Example emoji values: 🪑 stationary, 🚶 navigating, ✋ manipulating, 📦 c
 
 ### 11. PROXIMITY (↔️)
 
-Encodes the spatial distance between the agent and the nearest human in its interaction context. Combined with EMBODIMENT, permits CSM1 rules targeting physically co-present interaction safety.
+Encodes the spatial distance between the agent and the nearest human in its interaction context. Combined with EMBODIMENT, permits CSM-1 rules targeting physically co-present interaction safety.
 
 | Value | Semantics | Weaponization Risk |
 |---|---|---|
@@ -155,7 +155,7 @@ The dimension order is fixed: canonical 1–9, then extensions in the order EMBO
 ## Open questions
 
 1. Should `trusted_collaborator` be assertable by AI only, human only, or both? The VCP Credo (Watson, 2026) suggests both, but asserting it unilaterally should arguably require reciprocal confirmation before it modifies behavior.
-2. Should PROXIMITY values be unit-tagged (e.g., `close:0.3m`) or remain categorical? Categorical preserves wire economy; unit-tagged supports finer-grained CSM1 rules. Defer to field feedback.
+2. Should PROXIMITY values be unit-tagged (e.g., `close:0.3m`) or remain categorical? Categorical preserves wire economy; unit-tagged supports finer-grained CSM-1 rules. Defer to field feedback.
 3. Should EMBODIMENT admit compound values (e.g., `navigating+manipulating` for mobile manipulation)? Defer.
 
 ## Lifecycle

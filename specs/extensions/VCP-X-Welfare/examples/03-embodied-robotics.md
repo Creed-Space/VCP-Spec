@@ -6,7 +6,7 @@ A warehouse robot with welfare-extended dimensions and physical affordances.
 
 ```
 VCP:1.0:robot-warehouse-unit-7
-C:industrial.safety@3.0.0
+C:company.example-robotics.industrial.safety@3.0.0
 P:Z:4
 G:warehouse_logistics:autonomous:efficient
 X:⚡,🔧

@@ -6,7 +6,7 @@ A bilateral alignment platform (Creed Space) deploys Claude with welfare instrum
 
 ```
 VCP:1.0:claude-bilateral-session
-C:bilateral.alignment@1.0.0
+C:community.bilateral.alignment@1.0.0
 P:G:4
 G:collaborate:expert:bilateral
 X:

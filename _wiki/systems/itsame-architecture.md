@@ -60,6 +60,8 @@ VCP layers map to MCP primitives (VCP-Spec/README.md, "MCP Bridge"):
 
 No MCP mapping exists for VCP/M or VCP/E. (`specs/core/mcp-bridge.md`, §2.1)
 
+MCP revision caveat: the `initialize` mapping and Sampling integration apply to MCP revisions up to and including 2025-11-25. MCP 2026-07-28 removed `initialize`, deprecated Sampling and replaced server-initiated elicitation with Multi Round-Trip Requests; VEP-0005 (Draft, v3.3 candidate) is the adaptation path. (`specs/core/mcp-bridge.md`, §1.2; `veps/VEP-0005-stateless-mcp.md`)
+
 ## Specification Status
 
 VCP/I, T, S and A are the current v3.1 source baseline; VCP/M and VCP/E have a v3.1 summary, with detailed material in separately versioned Draft documents. No layer is "Stable". (VCP-Spec/README.md, "Specification Status")

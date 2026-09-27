@@ -456,6 +456,10 @@ Servers MUST support VCP 1.0 clients that do not send `vcp-hello`.
 When VCP operates as a Model Context Protocol (MCP) server, the capability
 negotiation piggybacks on MCP's `initialize` handshake.
 
+> **MCP revisions (informative).** This mapping uses MCP's `initialize` handshake, so it applies to MCP revisions up to and including 2025-11-25.
+> MCP 2026-07-28 removed `initialize`, deprecated Sampling, and replaced server-initiated elicitation with Multi Round-Trip Requests.
+> [VEP-0005](../../veps/VEP-0005-stateless-mcp.md) (Draft, v3.3 candidate) is the adaptation path; see [mcp-bridge.md §1.2](./mcp-bridge.md#12-mcp-revision-compatibility-informative).
+
 ### 9.1 Mapping
 
 The `vcp-hello` payload is carried in MCP's `initializationOptions`:

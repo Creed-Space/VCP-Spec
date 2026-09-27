@@ -8,7 +8,7 @@
 
 ## Summary
 
-VCP extensions are opt-in additions to the core protocol, negotiated per session via capability handshake. The extension model (VEP-0001, Accepted) separates the stable core protocol from specialized needs. Extensions are co-designed with the VEP (VCP Enhancement Proposal) process. (VCP-Spec/README.md, "Extensions" and "Filed VEPs")
+VCP extensions are opt-in additions to the core protocol, negotiated per session via capability handshake. The extension model (VEP-0001, Recorded pre-charter acceptance) separates the stable core protocol from specialized needs. Extensions are co-designed with the VEP (VCP Enhancement Proposal) process. (VCP-Spec/README.md, "Extensions" and "Filed VEPs")
 
 ## Extension Directory
 
@@ -17,8 +17,8 @@ Extensions live in `specs/extensions/` (VCP-Spec/specs/extensions/ listing):
 | Extension | Status | What It Adds |
 |-----------|--------|-------------|
 | VCP-X-Personal | Stable | 5 personal state dimensions with intensity + configurable decay |
-| VCP-X-Relational | Stable | Trust, standing, norms, AI self-model with mandatory uncertainty |
-| VCP-X-Consensus | Stable | Schulze voting for multi-stakeholder constitutional deliberation |
+| VCP-X-Relational | Draft | Trust, standing, norms, AI self-model with mandatory uncertainty |
+| VCP-X-Consensus | Draft | Schulze voting for multi-stakeholder constitutional deliberation |
 | VCP-X-Torch | Stable | Session handoff for relational continuity across agents |
 | VCP-X-Intent | Experimental | Transparent, correctable intent inference from personal state |
 | VCP-X-Welfare | Experimental | Embodied welfare instrumentation: extended AS-line dimensions for robotics/physical agents, temporal welfare patterns, multi-agent aggregation, attestation chain (`specs/extensions/VCP-X-Welfare/spec.md` v1.0.0, 2026-05-21) |

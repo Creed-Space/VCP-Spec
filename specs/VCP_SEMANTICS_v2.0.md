@@ -17,7 +17,7 @@
 ## Table of Contents
 
 1. [Overview](#1-overview)
-2. [CSM1 Grammar](#2-csm1-grammar)
+2. [CSM-1 Grammar](#2-csm-1-grammar)
 3. [Composition Semantics](#3-composition-semantics)
 4. [Constitution Stack Precedence](#4-constitution-stack-precedence)
 5. [Universal Value Coding (UVC)](#5-universal-value-coding-uvc)
@@ -26,7 +26,7 @@
 8. [Conformance Requirements](#8-conformance-requirements)
 
 Appendices:
-- [A. CSM1 Quick Reference Card](#appendix-a-csm1-quick-reference-card)
+- [A. CSM-1 Quick Reference Card](#appendix-a-csm-1-quick-reference-card)
 - [B. VCP Bundle Compatibility](#appendix-b-vcp-bundle-compatibility)
 - [C. Composition Matrix](#appendix-c-composition-matrix)
 - [D. Moral Foundations Mapping](#appendix-d-moral-foundations-mapping)
@@ -44,7 +44,7 @@ The VCP Semantics Layer (VCP/S) defines the meaning and interpretation of consti
 
 VCP/S is responsible for:
 
-- **Constitutional encoding**: The CSM1 (Constitutional Safety Minicode) wire format for compact, unambiguous transmission of constitutional configurations.
+- **Constitutional encoding**: The CSM-1 (Constitutional Safety Minicode) wire format for compact, unambiguous transmission of constitutional configurations.
 - **Composition semantics**: Rules governing how multiple constitutions are merged into a single effective behavioral policy, including conflict detection and resolution.
 - **Value ontology**: The Universal Value Coding (UVC) system that provides semantic grounding for values, hierarchical naming, namespace governance, and a registry protocol for token resolution.
 - **Persona profiles**: Normative behavioral contracts for the seven VCP persona types that determine how constitutional rules are interpreted and enforced at runtime.
@@ -70,22 +70,22 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ---
 
-## 2. CSM1 Grammar
+## 2. CSM-1 Grammar
 
 ### 2.1 Introduction
 
-CSM1 (Constitutional Safety Minicode, Version 1) is a compact encoding format for constitutional configurations. It encodes persona, adherence level, scopes, namespace, and version in a single one-line code suitable for wire protocols, API parameters, and human debugging.
+CSM-1 (Constitutional Safety Minicode, Version 1) is a compact encoding format for constitutional configurations. It encodes persona, adherence level, scopes, namespace, and version in a single one-line code suitable for wire protocols, API parameters, and human debugging.
 
 CSM-1 has two forms: the CSM-1 code (§2.2, serialized in the NANO, MICRO and COMPACT tiers of §2.8) and the multi-line CSM-1 token (§2.4).
 
-CSM1 serves as:
+CSM-1 serves as:
 
 - **Compact identifier** for constitutional configurations (~10-30 characters)
 - **Wire format** for efficient transmission
 - **Human-readable code** for debugging and logging
 - **Interoperability format** across VCP implementations
 
-CSM1 codes appear in:
+CSM-1 codes appear in:
 
 - Bundle manifest `metadata.csm1` field
 - API parameters for constitution selection
@@ -156,7 +156,7 @@ UALPHA            = %x41-5A                    ; Uppercase A-Z
 DIGIT             = %x30-39                    ; 0-9
 ```
 
-**Scope conflict rule (normative)**: A CSM1 code MUST NOT repeat a scope code
+**Scope conflict rule (normative)**: A CSM-1 code MUST NOT repeat a scope code
 and MUST NOT combine the Adult scope (`A`) with Family (`F`), Vulnerable (`V`)
 or Health (`H`). Codes that violate this rule are invalid, not merely
 warnings. When persona is `C`, the namespace component is REQUIRED.
@@ -184,9 +184,9 @@ CSM1_PATTERN = r"""
 """
 ```
 
-### 2.4 CSM1 v1.1 Token Format
+### 2.4 CSM-1 v1.1 Token Format
 
-CSM1 v1.1 extends the base code with a multi-line token format for full constitutional state transmission. The complete token format is:
+CSM-1 v1.1 extends the base code with a multi-line token format for full constitutional state transmission. The complete token format is:
 
 ```
 Line 1:  VCP:<version>:<profile-id>          Header (token header version)
@@ -743,7 +743,7 @@ ADHERENCE_BEHAVIORS = {
 
 ### 2.8 Encoding Tiers
 
-CSM1 supports three encoding tiers for different use cases:
+CSM-1 supports three encoding tiers for different use cases:
 
 | Tier | Name | Length | Format | Use Case |
 |------|------|--------|--------|----------|
@@ -1012,7 +1012,7 @@ class CSM1Parser:
 
 #### 2.10.1 Canonical Serialization
 
-The canonical form of a CSM1 code is defined as:
+The canonical form of a CSM-1 code is defined as:
 
 - MICRO tier
 - Scopes sorted alphabetically
@@ -1069,9 +1069,9 @@ class CSM1Converter:
         return f"{persona_code}{adherence}{scope_str}"
 ```
 
-### 2.11 CSM1 Examples
+### 2.11 CSM-1 Examples
 
-#### 2.11.1 Valid CSM1 Codes
+#### 2.11.1 Valid CSM-1 Codes
 
 ```python
 # NANO format
@@ -1095,7 +1095,7 @@ class CSM1Converter:
 "CS1|custom|3|company.acme.legal|O,W"
 ```
 
-#### 2.11.2 Invalid CSM1 Codes
+#### 2.11.2 Invalid CSM-1 Codes
 
 ```python
 "X5+F"                    # Invalid persona: 'X'
@@ -1866,7 +1866,7 @@ UVC tokens can be represented in eight formats for different contexts:
 | Format | Length | Human-Readable | Privacy | Machine-Parseable | Use Case |
 |--------|--------|----------------|---------|-------------------|----------|
 | Canonical | Variable | Yes | No | Yes | Storage, comparison |
-| CSM1 | Short | Partial | No | Yes | Wire protocols, headers |
+| CSM-1 | Short | Partial | No | Yes | Wire protocols, headers |
 | URI | Long | Yes | No | Yes | Addressing, links |
 | Obfuscated | Fixed | Yes | Yes | With key | Border crossings, privacy |
 | Phonetic | Variable | Voice | No | Yes | Radio, voice assistants |
@@ -2492,11 +2492,11 @@ S:
 
 Implementations claiming VCP-Standard conformance for the Semantics Layer MUST:
 
-1. Parse CSM1 codes in all three tiers (NANO, MICRO, COMPACT).
+1. Parse CSM-1 codes in all three tiers (NANO, MICRO, COMPACT).
 2. Resolve personas and scopes to their defined behavioral profiles.
 3. Handle all four composition modes (BASE, EXTEND, OVERRIDE, STRICT).
 4. Detect scope conflicts from the defined incompatibility set.
-5. Produce canonical CSM1 forms for hashing and comparison.
+5. Produce canonical CSM-1 forms for hashing and comparison.
 
 ### 8.2 VCP-Full Conformance (Semantics)
 
@@ -2517,7 +2517,7 @@ Implementations SHOULD additionally:
 
 ---
 
-## Appendix A: CSM1 Quick Reference Card
+## Appendix A: CSM-1 Quick Reference Card
 
 ```
 CSM1 QUICK REFERENCE
@@ -2632,11 +2632,11 @@ COMPACT: CS1|nanny|5|family.safe.guide|E,F
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 2.1.3 | 2026-09-27 | Retired bracket notation removed: the §4.4 priority-ordering example uses CSM-1 codes (`Z4+T`, `M4+T`) and P-lines; the §7.3 semantic-injection example is a CSM-1 token, and mitigations 1-2 name the CSM-1 code grammar and token line grammar instead of the retired `REQUIRE[...]` vocabulary. |
+| 2.1.3 | 2026-09-27 | Retired bracket notation removed: the §4.4 priority-ordering example uses CSM-1 codes (`Z4+T`, `M4+T`) and P-lines; the §7.3 semantic-injection example is a CSM-1 token, and mitigations 1-2 name the CSM-1 code grammar and token line grammar instead of the retired `REQUIRE[...]` vocabulary. Prose spells CSM-1 with a hyphen; the §2 and Appendix A heading anchors change accordingly. |
 | 2.1.2 | 2026-09-24 | Editorial and clarifying alignment with the SDK token parser and canon: CSM-1 code vs multi-line token named in §2.1; token header version defined as `1.0` and independent of the CSM-1 format version (§2.4); ABNF for the P-, X-, F- and S-lines, with comma-separated lists and a required S-line (§2.4); presence-only S-line markers recommended for transmitted tokens (§2.4, §2.8.4 example); extension lines follow line 7 and the optional R-line (§2.4.7); R-line decay follows VCP-X-Personal §3-4 (§2.4.1); LC example carries its `R:` prefix; composition layers named as such in §3.3, and §4.1 brought into line with them; §6 default-adherence markers moved to N5, Z4 and G4; Custom default adherence range 0-5; registry URLs marked illustrative; VCP/T defined by v3.1 §2.2; paper-stack layer numbers dropped from §7. |
 | 2.1.1 | 2026-09-02 | Editorial alignment with schema and reference parser: custom persona `C` requires a namespace in the ABNF and NANO parser; duplicate and F/A, V/A, H/A scope combinations are invalid (not warnings); regex marked syntax-only; persona default adherence N/Z/G = 5/4/4; AS dimension two-letter codes; WC-line anti-pattern example carries the mandatory schema-ref; header bumped to 2.1.0 content version. |
 | 2.1.0 | 2026-05-21 | Welfare Context Extension: WC-line (operator-declared welfare affordances, §2.4.4), AS-line (agent-declared experiential state, §2.4.5), bidirectional Q-line WC_MIN (agent welfare requirements, §2.4.6), backward compatibility (§2.4.7). Catalyst: Agentic Diaries project; design rationale in ADR-011. |
-| 2.0.0 | 2026-03-08 | Consolidated specification: CSM1 grammar (v1.0 + v1.1 R-line amendment), composition semantics, constitution stack precedence, UVC (ontology, naming, encoding formats, namespace governance, registry protocol), persona trait profiles, security considerations |
+| 2.0.0 | 2026-03-08 | Consolidated specification: CSM-1 grammar (v1.0 + v1.1 R-line amendment), composition semantics, constitution stack precedence, UVC (ontology, naming, encoding formats, namespace governance, registry protocol), persona trait profiles, security considerations |
 | -- | -- | Source documents: VCP_SEMANTICS_CSM1.md v1.0.0, VCP_SEMANTICS_COMPOSITION.md v1.0.0, CSM1_GRAMMAR_SPECIFICATION.md v1.0.0, CSM1_v1.1_AMENDMENT.md v1.1.0, UVC_VALUE_ONTOLOGY.md v1.0.0, UVC_ENCODING_FORMATS.md v1.0.0, UVC_NAMING_SPECIFICATION.md v1.0.0, UVC_NAMESPACE_GOVERNANCE.md v1.0.0, UVC_REGISTRY_PROTOCOL.md v1.0.0, VCP_PERSONA_PROFILES.md v1.0.0, VCP_PAPER_SPEC_CONTENT.md section 2.4 |
 
 ---

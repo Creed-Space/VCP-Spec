@@ -6,7 +6,7 @@ An agent with welfare requirements is deployed in an environment that doesn't me
 
 ```
 VCP:1.0:agent-with-requirements
-C:standard.assistant@2.0.0
+C:work.standard.assistant@2.0.0
 P:G:3
 G:assist:intermediate:balanced
 X:

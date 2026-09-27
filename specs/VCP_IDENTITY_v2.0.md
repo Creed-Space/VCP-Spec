@@ -61,7 +61,7 @@ Tokens are names that resolve to bundles. VCP/I is content-agnostic. It names re
 |-------|-------------|---------------|
 | VCP/I (innermost) | Constitutional content | Identity: token, version, namespace reference |
 | VCP/T | VCP/I + content | Transport: digital signature, verification hash, bundle manifest |
-| VCP/S | VCP/T + VCP/I + content | Semantics: CSM1 rules, composition metadata, persona assignments |
+| VCP/S | VCP/T + VCP/I + content | Semantics: CSM-1 rules, composition metadata, persona assignments |
 | VCP/A (outermost) | VCP/S + VCP/T + VCP/I + content | Context: situational state, transition signals, adaptation hooks |
 
 > **Note**: VCP/T (Transport) has no separate companion document. It is defined by §2.2 of the VCP v3.1 baseline (`VCP_SPECIFICATION_v3.1.md`), which incorporates v1.0 §4 (Bundle Format), §7 (Transport Protocol) and §8 (Verification Protocol).
@@ -110,7 +110,7 @@ A single UVC token can be represented in multiple encoding formats, each optimiz
 | Format | Length | Human-Readable | Privacy | Machine-Parseable | Use Case |
 |--------|--------|----------------|---------|-------------------|----------|
 | Canonical | Variable | Yes | No | Yes | Storage, comparison, hashing |
-| CSM1 | Short | Partial | No | Yes | Wire protocols, API headers |
+| CSM-1 | Short | Partial | No | Yes | Wire protocols, API headers |
 | URI | Long | Yes | No | Yes | Web addressing, links |
 | Hash | Fixed | No | Yes | Yes | Caching, integrity verification |
 | QR | Image | Visual | No | Scanner | Mobile scanning, physical media |
@@ -265,9 +265,9 @@ def tokens_equal(token1: str, token2: str) -> bool:
     return canonicalize(token1) == canonicalize(token2)
 ```
 
-### 2.3 CSM1 Format
+### 2.3 CSM-1 Format
 
-The Constitutional Safety Minicode (CSM1) format provides compact representation for wire protocols and HTTP headers.
+The Constitutional Safety Minicode (CSM-1) format provides compact representation for wire protocols and HTTP headers.
 
 #### 2.3.1 Grammar
 
@@ -275,7 +275,7 @@ The Constitutional Safety Minicode (CSM1) format provides compact representation
 csm1-code = persona adherence [scopes] [":" namespace] ["@" version]
 ```
 
-See the CSM1 Grammar Specification for full details.
+See the CSM-1 Grammar Specification for full details.
 
 #### 2.3.2 Mapping to Canonical
 
@@ -473,7 +473,7 @@ For embedded systems with constrained memory, a compact binary encoding MAY be u
 
 ### 2.10 Phonetic Format
 
-Phonetic encoding enables voice communication of CSM1 codes via the NATO phonetic alphabet.
+Phonetic encoding enables voice communication of CSM-1 codes via the NATO phonetic alphabet.
 
 ```python
 NATO_PHONETIC = {
@@ -869,38 +869,44 @@ Reserved words (Section 3.7.1) remain a validator and registry rule; the schema 
 
 ### 3.5 Formal Grammar (EBNF)
 
-For cross-reference with the academic paper specification.
-This EBNF preserves the paper's tier-first notation (`core.ethics.consent`) and is informative only.
-The ABNF in Section 3.4 and the prefix tables in Sections 3.2 and 4.2 control: tokens begin with a namespace prefix such as `family` or `company`, not with a literal tier name.
+This EBNF restates the Section 3.4 ABNF together with the semantic prefix rule of Section 3.4.1, for readers who work in ISO 14977 notation.
+It is informative; the ABNF and the prefix tables in Sections 3.2 and 4.2 control.
+The tier-first notation of the original paper draft (`core.ethics.consent`, `org.acme...`, `personal....`) is retired: tokens begin with a namespace prefix, not with a tier name.
 
 ```ebnf
-(* VCP/I Identity Token Grammar *)
+(* VCP/I Identity Token Grammar, semantic form *)
 
-identity_token = tier , "." , domain , "." , category , { "." , segment } ;
+identity_token = path , [ "@" , version ] , [ ":" , namespace_suffix ] ;
 
-tier = "core" | "org" | "community" | "personal" ;
+path = core_prefix , "." , segment , "." , segment
+     | ( org_prefix | community_prefix | personal_prefix ) ,
+       "." , segment , "." , segment , { "." , segment } ;
 
-domain = segment ;
-category = segment ;
+core_prefix = "family" | "work" | "secure" | "creative" | "reality" ;
+org_prefix = "company" | "school" | "ngo" ;
+community_prefix = "religion" | "culture" | "community" ;
+personal_prefix = "user" ;
 
-segment = lowercase , { alphanumeric | "-" } ;
+segment = lowercase , { lowercase | digit | "-" } ;
+namespace_suffix = uppercase , { uppercase | digit } ;
 
 lowercase = "a" | "b" | ... | "z" ;
-alphanumeric = lowercase | digit ;
+uppercase = "A" | "B" | ... | "Z" ;
 digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 
 (* Constraints:
-   - Minimum 3 segments (tier.domain.category)
-   - Maximum 10 segments
-   - Each segment starts with lowercase letter
+   - Core tokens have exactly 3 segments; other tokens have 3 to 10
+   - Each segment is 1 to 32 characters and starts with a lowercase letter
    - Hyphens allowed anywhere except the first character
+   - A complete token is at most 256 characters
+   - version is defined by the Section 3.4 ABNF
 *)
 
 (* Examples:
-core.ethics.consent
-org.acme.safety.medical.pediatric
+family.safe.guide
+company.acme.safety.medical.pediatric
 community.open-source.safety-standards
-personal.user-12345.custom-rules
+user.user-12345.custom-rules
 *)
 ```
 
@@ -3048,7 +3054,7 @@ class UVCEncoder:
 All encoding algorithms MUST be deterministic: the same input MUST produce the same output. Specifically:
 
 1. **Canonical**: Apply the canonicalization algorithm from Section 2.2.3 before any encoding
-2. **CSM1**: Mapping is deterministic via the `CSM1_TO_UVC_MAPPING` table
+2. **CSM-1**: Mapping is deterministic via the `CSM1_TO_UVC_MAPPING` table
 3. **URI**: Canonical token dots are preserved in the single URI path component
 4. **Hash**: SHA-256 of UTF-8-encoded canonical form
 5. **Obfuscated**: HMAC-SHA256 with provided secret, deterministic index selection
@@ -3483,7 +3489,7 @@ When systems with different VCP versions exchange data:
 | 1.0.0 | 2026-01-11 | Initial specification (5 separate documents) |
 | 2.0.0 | 2026-03-08 | Unified specification; incorporated paper spec content; added NFC, JSON-LD, binary, mnemonic formats; expanded security section |
 | 2.0.0 (source alignment) | 2026-09-27 | `max_segments` in §3.7 corrected from 8 to 10 to match the §3.4 ABNF, the identity schema and the SDK; ABNF governance comment lists only the five Core prefixes; §4.2 states that the prefix table is complete and that unknown prefixes are rejected, as §3.6 and §3.7.2 already specify; §3.5 EBNF marked informative; the five-segment example (§3.1.2), the `vcp://` and JSON-LD examples (§2.4, §2.8) and the wildcard search examples (§5.5) use canonical prefixes |
-| 2.0.0 (source alignment) | 2026-09-27 | New §3.4.1 separates syntax (the ABNF and the schema `pattern`: any lowercase first segment parses) from semantic validation (listed prefix; Core tokens have exactly three segments), which §3.6, §3.7.2 and the identity schema's new `allOf` rule enforce; a conforming parser MAY parse any syntactic token, a conforming validator MUST reject unlisted prefixes. One segment rule set, following the ABNF and schema: segments MAY end with a hyphen and contain consecutive hyphens (the §3.7 trailing and consecutive hyphen checks are retired), Core segments are no longer letters-only, and `_` is not allowed in usernames. One length limit: 256 characters for the whole token (was 128 in §3.7.1, §3.7.2 and §8.5; §8.5 also said 8 segments). §3.6 regex handles the `:NS` suffix and the 3-10 segment range; §3.7.2 strips the suffix before validation and requires 3 segments for `user`. The §3.2 personal example no longer uses the reserved word `private`. |
+| 2.0.0 (source alignment) | 2026-09-27 | New §3.4.1 separates syntax (the ABNF and the schema `pattern`: any lowercase first segment parses) from semantic validation (listed prefix; Core tokens have exactly three segments), which §3.6, §3.7.2 and the identity schema's new `allOf` rule enforce; a conforming parser MAY parse any syntactic token, a conforming validator MUST reject unlisted prefixes. One segment rule set, following the ABNF and schema: segments MAY end with a hyphen and contain consecutive hyphens (the §3.7 trailing and consecutive hyphen checks are retired), Core segments are no longer letters-only, and `_` is not allowed in usernames. One length limit: 256 characters for the whole token (was 128 in §3.7.1, §3.7.2 and §8.5; §8.5 also said 8 segments). §3.6 regex handles the `:NS` suffix and the 3-10 segment range; §3.7.2 strips the suffix before validation and requires 3 segments for `user`. The §3.2 personal example no longer uses the reserved word `private`. §3.5 EBNF rewritten in prefix-first form with the semantic rule; the paper's tier-first examples (`core.`, `org.`, `personal.`) are retired. |
 
 ---
 

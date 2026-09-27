@@ -1,5 +1,13 @@
 # VCP-Spec Wiki Log
 
+## [2026-09-27] update | Canon reconciliation sweep
+Files updated: systems/vep-specs.md, systems/capability-negotiation.md, systems/itsame-architecture.md, systems/itsame-layers-detail.md, domain/extension-model.md
+Changes:
+- MCP revision caveat added wherever the `initialize` mapping or Sampling integration is described (source: specs/core/mcp-bridge.md §1.2, veps/VEP-0005-stateless-mcp.md).
+- VEP-0001 to VEP-0003 relabeled Recorded pre-charter acceptance; VEP-0005 and VEP-0006 listed (source: veps/README.md).
+- VCP-X-Relational and VCP-X-Consensus shown as Draft (source: specs/extensions/README.md).
+- Retired bracket notation (`CSM1:PERSONA[..]`) replaced with a CSM-1 code and a situational hook (source: veps/VEP-0004-extended-vcpa-dimensions.md, VCP/A §6.4).
+
 ## [2026-05-23] lint-fix | Remove stale UNVERIFIED markers for VCP-X-Welfare
 Files fixed: domain/extension-model.md, systems/itsame-architecture.md
 Issues resolved:

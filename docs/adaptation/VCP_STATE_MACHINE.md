@@ -4,7 +4,7 @@
 status: Reference companion, status-classified
 normative-authority: Accepted specifications and schemas control
 protocol-version: Lineage document, see document body
-last-reviewed: 2026-08-13 status and authority classification
+last-reviewed: 2026-09-27 canonical identity token examples
 owner: VCP Spec maintainers
 evidence-boundary: Explanatory material, not implementation conformance
 -->
@@ -791,8 +791,8 @@ class AdaptationStateMachine:
         self,
         constitution_selector: Callable,
         constitution_composer: Callable,
-        safety_constitution: str = "creed://creed.space/safety.minimal@1.0.0",
-        default_constitution: str = "creed://creed.space/platform.default@1.0.0",
+        safety_constitution: str = "creed://creed.space/secure.safety.minimal@1.0.0",
+        default_constitution: str = "creed://creed.space/work.platform.baseline@1.0.0",
     ):
         self.constitution_selector = constitution_selector
         self.constitution_composer = constitution_composer
@@ -1104,8 +1104,8 @@ def select_constitutions(context: str) -> list[str]:
     if parsed.has_children():
         return ["creed://creed.space/family.safe.guide@1.2.0"]
     if parsed.is_professional():
-        return ["creed://creed.space/professional.standard@1.0.0"]
-    return ["creed://creed.space/platform.default@1.0.0"]
+        return ["creed://creed.space/work.professional.standard@1.0.0"]
+    return ["creed://creed.space/work.platform.baseline@1.0.0"]
 
 
 def compose_constitutions(candidates: list[str]) -> list[str]:

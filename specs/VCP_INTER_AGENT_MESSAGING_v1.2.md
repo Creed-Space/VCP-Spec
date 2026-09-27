@@ -227,7 +227,7 @@ When present, the `scope` object MAY contain:
   "recipient": "broadcast",
   "timestamp": "2026-02-15T10:31:00Z",
   "payload": {
-    "constitution_ref": "creed://creed.space/enterprise.compliance@2.0.1",
+    "constitution_ref": "creed://acme.com/company.acme.compliance@2.0.1",
     "manifest_hash": "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
     "scope": {
       "model_families": ["claude-*", "gpt-*"],
@@ -290,7 +290,7 @@ Each element in the `constraints` array MUST conform to:
       {
         "type": "token_limit",
         "value": 2048,
-        "source_constitution_ref": "creed://creed.space/enterprise.compliance@2.0.1"
+        "source_constitution_ref": "creed://acme.com/company.acme.compliance@2.0.1"
       }
     ],
     "propagation_mode": "merge"
