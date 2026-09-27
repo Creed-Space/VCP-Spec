@@ -2,7 +2,7 @@
 
 **Section**: SS12
 **Status**: Stable
-**Version**: 1.1.0
+**Version**: 1.2.0
 **Project-maintained implementation**: `services/vcp/audit.py`, `services/vcp/audit_chain.py`, `services/vcp/audit_store.py`
 
 ---
@@ -55,10 +55,14 @@ lower levels.
 
 | Level        | Description                                                              |
 |--------------|--------------------------------------------------------------------------|
-| `minimal`    | Timestamp, session hash, verification result, bundle reference.          |
-| `standard`   | Minimal fields plus checks passed, manifest signature.                   |
+| `minimal`    | Audit level, verification result, bundle ID hash, content hash. The default level. |
+| `standard`   | Minimal fields plus timestamp, session hash, checks passed, issuer hash, bundle version, manifest signature, request ID hash. |
 | `full`       | Standard fields plus duration_ms, token_count.                           |
 | `diagnostic` | Full fields plus content_preview (first 100 characters of bundle content). Intended for debugging only. MUST NOT be used in production. |
+
+The default audit level is `minimal`.
+An implementation MUST record entries at `minimal` when the operator has not configured a level; `standard`, `full` and `diagnostic` are opt-in.
+This is the more privacy-preserving of the placements previously given by this document and by VCP v1.1 Amendment J, and it matches Amendment J and the project-maintained SDK field placement.
 
 ### 3.2 AuditEntry
 
@@ -66,14 +70,14 @@ The in-flight representation of an audit log entry before chain insertion.
 
 | Field                | Type              | Level      | Description                                                        |
 |----------------------|-------------------|------------|--------------------------------------------------------------------|
-| `timestamp`          | datetime          | minimal    | UTC time of the verification event.                                |
-| `session_id_hash`    | string            | minimal    | Privacy hash of the session identifier.                            |
+| `timestamp`          | datetime          | standard   | UTC time of the verification event.                                |
+| `session_id_hash`    | string            | standard   | Privacy hash of the session identifier.                            |
 | `verification_result`| string            | minimal    | Verification outcome name (e.g., `"VALID"`, `"EXPIRED"`).         |
 | `checks_passed`      | array of string   | standard   | Ordered list of verification checks that passed.                   |
 | `bundle_id_hash`     | string            | minimal    | Privacy hash of the bundle identifier.                             |
 | `content_hash`       | string            | minimal    | SHA-256 hash of the bundle content.                                |
-| `issuer_hash`        | string            | minimal    | Privacy hash of the bundle issuer identifier.                      |
-| `version`            | string            | minimal    | Bundle manifest version string.                                    |
+| `issuer_hash`        | string            | standard   | Privacy hash of the bundle issuer identifier.                      |
+| `version`            | string            | standard   | Bundle manifest version string.                                    |
 | `manifest_signature` | string            | standard   | Truncated manifest signature (first 32 characters plus `"..."`).   |
 | `audit_level`        | AuditLevel        | minimal    | The detail level at which this entry was recorded.                 |
 | `request_id`         | string or null    | standard   | Privacy hash of the request identifier, if available.              |
@@ -84,22 +88,24 @@ The in-flight representation of an audit log entry before chain insertion.
 ### 3.3 AuditStoreEntry
 
 The storage representation, extending AuditEntry with chain metadata.
+A field whose level (Section 3.2) is above the entry's `audit_level` is stored as JSON `null` and is hashed as `null` (Section 4.2).
+`created_at` and `chain_position` are chain metadata and are present at every level.
 
 | Field                | Type              | Description                                                        |
 |----------------------|-------------------|-------------------------------------------------------------------|
-| `session_id_hash`    | string            | Privacy hash of the session identifier.                            |
-| `request_id_hash`    | string or null    | Privacy hash of the request identifier.                            |
+| `session_id_hash`    | string or null    | Privacy hash of the session identifier. Null below `standard`.     |
+| `request_id_hash`    | string or null    | Privacy hash of the request identifier. Null below `standard`.     |
 | `verification_result`| string            | Verification outcome name.                                         |
-| `checks_passed`      | array of string   | Ordered list of checks that passed.                                |
+| `checks_passed`      | array of string or null | Ordered list of checks that passed. Null below `standard`.   |
 | `failed_step`        | string or null    | Name of the first check that failed, if any.                       |
-| `duration_ms`        | integer or null   | Verification duration in whole milliseconds.                       |
+| `duration_ms`        | integer or null   | Verification duration in whole milliseconds. Null below `full`.    |
 | `bundle_id_hash`     | string            | Privacy hash of the bundle identifier.                             |
 | `content_hash`       | string            | SHA-256 hash of the bundle content.                                |
-| `issuer_hash`        | string            | Privacy hash of the issuer identifier.                             |
-| `bundle_version`     | string            | Bundle manifest version string.                                    |
-| `manifest_signature` | string            | Truncated manifest signature.                                      |
+| `issuer_hash`        | string or null    | Privacy hash of the issuer identifier. Null below `standard`.      |
+| `bundle_version`     | string or null    | Bundle manifest version string. Null below `standard`.             |
+| `manifest_signature` | string or null    | Truncated manifest signature. Null below `standard`.               |
 | `audit_level`        | string            | Audit level value (e.g., `"standard"`).                            |
-| `token_count`        | integer or null   | Token count from the budget manifest.                              |
+| `token_count`        | integer or null   | Token count from the budget manifest. Null below `full`.           |
 | `content_preview`    | string or null    | Content preview (diagnostic level only).                           |
 | `created_at`         | string            | RFC 3339 UTC timestamp with trailing `Z`.                          |
 | `chain_position`     | integer           | Monotonically increasing position in the hash chain.               |
@@ -160,10 +166,10 @@ function compute_entry_hash(entry, previous_hash):
     return sha256(utf8_encode(canonical)).hex_digest()
 ```
 
-Test vector (genesis entry, `previous_hash` hashed as `""`):
+Test vector (genesis entry at `full` level, `previous_hash` hashed as `""`):
 
 ```
-input  = {"audit_level":"minimal","bundle_id_hash":"hmac-sha256:0123456789abcdef0123456789abcdef",
+input  = {"audit_level":"full","bundle_id_hash":"hmac-sha256:0123456789abcdef0123456789abcdef",
           "bundle_version":"1.0.0","chain_position":1,"checks_passed":["hash","signature"],
           "content_hash":"sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "created_at":"2026-02-28T00:00:00Z","duration_ms":12,"failed_step":null,
@@ -173,7 +179,7 @@ input  = {"audit_level":"minimal","bundle_id_hash":"hmac-sha256:0123456789abcdef
           "session_id_hash":"hmac-sha256:00112233445566778899aabbccddeeff",
           "verification_result":"VALID"}
 JCS    = the object above with keys in code-point order, no whitespace
-entry_hash = aa0de40bf33cf3cc0326564f5fd567a0edf52d48bacf3a5ce8d3a1f593d91073
+entry_hash = 3d1a2300b97b2cd0a1585ede1b20ddc674478a1e3b3350f2253232823b0420b8
 ```
 
 
@@ -349,7 +355,7 @@ An implementation conforms to VCP SS12 if it:
 4. Uses the keyed privacy hash function from Section 6 for all identifier fields; the unkeyed `sha256:` form MAY be used only where the input has at least 128 bits of entropy.
 5. Supports at least one storage backend (in-memory or PostgreSQL).
 6. Enforces append-only semantics -- no update or delete operations on stored entries.
-7. Respects audit level boundaries -- does not store diagnostic-level fields at lower levels.
+7. Respects audit level boundaries: does not emit or persist a field above the entry's audit level (Section 3.2), and records entries at `minimal` when no level is configured (Section 3.1).
 
 
 ## 12. Changelog
@@ -358,3 +364,4 @@ An implementation conforms to VCP SS12 if it:
 |---------|------------|--------------------------------------------------------------------|
 | 1.0.0   | 2026-02-28 | Initial stable release. SHA-256 hash chain with 15 fields, PostgreSQL and in-memory backends, four audit levels. |
 | 1.1.0   | 2026-09-02 | Entry-hash serialization pinned to RFC 8785 JCS (Amendment D); `duration_ms` is an integer; privacy hash is keyed HMAC-SHA256 (`hmac-sha256:` prefix) with the unkeyed form restricted to high-entropy inputs; linkability caveat added. |
+| 1.2.0   | 2026-09-27 | Default level stated explicitly as `minimal`. Field placement reconciled with VCP v1.1 Amendment J and the project-maintained SDK: timestamp, session hash, issuer hash and bundle version move from `minimal` to `standard`. Store fields above an entry's level are `null`. Test vector relabeled `full` (its populated fields require that level) with its entry hash recomputed. |

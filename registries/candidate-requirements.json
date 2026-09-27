@@ -86,9 +86,17 @@
       },
       {
         "keywords": [
+          "MUST"
+        ],
+        "line": 64,
+        "line_sha256": "693458e20e5779fd2b699dbfdf7aa161c24e1359dc18f0b1ad9bbe2c30244074",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
           "MAY"
         ],
-        "line": 237,
+        "line": 243,
         "line_sha256": "3572ae89a42c5e622510bc2833bf2f561cc6cb3c3c4cec6be8a615ccd0cccb19",
         "path": "specs/core/audit.md"
       },
@@ -96,7 +104,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 239,
+        "line": 245,
         "line_sha256": "fcd9fa228bacc8f1907a5c6250d8c8bd7e7d98bf7d4db2ecfab537b5587cb9c9",
         "path": "specs/core/audit.md"
       },
@@ -104,7 +112,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 241,
+        "line": 247,
         "line_sha256": "d2f906602b0805712911161bbd403c054cdcc3492381dac2c53e63ac57aea608",
         "path": "specs/core/audit.md"
       },
@@ -112,7 +120,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 325,
+        "line": 331,
         "line_sha256": "795a9014519d1d2a4910f8b941cd5e7f60870559653b31a8979a0dd11d445002",
         "path": "specs/core/audit.md"
       },
@@ -120,7 +128,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 328,
+        "line": 334,
         "line_sha256": "5f4b6d05dcc0b02ea130ab53b02c61b460d57b96d78e0d9a0e5a0d2100341480",
         "path": "specs/core/audit.md"
       },
@@ -128,7 +136,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 335,
+        "line": 341,
         "line_sha256": "6602501015a25011ea59678b486b24d4bbe9deee62ca6eb173792872711a9a97",
         "path": "specs/core/audit.md"
       },
@@ -136,7 +144,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 338,
+        "line": 344,
         "line_sha256": "87a3fd262bddf935fc61ac7b02b0bee685f1f62abd97c84c484af20519c6a6e3",
         "path": "specs/core/audit.md"
       },
@@ -144,7 +152,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 349,
+        "line": 355,
         "line_sha256": "343b8ac472ad095e54f99cf52c6d2d1993dc33a3796ff24957e64e8d9a9f7890",
         "path": "specs/core/audit.md"
       },
@@ -3370,7 +3378,7 @@
     },
     {
       "path": "specs/core/audit.md",
-      "sha256": "03df7596977f5fee075bd5a44129c0bc37ec1a123bc704e29812a24d00d8ce19"
+      "sha256": "15f2b75b2f9e4a309e554c03073d13149727215c95a6288a2bd4e36f420d9885"
     },
     {
       "path": "specs/core/capability-negotiation.md",

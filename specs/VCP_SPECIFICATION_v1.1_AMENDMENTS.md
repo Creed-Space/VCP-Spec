@@ -734,12 +734,17 @@ Tiered audit logging with privacy controls.
 
 ### Audit Levels
 
-| Level | Contents | Use Case |
-|-------|----------|----------|
-| `minimal` | Bundle ID, hash, verification result | Production (default) |
-| `standard` | + timestamps, issuer, version | Compliance |
-| `full` | + complete manifest (no content) | Debug |
-| `diagnostic` | + content hash + first 100 chars | Incident response |
+The default level is `minimal`.
+Implementations MUST record at `minimal` when no level is configured; higher levels are opt-in.
+Each level includes every field of the levels above it in this table.
+The field names and placement below are those of the Core audit specification ([`specs/core/audit.md`](./core/audit.md) §3.1-3.2), reconciled on 2026-09-27.
+
+| Level | Adds these fields | Use Case |
+|-------|-------------------|----------|
+| `minimal` | `audit_level`, `verification_result`, `bundle_id_hash`, `content_hash` | Production (default) |
+| `standard` | + `timestamp`, `session_id_hash`, `checks_passed`, `issuer_hash`, `version`, `manifest_signature`, `request_id` (hashed) | Compliance |
+| `full` | + `duration_ms`, `token_count` (manifest metadata, never content) | Debug |
+| `diagnostic` | + `content_preview` (first 100 characters of content); MUST NOT be used in production | Incident response |
 
 ### Privacy-Preserving Audit Entry
 
@@ -749,7 +754,8 @@ Tiered audit logging with privacy controls.
   "audit_level": "standard",
 
   "timestamp": "2026-01-10T12:00:00.123Z",
-  "session_id": "sha256(actual_session_id):abc123...",
+  "session_id_hash": "hmac-sha256(K_audit, session_id):abc123...",
+  "manifest_signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
 
   "verification": {
     "result": "VALID",
@@ -757,9 +763,9 @@ Tiered audit logging with privacy controls.
   },
 
   "bundle_ref": {
-    "id_hash": "sha256(bundle_id):def456...",
+    "id_hash": "hmac-sha256(K_audit, bundle_id):def456...",
     "content_hash": "sha256:7f83b165...",
-    "issuer_hash": "sha256(issuer_id):ghi789...",
+    "issuer_hash": "hmac-sha256(K_audit, issuer_id):ghi789...",
     "version": "1.2.0"
   }
 }
@@ -1029,3 +1035,4 @@ class AlgorithmPolicy:
 |---------|------|---------|
 | 1.0.0 | 2026-01-11 | Initial specification |
 | 1.1.0 | 2026-01-11 | Security amendments (A-N) based on Junto critique |
+| 1.1.0 (source alignment) | 2026-09-27 | §J audit levels reconciled with `specs/core/audit.md` 1.2.0: default `minimal` stated as a requirement, per-level field lists made explicit, `diagnostic` no longer lists the content hash (present from `minimal`), example uses `session_id_hash`, keyed privacy hashes and `manifest_signature` |

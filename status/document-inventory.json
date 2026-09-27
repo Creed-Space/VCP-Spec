@@ -101,7 +101,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "e61976c8535d38960fadfdef5c53e6bffa89a3da0cdc0882955a187f8d8869a5",
+      "sha256": "7209cdc42af59eb2716f8138e33c6a3650e172c0e900d732bc1801c20a3b7d60",
       "status": "active-source-candidate"
     },
     {
@@ -751,7 +751,7 @@
       "publication_class": "historical",
       "replacement": "specs/VCP_SPECIFICATION_v3.1.md",
       "review_date": "2026-08-15",
-      "sha256": "dbb1ffe33eb630325e5fd0b7df770fdfda6c2307520143917ff15f4dfe984096",
+      "sha256": "58a4116b78a5b35774f90490129ee95217b3f6d321827823ab858c6931b16c71",
       "status": "superseded-source-generation"
     },
     {
@@ -790,7 +790,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "03df7596977f5fee075bd5a44129c0bc37ec1a123bc704e29812a24d00d8ce19",
+      "sha256": "15f2b75b2f9e4a309e554c03073d13149727215c95a6288a2bd4e36f420d9885",
       "status": "active-source-candidate"
     },
     {
