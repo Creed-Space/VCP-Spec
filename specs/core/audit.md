@@ -233,19 +233,56 @@ function privacy_hash(value):
     return "hmac-sha256:" + full_hash[0:32]
 ```
 
-`K_audit` is a deployment secret dedicated to audit pseudonymization, managed
-and rotated under the key lifecycle rules of VCP v1.1 Amendment F. This
-produces a 128-bit (32 hex character) truncated tag prefixed with
-`"hmac-sha256:"`. The truncation provides sufficient collision resistance for
-audit purposes while reducing storage requirements; the prefix names the
-algorithm, supporting migration.
+### 6.1 Output format
+
+The output is the ASCII string `hmac-sha256:` followed by the first 32
+lowercase hexadecimal characters of the HMAC-SHA256 tag (RFC 2104 with
+SHA-256), that is, the first 16 bytes of the tag, 44 characters in all.
+The message is the UTF-8 encoding of the identifier exactly as supplied,
+with no trimming, case folding or Unicode normalization. The 128-bit
+truncation provides sufficient collision resistance for audit purposes
+while reducing storage requirements; the prefix names the algorithm,
+supporting migration.
+
+### 6.2 Key source
+
+`K_audit` is a key dedicated to audit pseudonymization. It is a byte string
+of at least 32 bytes and MUST NOT be reused for signing, encryption or any
+other purpose. It is obtained as follows:
+
+1. **Operator secret.** When the operator configures a key, the
+   implementation uses those bytes as `K_audit`. An implementation that
+   accepts the key as text MUST document how the text is decoded to bytes
+   and MUST reject a key shorter than 32 bytes after decoding. Operator keys
+   are managed and rotated under the key lifecycle rules of VCP v1.1
+   Amendment F.
+2. **Per-process random key.** When no key is configured, the implementation
+   MUST generate 32 bytes from a cryptographically secure random source when
+   the audit component starts, and use them as `K_audit` for the lifetime of
+   that process. This key MUST NOT be logged, exported or persisted.
+
+With a per-process key, pseudonyms are stable only within one process
+lifetime: entries written by a restarted process cannot be linked to earlier
+ones, and erasure by identifier (for example a purge by session) only finds
+entries written by the same process. Chain verification is unaffected,
+because it recomputes entry hashes from the stored pseudonyms, never from the
+original identifiers. Deployments that need pseudonyms to stay stable across
+restarts or processes MUST configure an operator secret.
+
+Test vector: with `K_audit` = the 32 bytes `00 01 02 ... 1f` (hexadecimal),
+`privacy_hash("session-123")` is `hmac-sha256:155ac01a3ea3ea086d4b81a0927566d1`
+and `privacy_hash("bundle:family.safe.guide@1.2.0")` is
+`hmac-sha256:f5ac6afff147efb0a91ea7e2476025fd`.
+
+### 6.3 Legacy unkeyed form
 
 The unkeyed legacy form `"sha256:" + sha256(value)[0:32]` MAY be used only
 where the input carries at least 128 bits of entropy (for example a random
 UUID request ID) and MUST be recognized by verifiers of pre-existing chains.
 Session IDs, bundle IDs, and issuer IDs are low-entropy or enumerable, so an
 unkeyed hash over them is a dictionary-reversible pseudonym and MUST NOT be
-used for new entries.
+used for new entries. A salted SHA-256 (`sha256(salt || value)`) is not an
+HMAC and MUST NOT be emitted with the `hmac-sha256:` prefix.
 
 
 ## 7. Storage Backends
@@ -364,4 +401,4 @@ An implementation conforms to VCP SS12 if it:
 |---------|------------|--------------------------------------------------------------------|
 | 1.0.0   | 2026-02-28 | Initial stable release. SHA-256 hash chain with 15 fields, PostgreSQL and in-memory backends, four audit levels. |
 | 1.1.0   | 2026-09-02 | Entry-hash serialization pinned to RFC 8785 JCS (Amendment D); `duration_ms` is an integer; privacy hash is keyed HMAC-SHA256 (`hmac-sha256:` prefix) with the unkeyed form restricted to high-entropy inputs; linkability caveat added. |
-| 1.2.0   | 2026-09-27 | Default level stated explicitly as `minimal`. Field placement reconciled with VCP v1.1 Amendment J and the project-maintained SDK: timestamp, session hash, issuer hash and bundle version move from `minimal` to `standard`. Store fields above an entry's level are `null`. Test vector relabeled `full` (its populated fields require that level) with its entry hash recomputed. |
+| 1.2.0   | 2026-09-27 | Default level stated explicitly as `minimal`. Field placement reconciled with VCP v1.1 Amendment J and the project-maintained SDK: timestamp, session hash, issuer hash and bundle version move from `minimal` to `standard`. Store fields above an entry's level are `null`. Test vector relabeled `full` (its populated fields require that level) with its entry hash recomputed. Privacy hash fully specified (§6.1 output format; §6.2 key source: operator secret of at least 32 bytes, otherwise a per-process random 32-byte key; test vectors). |

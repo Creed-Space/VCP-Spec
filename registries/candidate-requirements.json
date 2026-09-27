@@ -94,9 +94,57 @@
       },
       {
         "keywords": [
+          "MUST NOT"
+        ],
+        "line": 250,
+        "line_sha256": "652d84a6b5a97962ee21db099dd0ecfc35b7dd654cfe9e291df1543cf45ad7f0",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 255,
+        "line_sha256": "ea052cb7d6a3954da3ecc2d122bb4b4a555a21cc30463e477d4011c07e924f74",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 256,
+        "line_sha256": "34829529b59ef396a3865ebd0b48963c69557019f6e2b00d3faaa359f523e1b8",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 260,
+        "line_sha256": "129a865de882b8a9f04f95cbee326f9553e7cc61f9b097c2a1cae4c338c468a6",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 262,
+        "line_sha256": "cfab4431cc2f5eaa406790c2d5aabd471ee2d8d8f50e434fd1d12cb2833fae44",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST"
+        ],
+        "line": 270,
+        "line_sha256": "78d1da98cd7149a1b88505fe52400b662ba5dc9068d2f7550da69c304759080b",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
           "MAY"
         ],
-        "line": 243,
+        "line": 279,
         "line_sha256": "3572ae89a42c5e622510bc2833bf2f561cc6cb3c3c4cec6be8a615ccd0cccb19",
         "path": "specs/core/audit.md"
       },
@@ -104,7 +152,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 245,
+        "line": 281,
         "line_sha256": "fcd9fa228bacc8f1907a5c6250d8c8bd7e7d98bf7d4db2ecfab537b5587cb9c9",
         "path": "specs/core/audit.md"
       },
@@ -112,15 +160,23 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 247,
+        "line": 283,
         "line_sha256": "d2f906602b0805712911161bbd403c054cdcc3492381dac2c53e63ac57aea608",
+        "path": "specs/core/audit.md"
+      },
+      {
+        "keywords": [
+          "MUST NOT"
+        ],
+        "line": 285,
+        "line_sha256": "e5708d6f9dca70bfdad2c6e67f531dbe378dfd6c7f00e06d66f69364c47dc765",
         "path": "specs/core/audit.md"
       },
       {
         "keywords": [
           "SHOULD"
         ],
-        "line": 331,
+        "line": 368,
         "line_sha256": "795a9014519d1d2a4910f8b941cd5e7f60870559653b31a8979a0dd11d445002",
         "path": "specs/core/audit.md"
       },
@@ -128,7 +184,7 @@
         "keywords": [
           "MUST"
         ],
-        "line": 334,
+        "line": 371,
         "line_sha256": "5f4b6d05dcc0b02ea130ab53b02c61b460d57b96d78e0d9a0e5a0d2100341480",
         "path": "specs/core/audit.md"
       },
@@ -136,7 +192,7 @@
         "keywords": [
           "MUST NOT"
         ],
-        "line": 341,
+        "line": 378,
         "line_sha256": "6602501015a25011ea59678b486b24d4bbe9deee62ca6eb173792872711a9a97",
         "path": "specs/core/audit.md"
       },
@@ -144,7 +200,7 @@
         "keywords": [
           "SHOULD"
         ],
-        "line": 344,
+        "line": 381,
         "line_sha256": "87a3fd262bddf935fc61ac7b02b0bee685f1f62abd97c84c484af20519c6a6e3",
         "path": "specs/core/audit.md"
       },
@@ -152,7 +208,7 @@
         "keywords": [
           "MAY"
         ],
-        "line": 355,
+        "line": 392,
         "line_sha256": "343b8ac472ad095e54f99cf52c6d2d1993dc33a3796ff24957e64e8d9a9f7890",
         "path": "specs/core/audit.md"
       },
@@ -3378,7 +3434,7 @@
     },
     {
       "path": "specs/core/audit.md",
-      "sha256": "15f2b75b2f9e4a309e554c03073d13149727215c95a6288a2bd4e36f420d9885"
+      "sha256": "21ccad0a3efbefdbd876f568305fe1f570fc04fd439af9962a494309b373cd06"
     },
     {
       "path": "specs/core/capability-negotiation.md",

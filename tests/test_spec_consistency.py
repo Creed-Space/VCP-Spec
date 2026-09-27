@@ -359,6 +359,22 @@ class AuditLevelTests(unittest.TestCase):
             with self.subTest(level=level):
                 self.assertEqual(fields, expected)
 
+    def test_privacy_hash_vectors(self) -> None:
+        import hmac
+
+        key = bytes(range(32))
+        vectors = re.findall(
+            r'`privacy_hash\("([^"]+)"\)` is\s+`(hmac-sha256:[0-9a-f]{32})`', self.text
+        )
+        self.assertEqual(len(vectors), 2)
+        for value, expected in vectors:
+            digest = hmac.new(key, value.encode("utf-8"), hashlib.sha256).hexdigest()
+            with self.subTest(value=value):
+                self.assertEqual(f"hmac-sha256:{digest[:32]}", expected)
+                self.assertEqual(len(expected), 44)
+        self.assertIn("**Per-process random key.**", self.text)
+        self.assertIn("**Operator secret.**", self.text)
+
     def test_hash_vector_reproduces_and_respects_its_level(self) -> None:
         match = re.search(
             r"^input  = (\{.*?\})\nJCS .*?\nentry_hash = ([0-9a-f]{64})$",
