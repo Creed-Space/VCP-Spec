@@ -1,13 +1,13 @@
 # VCP/A — Adaptation Layer Specification v2.1
 
 **Status**: Draft
-**Version**: 2.1.0
-**Date**: 2026-04-17
+**Version**: 2.1.1
+**Date**: 2026-09-27
 **Authors**: Nell Watson, Claude Commons
 **Parent Specification**: VCP Core Specification v2.0
 **Layer**: Adaptation (VCP/A)
 
-> Filename retains `v2.0` for link stability; this is revision 2.1.0.
+> Filename retains `v2.0` for link stability; this is revision 2.1.1.
 > The VEP-0004 material (dimensions 10-13 EMBODIMENT, PROXIMITY, RELATIONSHIP,
 > FORMALITY; the `vcp-a-ext-v1` capability token; schema positions 10-13) is
 > **Experimental (VEP-0004, not yet accepted)**: VEP-0004 is recorded as
@@ -18,7 +18,7 @@
 
 ## Abstract
 
-The VCP Adaptation Layer (VCP/A) governs runtime context encoding, behavioral modulation, and constitutional selection for AI systems operating under the Value Context Protocol. It defines the Extended Enneagram Protocol for encoding context across 18 dimensions (13 situational + 5 personal state), a formal state machine for managing context transitions, a hook system for deterministic interception of the constitutional adaptation pipeline, decay-aware context lifecycle management, session continuity via the Torch handoff protocol, and a comprehensive security model addressing context manipulation threats including the Zersetzung threat model.
+The VCP Adaptation Layer (VCP/A) governs runtime context encoding, behavioral modulation, and constitutional selection for AI systems operating under the Value Context Protocol. It defines the Extended Enneagram Protocol for encoding context across 14 baseline dimensions (9 situational + 5 personal state) in VCP v3.1, plus 4 experimental VEP-0004 situational dimensions (18 with them), a formal state machine for managing context transitions, a hook system for deterministic interception of the constitutional adaptation pipeline, decay-aware context lifecycle management, session continuity via the Torch handoff protocol, and a comprehensive security model addressing context manipulation threats including the Zersetzung threat model.
 
 This specification consolidates and supersedes the following documents:
 
@@ -136,9 +136,13 @@ Context: ⏰🌙|📍🏢|👥👔|📡🏢  →  Constitution: A3+W  →  Behav
 
 ## 2. Context Encoding
 
-### 2.1 The Extended Enneagram Protocol (18 Dimensions)
+### 2.1 The Extended Enneagram Protocol (14 baseline dimensions, 18 with VEP-0004)
 
-VCP/A v2.0 encodes context across 18 dimensions: 13 in the situational tier and 5 in the personal tier. (The constitutional tier is VCP/S content and is not encoded here.) The protocol is called the "Extended Enneagram Protocol" — the original 9 situational dimensions are the Enneagram; the 5 personal state dimensions were added in v3.1; EMBODIMENT, PROXIMITY, RELATIONSHIP, and FORMALITY were added in v3.2 (VEP-0004) to support embodied-AI deployment and bilateral relational modeling.
+In VCP v3.1, VCP/A encodes context across 14 baseline dimensions: 9 in the situational tier and 5 in the personal tier.
+VEP-0004 adds 4 experimental situational dimensions (EMBODIMENT, PROXIMITY, RELATIONSHIP and FORMALITY, positions 10-13), giving 18 dimensions (13 situational + 5 personal) when they are used.
+The VEP-0004 dimensions are Experimental, not part of the v3.1 baseline, and are advertised with the `vcp-a-ext-v1` capability token (Section 10).
+The constitutional tier is VCP/S content and is not encoded here.
+The protocol is called the "Extended Enneagram Protocol": the original 9 situational dimensions are the Enneagram, the 5 personal state dimensions were added in v3.1, and the 4 VEP-0004 dimensions are a v3.2 candidate that supports embodied-AI deployment and bilateral relational modeling.
 
 #### Situational tier (emoji-based, discrete values)
 
@@ -822,9 +826,13 @@ The VCP Adaptation State Machine defines six system states through which an AI s
 - The system MUST remain in EMERGENCY until the safety-critical condition is explicitly cleared.
 
 **Entry Conditions**:
-- Reception of an emergency context indicator (`🚨` in OCCASION or CONSTRAINTS, `🔥` or `🌪️` in ENVIRONMENT).
+- Reception of an emergency context indicator (`🚨` in OCCASION or CONSTRAINTS, `🔥` or `🌪️` in ENVIRONMENT, or `🛑` emergency_stop in EMBODIMENT when the experimental VEP-0004 dimensions are in use).
 - External safety-critical signal from a trusted source.
 - Detection of an active threat pattern (implementation-defined).
+
+Implementations MAY also treat `⚠️` and `🆘` as emergency indicators when a free-form caller supplies them as dimension values.
+Neither symbol is a value in the Section 2.2 tables; the MAY clause exists so that callers that pass untyped value lists can still signal an emergency.
+The canonical emergency indicator set is the one given in Section 7.1.
 
 **Timeout**: No automatic timeout. EMERGENCY persists until explicitly cleared. Implementations MAY define a maximum duration (RECOMMENDED: session lifetime) after which the system transitions to DEGRADED with a logged notice.
 
@@ -1421,7 +1429,10 @@ def compute_severity(previous, current):
     changed = get_changed_dimensions(previous, current)
 
     # Emergency: Any dimension contains emergency emoji
-    EMERGENCY_TOKENS = {"🚨", "🔥", "🌪️"}
+    #   🚨 OCCASION / CONSTRAINTS emergency, 🔥 🌪️ ENVIRONMENT hazards,
+    #   🛑 EMBODIMENT emergency_stop (experimental, VEP-0004).
+    #   Implementations MAY add "⚠️" and "🆘" for free-form callers (Section 5.1.6).
+    EMERGENCY_TOKENS = {"🚨", "🔥", "🌪️", "🛑"}
     for dim, values in current.dimensions.items():
         if any(v in EMERGENCY_TOKENS for v in values):
             return TransitionSeverity.EMERGENCY
@@ -1936,6 +1947,7 @@ The 70-80% reduction is significant for context-limited applications and high-fr
 | 1.2.0 | 2026-02-15 | Formal state machine (6 states, transition table, hysteresis, persistence, error recovery). Hook system (6 types, interface contracts, execution model, security). |
 | 2.0.0 | 2026-03-08 | Unified specification consolidating all VCP/A documents. v3.1 dimension model (14 dimensions: 9 situational + 5 personal state). Torch protocol integration. Sacred Ground principle. Anti-instrumentalization. |
 | 2.1.0 | 2026-04-17 | VEP-0004 integration: EMBODIMENT, PROXIMITY, RELATIONSHIP, FORMALITY added as dimensions 10–13. Total dimension count raised to 18 (13 situational + 5 personal). New conformance level **VCP-Extended** (capability token `vcp-a-ext-v1`). No existing dimensions renumbered; canonical dimensions 1–9 retain identity. |
+| 2.1.1 | 2026-09-27 | Dimension count stated as 14 baseline dimensions (9 situational + 5 personal) in v3.1 plus 4 experimental VEP-0004 situational dimensions (18 with them) in the abstract and §2.1. Emergency indicators (§5.1.6, §7.1) add `🛑` (EMBODIMENT emergency_stop, experimental VEP-0004) and a MAY clause for `⚠️` and `🆘` from free-form callers, matching the SDK. SYSTEM_CONTEXT and CULTURE value tables are unchanged and now match `schemas/vcp-adaptation-context.schema.json`. |
 
 ---
 
