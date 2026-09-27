@@ -188,6 +188,32 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "example",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-identity-token.invalid-core-four-segments.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "daab837443815a40c0b361fdff18d0c2010fe783ed4c6ca9c3922c34d639cf19",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/invalid/vcp-identity-token.invalid-unknown-prefix.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "d85047c31f1f682297028e4ed5ce80a5120d5eac0e0627cdb158ee94adef21d4",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/examples/invalid/vcp-manifest-v1.invalid-composition-layer.json",
       "publication_class": "illustrative",
       "replacement": null,
@@ -409,6 +435,19 @@
       "effective_version": "embedded-or-unversioned",
       "kind": "example",
       "owner": "VCP-Spec maintainers",
+      "path": "schemas/examples/vcp-identity-token.valid.json",
+      "publication_class": "illustrative",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "0a1d1b7330059db6e8e0391a2910dc7329de793994ee0cca093de41b48a084b9",
+      "status": "illustrative"
+    },
+    {
+      "authority": "Example only; controlling specification and schema take precedence",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "example",
+      "owner": "VCP-Spec maintainers",
       "path": "schemas/examples/vcp-manifest-v1.valid-multisig.json",
       "publication_class": "illustrative",
       "replacement": null,
@@ -517,7 +556,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "44bbf8bc4e6d09cdc10846e59ca366992455974e80add1a32f3cd845e8b3e183",
+      "sha256": "ecd73867c5de73aee7bc65bf23d7f7cd2514614e0b51bc46c5fef4b5ac9e4a47",
       "status": "source-schema-candidate"
     },
     {
@@ -608,7 +647,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "5b7f5e25b9de305c5a913bd9157a729ef235883611743479a4feea2186f105dc",
+      "sha256": "1d72bcb89f1b27f5a70f16f29f411f467aafa135f1ed10658719503bab81de26",
       "status": "active-source-candidate"
     },
     {
@@ -660,7 +699,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "28ced897f986e067017e97556f9b7ff4e093e4f9648906a6b2afb766b7bbb50f",
+      "sha256": "06c5c4b5bb96faac89a86891e5372cd3cb799749b3e9646c5dc39897c22d3fc2",
       "status": "active-source-candidate"
     },
     {

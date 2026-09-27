@@ -1,0 +1,14 @@
+{
+  "token": "company.acme-.legal--ops.compliance@^2.0.0:SEC",
+  "canonical": "company.acme-.legal--ops.compliance@^2.0.0:SEC",
+  "segments": ["company", "acme-", "legal--ops", "compliance"],
+  "depth": 4,
+  "domain": "company",
+  "approach": "legal--ops",
+  "role": "compliance",
+  "path": ["acme-"],
+  "namespace_type": "org",
+  "namespace": "company.acme-",
+  "version": "2.0.0",
+  "version_constraint": "compatible"
+}

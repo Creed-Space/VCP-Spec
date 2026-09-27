@@ -228,6 +228,72 @@ class IdentityPrefixTests(unittest.TestCase):
                 self.assertIn(token.split(".", 1)[0], prefixes)
 
 
+class IdentityRuleSetTests(unittest.TestCase):
+    """VCP/I §3.4.1: one segment rule, one length limit, syntax vs semantics."""
+
+    SAMPLES = (
+        "family.safe.guide",
+        "family.safe.guide@1.2.0",
+        "family.safe-.guide",
+        "creative.growth.muse",
+        "family.safe.guide.extra",
+        "family.safe",
+        "company.acme--x.legal.compliance:SEC",
+        "company.acme.legal@^2.0.0",
+        "religion.buddhist.meditation",
+        "user.alice.personal",
+        "user.alice",
+        "user.al_ice.personal",
+        "education.safe.guide",
+        "org.example.dept.team.policy",
+        "personal.alice.notes",
+        "core.ethics.consent",
+        "Family.safe.guide",
+        "company.a.b.c.d.e.f.g.h.i",
+        "company.a.b.c.d.e.f.g.h.i.j",
+    )
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.text = read(IDENTITY)
+        schema = load_json("schemas/vcp-identity-token.schema.json")
+        cls.token_schema = schema["properties"]["token"]
+        source = re.search(r'UVC_TOKEN_PATTERN = r"""(.*?)"""', cls.text, re.DOTALL)
+        cls.spec_regex = re.compile(source.group(1), re.VERBOSE)
+
+    def schema_accepts(self, token: str) -> bool:
+        schema = self.token_schema
+        return (
+            len(token) <= schema["maxLength"]
+            and re.fullmatch(schema["pattern"], token) is not None
+            and all(re.fullmatch(rule["pattern"], token) for rule in schema["allOf"])
+        )
+
+    def test_spec_regex_and_schema_agree(self) -> None:
+        for token in self.SAMPLES:
+            with self.subTest(token=token):
+                self.assertEqual(
+                    self.spec_regex.fullmatch(token) is not None,
+                    self.schema_accepts(token),
+                )
+
+    def test_syntax_pattern_accepts_unknown_prefixes(self) -> None:
+        for token in ("education.safe.guide", "org.example.dept.team.policy"):
+            with self.subTest(token=token):
+                self.assertIsNotNone(re.fullmatch(self.token_schema["pattern"], token))
+                self.assertFalse(self.schema_accepts(token))
+
+    def test_single_length_limit_and_hyphen_rule(self) -> None:
+        self.assertEqual(self.token_schema["maxLength"], 256)
+        self.assertIn("'max_total_length': 256,", self.text)
+        self.assertIn("if len(token) > 256:", self.text)
+        self.assertIn("1. Hard limit of 256 characters total", self.text)
+        self.assertIn("2. Maximum 10 segments", self.text)
+        self.assertNotIn("cannot end with hyphen", self.text)
+        self.assertNotIn("'no_trailing_hyphen': True", self.text)
+        self.assertNotIn("1-32 lowercase alpha", self.text)
+
+
 class SemanticsNotationTests(unittest.TestCase):
     def test_retired_bracket_notation_is_absent(self) -> None:
         # The changelog may name the retired notation; the body must not use it.

@@ -733,9 +733,9 @@ Examples:
 
 | Component | Description | Constraints |
 |-----------|-------------|-------------|
-| `domain` | Value domain (family, work, secure) | 1-32 lowercase alpha |
-| `approach` | Approach within domain | 1-32 lowercase alpha |
-| `role` | Specific role/function | 1-32 lowercase alpha |
+| `domain` | Value domain: one of the five Core prefixes (§3.2) | 1-32 characters: a lowercase letter, then lowercase letters, digits or hyphens (§3.4) |
+| `approach` | Approach within domain | 1-32 characters: a lowercase letter, then lowercase letters, digits or hyphens (§3.4) |
+| `role` | Specific role/function | 1-32 characters: a lowercase letter, then lowercase letters, digits or hyphens (§3.4) |
 
 #### 3.1.2 Hierarchical Token (Non-Core Namespaces)
 
@@ -752,7 +752,7 @@ Examples:
 | Component | Description | Constraints |
 |-----------|-------------|-------------|
 | `namespace` | Governance tier (company, religion, user) | See Section 3.2 |
-| `segment` | Path within namespace | 1-32 lowercase alphanumeric + hyphen |
+| `segment` | Path within namespace | 1-32 characters: a lowercase letter, then lowercase letters, digits or hyphens (§3.4) |
 
 Semantic interpretation for variable-depth tokens (backward compatible):
 
@@ -782,7 +782,7 @@ Examples:
 | `religion.<tradition>` | Religious | `religion.buddhist.mindfulness` |
 | `culture.<region>` | Cultural | `culture.japanese.formal` |
 | `community.<name>` | Community | `community.gaming.esports` |
-| `user.<username>` | Personal | `user.alice.private` |
+| `user.<username>` | Personal | `user.alice.personal` |
 
 ### 3.3 Versioned Tokens
 
@@ -853,6 +853,20 @@ DIGIT             = %x30-39                    ; 0-9
 ALPHA             = %x41-5A / %x61-7A          ; A-Z / a-z
 ```
 
+#### 3.4.1 Syntax and semantic validation
+
+The ABNF above, and the `token` pattern of `schemas/vcp-identity-token.schema.json`, define syntax only: any token whose first segment is a lowercase segment parses.
+Semantic validation adds two rules.
+The first segment MUST be one of the prefixes in Sections 3.2 and 4.2, and a token with a Core prefix MUST have exactly three segments (Section 3.1.1).
+The validation regex (Section 3.6), the reference validator (Section 3.7.2) and the identity schema's semantic rule (`properties.token.allOf`) all apply them.
+A conforming parser MAY accept any syntactically valid token, for example to relay, log or display it.
+A conforming validator MUST reject a token with an unlisted prefix or a Core token of any other length, and a registry MUST NOT register one.
+
+One rule set applies to every segment: 1 to 32 characters, a lowercase letter first, then lowercase letters, digits or hyphens.
+A segment MAY end with a hyphen and MAY contain consecutive hyphens, as the ABNF allows; the underscore is not permitted.
+A complete token, including any version and namespace suffix, is at most 256 characters (Sections 3.7.1 and 8.5, and the schema's `maxLength`).
+Reserved words (Section 3.7.1) remain a validator and registry rule; the schema does not encode them.
+
 ### 3.5 Formal Grammar (EBNF)
 
 For cross-reference with the academic paper specification.
@@ -879,7 +893,7 @@ digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
    - Minimum 3 segments (tier.domain.category)
    - Maximum 10 segments
    - Each segment starts with lowercase letter
-   - Hyphens allowed, not at start/end of segment
+   - Hyphens allowed anywhere except the first character
 *)
 
 (* Examples:
@@ -896,30 +910,21 @@ personal.user-12345.custom-rules
 UVC_TOKEN_PATTERN = r"""
     ^
     (?:
-        # Core namespace (simple token)
+        # Core namespace: exactly 3 segments
         (?:family|work|secure|creative|reality)
-        \.
-        [a-z]{1,32}
-        \.
-        [a-z]{1,32}
+        (?:\.[a-z][a-z0-9-]{0,31}){2}
     |
-        # Organizational namespace
+        # Organizational namespace: 3-10 segments
         (?:company|school|ngo)
-        \.
-        [a-z0-9-]{1,32}
-        (?:\.[a-z0-9-]{1,32})+
+        (?:\.[a-z][a-z0-9-]{0,31}){2,9}
     |
-        # Community namespace
+        # Community namespace: 3-10 segments
         (?:religion|culture|community)
-        \.
-        [a-z0-9-]{1,32}
-        (?:\.[a-z0-9-]{1,32})+
+        (?:\.[a-z][a-z0-9-]{0,31}){2,9}
     |
-        # Personal namespace
+        # Personal namespace: 3-10 segments
         user
-        \.
-        [a-z0-9_-]{1,32}
-        (?:\.[a-z0-9-]{1,32})*
+        (?:\.[a-z][a-z0-9-]{0,31}){2,9}
     )
     # Optional version
     (?:
@@ -938,6 +943,8 @@ UVC_TOKEN_PATTERN = r"""
             canary
         )
     )?
+    # Optional namespace suffix
+    (?::[A-Z][A-Z0-9]{0,31})?
     $
 """
 ```
@@ -952,22 +959,20 @@ class UVCValidationRules:
 
     RULES = {
         # Length constraints
-        'max_total_length': 128,       # Maximum total token length
+        'max_total_length': 256,       # Maximum total token length (schema maxLength)
         'max_segments': 10,             # Maximum hierarchy depth (ABNF token-path)
         'max_segment_length': 32,       # Maximum single segment length
 
         # Character constraints
         'allowed_segment_chars': r'^[a-z0-9-]+$',
         'segment_start_char': r'^[a-z]',    # MUST start with letter
-        'segment_end_char': r'[a-z0-9]$',   # MUST end with letter or digit
+        # A segment MAY end with a hyphen (ABNF, Section 3.4.1)
 
         # Structural constraints
         'no_consecutive_dots': True,
         'no_leading_dot': True,
         'no_trailing_dot': True,
-        'no_consecutive_hyphens': True,
         'no_leading_hyphen': True,
-        'no_trailing_hyphen': True,
 
         # Reserved words (MUST NOT be used as segments)
         'reserved_words': [
@@ -991,9 +996,9 @@ class ValidationError(Enum):
     SEGMENT_TOO_LONG = 3
     INVALID_CHARACTERS = 4
     INVALID_START_CHAR = 5
-    INVALID_END_CHAR = 6
+    INVALID_END_CHAR = 6          # retired 2026-09-27; not raised
     CONSECUTIVE_DOTS = 7
-    CONSECUTIVE_HYPHENS = 8
+    CONSECUTIVE_HYPHENS = 8       # retired 2026-09-27; not raised
     RESERVED_WORD = 9
     INVALID_NAMESPACE = 10
     INVALID_VERSION = 11
@@ -1026,18 +1031,21 @@ class UVCTokenValidator:
     def validate(self, token: str) -> ValidationResult:
         """Validate a UVC token"""
 
-        # Handle versioned tokens
+        # Handle the optional namespace suffix and version
         base_token = token
         version = None
-        if '@' in token:
-            parts = token.split('@', 1)
-            base_token = parts[0]
-            version = parts[1]
+        if ':' in base_token:
+            base_token, suffix = base_token.rsplit(':', 1)
+            if not re.match(r'^[A-Z][A-Z0-9]{0,31}$', suffix):
+                return ValidationResult(False, ValidationError.INVALID_CHARACTERS,
+                    f"Invalid namespace suffix: '{suffix}'")
+        if '@' in base_token:
+            base_token, version = base_token.split('@', 1)
 
         # Basic length check
-        if len(token) > 128:
+        if len(token) > 256:
             return ValidationResult(False, ValidationError.TOO_LONG,
-                f"Token exceeds maximum length (128): {len(token)}")
+                f"Token exceeds maximum length (256): {len(token)}")
 
         # Split into segments
         segments = base_token.split('.')
@@ -1086,14 +1094,6 @@ class UVCTokenValidator:
             return ValidationResult(False, ValidationError.INVALID_START_CHAR,
                 f"Segment '{segment}' must start with letter", position)
 
-        if segment[-1] == '-':
-            return ValidationResult(False, ValidationError.INVALID_END_CHAR,
-                f"Segment '{segment}' cannot end with hyphen", position)
-
-        if '--' in segment:
-            return ValidationResult(False, ValidationError.CONSECUTIVE_HYPHENS,
-                f"Segment '{segment}' has consecutive hyphens", position)
-
         if segment in self.RESERVED_WORDS:
             return ValidationResult(False, ValidationError.RESERVED_WORD,
                 f"Segment '{segment}' is a reserved word", position)
@@ -1126,11 +1126,11 @@ class UVCTokenValidator:
                     f"Community namespace '{first}' requires at least 3 segments")
             return ValidationResult(True, ValidationError.NONE, "Valid")
 
-        # Personal namespace: at least 2 segments
+        # Personal namespace: at least 3 segments (ABNF minimum)
         if first == self.PERSONAL_PREFIX:
-            if len(segments) < 2:
+            if len(segments) < 3:
                 return ValidationResult(False, ValidationError.INVALID_NAMESPACE,
-                    "Personal namespace 'user' requires at least 2 segments")
+                    "Personal namespace 'user' requires at least 3 segments")
             return ValidationResult(True, ValidationError.NONE, "Valid")
 
         return ValidationResult(False, ValidationError.INVALID_NAMESPACE,
@@ -1346,7 +1346,7 @@ Registration requirements:
 1. Email verification
 2. Username uniqueness check
 3. Terms acceptance
-4. No special characters (except `-`, `_`)
+4. The username is a token segment (Section 3.4.1): a lowercase letter, then lowercase letters, digits or hyphens; `_` is not permitted
 
 ### 4.3 Namespace Expiry Policy
 
@@ -3351,8 +3351,8 @@ Response:
 
 **Mitigations**:
 
-1. Hard limit of 128 characters total
-2. Maximum 8 segments
+1. Hard limit of 256 characters total, including version and namespace suffix
+2. Maximum 10 segments
 3. Maximum 32 characters per segment
 4. Implementations MUST reject tokens exceeding these limits before further processing
 
@@ -3483,6 +3483,7 @@ When systems with different VCP versions exchange data:
 | 1.0.0 | 2026-01-11 | Initial specification (5 separate documents) |
 | 2.0.0 | 2026-03-08 | Unified specification; incorporated paper spec content; added NFC, JSON-LD, binary, mnemonic formats; expanded security section |
 | 2.0.0 (source alignment) | 2026-09-27 | `max_segments` in §3.7 corrected from 8 to 10 to match the §3.4 ABNF, the identity schema and the SDK; ABNF governance comment lists only the five Core prefixes; §4.2 states that the prefix table is complete and that unknown prefixes are rejected, as §3.6 and §3.7.2 already specify; §3.5 EBNF marked informative; the five-segment example (§3.1.2), the `vcp://` and JSON-LD examples (§2.4, §2.8) and the wildcard search examples (§5.5) use canonical prefixes |
+| 2.0.0 (source alignment) | 2026-09-27 | New §3.4.1 separates syntax (the ABNF and the schema `pattern`: any lowercase first segment parses) from semantic validation (listed prefix; Core tokens have exactly three segments), which §3.6, §3.7.2 and the identity schema's new `allOf` rule enforce; a conforming parser MAY parse any syntactic token, a conforming validator MUST reject unlisted prefixes. One segment rule set, following the ABNF and schema: segments MAY end with a hyphen and contain consecutive hyphens (the §3.7 trailing and consecutive hyphen checks are retired), Core segments are no longer letters-only, and `_` is not allowed in usernames. One length limit: 256 characters for the whole token (was 128 in §3.7.1, §3.7.2 and §8.5; §8.5 also said 8 segments). §3.6 regex handles the `:NS` suffix and the 3-10 segment range; §3.7.2 strips the suffix before validation and requires 3 segments for `user`. The §3.2 personal example no longer uses the reserved word `private`. |
 
 ---
 
