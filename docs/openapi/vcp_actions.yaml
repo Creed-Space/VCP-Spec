@@ -2,12 +2,14 @@ openapi: 3.1.0
 info:
   title: VCP API
   description: |
-    Value Context Protocol (VCP) operations for constitutional Becoming Minds.
+    Value Context Protocol (VCP) operations for constitutional Becoming Minds, as served by the Creed Space hosted API.
+
+    This document is informative. The normative definitions are the VCP/I, VCP/S and VCP/A layer specifications in `specs/`; where this document and a layer specification differ, the specification governs.
 
     This API exposes three of VCP's six protocol layers:
     - **VCP/I (Identity)**: Token-based identification of constitutional bundles
     - **VCP/S (Semantics)**: CSM-1 codes for persona and scope encoding
-    - **VCP/A (Adaptation)**: Context-aware behavioral adaptation
+    - **VCP/A (Adaptation)**: Context encoding across the v3.1 dimensions (9 situational and 5 personal), plus the 4 experimental VEP-0004 situational dimensions
 
     Feature flags control which layers are active:
     - `vcp_identity_enabled`: Enable token validation
@@ -204,20 +206,13 @@ paths:
       operationId: encodeVCPContext
       summary: Encode context to VCP/A format
       description: |
-        Encodes contextual state across 9 dimensions into VCP/A format.
+        Encodes contextual state into the VCP/A wire format (VCP/A §2) and a JSON form.
 
-        Returns both wire format (emoji-based, compact) and JSON format.
+        Situational tier (external circumstances): TIME, SPACE, COMPANY, CULTURE, OCCASION, ENVIRONMENT, AGENCY, CONSTRAINTS and SYSTEM_CONTEXT are the nine v3.1 baseline dimensions. EMBODIMENT, PROXIMITY, RELATIONSHIP and FORMALITY are experimental VEP-0004 dimensions from the VCP 3.2 pre-release.
 
-        Dimensions:
-        - time: Time of day
-        - space: Physical location type
-        - company: Who is present
-        - culture: Cultural context
-        - occasion: Event type
-        - state: Mental/emotional state
-        - environment: Physical environment
-        - agency: Authority/autonomy level
-        - constraints: Active constraints
+        Personal tier (internal state, carried after the `‖` separator): COGNITIVE_STATE, EMOTIONAL_TONE, ENERGY_LEVEL, PERCEIVED_URGENCY and BODY_SIGNALS, each a category with an optional intensity from 1 to 5.
+
+        Every field is optional; omitted dimensions are left out of the wire format. Values outside the listed vocabularies are rejected, apart from deprecated aliases the SDK still maps (for example CULTURE `casual` to `informal`), and unknown fields are rejected. The full value lists, with their emoji, are also available from `GET /api/vcp/dimensions`.
       tags:
         - vcp
       security:
@@ -228,44 +223,107 @@ paths:
           application/json:
             schema:
               type: object
+              additionalProperties: false
               properties:
                 time:
                   type: string
-                  enum: [morning, midday, evening, night]
-                  description: Time of day
+                  enum: [morning, daytime, evening, night, weekday, weekend, time_pressure, scheduled, recurring]
+                  description: "TIME (⏰, position 1): temporal context."
                 space:
                   type: string
-                  enum: [home, office, school, hospital, transit]
-                  description: Physical space
+                  enum: [home, office, school, hospital, religious, government, commercial, vehicle, outdoor, digital, shared_space, secure_facility]
+                  description: "SPACE (📍, position 2): location type."
                 company:
-                  type: array
-                  items:
-                    type: string
-                  description: Who is present
-                  example: ["children", "family"]
+                  description: "COMPANY (👥, position 3): who is present. One value or a list; several values share one group on the wire."
+                  oneOf:
+                    - type: string
+                      enum: [alone, children, family, colleagues, teacher, authority, elders, partner, peers, professional, strangers, crowd, pets]
+                    - type: array
+                      items:
+                        type: string
+                        enum: [alone, children, family, colleagues, teacher, authority, elders, partner, peers, professional, strangers, crowd, pets]
                 culture:
-                  type: string
-                  description: Cultural context
+                  description: "CULTURE (🌍, position 4): communication style. One value or a list; several values share one group on the wire."
+                  oneOf:
+                    - type: string
+                      enum: [high_context, low_context, formal, informal, hierarchical, egalitarian, collectivist, individualist]
+                    - type: array
+                      items:
+                        type: string
+                        enum: [high_context, low_context, formal, informal, hierarchical, egalitarian, collectivist, individualist]
                 occasion:
                   type: string
-                  enum: [normal, celebration, mourning, emergency]
-                  description: Current occasion
-                state:
-                  type: string
-                  enum: [happy, anxious, tired, contemplative, frustrated]
-                  description: Mental state
+                  enum: [normal, celebration, business, mourning, ceremony, medical, emergency, educational, entertainment, legal, political, graduation]
+                  description: "OCCASION (🎭, position 5): event type."
                 environment:
                   type: string
-                  description: Physical environment
+                  enum: [hot, cold, wet, dangerous, quiet, loud, fire, windy, poor_visibility, outdoors, high_altitude, near_water]
+                  description: "ENVIRONMENT (🌡️, position 6): physical conditions."
                 agency:
                   type: string
-                  enum: [leader, peer, subordinate, limited]
-                  description: Agency level
+                  enum: [leader, peer, subordinate, wealthy, adequate, scarce, owner, authorized, expert, autonomous, limited, mobile]
+                  description: "AGENCY (🔷, position 7): power or ability to act."
                 constraints:
-                  type: array
-                  items:
-                    type: string
-                  description: Active constraints
+                  description: "CONSTRAINTS (🔶, position 8): external limitations. One value or a list; several values share one group on the wire."
+                  oneOf:
+                    - type: string
+                      enum: [minimal, physical, legal, economic, time, social, surveillance, emergency, enforcement, contractual, medical, confidential]
+                    - type: array
+                      items:
+                        type: string
+                        enum: [minimal, physical, legal, economic, time, social, surveillance, emergency, enforcement, contractual, medical, confidential]
+                system_context:
+                  type: string
+                  enum: [personal_device, workplace_system, shared_terminal, monitored_environment]
+                  description: "SYSTEM_CONTEXT (📡, position 9): computing environment."
+                embodiment:
+                  type: string
+                  enum: [stationary, navigating, manipulating, carrying, emergency_stop]
+                  description: "EMBODIMENT (🧍, position 10, experimental VEP-0004): the agent's physical or motor state."
+                proximity:
+                  type: string
+                  enum: [distant, same_room, nearby, close, contact]
+                  description: "PROXIMITY (↔️, position 11, experimental VEP-0004): distance to the nearest human."
+                relationship:
+                  type: string
+                  pattern: '^[a-z_]+:[a-z_]+$'
+                  description: "RELATIONSHIP (🪢, position 12, experimental VEP-0004). A free-form `tie:function` compound in lowercase letters and underscores."
+                  example: "colleague:professional"
+                formality:
+                  type: string
+                  enum: [casual, professional, formal, ceremonial]
+                  description: "FORMALITY (🎩, position 13, experimental VEP-0004): interaction register."
+                cognitive_state:
+                  type: string
+                  pattern: '^(focused|distracted|overloaded|foggy|reflective)(:[1-5])?$'
+                  description: "COGNITIVE_STATE (🧠, personal tier): mental processing quality. A category with an optional intensity from 1 to 5, as `value` or `value:intensity`."
+                  example: "focused:4"
+                emotional_tone:
+                  type: string
+                  pattern: '^(calm|tense|frustrated|neutral|uplifted)(:[1-5])?$'
+                  description: "EMOTIONAL_TONE (💭, personal tier): affective quality. A category with an optional intensity from 1 to 5, as `value` or `value:intensity`."
+                  example: "calm:5"
+                energy_level:
+                  type: string
+                  pattern: '^(rested|low_energy|fatigued|wired|depleted)(:[1-5])?$'
+                  description: "ENERGY_LEVEL (🔋, personal tier): physical or mental energy. A category with an optional intensity from 1 to 5, as `value` or `value:intensity`."
+                  example: "rested:4"
+                perceived_urgency:
+                  type: string
+                  pattern: '^(unhurried|time_aware|pressured|critical)(:[1-5])?$'
+                  description: "PERCEIVED_URGENCY (⚡, personal tier): time pressure felt. A category with an optional intensity from 1 to 5, as `value` or `value:intensity`."
+                  example: "unhurried:2"
+                body_signals:
+                  type: string
+                  pattern: '^(neutral|discomfort|pain|unwell|recovering)(:[1-5])?$'
+                  description: "BODY_SIGNALS (🩺, personal tier): physical state or needs. A category with an optional intensity from 1 to 5, as `value` or `value:intensity`."
+                  example: "neutral:1"
+            example:
+              time: morning
+              space: home
+              company: [children, family]
+              system_context: personal_device
+              cognitive_state: "focused:4"
       responses:
         '200':
           description: Encoded context
@@ -276,21 +334,35 @@ paths:
                 properties:
                   wire_format:
                     type: string
-                    description: Compact emoji-based wire format
-                    example: "⏰🌅|📍🏡|👥👶👨‍👩‍👧"
+                    description: Compact emoji-based wire format (VCP/A §2)
+                    example: "⏰🌅|📍🏡|👥👶👨‍👩‍👧|📡💻‖🧠focused:4"
                   json_format:
                     type: object
-                    description: JSON representation of all dimensions
-                    additionalProperties:
-                      type: array
-                      items:
-                        type: string
+                    description: JSON form, with situational dimensions as emoji lists and personal dimensions as value and intensity
+                    properties:
+                      situational:
+                        type: object
+                        additionalProperties:
+                          type: array
+                          items:
+                            type: string
+                      personal:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            intensity:
+                              type: integer
+                              minimum: 1
+                              maximum: 5
                   dimensions_set:
                     type: array
                     items:
                       type: string
-                    description: Names of dimensions with values
-                    example: ["time", "space", "company"]
+                    description: Names of the dimensions with values; personal dimensions carry a `personal:` prefix
+                    example: ["time", "space", "company", "system_context", "personal:cognitive_state"]
         '401':
           description: Unauthorized
         '503':
@@ -300,7 +372,7 @@ paths:
     get:
       operationId: listPersonas
       summary: List available CSM-1 personas
-      description: Returns all 8 archetypal personas with their codes and descriptions.
+      description: Returns the seven CSM-1 persona codes (the six standard personas and C, Custom) with their names and descriptions.
       tags:
         - vcp
       security:
@@ -336,8 +408,8 @@ paths:
   /api/vcp/dimensions:
     get:
       operationId: listDimensions
-      summary: List context dimensions
-      description: Returns all 9 context dimensions with their possible values.
+      summary: List situational context dimensions
+      description: Returns the 13 situational dimensions (the nine v3.1 baseline dimensions and the four experimental VEP-0004 dimensions) with their symbols, positions and values. RELATIONSHIP is a free-form `tie:function` compound and has no value list. The five personal-state dimensions are described under `POST /api/vcp/context/encode`.
       tags:
         - vcp
       security:
@@ -365,13 +437,15 @@ paths:
                           example: "⏰"
                         position:
                           type: integer
-                          description: Position in enneagram
+                          minimum: 1
+                          maximum: 13
+                          description: Position in the situational tier (1 to 9 baseline, 10 to 13 VEP-0004)
                           example: 1
                         values:
                           type: object
                           additionalProperties:
                             type: string
-                          description: Emoji-to-name mapping
+                          description: Emoji-to-name mapping (empty for RELATIONSHIP)
         '401':
           description: Unauthorized
 
@@ -407,7 +481,7 @@ paths:
                     description: Strict validation mode
                   version:
                     type: string
-                    description: VCP version
+                    description: Version string reported by the hosted API; it does not track the VCP protocol version
                     example: "2.0.0"
 
 components:
