@@ -673,7 +673,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "33534fac8a502ae8cd986824acabeee92848bd76a5687a6473117c9ac02c4c24",
+      "sha256": "ba4ac8fe2ee9dbbd92c0af6a9ed4f58bbed69e41f7a14d8d86f66c5a51d0b5db",
       "status": "active-source-candidate"
     },
     {
@@ -1297,7 +1297,7 @@
       "publication_class": "proposal",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "25664d72639941152ef9e22cc2abc6e671018b0f6d811b2bca9a045c845783b8",
+      "sha256": "e680062a46bbeec5a9549968e6a86c1144bd62c11a4afe581caf977825acb078",
       "status": "proposal-status-undeclared"
     },
     {
@@ -1376,6 +1376,19 @@
       "replacement": null,
       "review_date": "2026-08-15",
       "sha256": "01b7cff06acbc24bd72bcbbace8ebc7dfebb3b0535cd12b8e892dcce61d0ab51",
+      "status": "draft"
+    },
+    {
+      "authority": "VEP proposal process; acceptance requires an authorized decision",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "vep",
+      "owner": "VCP-Spec maintainers",
+      "path": "veps/VEP-0007-embodied-scopes.md",
+      "publication_class": "proposal",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "0515d5f46af002045150df883be55d31a56f9eb8fbdea16959c0f6da96f31ab8",
       "status": "draft"
     }
   ],

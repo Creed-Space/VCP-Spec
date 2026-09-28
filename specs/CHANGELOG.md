@@ -45,6 +45,7 @@ recorded authorized decision.
   - `docs/openapi/vcp_actions.yaml` (informative description of the Creed Space hosted API) no longer describes the nine-dimension request with a situational STATE field, which the hosted router rejects. `POST /api/vcp/context/encode` now documents the nine v3.1 situational dimensions, the four experimental VEP-0004 dimensions and the five personal-state dimensions with their VCP/A vocabularies, the JSON response shape, and the rejection of unknown fields. `/api/vcp/personas` lists seven codes, not eight, and `/api/vcp/dimensions` returns the 13 situational dimensions. The document states that the layer specifications govern.
   - Prose spells CSM-1 with a hyphen (identifiers, file names and code are unchanged); heading anchors that changed are updated.
   - Wiki: VEP-0001 to VEP-0003 are shown as Recorded pre-charter acceptance, VCP-X-Relational and VCP-X-Consensus as Draft.
+- **VEP-0007 (Draft, v3.3 candidate)**: proposes CSM-1 scopes B (Bodily) and X (Spatial) for embodied deployments, which the Creed Space implementation already uses as extension scopes; until accepted, implementations should not send them to peers that have not advertised `vcp-s-embodied-v1`.
 - **Historical classification**: `specs/VCP_PAPER_SPEC_CONTENT.md` (migrated from paper draft I2D2, with the retired float-valued VCP/A bundle) carries a historical, non-normative header and is classified `historical-non-normative` in `status/document-inventory.json`.
 
 ### Changed (2026-09-24, alignment of the 3.1 source baseline)
