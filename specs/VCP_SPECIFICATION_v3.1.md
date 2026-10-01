@@ -259,7 +259,7 @@ Each extension defines its own conformance requirements in its spec.md. Implemen
 
 Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
 
-A **[Creed Space](https://creedspace.com)** project. Possible future foundation
+A **[Creed Space](https://creed.space)** project. Possible future foundation
 stewardship remains unapproved and no transfer is currently claimed.
 
 ---

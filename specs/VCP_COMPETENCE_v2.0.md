@@ -1071,4 +1071,4 @@ The competence criteria framework is adapted from Frischmann (2026). The adaptiv
 
 ---
 
-*A [Creed Space](https://creedspace.com) specification.*
+*A [Creed Space](https://creed.space) specification.*

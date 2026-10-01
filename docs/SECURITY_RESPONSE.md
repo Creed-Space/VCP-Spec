@@ -13,7 +13,7 @@ evidence-boundary: Response roles and targets, not proof of staffing or complete
 
 Suspected vulnerabilities stay private. Public repositories use GitHub private
 vulnerability reporting when the hosted setting is enabled. The fallback and
-the private Demo contact are `security@creedspace.com`. A test report must be
+the private Demo contact are `security@creed.space`. A test report must be
 acknowledged by the named operator before either route is advertised as
 verified.
 

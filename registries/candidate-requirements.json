@@ -3366,7 +3366,7 @@
     },
     {
       "path": "specs/VCP_SPECIFICATION_v3.1.md",
-      "sha256": "0344f966fbc9276109adfac275b9576898afe3edc1ee9fefdfcd31fb9fa61b93"
+      "sha256": "f4e083e459ec73d9d720b4cd0e2cb1cc77dfd4f02c6f305a2657e06f699ded31"
     },
     {
       "path": "specs/core/audit.md",

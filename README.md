@@ -366,7 +366,7 @@ approved file-class matrix. See [LICENSING_STATUS.md](./LICENSING_STATUS.md).
 
 Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
 
-A **[Creed Space](https://creedspace.com)** project. Possible future foundation
+A **[Creed Space](https://creed.space)** project. Possible future foundation
 stewardship remains a proposal without an executed transfer or acceptance
 record.
 

@@ -24,7 +24,7 @@ published release. Reports should name the affected document and commit hash.
 
 Do not open a public issue for a suspected vulnerability. Use the repository's
 [private vulnerability report](https://github.com/Creed-Space/VCP-Spec/security/advisories/new).
-Email [security@creedspace.com](mailto:security@creedspace.com) if the GitHub
+Email [security@creed.space](mailto:security@creed.space) if the GitHub
 route is unavailable. The hosted private-report setting was enabled and read
 back on 15 August 2026; a successful reporter-side test remains operational
 evidence rather than source evidence.

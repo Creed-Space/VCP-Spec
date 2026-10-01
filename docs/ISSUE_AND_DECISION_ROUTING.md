@@ -16,7 +16,7 @@ evidence-boundary: Intake classification and response expectations, not permanen
 | Specification ambiguity or amendment | VCP-Spec amendment form | Security-sensitive meaning stays embargoed | Interim protocol authority pending ratification |
 | Documentation or example error | Issue in the owning repository | Remove personal data before reporting | Document owner |
 | Demo accessibility, privacy, or usability | Demo feedback page and public Spec or SDK route where applicable | Email for personal or security-sensitive detail | Demo maintainers plus required human reviewer |
-| Vulnerability | No public issue | Private vulnerability report or `security@creedspace.com` | Security coordinator |
+| Vulnerability | No public issue | Private vulnerability report or `security@creed.space` | Security coordinator |
 | Governance decision | Public decision template | Conflicts and protected evidence follow the governance process | Recorded authorized decision maker |
 | Appeal or dispute | Appeal template | Reporter safety or embargo may require a private appendix | Appeal owner independent of the sole original decision maker |
 
