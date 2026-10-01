@@ -15,7 +15,7 @@ authors:
     given-names: Awwab
   - family-names: Wells
     given-names: Blake
-  - name: "Claude (Anthropic)"
+  - name: "Claude (AI model developed by Anthropic)"
 repository-code: "https://github.com/Creed-Space/VCP-Spec"
 url: "https://valuecontextprotocol.org/"
 abstract: >-

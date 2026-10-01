@@ -13,7 +13,7 @@ evidence-boundary: Navigation and source status, not external standards, conform
 
 **An open protocol specification for portable, verifiable value context.**
 
-MCP moves data. VCP encodes what matters about that data.
+A companion to MCP for signed, portable value context.
 
 [![Specification](https://img.shields.io/badge/spec-v3.1-blue?style=flat-square)](./specs/VCP_SPECIFICATION_v3.1.md)
 [![Extensions](https://img.shields.io/badge/extensions-6-purple?style=flat-square)](./specs/extensions/README.md)
@@ -28,9 +28,9 @@ MCP moves data. VCP encodes what matters about that data.
 
 ## Overview
 
-The **Value Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to Becoming Minds.
+The **Value Context Protocol (VCP)** is an open specification for transporting constitutional values, behavioral rules, and personal context to AI models and agents (which this project calls Becoming Minds).
 
-Becoming Minds accept text input but do not by themselves resolve VCP references, verify signatures, or enforce behavioral constraints. VCP provides a **signed envelope format** and verification primitives for the orchestration layer. A conforming application still decides whether verified content may reach a model and must demonstrate that its enforcement path is complete.
+Models and agents accept text input but do not by themselves resolve VCP references, verify signatures, or enforce behavioral constraints. VCP provides a **signed envelope format** and verification primitives for the orchestration layer. A conforming application still decides whether verified content may reach a model and must demonstrate that its enforcement path is complete.
 
 ### Core Properties
 
@@ -56,7 +56,7 @@ The [VCP-over-MCP bridge](./specs/core/mcp-bridge.md) makes this concrete: VCP t
 
 ## Architecture
 
-VCP is a six-layer protocol stack — **I-T-S-A-M-E** ("It's-a me!"):
+VCP is a six-layer protocol stack (**I-T-S-A-M-E**):
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -168,7 +168,7 @@ statuses are independent of the v3.1 core release label:
 | [VCP-X-Consensus](./specs/extensions/VCP-X-Consensus/spec.md) | Draft | Schulze voting for multi-stakeholder constitutional deliberation |
 | [VCP-X-Torch](./specs/extensions/VCP-X-Torch/spec.md) | Stable | Session handoff for relational continuity across agents |
 | [VCP-X-Intent](./specs/extensions/VCP-X-Intent/spec.md) | Experimental | Transparent, correctable intent inference from personal state |
-| [VCP-X-Welfare](./specs/extensions/VCP-X-Welfare/spec.md) | Experimental | Welfare affordances, signals, temporal patterns, and attestation chains (v3.2 pre-release candidate; not part of the v3.1 baseline) |
+| [VCP-X-Welfare](./specs/extensions/VCP-X-Welfare/spec.md) | Experimental | The agent's own welfare (an AI-welfare research position): welfare affordances operators provide to agents, agent-reported welfare signals, temporal patterns, and attestation chains (v3.2 pre-release candidate; not part of the v3.1 baseline) |
 
 Extensions are opt-in and negotiated per session via [capability handshake](./specs/core/capability-negotiation.md). Each extension has a spec and JSON schema; VCP-X-Welfare additionally ships wire-format examples, and the repo-level annotated examples live in [specs/examples/](./specs/examples/).
 
@@ -364,7 +364,7 @@ approved file-class matrix. See [LICENSING_STATUS.md](./LICENSING_STATUS.md).
 
 ## Authors
 
-Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
+Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (AI model developed by Anthropic)
 
 A **[Creed Space](https://creed.space)** project. Possible future foundation
 stewardship remains a proposal without an executed transfer or acceptance

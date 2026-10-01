@@ -14,7 +14,7 @@ evidence-boundary: Present authority and proposed process, not permanent-governa
 **Machine-readable state:** [`governance/authority.json`](./governance/authority.json)
 **Last reviewed:** 2026-09-24
 
-## Present truth
+## Current status
 
 The permanent VCP governance model has not been ratified. A Technical Steering
 Committee has not been constituted, community seats have not been filled, and
@@ -87,8 +87,8 @@ The canonical interim status vocabulary is:
 VEP-0001 through VEP-0003 retain their historical role in the v3.1 source
 baseline. Their former `Accepted` labels are now described as recorded
 pre-charter acceptance, because the repository contains no evidence of the TSC
-process the former charter claimed. This truth correction does not silently
-change wire behavior.
+process the former charter claimed. This correction of the record does not
+silently change wire behavior.
 
 Working signal: every VEP has one status in its file and tracker, status changes
 cite a decision record, and source implementation is never presented as

@@ -380,4 +380,4 @@ personally involved.
 
 ---
 
-*Thank you for helping build transparent, ethical value communication in Becoming Minds.*
+*Thank you for helping build transparent, verifiable value context for Becoming Minds.*
