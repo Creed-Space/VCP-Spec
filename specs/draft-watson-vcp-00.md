@@ -1378,7 +1378,7 @@ per RFC 7595:
 | Scheme name   | creed                                     |
 | Status        | Provisional                               |
 | Applications  | Value Context Protocol bundle addressing  |
-| Contact       | Nell Watson, nell@creedspace.com          |
+| Contact       | Nell Watson, nell@creed.space             |
 | Change ctrl   | IESG                                      |
 | Reference     | This document, Section 4.4               |
 
@@ -1405,7 +1405,7 @@ media type per RFC 6838:
 | Published spec      | This document                        |
 | Applications        | VCP bundle transport                 |
 | Fragment id         | As per RFC 6901 (JSON Pointer)       |
-| Person & email      | Nell Watson, nell@creedspace.com     |
+| Person & email      | Nell Watson, nell@creed.space        |
 | Change controller   | IESG                                 |
 
 ## 9.3. File Extension
@@ -1616,8 +1616,8 @@ To verify this bundle, an orchestrator would:
 ```
 Nell Watson
 Creed Space
-Email: nell@creedspace.com
-URI: https://creedspace.com
+Email: nell@creed.space
+URI: https://creed.space
 
 Elena Ajayi
 Creed Space

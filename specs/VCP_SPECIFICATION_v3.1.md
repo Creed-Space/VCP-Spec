@@ -3,7 +3,7 @@
 **Version**: 3.1
 **Date**: 2026-02-28
 **Status**: Current source baseline; immutable normative release and governance ratification remain open
-**Authors**: Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
+**Authors**: Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (AI model developed by Anthropic)
 **Authority boundary**: This source document identifies the intended v3.1
 baseline. It is not a signed release object, standards-body publication,
 certification, or independent conformance report.
@@ -257,7 +257,7 @@ Each extension defines its own conformance requirements in its spec.md. Implemen
 
 ## Authors
 
-Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (Anthropic)
+Nell Watson, Elena Ajayi, Filip Alimpić, Awwab Mahdi, Blake Wells, Claude (AI model developed by Anthropic)
 
 A **[Creed Space](https://creed.space)** project. Possible future foundation
 stewardship remains unapproved and no transfer is currently claimed.

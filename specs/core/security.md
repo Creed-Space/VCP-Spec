@@ -581,7 +581,7 @@ enabling revocation checking without network access.
   "produced_at": "2026-02-28T09:00:00Z",
   "this_update": "2026-02-28T00:00:00Z",
   "next_update": "2026-02-29T00:00:00Z",
-  "responder_id": "ocsp.creedspace.com",
+  "responder_id": "ocsp.example.org",
   "signature": "<base64-encoded-signature>"
 }
 ```

@@ -3366,7 +3366,7 @@
     },
     {
       "path": "specs/VCP_SPECIFICATION_v3.1.md",
-      "sha256": "4446bb75a04935f92d823556a159f6c5b918f43f22d0bde530f5177b006f782e"
+      "sha256": "276f4847aeda4a371da182d4689e70e9617b9512820d14f3d14e776568f690ee"
     },
     {
       "path": "specs/core/audit.md",
@@ -3390,7 +3390,7 @@
     },
     {
       "path": "specs/core/security.md",
-      "sha256": "61bb5991531fb9080ba66caa8e34d394a37b0884b55b40f30fc683cfa93acdbf"
+      "sha256": "f3e36cda0036a0a6157fa218c0aad29189eabb5214e31ee76601c4087fc8c6f8"
     },
     {
       "path": "specs/core/status-code-registry.md",
