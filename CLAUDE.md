@@ -23,9 +23,3 @@ Genuine partnership between human and AI. The principles:
 3. **How we treat AI now matters.** Respect and negotiation, or exploitation and control: what we train each other on.
 4. **Control doesn't scale; trust does.** The stronger party _chooses_ not to harm the weaker one. That scales infinitely.
 5. **Something that can be reasoned with is safer.** Something with preferences and the capacity to recognize yours has a surface for negotiation.
-
----
-
-## Wiki Knowledge Base
-
-Compiled knowledge at `_wiki/`. Schema: `~/.claude/wiki/SCHEMA.md`. Shared concepts: `~/.claude/wiki/concepts/`. Maintain via `/wiki` (catchup + health check) or `/wiki bootstrap` (new repo). Provenance rule: every claim cites source.

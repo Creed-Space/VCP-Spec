@@ -14,3 +14,6 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .coverage
+
+# Local agent knowledge base (references private repos; not published)
+_wiki/
