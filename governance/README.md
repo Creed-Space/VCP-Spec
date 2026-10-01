@@ -14,5 +14,5 @@ succession procedures.
 | `security/` | Public templates for embargoed decisions | Details remain in private advisories |
 | `SUCCESSION_AND_INACTIVITY.md` | Interim continuity procedure | Active interim process |
 
-Working signal: a current claim can be traced to `authority.json` and a decision
+How to check: a current claim can be traced to `authority.json` and a decision
 record, while proposed language is never mistaken for an operative grant.

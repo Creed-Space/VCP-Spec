@@ -31,5 +31,5 @@ cannot merge with an unresolved conversation, absent review, missing current
 check, vulnerable dependency, or detected secret. Source presence does not
 prove hosted enforcement.
 
-Working signal: the readback matches `.github/repository-policy.json`, required
+How to check: the readback matches `.github/repository-policy.json`, required
 contexts all exist, and the deliberately failing test pull request is blocked.

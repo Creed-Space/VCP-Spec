@@ -37,7 +37,7 @@ protocol change, reserve a namespace, certify an implementation, or grant
 rights. Any accepted change moves into a reviewable issue, VEP, or decision
 record.
 
-## Working signal
+## How to check
 
 A newcomer is routed without guessing, sensitive content stays private, and a
 closed thread states what evidence or authority resolved it rather than using

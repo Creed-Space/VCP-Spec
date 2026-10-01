@@ -12,5 +12,5 @@ Record the decision category, minimum remediation scope, release or rollback
 authority, and evidence hashes without exposing exploit details. When safe,
 link the advisory and a public post-incident record.
 
-Working signal: necessary confidentiality does not erase who authorized the
+How to check: necessary confidentiality does not erase who authorized the
 change, what candidate it affected, or when disclosure must be reconsidered.

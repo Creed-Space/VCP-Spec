@@ -37,6 +37,6 @@ Name an owner and verification method for each.
 
 State appeal route, deadline, review date, and conditions that reopen the item.
 
-Working signal: another maintainer can reproduce what was decided, by whom,
+How to check: another maintainer can reproduce what was decided, by whom,
 against which candidate, and under what authority without relying on oral
 history.

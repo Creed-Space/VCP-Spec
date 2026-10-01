@@ -60,7 +60,7 @@ proposals or broaden claims.
    recovery owners, conflicts, and whether the prior project endorses the
    transfer. Repository access alone does not prove succession.
 
-## Working signal
+## How to check
 
 This policy is working when a prospective adopter can identify the supported
 surface and contact route, and a loss of funding, maintainer availability, or

@@ -38,7 +38,7 @@ the operations requirements have not yet been mapped to case-level conformance
 evidence. Those gaps remain open until human editorial classification and
 cross-repository test mapping are complete.
 
-## Working signal
+## How to check
 
 The report improves when stable identified coverage and mapped evidence rise,
 while each remaining gap stays visible by source digest. It fails when prose,

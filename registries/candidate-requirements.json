@@ -3362,7 +3362,7 @@
     },
     {
       "path": "veps/VEP-0006-agent-runtime-profile.md",
-      "sha256": "01b7cff06acbc24bd72bcbbace8ebc7dfebb3b0535cd12b8e892dcce61d0ab51"
+      "sha256": "07055cf03080fd125e990d4f955a262d41bb45424034300a59e781c071b3710c"
     },
     {
       "path": "specs/VCP_SPECIFICATION_v3.1.md",
@@ -3378,7 +3378,7 @@
     },
     {
       "path": "specs/core/extension-lifecycle.md",
-      "sha256": "2e83f1484dfa9ac3b335cb97db57b1bb7ae06a0a4a4d973975597c47e4a04da5"
+      "sha256": "26aa06e5b7c3be5a6810f08423da4fccd545441af0f8323e9fb6d480900de760"
     },
     {
       "path": "specs/core/mcp-bridge.md",
@@ -3386,7 +3386,7 @@
     },
     {
       "path": "specs/core/representation-registry.md",
-      "sha256": "9effdd76b764824baed00c516ec72baabcec80acbf038d0e2cc35c41bbca0a6d"
+      "sha256": "4812ea68ae7c0d58c5a5729d68a33ef0eb9ebb5a683a46b2f6e207a429bcbe14"
     },
     {
       "path": "specs/core/security.md",

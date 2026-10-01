@@ -10,5 +10,5 @@ intellectual-property interests, registry control, and personal relationships.
 State whether the person will participate, answer factual questions only, or
 recuse. Record who assessed the disclosure and why the treatment is sufficient.
 
-Working signal: the related decision links this disclosure and does not count a
+How to check: the related decision links this disclosure and does not count a
 recused person toward quorum or independent review.

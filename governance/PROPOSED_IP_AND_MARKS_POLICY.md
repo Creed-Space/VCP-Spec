@@ -38,6 +38,6 @@ conflicts, fees if any, evidence standard, appeal route, version, and effective
 date. Certification criteria should be versioned, technically reproducible,
 time-limited, and separable from payment or membership.
 
-Working signal: adopted policy language cites an authorized legal record and a
+How to check: adopted policy language cites an authorized legal record and a
 governance decision; before that, public pages make no certification or mark
 permission claim.

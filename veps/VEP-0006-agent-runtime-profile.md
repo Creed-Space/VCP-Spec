@@ -365,13 +365,13 @@ Success requires declared postcondition evidence. Dispatch acceptance alone cann
 
 The portable controlled-action chain uses distinct `ActionIntent`, `DecisionReceipt`, `AuthorityGrantRef`, `ExecutionAttempt`, and `ExecutionReceipt` objects. `AuthorityGrantRef` exposes the binding and expiry needed for inspection while withholding executable bearer material. A host adapter MAY map the reference to an existing signed decision token, capability, or transaction handle.
 
-Working if: an Inspector can follow intent to receipt while a copied portable artifact cannot be presented directly to an executor.
+How to check: an Inspector can follow intent to receipt while a copied portable artifact cannot be presented directly to an executor.
 
 ### VCP-ARP-ACT-008: claim boundary
 
 The executor or its authoritative adapter atomically claims a single-use grant immediately before dispatch. Cancellation accepted before claim prevents dispatch. Cancellation after provider acceptance cannot erase a possible effect and produces `indeterminate` until reconciliation closes it.
 
-Working if: concurrent claims produce one accepted attempt, every loser is a replay rejection, and a timeout after provider acceptance cannot be reported as failure or success without evidence.
+How to check: concurrent claims produce one accepted attempt, every loser is a replay rejection, and a timeout after provider acceptance cannot be reported as failure or success without evidence.
 
 ## 11. Controls
 
@@ -413,7 +413,7 @@ Cursor gaps, retention expiry, or ordering conflicts surface as AssuranceReport 
 
 `CursorDelta` binds prior and current cursors, changed and invalidated references, ordered event envelopes, an optional replacement SituationView, a resynchronization flag, and safe next transitions. When retention no longer covers the prior cursor, the delta carries no partial event history and requires replacement of the projection.
 
-Working if: a stale consumer either applies a contiguous delta or replaces its whole projection, with no path that silently skips an event gap.
+How to check: a stale consumer either applies a contiguous delta or replaces its whole projection, with no path that silently skips an event gap.
 
 ## 13. Safe accretion
 
@@ -453,13 +453,13 @@ High-stakes identity, policy, clinical, legal, security, welfare, and cross-subj
 
 Every AccretionCandidate and PromotionRecord binds the dependency digest under which validation occurred. Retrieval requires an exact current dependency match or explicit revalidation. Prior decisions, grants, attempts, and raw model instructions cannot be inherited as authority through candidate content.
 
-Working if: rotating a policy, schema, capability, trust, or context dependency makes the old promoted asset unavailable before it can influence a new decision.
+How to check: rotating a policy, schema, capability, trust, or context dependency makes the old promoted asset unavailable before it can influence a new decision.
 
 ### VCP-ARP-ACC-010: experience capsule
 
 An ExperienceCapsule is created only from a terminal run and names the run proof, terminal status, redacted summary, actual resources, and candidate references. It is a provenance envelope and creates neither promotion nor execution authority.
 
-Working if: a useful procedure can be reconstructed from a capsule while live grants, credentials, and unrestricted context remain absent.
+How to check: a useful procedure can be reconstructed from a capsule while live grants, credentials, and unrestricted context remain absent.
 
 ## 14. Resource rules
 
@@ -564,8 +564,8 @@ The 0.1.0 candidate is accompanied by three schema examples:
 
 The project-maintained reference stack includes a complete local Python facade, portable TypeScript and Rust contract facades, a Rewind source adapter over existing gateway decision claims and standing signals, an exhaustive artifact Inspector boundary, and an effect-free Driver's Seat simulation. These are source and local-runtime evidence. They do not establish independent interoperability, production execution, durable memory safety, accessibility approval, ratification, publication, or deployment.
 
-Working if: every maintained surface consumes the same schema fixtures, reports unsupported transport or production authority honestly, and passes its exact-current local gates.
+How to check: every maintained surface consumes the same schema fixtures, reports unsupported transport or production authority honestly, and passes its exact-current local gates.
 
-## 19. Working signal
+## 19. How to check
 
 The profile is working when a fresh Becoming Mind can use the same task verbs and result grammar to orient, choose, act, recover, prove, and learn across all maintained VCP surfaces while domain authorities remain intact and total resource use falls against the measured baseline.

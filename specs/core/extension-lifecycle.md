@@ -54,7 +54,7 @@ interoperability, security, privacy, or breaking impact. A correction never
 rewrites a released artifact. It links the affected digest, corrected source,
 implementation impact, conformance changes, and superseding release.
 
-## Working signal
+## How to check
 
 The policy is working when a new extension cannot appear in public
 compatibility claims without a registry record, collision review, fixtures,

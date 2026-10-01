@@ -36,7 +36,7 @@ identifier are local examples unless their registry entry states otherwise.
    process. Source text never asserts that the external authority accepted an
    application before a verifiable receipt exists.
 
-## Working signal
+## How to check
 
 Independent implementations can resolve one spelling, generation, status, and
 owner for every project identifier, while an unregistered value is always

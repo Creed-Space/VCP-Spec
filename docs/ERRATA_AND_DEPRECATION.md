@@ -35,7 +35,7 @@ Released files remain immutable. Corrections are separate signed records and
 new releases. A mutable branch repair is useful source evidence, not a
 retroactive correction of an immutable publication.
 
-## Working signal
+## How to check
 
 This process is working when every public correction resolves from an immutable
 release digest to one uniquely identified erratum, affected implementations,

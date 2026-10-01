@@ -30,6 +30,6 @@ the upstream repository identity and advertised release before accepting a new
 pin. A candidate only supersedes an older dependency pull request when its
 resolved version is equal or newer and the relevant checks pass.
 
-Working if: Dependabot produces bounded minor and patch groups, majors remain
+How to check: Dependabot produces bounded minor and patch groups, majors remain
 individually reviewable, every merged update has candidate-bound validation, and
 no workflow uses a mutable action reference.

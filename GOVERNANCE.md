@@ -28,7 +28,7 @@ The former charter is preserved as an explicitly unratified proposal in
 No provision in that proposal is treated as effective merely because the file
 exists or was previously merged.
 
-Working signal: public files describe governance as interim, the authority JSON
+How to check: public files describe governance as interim, the authority JSON
 reports `tsc.constituted: false`, and no release gate accepts a TSC vote until a
 ratification decision is recorded.
 
@@ -50,7 +50,7 @@ second VEP intake.
 | Registry publication | Coordinated release ledger | Named release and registry authority |
 | Foundation transfer | Executed transfer record | Current rights holder and accepting foundation |
 
-Working signal: SDK and Demo contribution routes point protocol proposals to the
+How to check: SDK and Demo contribution routes point protocol proposals to the
 single VCP-Spec template, and release validation rejects absent governance,
 rights, or publication evidence.
 
@@ -90,7 +90,7 @@ pre-charter acceptance, because the repository contains no evidence of the TSC
 process the former charter claimed. This correction of the record does not
 silently change wire behavior.
 
-Working signal: every VEP has one status in its file and tracker, status changes
+How to check: every VEP has one status in its file and tracker, status changes
 cite a decision record, and source implementation is never presented as
 publication or standards-body acceptance.
 
@@ -106,7 +106,7 @@ Security-sensitive material is not forced into a public record. The public
 decision records the existence, scope, authority, date, and eventual disclosure
 status of an embargoed decision without publishing exploit details.
 
-Working signal: a reader can trace every maturity or process change to a dated
+How to check: a reader can trace every maturity or process change to a dated
 record, while private vulnerability details stay in the security advisory.
 
 ## Conflicts and recusal
@@ -121,7 +121,7 @@ No person may count as the independent reviewer of their own work. A recusal
 cannot reduce the decision below its required quorum. If all available authority
 is conflicted, the item remains pending and an external reviewer is sought.
 
-Working signal: every completed decision lists disclosures and recusals, and an
+How to check: every completed decision lists disclosures and recusals, and an
 independence gate names a reviewer other than the relevant author.
 
 ## Appeals
@@ -133,7 +133,7 @@ maker may answer but does not solely decide the appeal. Until a qualified appeal
 authority exists, appeals remain open rather than being deemed denied by
 silence.
 
-Working signal: appeals have identifiers, an owner who did not solely make the
+How to check: appeals have identifiers, an owner who did not solely make the
 original decision, a response deadline, and a reasoned outcome.
 
 ## Emergency and embargoed changes
@@ -148,7 +148,7 @@ Embargoed security decisions use the private GitHub security advisory process
 and `governance/security/SECURITY_DECISION_TEMPLATE.md`. A public summary is
 published when disclosure is safe and authorized.
 
-Working signal: emergency changes are narrow, timestamped, reversible, and
+How to check: emergency changes are narrow, timestamped, reversible, and
 receive a later review instead of becoming permanent through inertia.
 
 ## Succession and inactivity
@@ -163,7 +163,7 @@ pending until legitimate authority is re-established.
 The detailed procedure is in
 [`governance/SUCCESSION_AND_INACTIVITY.md`](./governance/SUCCESSION_AND_INACTIVITY.md).
 
-Working signal: loss of one administrator does not erase source maintenance,
+How to check: loss of one administrator does not erase source maintenance,
 and it also does not allow remaining contributors to manufacture legal or
 governance authority.
 

@@ -29,7 +29,7 @@ Risk closure requires the exact evidence named in the JSON register. A local
 test, source patch, or self-review cannot close an entry assigned to another
 authority or an independent reviewer.
 
-## Working signal
+## How to check
 
 The register is working when public release decisions cite an exact register
 digest, open entries remain visible in publication state, closure records name

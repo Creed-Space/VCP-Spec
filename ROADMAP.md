@@ -52,7 +52,7 @@ No date is promised. No source-only candidate is promoted by this document. No
 research, legal, rights, independent-review, deployment, or publication gate is
 closed through planning prose.
 
-## Working signal
+## How to check
 
 The roadmap is working when each active item has a finite gate, completed work
 moves out of “Now”, conditional work does not start without its trigger, and

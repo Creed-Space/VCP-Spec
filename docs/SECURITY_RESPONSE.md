@@ -87,7 +87,7 @@ rollback or yank, claim revocation, and public correction. The report records
 role gaps and delivery evidence. This document remains process evidence only
 until that exercise exists.
 
-## Working signal
+## How to check
 
 The process is working when a simulated critical report has one owner at each
 step, confidential material never enters a public issue or log, every affected

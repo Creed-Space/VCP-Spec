@@ -15,5 +15,5 @@ claim foundation transfer without separately established authority.
 Re-establishment records the basis of authority, access handover, outstanding
 appeals, embargoed matters, pending VEPs, and any emergency work performed.
 
-Working signal: maintenance continues through absence, while high-authority
+How to check: maintenance continues through absence, while high-authority
 decisions remain visibly pending instead of being inferred from access alone.

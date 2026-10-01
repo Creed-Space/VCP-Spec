@@ -93,7 +93,7 @@ or account-control change updates this model and its mapped tests or residual
 risks. A source edit does not close a threat whose acceptance requires a human,
 operator, rights authority, or independent reviewer.
 
-## Working signal
+## How to check
 
 This model is working when each security-sensitive pull request names affected
 TM identifiers, every high-severity threat has a test or explicit external

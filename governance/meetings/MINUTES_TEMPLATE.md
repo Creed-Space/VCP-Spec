@@ -27,5 +27,5 @@ Link separate decision records. Minutes alone do not create authority.
 | Action | Owner | Due date | Verification |
 |:---|:---|:---|:---|
 
-Working signal: minutes appear within seven days and link rather than replace
+How to check: minutes appear within seven days and link rather than replace
 complete decision records.

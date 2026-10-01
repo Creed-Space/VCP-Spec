@@ -50,7 +50,7 @@ data, live endpoints that invite unsafe traffic, or realistic secrets. Example
 keys are labeled non-production. Invalid security examples are stored only in
 explicit negative-fixture locations.
 
-## Working signal
+## How to check
 
 This policy is working when a reader can determine, from the inventory and
 containing document, whether a payload is a requirement, a test of one, an

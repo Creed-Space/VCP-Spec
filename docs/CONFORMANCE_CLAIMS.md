@@ -102,7 +102,7 @@ Certification criteria, trademark permission, fees if any, assessor
 independence, appeals, expiry, renewal, and revocation require ratified
 governance and authorized legal review.
 
-Working if: every public claim identifies a versioned profile and immutable
+How to check: every public claim identifies a versioned profile and immutable
 artifact, unsupported coverage remains visible, badges are generated from the
 same report, and no source-only or same-project result is described as
 certification or independent interoperability.

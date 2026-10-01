@@ -46,7 +46,7 @@ Uppercase requirement words are used only in documents whose status and
 authority are explicit. Candidate requirements receive stable identifiers.
 Informative prose uses direct language without accidental uppercase mandates.
 
-## Working signal
+## How to check
 
 The policy is working when public copy, source metadata, compatibility tables,
 and conformance reports describe the same maturity and evidence boundary, and

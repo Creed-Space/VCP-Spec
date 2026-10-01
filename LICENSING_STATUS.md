@@ -47,7 +47,7 @@ The X016 evidence should approve an exact matrix that identifies:
    contribution guidance, and release bundles;
 10. reviewer name, authority, date, scope, conditions, and approved hashes.
 
-Working signal: an authorized matrix covers every shipped file, automated checks
+How to check: an authorized matrix covers every shipped file, automated checks
 match that matrix, and public copy no longer relies on one repository-wide badge
 to hide file-specific terms.
 

@@ -21,5 +21,5 @@ deadline, interim effect, additional disclosures, and evidence requested.
 Record affirmed, modified, remanded, or overturned, with reasons and a linked
 decision record.
 
-Working signal: silence never turns a pending appeal into a denial, and the
+How to check: silence never turns a pending appeal into a denial, and the
 original sole decision maker cannot close it alone.
