@@ -1631,7 +1631,7 @@ Creed Space
 Blake Wells
 Creed Space
 
-Claude (Anthropic)
+Claude (AI model developed by Anthropic)
 ```
 
 ---
