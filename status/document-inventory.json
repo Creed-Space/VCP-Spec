@@ -582,7 +582,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "625f3267fa897695476053299d77285409b99855a22c26e9842001b664f795eb",
+      "sha256": "1d3561a29ef9ac0d9cb96a9cfe36d2295f903dcc17a3102f008bfb28ab8e17cd",
       "status": "source-schema-candidate"
     },
     {
@@ -725,7 +725,7 @@
       "publication_class": "normative-candidate",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "e7fdcc1b39e6966a465c61daf5d3df98e2952ebf828e03a23a4f4aee5f22120e",
+      "sha256": "088d188ac36e8d0350213152344e232bfdc797612ea9996bce25f7b0eb65296e",
       "status": "active-source-candidate"
     },
     {

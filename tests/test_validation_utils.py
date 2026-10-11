@@ -9,8 +9,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 import validation_utils
 from validation_utils import (
@@ -22,6 +21,8 @@ from validation_utils import (
     require_regular_file,
     sha256_regular,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class RegularFilePrimitiveTests(unittest.TestCase):

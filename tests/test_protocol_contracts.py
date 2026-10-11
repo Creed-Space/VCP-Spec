@@ -9,14 +9,10 @@ from pathlib import Path
 
 from jsonschema.validators import validator_for
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from jsonschema_formats import strict_format_checker
 
-ED25519_SIGNATURE = "base64:" + base64.b64encode(bytes(64)).decode("ascii")
-ED448_SIGNATURE = "base64:" + base64.b64encode(bytes(114)).decode("ascii")
-ED448_PUBLIC_KEY = "ed448:" + base64.b64encode(bytes(57)).decode("ascii")
 
 from protocol_contracts import (
     canonical_csm1,
@@ -29,6 +25,11 @@ from protocol_contracts import (
     validate_handshake_message,
     validate_manifest_document,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
+ED25519_SIGNATURE = "base64:" + base64.b64encode(bytes(64)).decode("ascii")
+ED448_SIGNATURE = "base64:" + base64.b64encode(bytes(114)).decode("ascii")
+ED448_PUBLIC_KEY = "ed448:" + base64.b64encode(bytes(57)).decode("ascii")
 
 
 def load_json(relative: str) -> object:
@@ -106,6 +107,31 @@ class CSM1ContractTests(unittest.TestCase):
         for candidate in malformed:
             with self.subTest(candidate=candidate), self.assertRaises(ValueError):
                 parse_compact_csm1(candidate)
+
+    def test_compact_numeric_prereleases_match_normative_grammar(self) -> None:
+        for version in ("1.2.3-rc1", "^1.2.3-rc.1", "~1.2.3-alpha-2", "1.2.3", "latest", "canary"):
+            with self.subTest(version=version):
+                token = f"family.safe.guide@{version}:CORE"
+                wire = f"CS1|nanny|5|{token}|F,E"
+                parsed = parse_compact_csm1(wire)
+                self.assertEqual(parsed["uvc_token"], token)
+                document = load_json("schemas/examples/vcp-semantics-csm1.valid.json")
+                document["compact"] = wire
+                self.assertFalse(list(self.validator.iter_errors(document)))
+                self.assertEqual(validate_csm1_document(document), [])
+
+    def test_compact_prerelease_does_not_weaken_existing_admission(self) -> None:
+        for version in ("1.2.3-", "1.2.3-RC1", "01.2.3-rc1", "100000.2.3-rc1", "latest-rc1", "1.2.3-rc 1"):
+            with self.subTest(version=version):
+                wire = f"CS1|nanny|5|family.safe.guide@{version}:CORE|F,E"
+                with self.assertRaises(ValueError):
+                    parse_compact_csm1(wire)
+                document = load_json("schemas/examples/vcp-semantics-csm1.valid.json")
+                document["compact"] = wire
+                self.assertTrue(list(self.validator.iter_errors(document)))
+        with self.assertRaises(ValueError):
+            parse_csm1("N5@1.2.3-rc1")
+        self.assertTrue(list(self.validator.iter_errors({"code": "N5@1.2.3-rc1", "persona": "N", "adherence": 5})))
 
     def test_document_cross_fields_cannot_contradict_wire_code(self) -> None:
         base = load_json("schemas/examples/vcp-semantics-csm1.valid.json")

@@ -13,8 +13,7 @@ from unittest import mock
 
 import yaml
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 import generate_document_inventory
 import generate_requirement_registry
@@ -38,6 +37,8 @@ from validate_repo import (
     validate_structure_bounds,
     validate_yaml,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class StrictDataLoadingTests(unittest.TestCase):
