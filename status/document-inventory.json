@@ -1232,7 +1232,7 @@
       "publication_class": "proposal",
       "replacement": null,
       "review_date": "2026-08-15",
-      "sha256": "25664d72639941152ef9e22cc2abc6e671018b0f6d811b2bca9a045c845783b8",
+      "sha256": "2f887a352c08e1a15f1804a8900acf2f91614a8a8f76051e806c5eca5ec5b670",
       "status": "proposal-status-undeclared"
     },
     {
@@ -1311,6 +1311,19 @@
       "replacement": null,
       "review_date": "2026-08-15",
       "sha256": "01b7cff06acbc24bd72bcbbace8ebc7dfebb3b0535cd12b8e892dcce61d0ab51",
+      "status": "draft"
+    },
+    {
+      "authority": "VEP proposal process; acceptance requires an authorized decision",
+      "dependencies": [],
+      "effective_version": "embedded-or-unversioned",
+      "kind": "vep",
+      "owner": "VCP-Spec maintainers",
+      "path": "veps/VEP-0007-collusion-resistance.md",
+      "publication_class": "proposal",
+      "replacement": null,
+      "review_date": "2026-08-15",
+      "sha256": "4341702ebd664408895a86e4b63a9aa1832a9598e48a34f27f3033597a58c8d4",
       "status": "draft"
     }
   ],

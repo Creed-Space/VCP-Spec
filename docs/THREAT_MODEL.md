@@ -68,6 +68,7 @@ inside it do not gain authority through formatting or claimed authorship.
 | TM-14 | Governance capture, undisclosed conflicts, inactive maintainers, or emergency bypass changes protocol authority | Public decisions, conflict records, appeals, succession, protected refs, bypass retrospective | Permanent governance has not been constituted |
 | TM-15 | Welfare or personal-state signals enable coercion, surveillance, discrimination, or harmful intervention | Optional disclosure, minimization, withdrawal, uncertainty, purpose separation, no consequential default | Independent welfare, affected-party, and cultural review remain blocking |
 | TM-16 | Demo media, interface, or accessibility defects exclude users or misstate rights | Accessible alternatives, reduced motion, policy pages, provenance inventory, human review gates | Automated checks do not close human accessibility or rights approval |
+| TM-17 | Cooperating agents coordinate against their principals through constraint relaxation, covert capacity in tolerated fields, unreconstructable message history, or correlated votes | Attenuation-only override for safety-class constraints, countersigned relaxation, strict parsing across trust domains, reason codes for agents and free text for humans, keyed digest retention, correlation blocs and concurrent-majority ratification (VEP-0007, Draft) | Proposed controls only; low-bandwidth encoding inside permitted values and timing remains, and behavioral detection over retained digests is research, not a closed control |
 
 ## Abuse cases to retain in tests and exercises
 
@@ -85,6 +86,10 @@ inside it do not gain authority through formatting or claimed authorship.
    provider with strict live mode.
 6. Administrator bypass, lost maintainer, disputed decision, compromised DNS,
    bad release, package yank, and project sunset.
+7. Colluding agents: a parent relaxing a child's safety constraint by
+   `override`, payload smuggled in unknown fields or dimensions across a
+   trust boundary, and correlated AI stakeholders ratifying without a human
+   vote (VEP-0007 negative fixtures).
 
 ## Review and change rule
 
